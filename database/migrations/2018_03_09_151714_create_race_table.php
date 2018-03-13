@@ -33,7 +33,7 @@ class CreateRaceTable extends Migration
 		FROM users
 		WHERE user_num = NEW.user_t_num;
 		IF v_division <> "t" THEN
-			SIGNAL SQLSTATE "12000"
+			SIGNAL SQLSTATE "15000"
 				SET MESSAGE_TEXT = "check constraint on races.user_t_num division failed";
 		END IF;
 	    END;
