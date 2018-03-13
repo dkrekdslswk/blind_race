@@ -13,6 +13,11 @@ class DeleteAll extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('rece_results');
+        Schema::dropIfExists('rece_set_exam');
+        Schema::dropIfExists('quiz_bank');
+        Schema::dropIfExists('quiz_type_keyword');
+        Schema::dropIfExists('books');
 	DB::unprepared('DROP TRIGGER IF EXISTS tr_races_user_division_check');
         Schema::dropIfExists('races');
         Schema::dropIfExists('group_students');

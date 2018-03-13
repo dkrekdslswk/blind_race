@@ -26,6 +26,5 @@ class CreateRaceSetExamTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rece_set_exam');
     }
 }

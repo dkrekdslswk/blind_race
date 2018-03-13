@@ -47,6 +47,5 @@ class CreateQuizBankTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quiz_bank');
     }
 }
