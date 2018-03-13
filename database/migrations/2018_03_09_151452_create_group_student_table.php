@@ -20,7 +20,7 @@ class CreateGroupStudentTable extends Migration
 	    $table->primary('keyword');
         });
 
-        DB::table('user_division_keyword')->insert([
+        DB::table('group_student_state_keyword')->insert([
 	    ['keyword' => 'a', 'name' => 'active'],
 	    ['keyword' => 'p', 'name' => 'application'],
 	    ['keyword' => 'r', 'name' => 'refusal']
