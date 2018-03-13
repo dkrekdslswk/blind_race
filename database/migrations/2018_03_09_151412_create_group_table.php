@@ -44,7 +44,5 @@ class CreateGroupTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
-	DB::unprepared('DROP TRIGGER IF EXISTS tr_groups_user_division_check');
     }
 }

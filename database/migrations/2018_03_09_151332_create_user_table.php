@@ -42,7 +42,5 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('user_division_keyword');
     }
 }
