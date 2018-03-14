@@ -31,10 +31,10 @@ class projectTableSeeder extends Seeder
 
         DB::table('groups')->insert([
             'group_name'    => 'group1',
-            'user_t_num'    => 0
+            'user_t_num'    => 1
         ]);
 
-        for($user_num = 1 ; $user_num < 6 ; $user_num++){
+        for($user_num = 2 ; $user_num <= 6 ; $user_num++){
             DB::table('group_students')->insert([
                 'group_num'           => 0,
                 'user_num'            => $user_num,
