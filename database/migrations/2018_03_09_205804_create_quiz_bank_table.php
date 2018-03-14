@@ -54,40 +54,6 @@ class CreateQuizBankTable extends Migration
 	    $table->foreign('quiz_set_state')->references('keyword')->on('quiz_set_state_keyword');
             $table->timestamps();
         });
-
-
-	DB::unprepared('
-
-	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
-	FOR EACH ROW
-	    BEGIN
-                DECLARE v_division CHAR(1) DEFAULT NULL;
-                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
-                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
-                DECLARE book_num_fk INT UNSIGNED DEFAULT NEW.book_num;
-
-		SELECT user_division INTO v_division
-		FROM users
-		WHERE user_num = NEW.user_t_num;
-		IF v_division <> "t" THEN
-			SIGNAL SQLSTATE "16000"
-				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
-		END IF;
-		IF NEW.book_num IS NOT NULL THEN
-
-		    SELECT a.book_page_max, a.book_page_min
-                    INTO v_page_max, v_page_min
-		    FROM books as a
-		    WHERE a.book_num = book_num_fk;
-                    
-                    IF NEW.book_page < v_page_min
-                       OR NEW.book_page > v_page_max THEN
-			SIGNAL SQLSTATE "16001"
-				SET MESSAGE_TEXT = "check constraint on quz_bank.book_page failed";
-                    END IF;
-		END IF;
-	    END;
-	');
     }
 
     /**
