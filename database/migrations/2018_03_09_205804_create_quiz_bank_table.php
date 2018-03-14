@@ -57,6 +57,7 @@ class CreateQuizBankTable extends Migration
 
 
 	DB::unprepared('
+
 	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
 	FOR EACH ROW
 	    BEGIN
@@ -73,10 +74,10 @@ class CreateQuizBankTable extends Migration
 		END IF;
 		IF NEW.book_num IS NOT NULL THEN
 
-		    SELECT book_page_max, book_page_min
+		    SELECT a.book_page_max, a.book_page_min
                     INTO v_page_max, v_page_min
-		    FROM books
-		    WHERE book_num = NEW.book_num;
+		    FROM books as a
+		    WHERE a.book_num = NEW.book_num;
                     
                     IF NEW.book_page < v_page_min
                        OR NEW.book_page > v_page_max THEN
