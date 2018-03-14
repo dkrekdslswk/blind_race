@@ -22,10 +22,10 @@ class projectTableSeeder extends Seeder
  
         foreach($users as $user){
             DB::table('users')->insert([
-                'user_id'       => $user[0];
-                'user_password' => $user[1];
-                'user_name'     => $user[2];
-                'user_division' => $user[3];
+                'user_id'       => array_get($user, 0);
+                'user_password' => array_get($user, 1);
+                'user_name'     => array_get($user, 2);
+                'user_division' => array_get($user, 3);;
             ]);
         }
 
