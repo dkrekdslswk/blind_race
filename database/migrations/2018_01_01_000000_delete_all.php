@@ -14,6 +14,7 @@ class DeleteAll extends Migration
     public function up()
     {
         Schema::dropIfExists('race_results');
+        //
 
         Schema::dropIfExists('rece_set_exam');
         Schema::dropIfExists('rece_set_exam_state_keyword');
