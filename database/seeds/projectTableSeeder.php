@@ -30,8 +30,8 @@ class projectTableSeeder extends Seeder
         }
 
         DB::table('groups')->insert([
-            'group_name'    => 'group1';
-            'user_t_num'    => 0;
+            'group_name'    => 'group1',
+            'user_t_num'    => 0
         ]);
 
         for($user_num = 1 ; $user_num < 6 ; $user_num++){
