@@ -61,6 +61,8 @@ class CreateQuizBankTable extends Migration
 	FOR EACH ROW
 	    BEGIN
                 DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
 
 		SELECT user_division INTO v_division
 		FROM users
@@ -70,8 +72,6 @@ class CreateQuizBankTable extends Migration
 				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
 		END IF;
 		IF NEW.book_num IS NOT NULL THEN
-                    DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
-                    DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
 
 		    SELECT book_page_max, book_page_min
                     INTO v_page_max, v_page_min
