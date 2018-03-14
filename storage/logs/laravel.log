@@ -11619,3 +11619,533 @@ Did you mean one of these?
 #26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #27 {main}
 "} 
+[2018-03-09 21:48:43] local.ERROR: SQLSTATE[42000]: Syntax error or access violation: 1068 Multiple primary key defined (SQL: alter table `books` add primary key `books_book_num_primary`(`book_num`)) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42000): SQLSTATE[42000]: Syntax error or access violation: 1068 Multiple primary key defined (SQL: alter table `books` add primary key `books_book_num_primary`(`book_num`)) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42000): SQLSTATE[42000]: Syntax error or access violation: 1068 Multiple primary key defined at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('alter table `bo...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(459): Illuminate\\Database\\Connection->run('alter table `bo...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(88): Illuminate\\Database\\Connection->statement('alter table `bo...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(252): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(165): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\Schema\\Builder->create('books', Object(Closure))
+#6 /home/flandre/blind_race/database/migrations/2018_03_09_205742_create_books_table.php(22): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateBooksTable->up()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateBooksTable), 'up')
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#13 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#19 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+"} 
+[2018-03-14 01:56:03] local.ERROR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                    DECLARE v_' at line 14 (SQL: 
+	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+	FOR EACH ROW
+	    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+
+		SELECT user_division INTO v_division
+		FROM users
+		WHERE user_num = NEW.user_t_num;
+		IF v_division <> "t" THEN
+			SIGNAL SQLSTATE "16000"
+				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
+		END IF;
+		IF NEW.book_num IS NOT NULL THEN
+                    DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                    DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+		    SELECT book_page_max, book_page_min
+                    INTO v_page_max, v_page_min
+		    FROM books
+		    WHERE book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+			SIGNAL SQLSTATE "16001"
+				SET MESSAGE_TEXT = "check constraint on quz_bank.book_page failed";
+                    END IF;
+		END IF;
+	    END;
+	) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42000): SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                    DECLARE v_' at line 14 (SQL: 
+\tCREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+\tFOR EACH ROW
+\t    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+
+\t\tSELECT user_division INTO v_division
+\t\tFROM users
+\t\tWHERE user_num = NEW.user_t_num;
+\t\tIF v_division <> \"t\" THEN
+\t\t\tSIGNAL SQLSTATE \"16000\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quiz_bank.user_t_num division failed\";
+\t\tEND IF;
+\t\tIF NEW.book_num IS NOT NULL THEN
+                    DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                    DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+\t\t    SELECT book_page_max, book_page_min
+                    INTO v_page_max, v_page_min
+\t\t    FROM books
+\t\t    WHERE book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+\t\t\tSIGNAL SQLSTATE \"16001\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quz_bank.book_page failed\";
+                    END IF;
+\t\tEND IF;
+\t    END;
+\t) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42000): SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                    DECLARE v_' at line 14 at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:507)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('\
+\\tCREATE TRIGGE...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(511): Illuminate\\Database\\Connection->run('\
+\\tCREATE TRIGGE...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(327): Illuminate\\Database\\Connection->unprepared('\
+\\tCREATE TRIGGE...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\DatabaseManager->__call('unprepared', Array)
+#4 /home/flandre/blind_race/database/migrations/2018_03_09_205804_create_quiz_bank_table.php(59): Illuminate\\Support\\Facades\\Facade::__callStatic('unprepared', Array)
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateQuizBankTable->up()
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateQuizBankTable), 'up')
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#11 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
+[2018-03-14 02:03:19] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'quiz_type_keyword' already exists (SQL: create table `quiz_type_keyword` (`keyword` char(1) not null, `name` varchar(32) not null) default character set utf8mb4 collate utf8mb4_unicode_ci) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'quiz_type_keyword' already exists (SQL: create table `quiz_type_keyword` (`keyword` char(1) not null, `name` varchar(32) not null) default character set utf8mb4 collate utf8mb4_unicode_ci) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'quiz_type_keyword' already exists at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('create table `q...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(459): Illuminate\\Database\\Connection->run('create table `q...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(88): Illuminate\\Database\\Connection->statement('create table `q...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(252): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(165): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\Schema\\Builder->create('quiz_type_keywo...', Object(Closure))
+#6 /home/flandre/blind_race/database/migrations/2018_03_09_205804_create_quiz_bank_table.php(20): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateQuizBankTable->up()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateQuizBankTable), 'up')
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 2, false)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#13 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#19 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+"} 
+[2018-03-14 02:03:36] local.ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+	FOR EACH ROW
+	    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+		SELECT user_division INTO v_division
+		FROM users
+		WHERE user_num = NEW.user_t_num;
+		IF v_division <> "t" THEN
+			SIGNAL SQLSTATE "16000"
+				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
+		END IF;
+		IF NEW.book_num IS NOT NULL THEN
+
+		    SELECT book_page_max, book_page_min
+                    INTO v_page_max, v_page_min
+		    FROM books
+		    WHERE book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+			SIGNAL SQLSTATE "16001"
+				SET MESSAGE_TEXT = "check constraint on quz_bank.book_page failed";
+                    END IF;
+		END IF;
+	    END;
+	) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+\tCREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+\tFOR EACH ROW
+\t    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+\t\tSELECT user_division INTO v_division
+\t\tFROM users
+\t\tWHERE user_num = NEW.user_t_num;
+\t\tIF v_division <> \"t\" THEN
+\t\t\tSIGNAL SQLSTATE \"16000\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quiz_bank.user_t_num division failed\";
+\t\tEND IF;
+\t\tIF NEW.book_num IS NOT NULL THEN
+
+\t\t    SELECT book_page_max, book_page_min
+                    INTO v_page_max, v_page_min
+\t\t    FROM books
+\t\t    WHERE book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+\t\t\tSIGNAL SQLSTATE \"16001\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quz_bank.book_page failed\";
+                    END IF;
+\t\tEND IF;
+\t    END;
+\t) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:507)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('\
+\\tCREATE TRIGGE...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(511): Illuminate\\Database\\Connection->run('\
+\\tCREATE TRIGGE...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(327): Illuminate\\Database\\Connection->unprepared('\
+\\tCREATE TRIGGE...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\DatabaseManager->__call('unprepared', Array)
+#4 /home/flandre/blind_race/database/migrations/2018_03_09_205804_create_quiz_bank_table.php(59): Illuminate\\Support\\Facades\\Facade::__callStatic('unprepared', Array)
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateQuizBankTable->up()
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateQuizBankTable), 'up')
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#11 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
+[2018-03-14 02:30:03] local.ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+
+	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+	FOR EACH ROW
+	    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+		SELECT user_division INTO v_division
+		FROM users
+		WHERE user_num = NEW.user_t_num;
+		IF v_division <> "t" THEN
+			SIGNAL SQLSTATE "16000"
+				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
+		END IF;
+		IF NEW.book_num IS NOT NULL THEN
+
+		    SELECT a.book_page_max, a.book_page_min
+                    INTO v_page_max, v_page_min
+		    FROM books as a
+		    WHERE a.book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+			SIGNAL SQLSTATE "16001"
+				SET MESSAGE_TEXT = "check constraint on quz_bank.book_page failed";
+                    END IF;
+		END IF;
+	    END;
+	) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+
+\tCREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+\tFOR EACH ROW
+\t    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+
+\t\tSELECT user_division INTO v_division
+\t\tFROM users
+\t\tWHERE user_num = NEW.user_t_num;
+\t\tIF v_division <> \"t\" THEN
+\t\t\tSIGNAL SQLSTATE \"16000\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quiz_bank.user_t_num division failed\";
+\t\tEND IF;
+\t\tIF NEW.book_num IS NOT NULL THEN
+
+\t\t    SELECT a.book_page_max, a.book_page_min
+                    INTO v_page_max, v_page_min
+\t\t    FROM books as a
+\t\t    WHERE a.book_num = NEW.book_num;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+\t\t\tSIGNAL SQLSTATE \"16001\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quz_bank.book_page failed\";
+                    END IF;
+\t\tEND IF;
+\t    END;
+\t) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:507)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('\
+\
+\\tCREATE TRIGG...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(511): Illuminate\\Database\\Connection->run('\
+\
+\\tCREATE TRIGG...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(327): Illuminate\\Database\\Connection->unprepared('\
+\
+\\tCREATE TRIGG...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\DatabaseManager->__call('unprepared', Array)
+#4 /home/flandre/blind_race/database/migrations/2018_03_09_205804_create_quiz_bank_table.php(59): Illuminate\\Support\\Facades\\Facade::__callStatic('unprepared', Array)
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateQuizBankTable->up()
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateQuizBankTable), 'up')
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#11 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
+[2018-03-14 02:34:30] local.ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+
+	CREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+	FOR EACH ROW
+	    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE book_num_fk INT UNSIGNED DEFAULT NEW.book_num;
+
+		SELECT user_division INTO v_division
+		FROM users
+		WHERE user_num = NEW.user_t_num;
+		IF v_division <> "t" THEN
+			SIGNAL SQLSTATE "16000"
+				SET MESSAGE_TEXT = "check constraint on quiz_bank.user_t_num division failed";
+		END IF;
+		IF NEW.book_num IS NOT NULL THEN
+
+		    SELECT a.book_page_max, a.book_page_min
+                    INTO v_page_max, v_page_min
+		    FROM books as a
+		    WHERE a.book_num = book_num_fk;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+			SIGNAL SQLSTATE "16001"
+				SET MESSAGE_TEXT = "check constraint on quz_bank.book_page failed";
+                    END IF;
+		END IF;
+	    END;
+	) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' (SQL: 
+
+\tCREATE TRIGGER tr_quiz_bank_check BEFORE INSERT ON groups
+\tFOR EACH ROW
+\t    BEGIN
+                DECLARE v_division CHAR(1) DEFAULT NULL;
+                DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE book_num_fk INT UNSIGNED DEFAULT NEW.book_num;
+
+\t\tSELECT user_division INTO v_division
+\t\tFROM users
+\t\tWHERE user_num = NEW.user_t_num;
+\t\tIF v_division <> \"t\" THEN
+\t\t\tSIGNAL SQLSTATE \"16000\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quiz_bank.user_t_num division failed\";
+\t\tEND IF;
+\t\tIF NEW.book_num IS NOT NULL THEN
+
+\t\t    SELECT a.book_page_max, a.book_page_min
+                    INTO v_page_max, v_page_min
+\t\t    FROM books as a
+\t\t    WHERE a.book_num = book_num_fk;
+                    
+                    IF NEW.book_page < v_page_min
+                       OR NEW.book_page > v_page_max THEN
+\t\t\tSIGNAL SQLSTATE \"16001\"
+\t\t\t\tSET MESSAGE_TEXT = \"check constraint on quz_bank.book_page failed\";
+                    END IF;
+\t\tEND IF;
+\t    END;
+\t) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'book_num' in 'NEW' at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:507)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('\
+\
+\\tCREATE TRIGG...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(511): Illuminate\\Database\\Connection->run('\
+\
+\\tCREATE TRIGG...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(327): Illuminate\\Database\\Connection->unprepared('\
+\
+\\tCREATE TRIGG...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\DatabaseManager->__call('unprepared', Array)
+#4 /home/flandre/blind_race/database/migrations/2018_03_09_205804_create_quiz_bank_table.php(59): Illuminate\\Support\\Facades\\Facade::__callStatic('unprepared', Array)
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): CreateQuizBankTable->up()
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateQuizBankTable), 'up')
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#11 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
+[2018-03-14 02:37:47] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('drop table if e...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(459): Illuminate\\Database\\Connection->run('drop table if e...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(88): Illuminate\\Database\\Connection->statement('drop table if e...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(252): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(191): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\Schema\\Builder->dropIfExists('rece_set_exam')
+#6 /home/flandre/blind_race/database/migrations/2018_01_01_000000_delete_all.php(18): Illuminate\\Support\\Facades\\Facade::__callStatic('dropIfExists', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): DeleteAll->up()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(DeleteAll), 'up')
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#13 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#19 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+"} 
+[2018-03-14 02:38:42] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('drop table if e...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(459): Illuminate\\Database\\Connection->run('drop table if e...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(88): Illuminate\\Database\\Connection->statement('drop table if e...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(252): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(191): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\Schema\\Builder->dropIfExists('rece_set_exam')
+#6 /home/flandre/blind_race/database/migrations/2018_01_01_000000_delete_all.php(18): Illuminate\\Support\\Facades\\Facade::__callStatic('dropIfExists', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): DeleteAll->up()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(DeleteAll), 'up')
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#13 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#19 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+"} 
+[2018-03-14 02:42:46] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails (SQL: drop table if exists `rece_set_exam`) at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('drop table if e...', Array, Object(Closure))
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Connection.php(459): Illuminate\\Database\\Connection->run('drop table if e...', Array, Object(Closure))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(88): Illuminate\\Database\\Connection->statement('drop table if e...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(252): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(191): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\\Database\\Schema\\Builder->dropIfExists('rece_set_exam')
+#6 /home/flandre/blind_race/database/migrations/2018_01_01_000000_delete_all.php(18): Illuminate\\Support\\Facades\\Facade::__callStatic('dropIfExists', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(359): DeleteAll->up()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(366): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(177): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(DeleteAll), 'up')
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(146): Illuminate\\Database\\Migrations\\Migrator->runUp('/home/flandre/b...', 1, false)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(95): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(70): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#13 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#19 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+"} 
