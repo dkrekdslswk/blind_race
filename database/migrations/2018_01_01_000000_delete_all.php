@@ -18,7 +18,6 @@ class DeleteAll extends Migration
         Schema::dropIfExists('rece_set_exam');
         Schema::dropIfExists('rece_set_exam_state_keyword');
 
-	DB::unprepared('DROP TRIGGER IF EXISTS tr_quiz_bank_check');
         Schema::dropIfExists('quiz_bank');
         Schema::dropIfExists('quiz_type_keyword');
         Schema::dropIfExists('quiz_set_state_keyword');
