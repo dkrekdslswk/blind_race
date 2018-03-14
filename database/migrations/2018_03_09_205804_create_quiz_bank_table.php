@@ -64,6 +64,7 @@ class CreateQuizBankTable extends Migration
                 DECLARE v_division CHAR(1) DEFAULT NULL;
                 DECLARE v_page_max TINYINT UNSIGNED DEFAULT NULL;
                 DECLARE v_page_min TINYINT UNSIGNED DEFAULT NULL;
+                DECLARE book_num_fk INT UNSIGNED DEFAULT NEW.book_num;
 
 		SELECT user_division INTO v_division
 		FROM users
@@ -77,7 +78,7 @@ class CreateQuizBankTable extends Migration
 		    SELECT a.book_page_max, a.book_page_min
                     INTO v_page_max, v_page_min
 		    FROM books as a
-		    WHERE a.book_num = NEW.book_num;
+		    WHERE a.book_num = book_num_fk;
                     
                     IF NEW.book_page < v_page_min
                        OR NEW.book_page > v_page_max THEN
