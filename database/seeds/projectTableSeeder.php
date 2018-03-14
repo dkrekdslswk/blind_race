@@ -22,10 +22,10 @@ class projectTableSeeder extends Seeder
  
         foreach($users as $user){
             DB::table('users')->insert([
-                'user_id'       => array_get($user, 0);
-                'user_password' => array_get($user, 1);
-                'user_name'     => array_get($user, 2);
-                'user_division' => array_get($user, 3);;
+                'user_id'       => array_get($user, 0),
+                'user_password' => array_get($user, 1),
+                'user_name'     => array_get($user, 2),
+                'user_division' => array_get($user, 3)
             ]);
         }
 
@@ -36,9 +36,9 @@ class projectTableSeeder extends Seeder
 
         for($user_num = 1 ; $user_num < 6 ; $user_num++){
             DB::table('group_students')->insert([
-                'group_num'           => 0;
-                'user_num'            => $user_num;
-                'group_student_state' => 'a';
+                'group_num'           => 0,
+                'user_num'            => $user_num,
+                'group_student_state' => 'a'
             ]);
         }
     }
