@@ -1,11 +1,19 @@
-
 var app = require('express')();
-var http = require('http').Server(app);
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var redis = require("redis");
 
-app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
+server.listen(8890);
+
+
+//소켓io 연결 비연결 !
+io.on('connection',function(socket){
+    console.log('a user connected');
+ 
+    socket.on('disconnect',function(){
+        console.log('a user disconnected');
+    });
 });
 
-http.listen(8000, function(){
-  console.log('listening on *:8000');
-});
+// ---------------------------------------------- 연결처리작업 
+
