@@ -12,9 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('main');
 });
 Route::get('/chat', function () {
     return view('chat');
 });
-Route::resource('items', 'ItemController');
+
+Route::get('/login', function(){
+    return view('login/login');
+});
+
+Route::get('/AJH', function(){
+    return view('AJH');
+});

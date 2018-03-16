@@ -2,7 +2,10 @@ import Vue from 'vue';
 import VueSocketio from 'vue-socket.io';
 import socketio from 'socket.io-client';
 Vue.use(VueSocketio, socketio(':8890'));
-    
+
+
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue);
     
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
@@ -12,40 +15,17 @@ import axios from 'axios';
 Vue.use(VueAxios, axios);
 
 import App from './App.vue';
-// import CreateItem from './components/CreateItem.vue';
-import DisplayItem from './components/DisplayItem.vue';
-// import EditItem from './components/EditItem.vue';
 import Example from './components/Example.vue';
-
-import Main from './components/Main.vue';
-
+import Login from './components/Login.vue';
+import Footer from './components/Footer.vue';
+import Modal from './components/Modal.vue';
+import AJH from './components/AJH.vue';
 const routes = [
-  // {
-  //   name: 'CreateItem',
-  //   path: '/items/create',
-  //   component: CreateItem
-  // },
-  // {
-  //       name: 'DisplayItem',
-  //       path: '/',
-  //       component: DisplayItem
-  // },
-  // {
-  //     name: 'EditItem',
-  //     path: '/edit/:id',
-  //     component: EditItem
-  // },
-  {
-    name: 'Main',
-    path: '/',
-    component: Main
-  },
-  {
-      name: 'Example',
-      path: '/chat',
-      component: Example
-  }
+  {  path: '/chat',  component: Example },
+  {  path: '/login', component: Login   },
+  {  path: '/',      component :Footer },
+  {  path: '/',      component :Modal  },
+  {  path: '/AJH',      component :AJH } 
 ];
-
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');
