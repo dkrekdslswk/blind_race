@@ -1,7 +1,7 @@
 <div>
     
-    
-    <!-- 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
+
+    <!-- 안준휘 - 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
     
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav">
     <a class="navbar-brand" href="index.html">十分十分</a>
