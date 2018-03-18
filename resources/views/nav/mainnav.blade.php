@@ -1,50 +1,67 @@
-<style type="text/css">
-  .nav-icon{
-    width:20px;
-    height:20px;
-  }
-</style>
 <div>
+    
+    
     <!-- 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
     
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav">
-    <a class="navbar-brand" href="/">
-      <!--<img src="img/logo.png" width="100" height="40" alt="">-->
-      十分十分
-    </a>
+    <a class="navbar-brand" href="index.html">十分十分</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="index.html">
-            <span class="nav-link-text"><img class="nav-icon " src="img/networking.png"></img>  나의그룹</span>
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">ㅇ</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="/race">
+          <a class="nav-link" href="charts.html">
             <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text"><img class="nav-icon " src="img/race.png"></img>  레이스</span>
+            <span class="nav-link-text">ㅇ</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.html">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text"><img class="nav-icon " src="img/sword.png"></img>  레이드</span>
+            <span class="nav-link-text"><img src=""></img></span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-wrench"></i>
-            <span class="nav-link-text"><img class="nav-icon " src="img/tree.png"></img>  문제나무</span>
+            <span class="nav-link-text">d</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a href="navbar.html">미정</a>
+            </li>
+            <li>
+              <a href="cards.html">미정</a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="/recordbox" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text"><img class="nav-icon " src="img/bars-chart.png"></img>  레코드박스</span>
+            <span class="nav-link-text">Example Pages</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+            <li>
+              <a href="login.html">Login Page</a>
+            </li>
+            <li>
+              <a href="register.html">Registration Page</a>
+            </li>
+            <li>
+              <a href="forgot-password.html">Forgot Password Page</a>
+            </li>
+            <li>
+              <a href="blank.html">Blank Page</a>
+            </li>
+          </ul>
         </li>
-        
-        
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-sitemap"></i>
@@ -76,9 +93,6 @@
             </li>
           </ul>
         </li>
-        
-        
-        
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
           <a class="nav-link" href="#">
             <i class="fa fa-fw fa-link"></i>
