@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -16,14 +18,15 @@
 		</style>
 	</head>
 	<body>
+    <!-- 김민수 작업파일입니다.-->
 	    <nav>
         @include('Navigation.mainnav')
         </nav>
       <!--aside 자리-->
       <aside style="display:inline-block; vertical-align:top; margin-right:30%; ">
           @include('Recordbox.Side_Bar')
-
       </aside>
+
     <!--<div id="app"></div>-->
     <!--<script src="{{asset('js/app.js')}}"></script>  -->
     
