@@ -51,18 +51,12 @@
         <a href="/rade"><img src="img/sword.png"></a>
     </div>
     <div style="width: 20%; height: 100%; float: left">
-<<<<<<< HEAD
           <a href="/"> <img src="img/tree.png"></a>
     </div>
     <div style="width: 19%; height: 100%; float: left">
          <a href="/recordbox"> <img src="img/bars-chart.png"></a>
-=======
-        <a href="/"> <img src="img/tree.png"></a>
     </div>
-    <div style="width: 19%; height: 100%; float: left">
-        <a href="/recordbox"> <img src="img/bars-chart.png"></a>
->>>>>>> ec53df2779e9f11487b29f1a1aafde351e1ecbab
-    </div>
+  
 </div>
 <div style="height: 20px"></div> <!--여백-->
 <!--글자-->
