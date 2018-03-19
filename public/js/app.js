@@ -12432,7 +12432,7 @@ Object(__WEBPACK_IMPORTED_MODULE_6__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_link_link__ = __webpack_require__(9);
 /*
- * Comon props, computed, data, render function, and methods for b-pagination and b-pagination-Navigation
+ * Comon props, computed, data, render function, and methods for b-pagination and b-pagination-nav
  */
 
 
@@ -12683,7 +12683,7 @@ var props = {
       }
     }, buttons);
 
-    // if we are pagination-Navigation, wrap in '<Navigation>' wrapper
+    // if we are pagination-nav, wrap in '<nav>' wrapper
     return t.isNav ? h('nav', {}, [pagination]) : pagination;
   },
 
@@ -14191,7 +14191,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_
 
 
 
-var routes = [{ path: '/chat', component: __WEBPACK_IMPORTED_MODULE_8__components_Example_vue__["a" /* default */] }, { path: '/Login', component: __WEBPACK_IMPORTED_MODULE_9__components_Login_vue__["a" /* default */] }, { path: '/', component: __WEBPACK_IMPORTED_MODULE_10__components_Footer_vue__["a" /* default */] }, { path: '/', component: __WEBPACK_IMPORTED_MODULE_11__components_Modal_vue__["a" /* default */] }, { path: '/AJH', component: __WEBPACK_IMPORTED_MODULE_12__components_AJH_vue__["a" /* default */] }];
+var routes = [{ path: '/chat', component: __WEBPACK_IMPORTED_MODULE_8__components_Example_vue__["a" /* default */] }, { path: '/login', component: __WEBPACK_IMPORTED_MODULE_9__components_Login_vue__["a" /* default */] }, { path: '/', component: __WEBPACK_IMPORTED_MODULE_10__components_Footer_vue__["a" /* default */] }, { path: '/', component: __WEBPACK_IMPORTED_MODULE_11__components_Modal_vue__["a" /* default */] }, { path: '/AJH', component: __WEBPACK_IMPORTED_MODULE_12__components_AJH_vue__["a" /* default */] }];
 var router = new __WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]({ mode: 'history', routes: routes });
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.util.extend({ router: router }, __WEBPACK_IMPORTED_MODULE_7__App_vue__["a" /* default */])).$mount('#app');
 
@@ -19347,7 +19347,7 @@ var namespaceMap = {
 
 var isHTMLTag = makeMap(
   'html,body,base,head,link,meta,style,title,' +
-  'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,Navigation,section,' +
+  'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,nav,section,' +
   'div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,' +
   'a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,rtc,ruby,' +
   's,samp,small,span,strong,sub,sup,time,u,var,wbr,area,audio,map,track,video,' +
@@ -30566,12 +30566,12 @@ var EVENT_TOGGLE = 'bv::toggle::collapse';
       }
     },
     clickHandler: function clickHandler(evt) {
-      // If we are in a Navigation/navbar, close the collapse when non-disabled link clicked
+      // If we are in a nav/navbar, close the collapse when non-disabled link clicked
       var el = evt.target;
       if (!this.isNav || !el || getComputedStyle(this.$el).display !== 'block') {
         return;
       }
-      if (Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["j" /* hasClass */])(el, 'Navigation-link') || Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["j" /* hasClass */])(el, 'dropdown-item')) {
+      if (Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["j" /* hasClass */])(el, 'nav-link') || Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["j" /* hasClass */])(el, 'dropdown-item')) {
         this.show = false;
       }
     },
@@ -30598,7 +30598,7 @@ var EVENT_TOGGLE = 'bv::toggle::collapse';
       }
     },
     handleResize: function handleResize() {
-      // Handler for orientation/resize to set collapsed state in Navigation/navbar
+      // Handler for orientation/resize to set collapsed state in nav/navbar
       this.show = getComputedStyle(this.$el).display === 'block';
     }
   },
@@ -34177,7 +34177,7 @@ var props = {
         children = _ref.children;
 
     if (props.isNavBar) {
-      Object(__WEBPACK_IMPORTED_MODULE_1__utils_warn__["a" /* default */])("b-Navigation: Prop 'is-Navigation-bar' is deprecated. Please use component '<b-navbar-Navigation>' instead.");
+      Object(__WEBPACK_IMPORTED_MODULE_1__utils_warn__["a" /* default */])("b-nav: Prop 'is-nav-bar' is deprecated. Please use component '<b-navbar-nav>' instead.");
     }
     return h(props.tag, Object(__WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__["a" /* mergeData */])(data, {
       class: {
@@ -34215,8 +34215,8 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_1__link_link__["c" /* propsFactory 
         children = _ref.children;
 
     return h('li', Object(__WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__["a" /* mergeData */])(data, {
-      staticClass: 'Navigation-item'
-    }), [h(__WEBPACK_IMPORTED_MODULE_1__link_link__["a" /* default */], { staticClass: 'Navigation-link', props: props }, children)]);
+      staticClass: 'nav-item'
+    }), [h(__WEBPACK_IMPORTED_MODULE_1__link_link__["a" /* default */], { staticClass: 'nav-link', props: props }, children)]);
   }
 });
 
@@ -34322,10 +34322,10 @@ var props = {
       return true;
     },
     dropdownClasses: function dropdownClasses() {
-      return ['Navigation-item', 'b-Navigation-dropdown', 'dropdown', this.dropup ? 'dropup' : '', this.visible ? 'show' : ''];
+      return ['nav-item', 'b-nav-dropdown', 'dropdown', this.dropup ? 'dropup' : '', this.visible ? 'show' : ''];
     },
     toggleClasses: function toggleClasses() {
-      return ['Navigation-link', this.noCaret ? '' : 'dropdown-toggle', this.disabled ? 'disabled' : '', this.extraToggleClasses ? this.extraToggleClasses : ''];
+      return ['nav-link', this.noCaret ? '' : 'dropdown-toggle', this.disabled ? 'disabled' : '', this.extraToggleClasses ? this.extraToggleClasses : ''];
     },
     menuClasses: function menuClasses() {
       return ['dropdown-menu', this.right ? 'dropdown-menu-right' : 'dropdown-menu-left', this.visible ? 'show' : ''];
@@ -34736,7 +34736,7 @@ var routerProps = Object(__WEBPACK_IMPORTED_MODULE_2__link_link__["b" /* pickLin
 
 // Props object
 var props = Object(__WEBPACK_IMPORTED_MODULE_0__utils_object__["a" /* assign */])(
-// pagination-Navigation specific props
+// pagination-nav specific props
 {
   numberOfPages: {
     type: Number,
@@ -34766,7 +34766,7 @@ routerProps);
   mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_pagination__["a" /* default */]],
   props: props,
   computed: {
-    // Used by render function to trigger wraping in '<Navigation>' element
+    // Used by render function to trigger wraping in '<nav>' element
     isNav: function isNav() {
       return true;
     }
@@ -37977,7 +37977,7 @@ var bTabButtonHelper = {
   render: function render(h) {
     var t = this;
     var link = h('a', {
-      class: ['Navigation-link', { active: t.active, disabled: t.disabled }, t.linkClass],
+      class: ['nav-link', { active: t.active, disabled: t.disabled }, t.linkClass],
       attrs: {
         role: 'tab',
         tabindex: '-1',
@@ -37994,7 +37994,7 @@ var bTabButtonHelper = {
         keydown: t.handleClick
       }
     }, t.content);
-    return h('li', { class: ['Navigation-item', t.itemClass], attrs: { role: 'presentation' } }, [link]);
+    return h('li', { class: ['nav-item', t.itemClass], attrs: { role: 'presentation' } }, [link]);
   },
 
   methods: {
@@ -38048,7 +38048,7 @@ var bTabButtonHelper = {
 
     // Nav 'button' wrapper
     var navs = h('ul', {
-      class: ['nav', 'Navigation-' + t.navStyle, (_ref = {}, _defineProperty(_ref, 'card-header-' + t.navStyle, t.card && !t.vertical), _defineProperty(_ref, 'card-header', t.card && t.vertical), _defineProperty(_ref, 'h-100', t.card && t.vertical), _defineProperty(_ref, 'flex-column', t.vertical), _defineProperty(_ref, 'border-bottom-0', t.vertical), _defineProperty(_ref, 'rounded-0', t.vertical), _defineProperty(_ref, 'small', t.small), _ref), t.navClass],
+      class: ['nav', 'nav-' + t.navStyle, (_ref = {}, _defineProperty(_ref, 'card-header-' + t.navStyle, t.card && !t.vertical), _defineProperty(_ref, 'card-header', t.card && t.vertical), _defineProperty(_ref, 'h-100', t.card && t.vertical), _defineProperty(_ref, 'flex-column', t.vertical), _defineProperty(_ref, 'border-bottom-0', t.vertical), _defineProperty(_ref, 'rounded-0', t.vertical), _defineProperty(_ref, 'small', t.small), _ref), t.navClass],
       attrs: {
         role: 'tablist',
         tabindex: '0',
@@ -38411,12 +38411,12 @@ var bTabButtonHelper = {
       default: ''
     },
     titleItemClass: {
-      // Sniffed by tabs.vue and added to Navigation 'li.Navigation-item'
+      // Sniffed by tabs.vue and added to nav 'li.nav-item'
       type: [String, Array, Object],
       default: null
     },
     titleLinkClass: {
-      // Sniffed by tabs.vue and added to Navigation 'a.Navigation-link'
+      // Sniffed by tabs.vue and added to nav 'a.nav-link'
       type: [String, Array, Object],
       default: null
     },
@@ -38725,9 +38725,9 @@ var ClassName = {
 
 var Selector = {
   ACTIVE: '.active',
-  NAV_LIST_GROUP: '.Navigation, .list-group',
-  NAV_LINKS: '.Navigation-link',
-  NAV_ITEMS: '.Navigation-item',
+  NAV_LIST_GROUP: '.nav, .list-group',
+  NAV_LINKS: '.nav-link',
+  NAV_ITEMS: '.nav-item',
   LIST_ITEMS: '.list-group-item',
   DROPDOWN: '.dropdown, .dropup',
   DROPDOWN_ITEMS: '.dropdown-item',
@@ -39092,11 +39092,11 @@ var ScrollSpy = function () {
           // Set triggered link as active
           _this5.setActiveState(link, true);
           if (Object(__WEBPACK_IMPORTED_MODULE_3__utils_dom__["n" /* matches */])(link.parentElement, Selector.NAV_ITEMS)) {
-            // Handle Navigation-link inside Navigation-item, and set Navigation-item active
+            // Handle nav-link inside nav-item, and set nav-item active
             _this5.setActiveState(link.parentElement, true);
           }
           // Set triggered links parents as active
-          // With both <ul> and <Navigation> markup a parent is the previous sibling of any Navigation ancestor
+          // With both <ul> and <nav> markup a parent is the previous sibling of any nav ancestor
           var el = link;
           while (el) {
             el = Object(__WEBPACK_IMPORTED_MODULE_3__utils_dom__["b" /* closest */])(Selector.NAV_LIST_GROUP, el);
@@ -39104,10 +39104,10 @@ var ScrollSpy = function () {
             if (Object(__WEBPACK_IMPORTED_MODULE_3__utils_dom__["n" /* matches */])(sibling, Selector.NAV_LINKS + ', ' + Selector.LIST_ITEMS)) {
               _this5.setActiveState(sibling, true);
             }
-            // Handle special case where Navigation-link is inside a Navigation-item
+            // Handle special case where nav-link is inside a nav-item
             if (Object(__WEBPACK_IMPORTED_MODULE_3__utils_dom__["n" /* matches */])(sibling, Selector.NAV_ITEMS)) {
               _this5.setActiveState(Object(__WEBPACK_IMPORTED_MODULE_3__utils_dom__["t" /* select */])(Selector.NAV_LINKS, sibling), true);
-              // Add active state to Navigation-item as well
+              // Add active state to nav-item as well
               _this5.setActiveState(sibling, true);
             }
           }
@@ -43468,14 +43468,14 @@ var staticRenderFns = [
               _c(
                 "ul",
                 {
-                  staticClass: "navbar-Navigation navbar-sidenav",
+                  staticClass: "navbar-nav navbar-sidenav",
                   attrs: { id: "exampleAccordion" }
                 },
                 [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43486,13 +43486,13 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link",
+                          staticClass: "nav-link",
                           attrs: { href: "index.html" }
                         },
                         [
                           _c("i", { staticClass: "fa fa-fw fa-dashboard" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Dashboard")
                           ])
                         ]
@@ -43503,7 +43503,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43514,13 +43514,13 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link",
+                          staticClass: "nav-link",
                           attrs: { href: "charts.html" }
                         },
                         [
                           _c("i", { staticClass: "fa fa-fw fa-area-chart" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Charts")
                           ])
                         ]
@@ -43531,7 +43531,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43542,13 +43542,13 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link",
+                          staticClass: "nav-link",
                           attrs: { href: "tables.html" }
                         },
                         [
                           _c("i", { staticClass: "fa fa-fw fa-table" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Tables")
                           ])
                         ]
@@ -43559,7 +43559,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43570,7 +43570,7 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link Navigation-link-collapse collapsed",
+                          staticClass: "nav-link nav-link-collapse collapsed",
                           attrs: {
                             "data-toggle": "collapse",
                             href: "#collapseComponents",
@@ -43580,7 +43580,7 @@ var staticRenderFns = [
                         [
                           _c("i", { staticClass: "fa fa-fw fa-wrench" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Components")
                           ])
                         ]
@@ -43612,7 +43612,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43623,7 +43623,7 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link Navigation-link-collapse collapsed",
+                          staticClass: "nav-link nav-link-collapse collapsed",
                           attrs: {
                             "data-toggle": "collapse",
                             href: "#collapseExamplePages",
@@ -43633,7 +43633,7 @@ var staticRenderFns = [
                         [
                           _c("i", { staticClass: "fa fa-fw fa-file" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Example Pages")
                           ])
                         ]
@@ -43647,7 +43647,7 @@ var staticRenderFns = [
                         },
                         [
                           _c("li", [
-                            _c("a", { attrs: { href: "Login.html" } }, [
+                            _c("a", { attrs: { href: "login.html" } }, [
                               _vm._v("Login Page")
                             ])
                           ]),
@@ -43679,7 +43679,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43690,7 +43690,7 @@ var staticRenderFns = [
                       _c(
                         "a",
                         {
-                          staticClass: "Navigation-link Navigation-link-collapse collapsed",
+                          staticClass: "nav-link nav-link-collapse collapsed",
                           attrs: {
                             "data-toggle": "collapse",
                             href: "#collapseMulti",
@@ -43700,7 +43700,7 @@ var staticRenderFns = [
                         [
                           _c("i", { staticClass: "fa fa-fw fa-sitemap" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Menu Levels")
                           ])
                         ]
@@ -43735,7 +43735,7 @@ var staticRenderFns = [
                             _c(
                               "a",
                               {
-                                staticClass: "Navigation-link-collapse collapsed",
+                                staticClass: "nav-link-collapse collapsed",
                                 attrs: {
                                   "data-toggle": "collapse",
                                   href: "#collapseMulti2"
@@ -43779,7 +43779,7 @@ var staticRenderFns = [
                   _c(
                     "li",
                     {
-                      staticClass: "Navigation-item",
+                      staticClass: "nav-item",
                       attrs: {
                         "data-toggle": "tooltip",
                         "data-placement": "right",
@@ -43789,11 +43789,11 @@ var staticRenderFns = [
                     [
                       _c(
                         "a",
-                        { staticClass: "Navigation-link", attrs: { href: "#" } },
+                        { staticClass: "nav-link", attrs: { href: "#" } },
                         [
                           _c("i", { staticClass: "fa fa-fw fa-link" }),
                           _vm._v(" "),
-                          _c("span", { staticClass: "Navigation-link-text" }, [
+                          _c("span", { staticClass: "nav-link-text" }, [
                             _vm._v("Link")
                           ])
                         ]
@@ -43803,12 +43803,12 @@ var staticRenderFns = [
                 ]
               ),
               _vm._v(" "),
-              _c("ul", { staticClass: "navbar-Navigation sidenav-toggler" }, [
-                _c("li", { staticClass: "Navigation-item" }, [
+              _c("ul", { staticClass: "navbar-nav sidenav-toggler" }, [
+                _c("li", { staticClass: "nav-item" }, [
                   _c(
                     "a",
                     {
-                      staticClass: "Navigation-link text-center",
+                      staticClass: "nav-link text-center",
                       attrs: { id: "sidenavToggler" }
                     },
                     [_c("i", { staticClass: "fa fa-fw fa-angle-left" })]
@@ -43816,12 +43816,12 @@ var staticRenderFns = [
                 ])
               ]),
               _vm._v(" "),
-              _c("ul", { staticClass: "navbar-Navigation ml-auto" }, [
-                _c("li", { staticClass: "Navigation-item dropdown" }, [
+              _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+                _c("li", { staticClass: "nav-item dropdown" }, [
                   _c(
                     "a",
                     {
-                      staticClass: "Navigation-link dropdown-toggle mr-lg-2",
+                      staticClass: "nav-link dropdown-toggle mr-lg-2",
                       attrs: {
                         id: "messagesDropdown",
                         href: "#",
@@ -43944,11 +43944,11 @@ var staticRenderFns = [
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", { staticClass: "Navigation-item dropdown" }, [
+                _c("li", { staticClass: "nav-item dropdown" }, [
                   _c(
                     "a",
                     {
-                      staticClass: "Navigation-link dropdown-toggle mr-lg-2",
+                      staticClass: "nav-link dropdown-toggle mr-lg-2",
                       attrs: {
                         id: "alertsDropdown",
                         href: "#",
@@ -44092,7 +44092,7 @@ var staticRenderFns = [
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", { staticClass: "Navigation-item" }, [
+                _c("li", { staticClass: "nav-item" }, [
                   _c(
                     "form",
                     { staticClass: "form-inline my-2 my-lg-0 mr-lg-2" },
@@ -44118,11 +44118,11 @@ var staticRenderFns = [
                   )
                 ]),
                 _vm._v(" "),
-                _c("li", { staticClass: "Navigation-item" }, [
+                _c("li", { staticClass: "nav-item" }, [
                   _c(
                     "a",
                     {
-                      staticClass: "Navigation-link",
+                      staticClass: "nav-link",
                       attrs: {
                         "data-toggle": "modal",
                         "data-target": "#exampleModal"
