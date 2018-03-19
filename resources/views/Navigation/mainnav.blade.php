@@ -5,7 +5,13 @@
   }
 </style>
 <div>
+<<<<<<< HEAD:resources/views/Navigation/mainnav.blade.php
     <!-- 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
+=======
+    
+
+    <!-- 안준휘 - 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
+>>>>>>> ec53df2779e9f11487b29f1a1aafde351e1ecbab:resources/views/Navigation/mainnav.blade.php
     
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav">
     <a class="navbar-brand" href="/">

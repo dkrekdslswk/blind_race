@@ -98,7 +98,7 @@ class XliffFileDumperTest extends TestCase
         $catalogue->setMetadata('foo', array('notes' => array(
             array('category' => 'state', 'content' => 'new'),
             array('category' => 'approved', 'content' => 'true'),
-            array('category' => 'section', 'content' => 'user login', 'priority' => '1'),
+            array('category' => 'section', 'content' => 'user Login', 'priority' => '1'),
         )));
         $catalogue->setMetadata('baz', array('notes' => array(
             array('id' => 'x', 'content' => 'x_content'),

@@ -214,7 +214,7 @@ class Ftp extends AbstractFtpAdapter
         if ( ! $isLoggedIn) {
             $this->disconnect();
             throw new RuntimeException(
-                'Could not login with connection: ' . $this->getHost() . '::' . $this->getPort(
+                'Could not Login with connection: ' . $this->getHost() . '::' . $this->getPort(
                 ) . ', username: ' . $this->getUsername()
             );
         }

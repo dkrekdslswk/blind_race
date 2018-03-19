@@ -11,17 +11,17 @@ trait AuthenticatesUsers
     use RedirectsUsers, ThrottlesLogins;
 
     /**
-     * Show the application's login form.
+     * Show the application's Login form.
      *
      * @return \Illuminate\Http\Response
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.Login');
     }
 
     /**
-     * Handle a login request to the application.
+     * Handle a Login request to the application.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -33,7 +33,7 @@ trait AuthenticatesUsers
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
+        // the Login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
@@ -45,8 +45,8 @@ trait AuthenticatesUsers
             return $this->sendLoginResponse($request);
         }
 
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
+        // If the Login attempt was unsuccessful we will increment the number of attempts
+        // to Login and redirect the user back to the Login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
@@ -54,7 +54,7 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Validate the user login request.
+     * Validate the user Login request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -120,7 +120,7 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Get the failed login response instance.
+     * Get the failed Login response instance.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -135,7 +135,7 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Get the login username to be used by the controller.
+     * Get the Login username to be used by the controller.
      *
      * @return string
      */

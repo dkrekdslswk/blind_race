@@ -213,7 +213,7 @@ class XliffFileLoaderTest extends TestCase
 
         $this->assertEquals('section', $metadata['notes'][2]['category']);
         $this->assertEquals('1', $metadata['notes'][2]['priority']);
-        $this->assertEquals('user login', $metadata['notes'][2]['content']);
+        $this->assertEquals('user Login', $metadata['notes'][2]['content']);
 
         // test for "baz" metadata
         $this->assertTrue($catalogue->defines('baz', 'domain1'));

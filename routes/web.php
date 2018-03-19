@@ -21,6 +21,7 @@ Route::get('/race', function(){
 
 Route::get('/recordbox', function(){
     return view('Recordbox/recordbox');
+<<<<<<< HEAD
 });
 
 Route::get('/feedback', function(){
@@ -36,3 +37,14 @@ Route::get('/nav', function(){
     return view('nav/mainnav');
 });
 
+=======
+});
+
+Route::get('/feedback', function(){
+    return view('Recordbox/Feedback');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup');
+});
+>>>>>>> ec53df2779e9f11487b29f1a1aafde351e1ecbab

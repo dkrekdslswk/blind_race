@@ -114,10 +114,10 @@ class RequestMatcherTest extends TestCase
     public function testPathWithLocaleIsNotSupported()
     {
         $matcher = new RequestMatcher();
-        $request = Request::create('/en/login');
+        $request = Request::create('/en/Login');
         $request->setLocale('en');
 
-        $matcher->matchPath('^/{_locale}/login$');
+        $matcher->matchPath('^/{_locale}/Login$');
         $this->assertFalse($matcher->matches($request));
     }
 
