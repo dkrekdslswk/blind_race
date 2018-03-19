@@ -18,36 +18,6 @@
   
     <!--<div id="app"></div>-->
     <!--<script src="<?php echo e(asset('js/app.js')); ?>"></script>  -->
-    
-          <div class="table-responsive">
-                <table class="" >
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Level</th>
-                <th>page</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tr class="content">
-                <td>스쿠스쿠레이스1</td>
-                <td>Level</td>
-                <td>p15 - p30</td>
-                <td><button class="btn btn-info">시작하기</button></td>
-            </tr>
-            <tr class="content">
-                <td>스쿠스쿠레이스2</td>
-                <td>Level</td>
-                <td>p30 - p45</td>
-                <td><button class="btn btn-info">시작하기</button></td>
-            </tr>
-            <tr class="content">
-                <td>스쿠스쿠레이스3</td>
-                <td>Level</td>
-                <td>p45 - p60</td>
-                <td><button class="btn btn-info">시작하기</button></td>
-            </tr>
-        </table>
-          </div>
+  
 	</body>
 </html>

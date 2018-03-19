@@ -8,32 +8,21 @@
      <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
      <link href="js/bootstrap.min.js" rel="stylesheet">
      <style>
-  
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  width:100%;
-}
+
 </style>
 </head>
 <body>
     <nav>
-        @include('nav.mainnav')
+        @include('Navigation.mainnav')
     </nav>
-      <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-      </ul>
-      <div>
-          @include('play_list.race_list')
+    <!--aside 자리-->
+      <aside style="display:inline-block; vertical-align:top;">
+          @include('play_list.mode_select')
+      </aside>
+      <div style="margin-left:200px; display:inline-block; width:50%;">
+         @include('play_list.race_list')
       </div>
+      
     <!-- <div id="app" class="barStyle">-->
     <!--</div>-->
       <!--<script src="{{asset('js/app.js')}}"></script>-->
