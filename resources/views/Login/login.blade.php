@@ -22,7 +22,7 @@
 </head>
 <body>
     <nav>
-        @include('nav.mainnav')
+        @include('Navigation.mainnav')
     </nav>
       <ul>
           <li></li>

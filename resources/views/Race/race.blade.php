@@ -15,7 +15,7 @@
 </head>
 <body>
     <nav>
-        @include('nav.mainnav')
+        @include('Navigation.mainnav')
     </nav>
     <!--aside 자리-->
       <aside style="display:inline-block; vertical-align:top;">

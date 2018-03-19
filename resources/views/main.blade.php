@@ -31,7 +31,7 @@
 </style>
 <body>
 <div class="barStyle" style="text-align: left">
-   <a href="/"><img src="img/logo.png" style="width: 300px; height: auto; margin: 10px 0"></a>
+    <a href="/"><img src="img/logo.png" style="width: 300px; height: auto; margin: 10px 0"></a>
 </div>
 <div style="height: 50px"></div> <!--여백-->
 <div class="backgroundStyle">
@@ -42,7 +42,7 @@
 <div style="height: 50px"></div> <!--여백-->
 <div class="backgroundStyle2">
     <div style="width: 20%; height: 100%; float: left">
-        <a href="/chat"><img src="img/networking.png"></a>
+        <a href="/mygroup"><img src="img/networking.png"></a>
     </div>
     <div style="width: 20%; height: 100%; float: left">
         <a href="/race"><img src="img/race.png"></a>
@@ -51,10 +51,10 @@
         <a href="/rade"><img src="img/sword.png"></a>
     </div>
     <div style="width: 20%; height: 100%; float: left">
-        <img src="img/tree.png">
+        <a href="/"> <img src="img/tree.png"></a>
     </div>
     <div style="width: 19%; height: 100%; float: left">
-        <img src="img/bars-chart.png">
+        <a href="/recordbox"> <img src="img/bars-chart.png"></a>
     </div>
 </div>
 <div style="height: 20px"></div> <!--여백-->

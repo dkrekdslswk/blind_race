@@ -87,14 +87,14 @@ class HttpKernelTest extends TestCase
     {
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(KernelEvents::EXCEPTION, function ($event) {
-            $event->setResponse(new RedirectResponse('/login', 301));
+            $event->setResponse(new RedirectResponse('/Login', 301));
         });
 
         $kernel = $this->getHttpKernel($dispatcher, function () { throw new AccessDeniedHttpException(); });
         $response = $kernel->handle(new Request());
 
         $this->assertEquals('301', $response->getStatusCode());
-        $this->assertEquals('/login', $response->headers->get('Location'));
+        $this->assertEquals('/Login', $response->headers->get('Location'));
     }
 
     public function testHandleHttpException()
