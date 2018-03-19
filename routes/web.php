@@ -14,14 +14,19 @@
 Route::get('/', function () {
     return view('main');
 });
-Route::get('/chat', function () {
-    return view('chat');
+
+Route::get('/race', function(){
+    return view('Race/race');
 });
 
-Route::get('/login', function(){
-    return view('login/login');
+Route::get('/recordbox', function(){
+    return view('Recordbox/recordbox');
 });
 
-Route::get('/AJH', function(){
-    return view('AJH');
+Route::get('/feedback', function(){
+    return view('Recordbox/Feedback');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup');
 });
