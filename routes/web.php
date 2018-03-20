@@ -27,6 +27,9 @@ Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
 
+Route::get('/Quiz_tree', function(){
+    return view('Quiz_tree/Quiz_list');
+});
 
 Route::get('/mygroup', function(){
     return view('Mygroup/mygroup');
