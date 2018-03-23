@@ -1,12 +1,10 @@
 <?php
 
-// create_items_table
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemsTable extends Migration
+class CreateRaceSetExamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,11 +13,11 @@ class CreateItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->integer('price');
-            $table->timestamps();
+        Schema::create('race_set_exam', function (Blueprint $table) {
+	    $table->unsignedInteger('race_num');
+	    $table->foreign('race_num')->references('race_num')->on('races');
+	    $table->unsignedInteger('quiz_num');
+	    $table->foreign('quiz_num')->references('quiz_num')->on('quiz_bank');
         });
     }
 
@@ -30,6 +28,5 @@ class CreateItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
     }
 }

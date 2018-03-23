@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRaceResultsTable extends Migration
+class CreateRaceTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateRaceResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('race_results', function (Blueprint $table) {
+        Schema::create('race_teams', function (Blueprint $table) {
+            $table->unsignedInteger('team_num');
 	    $table->unsignedInteger('set_exam_num');
 	    $table->foreign('set_exam_num')->references('set_exam_num')->on('race_set_exam');
-	    $table->unsignedInteger('user_num');
-	    $table->foreign('user_num')->references('user_num')->on('users');
-	    $table->primary(['set_exam_num', 'user_num']);
-	    $table->unsignedInteger('team_num')->nullable();
-	    $table->foreign('team_num')->references('team_num')->on('race_teams');
-            $table->timestamps();
+	    $table->string('team_name', 40);
+            $table->unsignedSmallInteger('team_rank');
         });
     }
 

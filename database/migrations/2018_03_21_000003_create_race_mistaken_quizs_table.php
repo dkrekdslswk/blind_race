@@ -13,18 +13,6 @@ class CreateRaceSetExamTable extends Migration
      */
     public function up()
     {
-        Schema::create('race_set_exam_state_keyword', function (Blueprint $table) {
-            $table->char('keyword', 1);
-	    $table->string('name', 32);
-	    $table->primary('keyword');
-        });
-
-        DB::table('race_set_exam_state_keyword')->insert([
-	    ['keyword' => 'n', 'name' => 'nomal'],
-	    ['keyword' => 'g', 'name' => 'golden bell'],
-	    ['keyword' => 'r', 'name' => 'raid']
-        ]);
-
         Schema::create('race_set_exam', function (Blueprint $table) {
             $table->increments('set_exam_num');
 	    $table->unsignedInteger('group_num');
