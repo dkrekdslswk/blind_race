@@ -26,18 +26,6 @@ class CreateQuizBankTable extends Migration
 	    ['keyword' => 'w', 'name' => 'word']
         ]);
 
-        Schema::create('quiz_set_state_keyword', function (Blueprint $table) {
-            $table->char('keyword', 1);
-	    $table->string('name', 32);
-	    $table->primary('keyword');
-        });
-
-        DB::table('quiz_set_state_keyword')->insert([
-	    ['keyword' => 'b', 'name' => 'base quiz'],
-	    ['keyword' => 'n', 'name' => 'no set exam'],
-	    ['keyword' => 'y', 'name' => 'yes set exam']
-        ]);
-
         Schema::create('quiz_bank', function (Blueprint $table) {
             $table->increments('quiz_num');
 	    $table->unsignedInteger('book_num')->nullable();
@@ -46,13 +34,8 @@ class CreateQuizBankTable extends Migration
 	    $table->json('quiz_question');
             $table->char('quiz_type', 1);
 	    $table->foreign('quiz_type')->references('keyword')->on('quiz_type_keyword');
-	    $table->unsignedInteger('quiz_count_set_exam')->default(0);
-	    $table->unsignedInteger('quiz_count_mistaken')->default(0);
             $table->char('quiz_level', 1);
 	    $table->unsignedInteger('user_t_num')->nullable();
-            $table->char('quiz_set_state', 1);
-	    $table->foreign('quiz_set_state')->references('keyword')->on('quiz_set_state_keyword');
-            $table->timestamps();
         });
     }
 

@@ -19,7 +19,6 @@ class CreateRaceTable extends Migration
 	    $table->foreign('user_t_num')->references('user_num')->on('users');
             $table->string('race_name', 100);
             $table->string('race_folder_name', 100);
-	    $table->json('race_quiz_list');
             $table->timestamps();
         });
 
