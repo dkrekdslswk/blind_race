@@ -21,6 +21,15 @@ class CreateRaceTeamsTable extends Migration
 	    $table->string('team_name', 40);
             $table->unsignedSmallInteger('team_rank');
         });
+
+        Schema::create('race_team_users', function (Blueprint $table) {
+            $table->unsignedInteger('team_num');
+	    $table->unsignedInteger('set_exam_num');
+	    $table->unsignedInteger('user_num');
+	    $table->foreign(['set_exam_num', 'team_num'])->references(['set_exam_num', 'team_num'])->on('race_teams');
+	    $table->foreign(['set_exam_num', 'user_num'])->references(['set_exam_num', 'user_num'])->on('race_results');
+	    $table->primary(['set_exam_num', 'team_num', 'user_num']);
+        });
     }
 
     /**

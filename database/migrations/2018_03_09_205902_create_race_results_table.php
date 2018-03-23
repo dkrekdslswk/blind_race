@@ -19,8 +19,6 @@ class CreateRaceResultsTable extends Migration
 	    $table->unsignedInteger('user_num');
 	    $table->foreign('user_num')->references('user_num')->on('users');
 	    $table->primary(['set_exam_num', 'user_num']);
-	    $table->unsignedInteger('team_num')->nullable();
-	    $table->foreign('team_num')->references('team_num')->on('race_teams');
             $table->timestamps();
         });
     }
