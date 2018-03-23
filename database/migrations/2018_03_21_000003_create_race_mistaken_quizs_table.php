@@ -21,7 +21,7 @@ class CreateRaceMistakenQuizsTable extends Migration
 	    $table->foreign(['set_exam_num', 'quiz_num'])->references(['set_exam_num', 'quiz_num'])->on('race_set_exam');
             $table->unsignedTinyInteger('retake_status')->default(0);
             $table->string('result', 100);
-            $table->text('wrong_answer_note')->default('-');
+            $table->text('wrong_answer_note')->default("-");
 	    $table->primary(['set_exam_num', 'group_num', 'quiz_num', 'retake_status']);
         });
     }
