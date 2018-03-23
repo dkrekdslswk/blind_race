@@ -29,7 +29,7 @@ class CreateRaceSetExamTable extends Migration
             $table->increments('set_exam_num');
 	    $table->unsignedInteger('group_num');
             $table->char('set_exam_state', 1);
-	    $table->foreign('set_exam_state')->references('keyword')->on('rece_set_exam_state_keyword');
+	    $table->foreign('set_exam_state')->references('keyword')->on('race_set_exam_state_keyword');
             $table->timestamps();
         });
     }
