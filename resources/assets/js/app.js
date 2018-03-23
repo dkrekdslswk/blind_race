@@ -6,7 +6,9 @@ Vue.use(VueSocketio, socketio(':8890'));
 
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
-    
+
+require('./bootstrap');
+
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
@@ -20,12 +22,14 @@ import Login from './components/Login.vue';
 import Footer from './components/Footer.vue';
 import Modal from './components/Modal.vue';
 import AJH from './components/AJH.vue';
+import chat from './components/chat.vue';
 const routes = [
-  {  path: '/chat',  component: Example },
+  {  path: '/chat',  component: chat },
   {  path: '/login', component: Login   },
   {  path: '/',      component :Footer },
   {  path: '/',      component :Modal  },
-  {  path: '/AJH',      component :AJH } 
+  {  path: '/AJH',      component :AJH }
 ];
+
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');

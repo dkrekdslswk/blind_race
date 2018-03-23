@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('main');
 });
+Route::get('/login', function () {
+    return view('Login/login');
+});
 
 Route::get('/race', function(){
     return view('Race/race');
@@ -45,4 +48,7 @@ Route::get('/feedback', function(){
 
 Route::get('/mygroup', function(){
     return view('Mygroup/mygroup');
+});
+Route::get('/chat', function(){
+    return view('chat');
 });
