@@ -13,6 +13,10 @@ class DeleteAll extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('race_mistaken_quizs');
+        Schema::dropIfExists('race_set_exam_quizs');
+        Schema::dropIfExists('race_quizs');
+
         Schema::dropIfExists('race_results');
         //
         Schema::dropIfExists('race_teams');

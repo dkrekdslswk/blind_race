@@ -13,7 +13,7 @@ class CreateRaceSetExamTable extends Migration
      */
     public function up()
     {
-        Schema::create('race_set_exam', function (Blueprint $table) {
+        Schema::create('race_mistaken_quizs', function (Blueprint $table) {
             $table->increments('set_exam_num');
 	    $table->unsignedInteger('group_num');
             $table->char('set_exam_state', 1);
