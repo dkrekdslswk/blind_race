@@ -14,7 +14,6 @@
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
-    <!-- 주우석 -->
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
