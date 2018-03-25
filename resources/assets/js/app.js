@@ -3,6 +3,14 @@ import VueSocketio from 'vue-socket.io';
 import socketio from 'socket.io-client';
 Vue.use(VueSocketio, socketio(':8890'));
 
+import Vuex from 'vuex'
+
+Vue.use(Vuex);
+
+export const store = new Vuex.Store({
+    //
+});
+
 
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
@@ -23,12 +31,14 @@ import Footer from './components/Footer.vue';
 import Modal from './components/Modal.vue';
 import AJH from './components/AJH.vue';
 import chat from './components/chat.vue';
+import playing from './components/playing';
 const routes = [
-  {  path: '/chat',  component: chat },
+  {  path: '/ctest',  component: chat },
   {  path: '/login', component: Login   },
   {  path: '/',      component :Footer },
   {  path: '/',      component :Modal  },
-  {  path: '/AJH',      component :AJH }
+  {  path: '/AJH',      component :AJH },
+  {  path: '/playing',      component :playing }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

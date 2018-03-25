@@ -52,3 +52,10 @@ Route::get('/mygroup', function(){
 Route::get('/chat', function(){
     return view('chat');
 });
+
+Route::get('/playing', function(){
+    return view('playing');
+});
+Route::get('/ctest', function(){
+    return view('ctest');
+});
