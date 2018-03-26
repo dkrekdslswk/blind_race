@@ -14,7 +14,7 @@ class CreateRaceSetExamQuizsTable extends Migration
     public function up()
     {
         Schema::create('race_set_exam_quizs', function (Blueprint $table) {
-	    $table->increments('quiz_sequence');
+	    $table->increments('sequence');
 	    $table->unsignedInteger('set_exam_num');
 	    $table->foreign('set_exam_num')->references('set_exam_num')->on('race_set_exam');
 	    $table->unsignedInteger('quiz_num');
