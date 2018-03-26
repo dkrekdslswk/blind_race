@@ -18,9 +18,11 @@ class DeleteAll extends Migration
         Schema::dropIfExists('race_quizs');
 
         Schema::dropIfExists('race_team_users');
-        Schema::dropIfExists('race_teams');
+        //Schema::dropIfExists('race_teams');
 
         Schema::dropIfExists('race_results');
+
+        Schema::dropIfExists('race_teams');
 
         Schema::dropIfExists('rece_set_exam');
         Schema::dropIfExists('rece_set_exam_state_keyword');
