@@ -27,11 +27,37 @@ io.on('connection', function (socket){
 
        answer_c++;
 
-       socket.emit('answer-sum',answer_c);
+       io.sockets.emit('answer-sum',answer_c);
        console.log('answer counting: ', answer_c);
     });
 });
 
+
+let users = [
+    {  id: 1, name: 'alice' },
+    {  id: 2, name: 'bek' },
+    {  id: 3, name: 'chris'  }
+    ]
+app.get('/users', (req, res) => {
+    console.log('who get in here/users');
+res.json(users)
+});
+
+app.post('/post', (req, res) => {
+    console.log('who get in here post /users');
+var inputData;
+
+req.on('data', (data) => {
+    inputData = JSON.parse(data);
+});
+
+req.on('end', () => {
+    console.log("user_id : "+inputData.user_id + " , name : "+inputData.name);
+});
+
+res.write("OK!");
+res.end();
+});
 
 
 // io.on('connection', function(socket){ //3
