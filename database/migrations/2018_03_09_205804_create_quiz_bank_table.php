@@ -31,7 +31,11 @@ class CreateQuizBankTable extends Migration
 	    $table->unsignedInteger('book_num')->nullable();
 	    $table->foreign('book_num')->references('book_num')->on('books');
 	    $table->unsignedSmallInteger('book_page')->nullable();
-	    $table->json('quiz_question');
+	    $table->string('quiz_question',1000);
+	    $table->string('quiz_right_answer',100);
+	    $table->string('quiz_example1',100);
+	    $table->string('quiz_example2',100);
+	    $table->string('quiz_example3',100);
             $table->char('quiz_type', 1);
 	    $table->foreign('quiz_type')->references('keyword')->on('quiz_type_keyword');
             $table->char('quiz_level', 1);
