@@ -17,7 +17,6 @@ class CreateRaceTeamsTable extends Migration
             $table->increments('team_num');
 	    $table->unsignedInteger('set_exam_num');
 	    $table->foreign('set_exam_num')->references('set_exam_num')->on('race_set_exam');
-	    $table->primary('team_num');
 	    $table->string('team_name', 40);
             $table->unsignedSmallInteger('team_rank');
         });
