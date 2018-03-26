@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRaceMistakenQuizsTable extends Migration
+class CreateMistakenQuizsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRaceMistakenQuizsTable extends Migration
      */
     public function up()
     {
-        Schema::create('race_mistaken_quizs', function (Blueprint $table) {
+        Schema::create('mistaken_quizs', function (Blueprint $table) {
             $table->unsignedInteger('set_exam_num');
 	    $table->unsignedInteger('user_num');
 	    $table->unsignedInteger('quiz_sequence');
