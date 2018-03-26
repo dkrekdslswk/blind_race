@@ -23,13 +23,6 @@
          @include('play_list.race_list')
       </div>
       
-    <!-- <div id="app" class="barStyle">-->
-    <!--</div>-->
-      <!--<script src="{{asset('js/app.js')}}"></script>-->
-    <script>
-           window.Laravel = <?php echo json_encode([
-               'csrfToken' => csrf_token(),
-                    ]); ?>
-          </script>
+
 </body>
 </html>
