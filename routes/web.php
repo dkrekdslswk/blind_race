@@ -62,3 +62,11 @@ Route::get('/playing', function(){
 Route::get('/ctest', function(){
     return view('ctest');
 });
+
+Route::get('/croom', function(){
+    return view('create_room');
+});
+
+Route::get('/raid', function(){
+    return view('Raid/raid');
+});
