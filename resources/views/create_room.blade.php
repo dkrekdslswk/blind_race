@@ -64,10 +64,16 @@
 <script>
     window.onload = function () {
         var socket = io(':8890'); //1
-
+        var roomcreated = false;    
+    
         document.getElementById('btn').onclick = function (){
             var room_num = document.getElementById('room').value;
            socket.emit('join',room_num);
+           roomcreated = true;
+           
+           
+           
+           if(roomcreated)
             location.replace("/playing");
         };
 

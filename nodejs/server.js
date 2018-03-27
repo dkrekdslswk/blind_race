@@ -33,9 +33,13 @@ io.on('connection', function (socket){
     socket.on('join', function(room_num){
         room_No = room_num;
         socket.join(room_num);
+        console.log('join!',room_No);
+        
+        io.sockets.emit('room_num',room_No);
     });
     socket.on('message',function(data){
-       io.sockets.in(room_No).emit('message',name);
+       io.sockets.in(data).emit('message',name);
+       console.log('message',data);
     });
 });
 
