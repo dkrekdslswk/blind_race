@@ -64,17 +64,7 @@
 <script>
     window.onload = function () {
         var socket = io(':8890'); //1
-        
-        var room_num = '';
-        socket.on('room_num', function(data){
-            room_num += data;
-        });
-         socket.emit('join',room_num);   
-        
-        
-        socket.on('message', function(data){
-           $('<p>' + data + '</p>').appendTo('body');
-        });
+
         socket.on('answer-sum', function(data){
            document.getElementById('answer_c').innerText= data;
         });
@@ -83,7 +73,6 @@
             var text = $(':input[name=answer]:radio:checked').val();
             socket.emit('answer' , text);
         };
-
     };
 
 
