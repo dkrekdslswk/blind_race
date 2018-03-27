@@ -88,7 +88,9 @@
         </div>
     </div>
 
-    <button class="btn btn-basic" style="position: relative;margin-left: 70px;margin-top: 20%;background-color: #4C6A92">+문제 추가하기</button>
+    <button name="make_quiz" class="btn btn-basic" style="position: relative;margin-left: 40px;margin-top: 20%;background-color: #4C6A92">
+        <a href="Quiz_tree/Quiz_making" style="font-size: 15px; margin: 0px;">+문제 추가하기</a>
+    </button>
 </div>
 
 
@@ -108,6 +110,7 @@
             }
         });
     }
+
 </script>
 
 </body>

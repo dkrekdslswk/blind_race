@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Dashboard with Off-canvas Sidebar</title>
+    <title>Quiz_tree list</title>
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
@@ -30,7 +30,7 @@
 </head>
 <body>
 <nav>
-    @include('Quiz_tree.Nav_side_bar.Quiz_nav_bar')
+    @include('Navigation.mainnav')
 </nav>
 
 <aside style="display:inline-block; vertical-align:top;">
