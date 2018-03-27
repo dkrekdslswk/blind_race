@@ -16,9 +16,7 @@
                   <i class="fa fa-search">검색</i>
                 </button>
               </span>
-              
             <button class="btn btn-info" style="margin-left:100px;">목록</button>
-            <button class="btn btn-info" style="margin-left:5px;">그룹선택</button>
             </div>
           </form>
           </div>
