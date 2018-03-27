@@ -59,3 +59,7 @@ Route::get('/playing', function(){
 Route::get('/ctest', function(){
     return view('ctest');
 });
+
+Route::get('/croom', function(){
+    return view('create_room');
+});

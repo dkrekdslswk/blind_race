@@ -7,8 +7,6 @@ server.listen(8890);
 
 //소켓io 연결 비연결 !
 io.on('connection',function(socket){
-    console.log('a user connected');
- 
     socket.on('disconnect',function(){
         console.log('a user disconnected');
     });
@@ -21,7 +19,8 @@ var answer_c = 0;
 
 // 예제1
 io.on('connection', function (socket){
-
+    var name = "user" + count++;
+    console.log('connected',name);
     socket.on('answer', function(data){
        console.log('Client Send Data:', data);
 
@@ -30,33 +29,14 @@ io.on('connection', function (socket){
        io.sockets.emit('answer-sum',answer_c);
        console.log('answer counting: ', answer_c);
     });
-});
-
-
-let users = [
-    {  id: 1, name: 'alice' },
-    {  id: 2, name: 'bek' },
-    {  id: 3, name: 'chris'  }
-    ]
-app.get('/users', (req, res) => {
-    console.log('who get in here/users');
-res.json(users)
-});
-
-app.post('/post', (req, res) => {
-    console.log('who get in here post /users');
-var inputData;
-
-req.on('data', (data) => {
-    inputData = JSON.parse(data);
-});
-
-req.on('end', () => {
-    console.log("user_id : "+inputData.user_id + " , name : "+inputData.name);
-});
-
-res.write("OK!");
-res.end();
+    var room_No = null;
+    socket.on('join', function(room_num){
+        room_No = room_num;
+        socket.join(room_num);
+    });
+    socket.on('message',function(data){
+       io.sockets.in(room_No).emit('message',name);
+    });
 });
 
 

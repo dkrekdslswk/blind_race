@@ -65,55 +65,19 @@
     window.onload = function () {
         var socket = io(':8890'); //1
 
-        socket.on('message', function(data){
-           $('<p>' + data + '</p>').appendTo('body');
-        });
-        socket.on('answer-sum', function(data){
-           document.getElementById('answer_c').innerText= data;
-        });
-
-        document.getElementById('sub').onclick = function (){
-            var text = $(':input[name=answer]:radio:checked').val();
-            socket.emit('answer' , text);
+        document.getElementById('btn').onclick = function (){
+            var room_num = document.getElementById('room').value;
+           socket.emit('join',room_num);
+            location.replace("/playing");
         };
 
     };
-
-
 </script>
-<form id="answer" >
-
-    <p>Answers :</p>
-    <p id="answer_c"></p>
-
-    <div>
-        <input class="btn-info" type="radio" id="contactChoice1" name="answer" value="1">
-        <label for="contactChoice1">1번답안</label>
-
-        <input class="btn-info" type="radio" id="contactChoice2" name="answer" value="2">
-        <label for="contactChoice2">2번답안</label>
-
-        <input class="btn-info" type="radio" id="contactChoice3" name="answer" value="3">
-        <label for="contactChoice3">3번답안</label>
-
-        <input class="btn-info" type="radio" id="contactChoice4" name="answer" value="4">
-        <label for="contactChoice4">4번답안</label>
-    </div>
-    <br>
-    <div>
-        <input id="sub" type="button" value="answer">
-    </div>
-</form>
+<div>
+    <form action="">
+        <input id="room" type="text">
+        <input id="btn" type="button" value="확인">
+    </form>
 </div>
-// function checkAnimal(){
-//     var answer = $(':input[name=answer]:radio:checked').val();
-//
-//     if( answer ){
-//
-//     }else{
-//         alert("답을 선택하세요");
-//
-//     }
-// }
 </body>
 </html>
