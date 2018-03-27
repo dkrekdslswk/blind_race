@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="/mygroup">
             <span class="nav-link-text"><img class="nav-icon " src="img/networking.png"></img>  나의그룹</span>
           </a>
         </li>
@@ -28,7 +28,7 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="#">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text"><img class="nav-icon " src="img/sword.png"></img>  레이드</span>
           </a>
