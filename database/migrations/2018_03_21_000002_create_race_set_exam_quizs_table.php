@@ -20,6 +20,7 @@ class CreateRaceSetExamQuizsTable extends Migration
 	    $table->unsignedInteger('quiz_num');
 	    $table->foreign('quiz_num')->references('quiz_num')->on('quiz_bank');
 	    $table->unique(['set_exam_num', 'quiz_num']);
+	    $table->unsignedSmallInteger('quiz_sequence');
         });
     }
 
