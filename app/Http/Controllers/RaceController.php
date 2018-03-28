@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // RaceController.php
 
@@ -29,6 +29,11 @@ class RaceController extends Controller
     {
         $json     = $request->input('post');
         $postData = json_decode($json);
+
+	// 더미 데이터
+        $session['user_num']   = 0;
+        $session['user_id']    = 'tamp1id';
+        // 더미 데이터
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
@@ -55,7 +60,8 @@ class RaceController extends Controller
 	$returnVelue = array(
 	"race"=>array("raceName"=>$raceName,"examCount"=>$postData.race['exanCount']),
 	"group"=>array("groupName"=>$groupData["groupName"],
-			"groupStudentCount"=>$groupData['studentCount']));
+			"groupStudentCount"=>$groupData['studentCount']),
+	"sessionId"=>session_id());
 
 	return response()->json($returnVelue);
     }
