@@ -66,7 +66,7 @@ Route::get('/ctest', function(){
 // controllers
 // choi byeongchan
 
-//Route::get('/raceControll', 'HomeController@index')->name('home');
-Route::get('/cbcSocketTest', function(){
-    return view('cbcSocketTest');
-});
+Route::get('/raceControll', 'raceController@create');
+//Route::get('/cbcSocketTest', function(){
+//    return view('cbcSocketTest');
+//});
