@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -52,8 +52,8 @@ class BlindDymmyTableSeeder extends Seeder
 
         $raceId = DB::table('races')->insertGetId([
             'user_t_num'=>$userFirstId,
-            'race_name'=>"Å×½ºÆ®¿ë ·¹ÀÌ½º1",
-            'race_folder_name'=>'-';
+            'race_name'=>"í…ŒìŠ¤íŠ¸ìš© ë ˆì´ìŠ¤1",
+            'race_folder_name'=>'-'
         ], 'race_num');
 
         for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++){
@@ -64,7 +64,7 @@ class BlindDymmyTableSeeder extends Seeder
                 'quiz_example2'=>''.(($quiz_count+2)%4+1).'',
                 'quiz_example3'=>''.(($quiz_count+3)%4+1).'',
                 'quiz_type'=>'o',
-                'quiz_level'=>'5';
+                'quiz_level'=>'5'
             ], 'quiz_num');
 
             DB::table('race_quizs')->insert([
