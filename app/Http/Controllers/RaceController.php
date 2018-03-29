@@ -2,7 +2,7 @@
 
 // RaceController.php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controller;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
