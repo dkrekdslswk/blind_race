@@ -18,6 +18,8 @@ io.on('connection',function(socket){
 //changes
 var count=1;
 var answer_c = 0;
+var quiz = 0;
+var countdown = 20000;
 
 // 예제1
 io.on('connection', function (socket){
@@ -50,9 +52,27 @@ io.on('connection', function (socket){
     
     socket.on('nextquiz',function(data){
         answer_c = 0 ;
-        socket.emit('nextok',data);
+        quiz++
+        socket.emit('nextok',quiz);
+        countdown = 20000;
     });
-    
+
+    socket.on('count',function(data){
+
+        setInterval(function() {
+            countdown -= 1000;
+            io.sockets.emit('timer', countdown);
+            console.log('timer',quiz);
+            if(countdown == 0)
+            {
+                quiz++;
+                socket.emit('nextok',quiz);
+                countdown = 20000;
+            }
+        }, 1000);
+
+    });
+
 });
 // 병찬이형 연습할 자리 
 

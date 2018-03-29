@@ -102,7 +102,12 @@
     		{"quiz_num":"3", "name":"気持ちいいいいいい","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"}
 		];    
            
-            
+            //서버 카운트다운 인
+		socket.emit('count','1');
+        socket.on('timer', function (data) {
+            var counting = data/1000;
+            document.getElementById('counter').innerText= counting;
+        });
             //상탄 타임 게이지 바 
             var downloadTimer = setInterval(function () {
                 document
@@ -119,10 +124,11 @@
              var A3 = document.getElementById("answer3");
              var A4 = document.getElementById("answer4");
                 
-                setTimeout(function(){  
-                    quiz_number++;
-                    socket.emit('nextquiz',quiz_number); 
-                },10000);
+                // setTimeout(function(){
+                //     quiz_number++;
+                //     socket.emit('nextquiz',quiz_number);
+                // },10000);
+
                 // setTimeout(function(){ x.innerText="2번문제";}, 30000);
             
         
@@ -131,16 +137,15 @@
                 
                 if(data == 6)
                     {
-                        quiz_number++;
-                        setTimeout(function(){ 
-                            socket.emit('nextquiz',quiz_number);
+                        setTimeout(function(){
+                            socket.emit('nextquiz','뭐넣징ㅎ');
                              document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
                         }, 1000);
                     }
             });
             
             socket.on('nextok',function(data){
-                
+
                 x.innerText  = quiz_JSON[data].name ;
                 
                 A1.innerText = quiz_JSON[data].answer1;
@@ -156,8 +161,8 @@
 
 </script>
 
-
-		<div id="answer_c">0/6명(db) 풀이완료</div>
+<div id="counter">zzz</div>
+<div id="answer_c">0/6명(db) 풀이완료</div>
 
             <div class="sidenav">
 			<p>asd</p>
