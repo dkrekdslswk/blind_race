@@ -14699,3 +14699,77 @@ Did you mean this?
 #29 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #30 {main}
 "} 
+[2018-03-29 05:42:25] local.ERROR: Parse error: syntax error, unexpected ';', expecting ']' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Parse error: syntax error, unexpected ';', expecting ']' at /home/flandre/blind_race/database/seeds/BlindDymmyTableSeeder.php:56)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/composer/ClassLoader.php(322): Composer\\Autoload\\includeFile('/home/flandre/b...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('BlindDymmyTable...')
+#2 [internal function]: spl_autoload_call('BlindDymmyTable...')
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(767): ReflectionClass->__construct('BlindDymmyTable...')
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(646): Illuminate\\Container\\Container->build('BlindDymmyTable...')
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(601): Illuminate\\Container\\Container->resolve('BlindDymmyTable...', Array)
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(740): Illuminate\\Container\\Container->make('BlindDymmyTable...', Array)
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(74): Illuminate\\Foundation\\Application->make('BlindDymmyTable...')
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(63): Illuminate\\Database\\Console\\Seeds\\SeedCommand->getSeeder()
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php(122): Illuminate\\Database\\Console\\Seeds\\SeedCommand->Illuminate\\Database\\Console\\Seeds\\{closure}()
+#10 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Database/Console/Seeds/SeedCommand.php(64): Illuminate\\Database\\Eloquent\\Model::unguarded(Object(Closure))
+#11 [internal function]: Illuminate\\Database\\Console\\Seeds\\SeedCommand->handle()
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#14 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#17 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#20 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Seeds\\SeedCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+"} 
+[2018-03-29 06:26:24] local.ERROR: Command "stare" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"stare\" is not defined. at /home/flandre/blind_race/vendor/symfony/console/Application.php:611)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/symfony/console/Application.php(224): Symfony\\Component\\Console\\Application->find('stare')
+#1 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2018-03-29 11:54:18] local.ERROR: Class App\Http\Controllers\raceController does not exist {"exception":"[object] (ReflectionException(code: -1): Class App\\Http\\Controllers\aceController does not exist at /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php:767)
+[stacktrace]
+#0 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(767): ReflectionClass->__construct('App\\\\Http\\\\Contro...')
+#1 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(646): Illuminate\\Container\\Container->build('App\\\\Http\\\\Contro...')
+#2 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(601): Illuminate\\Container\\Container->resolve('App\\\\Http\\\\Contro...', Array)
+#3 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(740): Illuminate\\Container\\Container->make('App\\\\Http\\\\Contro...', Array)
+#4 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Routing/Route.php(226): Illuminate\\Foundation\\Application->make('App\\\\Http\\\\Contro...')
+#5 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Routing/Route.php(796): Illuminate\\Routing\\Route->getController()
+#6 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Routing/Route.php(757): Illuminate\\Routing\\Route->controllerMiddleware()
+#7 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(151): Illuminate\\Routing\\Route->gatherMiddleware()
+#8 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(114): Illuminate\\Foundation\\Console\\RouteListCommand->getMiddleware(Object(Illuminate\\Routing\\Route))
+#9 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(86): Illuminate\\Foundation\\Console\\RouteListCommand->getRouteInformation(Object(Illuminate\\Routing\\Route))
+#10 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Routing\\Route), 13)
+#11 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Support/Collection.php(910): array_map(Object(Closure), Array, Array)
+#12 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(87): Illuminate\\Support\\Collection->map(Object(Closure))
+#13 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php(75): Illuminate\\Foundation\\Console\\RouteListCommand->getRoutes()
+#14 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->handle()
+#15 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#16 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#17 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#18 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Container/Container.php(564): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#19 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#20 /home/flandre/blind_race/vendor/symfony/console/Command/Command.php(252): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#22 /home/flandre/blind_race/vendor/symfony/console/Application.php(865): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /home/flandre/blind_race/vendor/symfony/console/Application.php(241): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\RouteListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /home/flandre/blind_race/vendor/symfony/console/Application.php(143): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Console/Application.php(88): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 /home/flandre/blind_race/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(121): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 /home/flandre/blind_race/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 {main}
+"} 
+[2018-03-29 11:55:50] local.ERROR: Namespace declaration statement has to be the very first statement or after any declare call in the script {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 64): Namespace declaration statement has to be the very first statement or after any declare call in the script at /home/flandre/blind_race/app/Http/Controllers/RaceController.php:5)
+[stacktrace]
+#0 {main}
+"} 

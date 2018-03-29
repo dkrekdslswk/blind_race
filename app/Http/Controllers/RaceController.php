@@ -1,7 +1,4 @@
-ï»¿<?php
-
-// RaceController.php
-
+<?php
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
@@ -27,13 +24,14 @@ class RaceController extends Controller
      */
     public function create()
     {
-        $json     = $request->input('post');
+        //$json     = $request->input('post');
+        $json     = '{"group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]}';
         $postData = json_decode($json);
 
-	// ë”ë¯¸ ë°ì´í„°
+	// ´õ¹Ì µ¥ÀÌÅÍ
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
-        // ë”ë¯¸ ë°ì´í„°
+        // ´õ¹Ì µ¥ÀÌÅÍ
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
@@ -51,6 +49,7 @@ class RaceController extends Controller
 		'exam_count'=>$postData.race['examCount'], 
 		'set_exam_data'=>'{"base":"'.$postData.race['raceId'].'","bookPage":null}'
 		], 'set_exam_num');
+        $session['set_exam_num'] = $raceSetExamId;
 
 	$raceName = DB::table('races')
 		->select('race_name')
@@ -63,62 +62,12 @@ class RaceController extends Controller
 			"groupStudentCount"=>$groupData['studentCount']),
 	"sessionId"=>session_id());
 
-	return response()->json($returnVelue);
+	//return response()->json($returnVelue);
+	return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-	//
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-	/*
-        $item = Item::find($id);
-        return response()->json($item);
-	*/
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        /*
-	$item = Item::find($id);
-        $item->name = $request->get('name');
-        $item->price = $request->get('price');
-        $item->save();
-
-        return response()->json('Successfully Updated');
-	*/
+    public function comein($pin){
+        
     }
 
     /**

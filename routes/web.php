@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('main');
-});
+});*/
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
@@ -62,13 +62,13 @@ Route::get('/playing', function(){
 Route::get('/ctest', function(){
     return view('ctest');
 });
+
 Route::get('/raid', function(){
     return view('Raid/raid');
 });
-// controllers
-// choi byeongchan
 
-Route::get('/raceControll', 'raceController@create');
-//Route::get('/cbcSocketTest', function(){
-//    return view('cbcSocketTest');
-//});
+
+// ↓↓↓↓↓↓↓ transfer test _yoolme
+Route::get('/', function(){
+    return view('yoolme_test');
+});
