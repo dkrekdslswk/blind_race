@@ -15,7 +15,7 @@ class RaceController extends Controller
     public function create()
     {
         //$json     = $request->input('post');
-        $json     = '["group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]]';
+        $json     = json_encode(array('group' => array('groupId' => 1), 'race' => array('raceMode' => 'n', 'raceCount' => 30, 'raceId' => 1)));
         $postData = json_decode($json);
 
 	// test
