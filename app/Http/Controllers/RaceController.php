@@ -18,10 +18,10 @@ class RaceController extends Controller
         $json     = '{"group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]}';
         $postData = json_decode($json, true);
 
-	// ???? ??????
+	// test
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
-        // ???? ??????
+        // test
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
@@ -29,7 +29,7 @@ class RaceController extends Controller
 			DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
 		->where(['groups.group_num', '=', $postData['group']['groupId'],
-		['groups.user_t_num', '=', $_session['user_num']]])
+		['groups.user_t_num', '=', $session['user_num']]])
 		->group_by('groups.group_num')
 		->get();
 
