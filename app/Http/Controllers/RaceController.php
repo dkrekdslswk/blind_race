@@ -32,7 +32,7 @@ class RaceController extends Controller
 		'groups.user_t_num' => $session['user_num']])
                 ->groupBy('groups.group_num')
 		->get();
-/*
+
         $raceSetExamId = DB::table('race_set_exam')->insertGetId([
 		'group_num'=>$groupData.groupId, 
 		'set_exam_state'=>$postData['race']['raceMode'], 
@@ -51,9 +51,9 @@ class RaceController extends Controller
 	"group"=>array("groupName"=>$groupData["groupName"],
 			"groupStudentCount"=>$groupData['studentCount']),
 	"sessionId"=>session_id());
-*/
-	return response()->json($groupData);
-	//return response()->json($returnValue);
+
+	//return response()->json($groupData);
+	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
