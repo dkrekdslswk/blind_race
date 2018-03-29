@@ -18,13 +18,11 @@ class RaceController extends Controller
         $json     = '["group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]]';
         $postData = json_decode($json);
 
-	var_dump($postData);
-
 	// test
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
         // test
-        
+        /*
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
 			'groups.group_name as groupName',
@@ -52,8 +50,9 @@ class RaceController extends Controller
 	"group"=>array("groupName"=>$groupData["groupName"],
 			"groupStudentCount"=>$groupData['studentCount']),
 	"sessionId"=>session_id());
-
-	return response()->json($returnValue);
+*/
+        return response()->json($postData);
+	//return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
