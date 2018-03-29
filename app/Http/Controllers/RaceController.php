@@ -16,7 +16,7 @@ class RaceController extends Controller
     {
         //$json     = $request->input('post');
         $json     = json_encode(array('group' => array('groupId' => 1), 'race' => array('raceMode' => 'n', 'raceCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json);
+        $postData = json_decode($json, true);
 
 	// test
         $session['user_num']   = 1;
