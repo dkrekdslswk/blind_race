@@ -15,8 +15,8 @@ class RaceController extends Controller
     public function create()
     {
         //$json     = $request->input('post');
-        $json     = '{"group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]}';
-        $postData = json_decode($json, true);
+        $json     = '["group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]]';
+        $postData = json_decode($json);
 
 	// test
         $session['user_num']   = 1;
@@ -28,7 +28,7 @@ class RaceController extends Controller
 			'groups.group_name as groupName',
 			DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		->where(['groups.group_num' => $postData,
+		->where(['groups.group_num' => $postData['group']['groupId'],
 		'groups.user_t_num' => $session['user_num']])
 		->get();
 
