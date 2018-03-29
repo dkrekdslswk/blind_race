@@ -14,12 +14,17 @@
 Route::get('/', function () {
     return view('main');
 });
+
 Route::get('/login', function () {
     return view('Login/login');
 });
 
 Route::get('/race', function(){
     return view('Race/race');
+});
+
+Route::get('/race_waiting', function(){
+    return view('Race/race_waiting');
 });
 
 Route::get('/recordbox', function(){
@@ -46,9 +51,6 @@ Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
 
-Route::get('/mygroup', function(){
-    return view('Mygroup/mygroup');
-});
 Route::get('/chat', function(){
     return view('chat');
 });
@@ -56,6 +58,7 @@ Route::get('/chat', function(){
 Route::get('/playing', function(){
     return view('playing');
 });
+
 Route::get('/ctest', function(){
     return view('ctest');
 });

@@ -74,10 +74,20 @@
   </table>
 </div>
     </div>
-
+  
+  
         
 	</body>
-	
+	<script>
+  var json =
+  '{"users":[{"userName":"baka","userScore":9}, {"userName":"aho","userScore":10},{"userName":"damare","userScore":35}]}';
+  
+  var getJsonDate = JSON.parse(json);
+  
+  for(var i = 0 ; i < getJsonDate.users.length ; i++){
+     alert(i+"번 유저 이름:" + getJsonDate.users[i].userName + ", 점수:" +  getJsonDate.users[i].userScore);
+  }
+  </script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -89,7 +99,8 @@
           ['2004',  1000,      400],
           ['2005',  1170,      460],
           ['2006',  660,       1120],
-          ['2007',  1030,      540]
+          ['2007
+          ',  1030,      540]
         ]);
 
         var options = {

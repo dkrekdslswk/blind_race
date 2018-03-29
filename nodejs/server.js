@@ -21,27 +21,41 @@ var answer_c = 0;
 io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
+    
     socket.on('answer', function(data){
        console.log('Client Send Data:', data);
-
+        
        answer_c++;
 
        io.sockets.emit('answer-sum',answer_c);
        console.log('answer counting: ', answer_c);
     });
+    
     var room_No = null;
     socket.on('join', function(room_num){
         room_No = room_num;
         socket.join(room_num);
         console.log('join!',room_No);
+       
         
-        io.sockets.emit('room_num',room_No);
+        if(answer_c == '5')
+            io.sockets.emit('room_num','12');
     });
     socket.on('message',function(data){
-       io.sockets.in(data).emit('message',name);
+       io.sockets.in('Name').emit('message',data);
        console.log('message',data);
     });
+    
+    socket.on('nextquiz',function(data){
+        answer_c = 0 ;
+        socket.emit('nextok',data);
+    });
+    
 });
+// 병찬이형 연습할 자리 
+
+
+
 
 
 // io.on('connection', function(socket){ //3

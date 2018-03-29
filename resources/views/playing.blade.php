@@ -67,9 +67,10 @@
         
         var room_num = '';
         socket.on('room_num', function(data){
-            room_num += data;
+            alert('참여완료');
         });
-         socket.emit('join',room_num);   
+        
+         socket.emit('join','Name');   
         
         
         socket.on('message', function(data){
