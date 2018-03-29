@@ -67,8 +67,10 @@ Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
-
 // ↓↓↓↓↓↓↓ transfer test _yoolme
 Route::get('/', function(){
     return view('yoolme_test');
 });
+
+Route::get('/raceController', 'RaceController@create');
+
