@@ -15,8 +15,19 @@ Route::get('/', function () {
     return view('main');
 });
 
+<<<<<<< HEAD
+=======
+Route::get('/nav', function(){
+    return view('nav/mainnav');
+});
+
+>>>>>>> bc9682b97c6d3589fa72af8e3b0e80e504677989
 Route::get('/login', function () {
     return view('Login/login');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup');
 });
 
 Route::get('/race', function(){
@@ -39,14 +50,6 @@ Route::get('/Quiz_tree', function(){
     return view('Quiz_tree/Quiz_list');
 });
 
-Route::get('/mygroup', function(){
-    return view('Mygroup/mygroup');
-});
-
-Route::get('/nav', function(){
-    return view('nav/mainnav');
-});
-
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
@@ -63,10 +66,10 @@ Route::get('/ctest', function(){
     return view('ctest');
 });
 
-Route::get('/croom', function(){
-    return view('create_room');
-});
+// controllers
+// choi byeongchan
 
-Route::get('/raid', function(){
-    return view('Raid/raid');
-});
+Route::get('/raceControll', 'raceController@create');
+//Route::get('/cbcSocketTest', function(){
+//    return view('cbcSocketTest');
+//});

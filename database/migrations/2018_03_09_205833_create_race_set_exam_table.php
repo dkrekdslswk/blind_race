@@ -31,7 +31,7 @@ class CreateRaceSetExamTable extends Migration
             $table->char('set_exam_state', 1);
 	    $table->foreign('set_exam_state')->references('keyword')->on('race_set_exam_state_keyword');
 	    $table->unsignedSmallInteger('exam_count');
-	    $table->json('set_exam_data');
+	    $table->json('set_exam_data')->nullable();
             $table->timestamps();
         });
     }

@@ -45,7 +45,14 @@ class DeleteAll extends Migration
 	DB::unprepared('DROP TRIGGER IF EXISTS tr_groups_user_division_check');
         Schema::dropIfExists('groups');
 
+	/******************************* 
+        * 18.03.28 
+	* user_division_keyword삭제 
+	* user_teachers로 선생구분으로 변경
+	********************************/
+        Schema::dropIfExists('user_teachers');
         Schema::dropIfExists('users');
+
         Schema::dropIfExists('user_division_keyword');
     }
 

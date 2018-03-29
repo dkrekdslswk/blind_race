@@ -115,7 +115,10 @@
         <div class="modal-dialog" role="document">
             <form action="/race_waiting">
                 <div class="modal-content">
+<<<<<<< HEAD
                     <form action="/test">
+=======
+>>>>>>> bc9682b97c6d3589fa72af8e3b0e80e504677989
                     <div class="modal-header" style="text-align: center">
                         <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
                     </div>
@@ -136,7 +139,13 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center">
+<<<<<<< HEAD
                         <button type="submit" class="btn btn-primary">선택하기</button>
+=======
+                        <form action="/test">
+                            <button type="submit" class="btn btn-primary">선택하기</button>
+                        </form>
+>>>>>>> bc9682b97c6d3589fa72af8e3b0e80e504677989
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                     </div>
                 </div>
