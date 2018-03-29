@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
@@ -28,10 +28,10 @@ class RaceController extends Controller
         $json     = '{"group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]}';
         $postData = json_decode($json);
 
-	// ë”ë¯¸ ë°ì´í„°
+	// ´õ¹Ì µ¥ÀÌÅÍ
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
-        // ë”ë¯¸ ë°ì´í„°
+        // ´õ¹Ì µ¥ÀÌÅÍ
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
