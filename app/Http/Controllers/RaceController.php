@@ -31,7 +31,7 @@ class RaceController extends Controller
         $postData = json_decode($json);
 
 	// 더미 데이터
-        $session['user_num']   = 0;
+        $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
         // 더미 데이터
         
