@@ -15,13 +15,10 @@ Route::get('/', function () {
     return view('main');
 });
 
-<<<<<<< HEAD
-=======
 Route::get('/nav', function(){
     return view('nav/mainnav');
 });
 
->>>>>>> bc9682b97c6d3589fa72af8e3b0e80e504677989
 Route::get('/login', function () {
     return view('Login/login');
 });
