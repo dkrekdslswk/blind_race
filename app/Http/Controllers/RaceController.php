@@ -47,7 +47,7 @@ class RaceController extends Controller
 		->value('race_name');
 
 	$returnValue = array(
-	"race"=>array("raceName"=>$raceName,"examCount"=>$postData['race']['exanCount']),
+	"race"=>array("raceName"=>$raceName,"examCount"=>$postData['race']['examCount']),
 	"group"=>array("groupName"=>$groupData->groupName,
 			"groupStudentCount"=>$groupData->studentCount),
 	"sessionId"=>session_id());
