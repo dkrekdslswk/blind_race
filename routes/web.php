@@ -62,7 +62,9 @@ Route::get('/playing', function(){
 Route::get('/ctest', function(){
     return view('ctest');
 });
-
+Route::get('/raid', function(){
+    return view('Raid/raid');
+});
 // controllers
 // choi byeongchan
 
