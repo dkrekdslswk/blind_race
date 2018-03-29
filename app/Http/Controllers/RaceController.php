@@ -18,6 +18,8 @@ class RaceController extends Controller
         $json     = '["group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]]';
         $postData = json_decode($json);
 
+	var_dump($postData);
+
 	// test
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
