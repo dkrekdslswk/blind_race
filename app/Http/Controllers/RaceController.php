@@ -31,10 +31,10 @@ class RaceController extends Controller
 		->where(['groups.group_num' => $postData['group']['groupId'],
 		'groups.user_t_num' => $session['user_num']])
                 ->groupBy('groups.group_num')
-		->get();
+		->first();
 
         $raceSetExamId = DB::table('race_set_exam')->insertGetId([
-		'group_num'=>$groupData[0]['groupId'], 
+		'group_num'=>$groupData->groupId, 
 		'set_exam_state'=>$postData['race']['raceMode'], 
 		'exam_count'=>$postData['race']['examCount'], 
 		'set_exam_data'=>'{"base":"'.$postData['race']['raceId'].'","bookPage":null}'
@@ -48,8 +48,8 @@ class RaceController extends Controller
 
 	$returnValue = array(
 	"race"=>array("raceName"=>$raceName,"examCount"=>$postData['race']['exanCount']),
-	"group"=>array("groupName"=>$groupData[0]['groupName'],
-			"groupStudentCount"=>$groupData[0]['studentCount']),
+	"group"=>array("groupName"=>$groupData->groupName,
+			"groupStudentCount"=>$groupData->studentCount),
 	"sessionId"=>session_id());
 
 	//return response()->json($groupData);
