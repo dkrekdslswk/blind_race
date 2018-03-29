@@ -28,10 +28,10 @@ class RaceController extends Controller
         $json     = '{"group":["groupId":1],"race":["raceMode":"n","raceCount":30,"raceId":1]}';
         $postData = json_decode($json);
 
-	// ´õ¹Ì µ¥ÀÌÅÍ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
-        // ´õ¹Ì µ¥ÀÌÅÍ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
@@ -56,14 +56,14 @@ class RaceController extends Controller
 		->where('race_num', '=', $postData.race['raceId'])
 		->value('race_name');
 
-	$returnVelue = array(
+	$returnValue = array(
 	"race"=>array("raceName"=>$raceName,"examCount"=>$postData.race['exanCount']),
 	"group"=>array("groupName"=>$groupData["groupName"],
 			"groupStudentCount"=>$groupData['studentCount']),
 	"sessionId"=>session_id());
 
-	//return response()->json($returnVelue);
-	return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
+	return response()->json($returnValue);
+	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
     public function comein($pin){

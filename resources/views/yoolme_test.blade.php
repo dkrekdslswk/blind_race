@@ -17,7 +17,7 @@
     </form>--}}
 
 
-    <form method="post" action="/RaceController">
+    <form method="post" action="raceController">
         ID : <input type="text" id="id" name="id"><br>
         PW : <input type="text" id="passowrd" name="password"><br>
         NAME : <input type="text" id="name" name="name"><br>
