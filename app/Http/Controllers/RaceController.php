@@ -28,8 +28,8 @@ class RaceController extends Controller
 			'groups.group_name as groupName',
 			DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		->where(['groups.group_num', '=', $postData['group']['groupId'],
-		['groups.user_t_num', '=', $session['user_num']]])
+		->where(['groups.group_num' => $postData['group']['groupId'],
+		'groups.user_t_num' => $session['user_num']])
 		->get();
 
         $raceSetExamId = DB::table('race_set_exam')->insertGetId([
