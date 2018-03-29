@@ -22,7 +22,7 @@ class RaceController extends Controller
         $session['user_num']   = 1;
         $session['user_id']    = 'tamp1id';
         // test
-        /*
+        
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
 			'groups.group_name as groupName',
@@ -50,9 +50,8 @@ class RaceController extends Controller
 	"group"=>array("groupName"=>$groupData["groupName"],
 			"groupStudentCount"=>$groupData['studentCount']),
 	"sessionId"=>session_id());
-*/
-        return response()->json($postData);
-	//return response()->json($returnValue);
+
+	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
