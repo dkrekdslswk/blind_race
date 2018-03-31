@@ -2,6 +2,34 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+// Mysql 노드 모듈 부분 
+var mysql      = require('mysql');
+var dbconfig   = require('./config/database.js');
+var connection = mysql.createConnection(dbconfig);
+
+
+
+app.get('/', function(req, res){
+  res.send('Root');
+});
+
+app.post('/persons', function(req, res){
+   
+                                
+  connection.query('SELECT * from users ', function(err, rows) {
+    if(err) throw err;
+
+    console.log('The solution is: ', rows);
+//   var row = JSON.parse(rows);
+    res.send(rows);      
+  });
+});
+
+app.listen(app.get('port'), function () {
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
+//소켓아이오 -------------------------------------------------------------------
 server.listen(8890);
 
 
@@ -25,10 +53,19 @@ var countdown = 20000;
 io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
-    
+
+//퀴즈 답받는 소켓 함수     
     socket.on('answer', function(data){
        console.log('Client Send Data:', data);
         
+    var quizin = quiz+1;    
+    var answer_query = "insert into playing_quizs values (1,"+count+","+quizin+",0,'"+data+ "','0')" ;    
+        console.log('user',count);
+    connection.query(answer_query, function(err, rows) {
+    if(err) throw err;
+        console.log('The solution is: ', rows);
+      });
+      
        answer_c++;
 
        io.sockets.emit('answer-sum',answer_c);
@@ -52,9 +89,10 @@ io.on('connection', function (socket){
     
     socket.on('nextquiz',function(data){
         answer_c = 0 ;
-        quiz++
+        quiz++;
         socket.emit('nextok',quiz);
         countdown = 20000;
+        console.log('answer_sum add',quiz);
     });
 
     socket.on('count',function(data){
@@ -62,12 +100,13 @@ io.on('connection', function (socket){
         setInterval(function() {
             countdown -= 1000;
             io.sockets.emit('timer', countdown);
-            console.log('timer',quiz);
+            
             if(countdown == 0)
             {
                 quiz++;
                 socket.emit('nextok',quiz);
                 countdown = 20000;
+                console.log('timeend add',quiz);
             }
         }, 1000);
 
@@ -105,3 +144,9 @@ io.on('connection', function (socket){
 server.listen(8890, function(){ //4
     console.log('server on!');
 });
+
+
+
+
+
+
