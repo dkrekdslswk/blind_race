@@ -28,7 +28,7 @@ class BlindDymmyTableSeeder extends Seeder
                 'user_name'     => array_get($user, 2)
             ], 'user_num');
 
-            if(!isset($user_first)){
+            if(!isset($userFirstId)){
                 $userFirstId = $userId;
             }
         }

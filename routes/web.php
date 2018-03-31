@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +32,11 @@ Route::get('/race', function(){
 });
 
 Route::get('/race/race_waitingroom', function(){
+<<<<<<< HEAD
     return view('Race/race_waitingroom');
+=======
+    return view('Race/race/race_waitingroom');
+>>>>>>> 6827c2cbb4e32b913b762c0945b12b84776490d8
 });
 
 Route::get('/recordbox', function(){
@@ -62,13 +66,18 @@ Route::get('/playing', function(){
 Route::get('/ctest', function(){
     return view('ctest');
 });
+
 Route::get('/raid', function(){
     return view('Raid/raid');
 });
-// controllers
-// choi byeongchan
 
-Route::get('/raceControll', 'raceController@create');
-//Route::get('/cbcSocketTest', function(){
-//    return view('cbcSocketTest');
-//});
+// ↓↓↓↓↓↓↓ transfer test _yoolme
+/*Route::get('/', function(){
+    return view('yoolme_test');
+});*/
+
+Route::get('/cbcSocketTest', function(){
+    return view('cbcSocketTest');
+});
+Route::post('/raceController/{post}','RaceController@create');
+
