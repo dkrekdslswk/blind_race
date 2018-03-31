@@ -31,8 +31,8 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-Route::get('/race_waiting', function(){
-    return view('Race/race_waiting');
+Route::get('/race/race_waitingroom', function(){
+    return view('Race/race/race_waitingroom');
 });
 
 Route::get('/recordbox', function(){
