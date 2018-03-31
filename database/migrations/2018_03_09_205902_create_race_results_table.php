@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,7 +22,7 @@ class CreateRaceResultsTable extends Migration
 	    $table->primary(['set_exam_num', 'user_num']);
 	    $table->unsignedInteger('team_num');
 	    $table->foreign('team_num')->references('team_num')->on('race_teams');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

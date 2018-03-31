@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -32,7 +33,8 @@ class CreateRaceSetExamTable extends Migration
 	    $table->foreign('set_exam_state')->references('keyword')->on('race_set_exam_state_keyword');
 	    $table->unsignedSmallInteger('exam_count');
 	    $table->json('set_exam_data')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

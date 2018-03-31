@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +72,8 @@ Route::get('/raid', function(){
     return view('yoolme_test');
 });*/
 
-Route::get('/raceController', 'RaceController@create');
+Route::get('/cbcSocketTest', function(){
+    return view('cbcSocketTest');
+});
+Route::post('/raceController/{post}','RaceController@create');
 

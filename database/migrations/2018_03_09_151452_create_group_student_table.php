@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -34,7 +35,7 @@ class CreateGroupStudentTable extends Migration
 	    $table->primary(['group_num', 'user_num']);
             $table->char('group_student_state', 1);
 	    $table->foreign('group_student_state')->references('keyword')->on('group_student_state_keyword');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
