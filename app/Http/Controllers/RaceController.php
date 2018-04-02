@@ -23,9 +23,9 @@ class RaceController extends Controller
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
                                            'raceId'    => $request->input('raceId')));
-        $json     = json_encode(array('group' => array('groupId' => 1), 
+        /*$json     = json_encode(array('group' => array('groupId' => 1),
                                       'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json, true);
+        $postData = json_decode($json, true);*/
 
 
 	// test
@@ -34,8 +34,8 @@ class RaceController extends Controller
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
         $session['sessionId']   = DB::table('sessions')
-                             ->insertGetId(['user_num' => $userId->user_num], 'session_num')
-                             ->first();
+                             ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+
         $sData = DB::table('sessions')
                  ->select(['user_num'])
                  ->where('session_num', '=', $session['sessionId'])

@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('main');
-});
+});*/
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
@@ -68,9 +68,9 @@ Route::get('/raid', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-/*Route::get('/', function(){
-    return view('yoolme_test');
-});*/
+Route::get('/', function(){
+    return view('test');
+});
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
