@@ -108,7 +108,7 @@ class RaceController extends Controller
     }
 
     // race student is in to room
-    public function studentIn(){
+    public function studentIn(Request $request){
         //$json     = $request->input('post');
         $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
         $postData = json_decode($json, true);
