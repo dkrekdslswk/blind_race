@@ -31,12 +31,8 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-Route::get('/race/race_waitingroom', function(){
-<<<<<<< HEAD
+Route::get('/race_waitingroom', function(){
     return view('Race/race_waitingroom');
-=======
-    return view('Race/race/race_waitingroom');
->>>>>>> 6827c2cbb4e32b913b762c0945b12b84776490d8
 });
 
 Route::get('/recordbox', function(){
