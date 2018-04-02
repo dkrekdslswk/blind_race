@@ -15,10 +15,6 @@ class RaceController extends Controller
     // race create first order
     public function create(Request $request)
     {
-        //$json     = $request->input('post');
-        //$json     = json_encode(array('group' => array('groupId' => 1), 
-        //                              'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        //$postData = json_decode($json);
         $postData = array('group' => array('groupId'   => $request->input('groupId')),
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
@@ -37,31 +33,34 @@ class RaceController extends Controller
 
         if(is_null($userId->session_num)){
              $session['sessionId']   = DB::table('sessions')
-                                       ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+                                       ->insertGetId(['user_num'    => $userId->user_num, 
+                                                      'session_num' => $userId->session_num]);
         }else{
              $session['sessionId'] = $userId->session_num;
         }
+        // test
 
         $sData = DB::table('sessions')
                  ->select(['user_num'])
                  ->where('session_num', '=', $session['sessionId'])
                  ->first();
-        // test
 
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
 			'groups.group_name as groupName',
 			DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		->where(['groups.group_num' => $postData['group']['groupId'],
-		'groups.user_t_num' => $sData->user_num])
+		->where(['groups.group_num'  => $postData['group']['groupId'],
+		         'groups.user_t_num' => $sData->user_num])
                 ->groupBy('groups.group_num')
 		->first();
 
         $raceCheck = DB::table('races')
-		->select(['races.race_name', 'races.race_num', DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
+		->select(['races.race_name as race_name', 
+                          'races.race_num  as race_num', 
+                          DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
 		->join('race_quizs', 'race_quizs.race_num', '=', 'races.race_num')
-		->where(['races.race_num' => $postData['race']['raceId'],
+		->where(['races.race_num'   => $postData['race']['raceId'],
                          'races.user_t_num' => $sData->user_num])
                 ->groupBy('races.race_num')
 		->first();
@@ -80,9 +79,10 @@ class RaceController extends Controller
             ->update(['set_exam_num' => $raceSetExamId]);
 
        	    $returnValue = array(
-       	                 "race"=>array("raceName"=>$raceCheck->race_name,"examCount"=>$postData['race']['examCount']),
-       	                 "group"=>array("groupName"=>$groupData->groupName,
-       	                        "groupStudentCount"=>$groupData->studentCount),
+       	                 "race"=>array("raceName"          =>$raceCheck->race_name,
+                                       "examCount"         =>$postData['race']['examCount']),
+       	                 "group"=>array("groupName"         => $groupData->groupName,
+       	                                "groupStudentCount" => $groupData->studentCount),
        	                 "sessionId"=>$session['sessionId']);
 
         }
@@ -94,9 +94,9 @@ class RaceController extends Controller
 
     // race teacher is in to room 
     public function roomIn(Request $request){
-        //$json     = $request->input('post');
+        $json     = $request->input('post');
         //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
-        //$postData = json_decode($json, true);
+        $postData = json_decode($json, true);
 
         // race set exam check
         $setExamTest = DB::table('sessions')
@@ -109,16 +109,17 @@ class RaceController extends Controller
                        ->first();
 
         if(isset($setExamTest->setExamCount) 
-           && (($setExamTest->setExamCount != 0) 
+           && (($setExamTest->setExamCount != 0)
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
 
-        DB::table('sessions')
-        ->where('session_num', '=', postData['sessionId'])
-        ->update(['room_pin_number' => postData['roomPin']]);
+            DB::table('sessions')
+            ->where('session_num', '=', postData['sessionId'])
+            ->update(['room_pin_number' => postData['roomPin']]);
 
+            $returnValue = array('race' => array(''));
         }
 
-        //retrun response()->json($returnValue);
+        retrun response()->json($returnValue);
     }
 
     // race student is in to room
