@@ -79,18 +79,18 @@ class RaceController extends Controller
             ->update(['set_exam_num' => $raceSetExamId]);
 
        	    $returnValue = array(
-       	                 "race"=>array("raceName"          =>$raceCheck->race_name,
-                                       "examCount"         =>$postData['race']['examCount']),
-       	                 "group"=>array("groupName"         => $groupData->groupName,
-       	                                "groupStudentCount" => $groupData->studentCount),
-       	                 "sessionId"=>$session['sessionId']);
+       	                 'race'=>array('raceName'          =>$raceCheck->race_name,
+                                       'examCount'         =>$postData['race']['examCount']),
+       	                 'group'=>array('groupName'         => $groupData->groupName,
+       	                                'groupStudentCount' => $groupData->studentCount),
+       	                 'sessionId'=>$session['sessionId']);
 
         }
         else{
-            $returnValue = "fail";
+            $returnValue = 'fail';
         }
 
-	return Response()->json($returnValue);
+	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
