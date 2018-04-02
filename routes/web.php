@@ -75,5 +75,5 @@ Route::get('/', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController/{post}','RaceController@create');
+Route::post('/raceController','RaceController@create');
 

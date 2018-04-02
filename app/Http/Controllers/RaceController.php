@@ -15,7 +15,7 @@ class RaceController extends Controller
         //$json     = json_encode(array('group' => array('groupId' => 1), 
         //                              'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
         //$postData = json_decode($json);
-        $postData = array('group' => array('groupId'   => $request->input('groupId')), 
+        $postData = array('group' => array('groupId'   => $request->input('groupId')),
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
                                            'raceId'    => $request->input('raceId')));
@@ -33,7 +33,7 @@ class RaceController extends Controller
                  ->where('session_num', '=', $session['sessionId'])
                  ->first();
         // test
-        
+
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
 			'groups.group_name as groupName',
@@ -56,7 +56,7 @@ class RaceController extends Controller
 
             $raceSetExamId = DB::table('race_set_exam')->insertGetId([
                 'group_num'=>$groupData->groupId,
-                'set_exam_state'=>$postData['race']['raceMode'], 
+                'set_exam_state'=>$postData['race']['raceMode'],
                 'exam_count'=>$postData['race']['examCount'],
                 'set_exam_data'=>'{"base":"' . $raceCheck->race_num . '","bookPage":null}'
                 ], 'set_exam_num');
@@ -81,8 +81,8 @@ class RaceController extends Controller
     // race teacher is in to room 
     public function roomIn(Request $request){
         //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
-        $postData = json_decode($json, true);
+        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        //$postData = json_decode($json, true);
 
         // race set exam check
         $setExamTest = DB::table('sessions')
@@ -110,8 +110,8 @@ class RaceController extends Controller
     // race student is in to room
     public function studentIn(){
         //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
-        $postData = json_decode($json, true);
+        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        //$postData = json_decode($json, true);
         
         DB::table('sessions')
         ->where('session_num', '=', postData['sessionId'])
