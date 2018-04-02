@@ -29,12 +29,18 @@ class RaceController extends Controller
 
 
 	// test
-        $userId = DB::table('users')
-                  ->select(['user_num'])
+        $userId = DB::table('users as u')
+                  ->select(['u.user_num as user_num', 's.session_num as session_num'])
+		  ->join('session as s', 's.user_num', '=', 'u.user_num')
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
-        $session['sessionId']   = DB::table('sessions')
-                             ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+
+        if(is_null($userId->session_num)){
+             $session['sessionId']   = DB::table('sessions')
+                                       ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+        }else{
+             $session['sessionId'] = $userId->session_num;
+        }
 
         $sData = DB::table('sessions')
                  ->select(['user_num'])
