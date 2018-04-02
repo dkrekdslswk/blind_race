@@ -27,7 +27,7 @@ class RaceController extends Controller
 	// test
         $userId = DB::table('users as u')
                   ->select(['u.user_num as user_num', 's.session_num as session_num'])
-		  ->leftJoin('session as s', 's.user_num', '=', 'u.user_num')
+		  ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
 
