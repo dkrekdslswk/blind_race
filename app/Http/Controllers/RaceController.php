@@ -79,7 +79,7 @@ class RaceController extends Controller
             ->update(['set_exam_num' => $raceSetExamId]);
 
        	    $returnValue = array(
-       	                 'race'=>array('raceName'          =>utf8_decode($raceCheck->race_name),
+       	                 'race'=>array('raceName'          =>$raceCheck->race_name,
                                        'examCount'         =>$postData['race']['examCount']),
        	                 'group'=>array('groupName'         => $groupData->groupName,
        	                                'groupStudentCount' => $groupData->studentCount),
