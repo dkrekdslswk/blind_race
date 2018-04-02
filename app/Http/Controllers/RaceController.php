@@ -15,19 +15,19 @@ class RaceController extends Controller
     // race create first order
     public function create(Request $request)
     {
-        $postData = array('group' => array('groupId'   => $request->input('groupId')),
+        /*$postData = array('group' => array('groupId'   => $request->input('groupId')),
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
-                                           'raceId'    => $request->input('raceId')));
-        /*$json     = json_encode(array('group' => array('groupId' => 1),
+                                           'raceId'    => $request->input('raceId')));*/
+        $json     = json_encode(array('group' => array('groupId' => 1),
                                       'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json, true);*/
+        $postData = json_decode($json, true);
 
 
 	// test
         $userId = DB::table('users as u')
                   ->select(['u.user_num as user_num', 's.session_num as session_num'])
-		  ->join('session as s', 's.user_num', '=', 'u.user_num')
+		  ->leftJoin('session as s', 's.user_num', '=', 'u.user_num')
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
 
@@ -87,7 +87,6 @@ class RaceController extends Controller
 
         }
 
-	//return response()->json($groupData);
 	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
