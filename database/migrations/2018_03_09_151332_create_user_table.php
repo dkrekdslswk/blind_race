@@ -17,7 +17,7 @@ class CreateUserTable extends Migration
             $table->increments('user_num');
             $table->string('user_id', 16);
             $table->unique('user_id');
-            $table->char('user_password', 160);
+            $table->char('user_password', 16);
 	    $table->char('user_name', 20);
         });
 

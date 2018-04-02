@@ -13,6 +13,14 @@ class DeleteAll extends Migration
      */
     public function up()
     {
+<<<<<<< HEAD
+        Schema::dropIfExists('playing_quizs');
+=======
+        Schema::dropIfExists('sessions');
+
+        Schema::dropIfExists('characters');
+
+>>>>>>> 6827c2cbb4e32b913b762c0945b12b84776490d8
         Schema::dropIfExists('mistaken_quizs');
         Schema::dropIfExists('race_mistaken_quizs');
         Schema::dropIfExists('race_set_exam_quizs');
@@ -47,8 +55,8 @@ class DeleteAll extends Migration
 
 	/******************************* 
         * 18.03.28 
-	* user_division_keyword»èÁ¦ 
-	* user_teachers·Î ¼±»ý±¸ºÐÀ¸·Î º¯°æ
+	* user_division_keywordï¿½ï¿½ï¿½ï¿½ 
+	* user_teachersï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	********************************/
         Schema::dropIfExists('user_teachers');
         Schema::dropIfExists('users');

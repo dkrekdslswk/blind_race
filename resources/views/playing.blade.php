@@ -65,6 +65,10 @@
     window.onload = function () {
         var socket = io(':8890'); //1
 
+<<<<<<< HEAD
+=======
+        
+>>>>>>> efc7032725a8bb172272d550e0d3c1713d73cdbc
         var room_num = '';
         socket.on('room_num', function(data){
             alert('참여완료');

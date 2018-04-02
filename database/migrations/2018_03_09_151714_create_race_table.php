@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +20,7 @@ class CreateRaceTable extends Migration
 	    $table->foreign('user_t_num')->references('user_t_num')->on('user_teachers');
             $table->string('race_name', 100);
             $table->string('race_folder_name', 100);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

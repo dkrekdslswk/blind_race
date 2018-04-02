@@ -8,19 +8,30 @@ use \Illuminate\Http\Response;
 
 class RaceController extends Controller
 {
-    public function index()
-    {
-    }
-
-    public function create()
+    // race create first order
+    public function create(Request $request)
     {
         //$json     = $request->input('post');
-        $json     = json_encode(array('group' => array('groupId' => 1), 'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json, true);
+        //$json     = json_encode(array('group' => array('groupId' => 1), 
+        //                              'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
+        //$postData = json_decode($json);
+        $postData = array('group' => array('groupId'   => $request->input('groupId')), 
+                          'race'  => array('raceMode'  => $request->input('raceMode'), 
+                                           'examCount' => $request->input('examCount'), 
+                                           'raceId'    => $request->input('raceId')));
 
 	// test
-        $session['user_num']   = 1;
-        $session['user_id']    = 'tamp1id';
+        $userId = DB::table('users')
+                  ->select(['user_num'])
+                  ->where('user_id', '=', 'tamp1id')
+                  ->first();
+        $session['sessionId']   = DB::table('sessions')
+                             ->insertGetId(['user_num' => $userId->user_num], 'session_num')
+                             ->first();
+        $sData = DB::table('sessions')
+                 ->select(['user_num'])
+                 ->where('session_num', '=', $session['sessionId'])
+                 ->first();
         // test
         
         $groupData = DB::table('groups')
@@ -29,36 +40,82 @@ class RaceController extends Controller
 			DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
 		->where(['groups.group_num' => $postData['group']['groupId'],
-		'groups.user_t_num' => $session['user_num']])
+		'groups.user_t_num' => $sData->user_num])
                 ->groupBy('groups.group_num')
 		->first();
 
-        $raceSetExamId = DB::table('race_set_exam')->insertGetId([
-		'group_num'=>$groupData->groupId, 
-		'set_exam_state'=>$postData['race']['raceMode'], 
-		'exam_count'=>$postData['race']['examCount'], 
-		'set_exam_data'=>'{"base":"'.$postData['race']['raceId'].'","bookPage":null}'
-		], 'set_exam_num');
-        $session['set_exam_num'] = $raceSetExamId;
+        $raceCheck = DB::table('races')
+		->select(['races.race_name', 'races.race_num', DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
+		->join('race_quizs', 'race_quizs.race_num', '=', 'races.race_num')
+		->where(['races.race_num' => $postData['race']['raceId'],
+                         'races.user_t_num' => $sData->user_num])
+                ->groupBy('races.race_num')
+		->first();
 
-	$raceName = DB::table('races')
-		->select('race_name')
-		->where('race_num', '=', $postData['race']['raceId'])
-		->value('race_name');
+        if(isset($raceCheck->race_num) && ($raceCheck->examCount > $postData['race']['examCount'])){
 
-	$returnValue = array(
-	"race"=>array("raceName"=>$raceName,"examCount"=>$postData['race']['examCount']),
-	"group"=>array("groupName"=>$groupData->groupName,
-			"groupStudentCount"=>$groupData->studentCount),
-	"sessionId"=>session_id());
+            $raceSetExamId = DB::table('race_set_exam')->insertGetId([
+                'group_num'=>$groupData->groupId,
+                'set_exam_state'=>$postData['race']['raceMode'], 
+                'exam_count'=>$postData['race']['examCount'],
+                'set_exam_data'=>'{"base":"' . $raceCheck->race_num . '","bookPage":null}'
+                ], 'set_exam_num');
+
+            DB::table('sessions')
+            ->where('session_num', '=', $session['sessionId'])
+            ->update(['set_exam_num' => $raceSetExamId]);
+
+       	    $returnValue = array(
+       	                 "race"=>array("raceName"=>$raceCheck->race_name,"examCount"=>$postData['race']['examCount']),
+       	                 "group"=>array("groupName"=>$groupData->groupName,
+       	                        "groupStudentCount"=>$groupData->studentCount),
+       	                 "sessionId"=>$session['sessionId']);
+
+        }
 
 	//return response()->json($groupData);
 	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
-    public function comein($pin){
+    // race teacher is in to room 
+    public function roomIn(Request $request){
+        //$json     = $request->input('post');
+        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        $postData = json_decode($json, true);
+
+        // race set exam check
+        $setExamTest = DB::table('sessions')
+		->select(['set.exam_count as setExamCount',
+			DB::raw('COUNT(quiz.sequence) as examCount')])
+                       ->join('race_set_exam as set', 'set.set_exam_num', '=', 'sessions.set_exam_num')
+                       ->join('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'sessions.set_exam_num')
+                       ->where('sessions.session_num', '=', postData['sessionId'])
+                       ->groupBy('sessions.session_num')
+                       ->first();
+
+        if(isset($setExamTest->setExamCount) 
+           && (($setExamTest->setExamCount != 0) 
+                && ($setExamTest->examCount <= $setExamTest->setExamCount))){
+
+        DB::table('sessions')
+        ->where('session_num', '=', postData['sessionId'])
+        ->update(['room_pin_number' => postData['roomPin']]);
+
+        }
+
+        //retrun response()->json($returnValue);
+    }
+
+    // race student is in to room
+    public function studentIn(){
+        //$json     = $request->input('post');
+        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        $postData = json_decode($json, true);
         
+        DB::table('sessions')
+        ->where('session_num', '=', postData['sessionId'])
+        ->update(['room_pin_number' => postData['roomPin']]);
     }
 
     public function destroy($id)
