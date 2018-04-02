@@ -8,6 +8,10 @@ use \Illuminate\Http\Response;
 
 class RaceController extends Controller
 {
+    public function index()
+    {
+    }
+
     // race create first order
     public function create(Request $request)
     {
@@ -19,6 +23,10 @@ class RaceController extends Controller
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
                                            'raceId'    => $request->input('raceId')));
+        $json     = json_encode(array('group' => array('groupId' => 1), 
+                                      'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
+        $postData = json_decode($json, true);
+
 
 	// test
         $userId = DB::table('users')
@@ -108,7 +116,7 @@ class RaceController extends Controller
     }
 
     // race student is in to room
-    public function studentIn(){
+    public function studentIn(Request $request){
         //$json     = $request->input('post');
         //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
         //$postData = json_decode($json, true);

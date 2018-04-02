@@ -31,7 +31,7 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-Route::get('/race/race_waitingroom', function(){
+Route::get('/race_waitingroom', function(){
     return view('Race/race_waitingroom');
 });
 
@@ -68,9 +68,9 @@ Route::get('/raid', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-Route::get('/', function(){
-    return view('test');
-});
+/*Route::get('/', function(){
+    return view('yoolme_test');
+});*/
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
