@@ -118,6 +118,7 @@ class RaceController extends Controller
         ->update(['room_pin_number' => postData['roomPin']]);
     }
 
+
     public function destroy($id)
     {
 	/*
