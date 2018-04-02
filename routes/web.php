@@ -32,11 +32,7 @@ Route::get('/race', function(){
 });
 
 Route::get('/race/race_waitingroom', function(){
-<<<<<<< HEAD
     return view('Race/race_waitingroom');
-=======
-    return view('Race/race/race_waitingroom');
->>>>>>> 6827c2cbb4e32b913b762c0945b12b84776490d8
 });
 
 Route::get('/recordbox', function(){
@@ -72,9 +68,9 @@ Route::get('/raid', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-/*Route::get('/', function(){
-    return view('yoolme_test');
-});*/
+Route::get('/', function(){
+    return view('test');
+});
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
