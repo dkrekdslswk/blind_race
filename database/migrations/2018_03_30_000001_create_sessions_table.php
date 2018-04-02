@@ -38,7 +38,7 @@ class CreateSessionsTable extends Migration
             $table->unsignedInteger('team_num')->nullable();
 	    $table->foreign('team_num')->references('team_num')->on('race_teams');
 
-            $table->increments('character_num')->nullable();
+            $table->unsignedInteger('character_num')->nullable();
 	    $table->foreign('character_num')->references('character_num')->on('characters');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
