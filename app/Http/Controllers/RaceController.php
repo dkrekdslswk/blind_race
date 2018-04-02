@@ -94,6 +94,7 @@ class RaceController extends Controller
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
+    /*
     // race teacher is in to room 
     public function roomIn(Request $request){
         $json     = $request->input('post');
@@ -137,11 +138,12 @@ class RaceController extends Controller
 
     public function destroy($id)
     {
-	/*
-      $item = Item::find($id);
-      $item->delete();
+	
+      //$item = Item::find($id);
+      //$item->delete();
 
-      return response()->json('Successfully Deleted');
-	*/
+      //return response()->json('Successfully Deleted');
+	
     }
+    */
 }
