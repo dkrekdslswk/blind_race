@@ -50,7 +50,7 @@
         <a href="/race"><img src="img/race.png"></a>
     </div>
     <div style="width: 20%; height: 100%; float: left">
-        <a href="/rade"><img src="img/sword.png"></a>
+        <a href="/raid"><img src="img/sword.png"></a>
     </div>
     <div style="width: 20%; height: 100%; float: left">
           <a href="/Quiz_tree"> <img src="img/tree.png"></a>

@@ -23,19 +23,25 @@ class RaceController extends Controller
                           'race'  => array('raceMode'  => $request->input('raceMode'), 
                                            'examCount' => $request->input('examCount'), 
                                            'raceId'    => $request->input('raceId')));
-        $json     = json_encode(array('group' => array('groupId' => 1), 
+        /*$json     = json_encode(array('group' => array('groupId' => 1),
                                       'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json, true);
+        $postData = json_decode($json, true);*/
 
 
 	// test
-        $userId = DB::table('users')
-                  ->select(['user_num'])
+        $userId = DB::table('users as u')
+                  ->select(['u.user_num as user_num', 's.session_num as session_num'])
+		  ->join('session as s', 's.user_num', '=', 'u.user_num')
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
-        $session['sessionId']   = DB::table('sessions')
-                             ->insertGetId(['user_num' => $userId->user_num], 'session_num')
-                             ->first();
+
+        if(is_null($userId->session_num)){
+             $session['sessionId']   = DB::table('sessions')
+                                       ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+        }else{
+             $session['sessionId'] = $userId->session_num;
+        }
+
         $sData = DB::table('sessions')
                  ->select(['user_num'])
                  ->where('session_num', '=', $session['sessionId'])

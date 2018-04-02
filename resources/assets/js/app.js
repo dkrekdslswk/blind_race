@@ -22,11 +22,13 @@ Vue.use(VueRouter);
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueConfetti from 'vue-confetti';
 Vue.use(VueAxios, axios);
-
+Vue.use(VueConfetti);
 import App from './App.vue';
 import Example from './components/Example.vue';
 import Login from './components/Login.vue';
+import Result from './components/Result.vue';
 import Footer from './components/Footer.vue';
 import Modal from './components/Modal.vue';
 import AJH from './components/AJH.vue';
