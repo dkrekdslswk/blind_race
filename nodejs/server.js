@@ -55,14 +55,10 @@ io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
 
-<<<<<<< HEAD
-    socket.on('answer', function(data){
-       console.log('Client Send Data:', data);
-
-=======
-//퀴즈 답받는 소켓 함수     
-    socket.on('answer', function(data){
-       console.log('Client Send Data:', data);
+//퀴즈 답받는 소켓 함수
+    socket.on('answer', function(data) {
+        console.log('Client Send Data:', data);
+    });
         
     var quizin = quiz+1;    
     var answer_query = "insert into playing_quizs values (1,"+count+","+quizin+",0,'"+data+ "','0')" ;    
@@ -72,13 +68,11 @@ io.on('connection', function (socket){
         console.log('The solution is: ', rows);
       });
       
->>>>>>> efc7032725a8bb172272d550e0d3c1713d73cdbc
        answer_c++;
 
        io.sockets.emit('answer-sum',answer_c);
        console.log('answer counting: ', answer_c);
-    });
-    
+
     var room_No = null;
     socket.on('join', function(room_num){
         room_No = room_num;
@@ -156,8 +150,7 @@ server.listen(8890, function(){ //4
 
 
 
-<<<<<<< HEAD
-/*kimseungmok*************************************/
+/*kimseungmok**********************6***************/
 
 
 var race_StudentCount = 0;
@@ -229,6 +222,3 @@ kim_http.listen(8891,function () {
     console.log('listening on *: 8891');
 
 });
-=======
-
->>>>>>> efc7032725a8bb172272d550e0d3c1713d73cdbc

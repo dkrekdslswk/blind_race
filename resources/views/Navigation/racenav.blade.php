@@ -25,16 +25,12 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
 
-        var socket = io(':8891');
 
-        socket.on('racenav data',function(nav){
-            getJsonDate_nav = JSON.parse(nav);
 
-            $('#race_name').html(getJsonDate_nav.race[0].raceName);
+/*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
             $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
             $('#group_name').html(getJsonDate_nav.group[0].groupName);
-            $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");
-        });
+            $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
 
     </script>
 
