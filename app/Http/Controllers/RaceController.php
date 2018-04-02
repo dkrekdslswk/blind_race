@@ -8,17 +8,17 @@ use \Illuminate\Http\Response;
 
 class RaceController extends Controller
 {
-    public function index()
-    {
-    }
-
     // race create first order
     public function create(Request $request)
     {
         //$json     = $request->input('post');
-        $json     = json_encode(array('group' => array('groupId' => 1), 
-                                      'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json, true);
+        //$json     = json_encode(array('group' => array('groupId' => 1), 
+        //                              'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
+        //$postData = json_decode($json);
+        $postData = array('group' => array('groupId'   => $request->input('groupId')), 
+                          'race'  => array('raceMode'  => $request->input('raceMode'), 
+                                           'examCount' => $request->input('examCount'), 
+                                           'raceId'    => $request->input('raceId')));
 
 	// test
         $userId = DB::table('users')
