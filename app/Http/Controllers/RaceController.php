@@ -90,7 +90,7 @@ class RaceController extends Controller
             $returnValue = "fail";
         }
 
-	return response()->json($returnValue);
+	return Response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
     }
 
