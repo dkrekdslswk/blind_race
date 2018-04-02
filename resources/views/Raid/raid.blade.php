@@ -78,7 +78,7 @@
 
     window.onload = function () {
         var socket = io(':8890'); //1
-
+        //아아아
         var quiz_number = 0;
 
         var timeleft = 10;
