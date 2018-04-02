@@ -86,6 +86,9 @@ class RaceController extends Controller
        	                 "sessionId"=>$session['sessionId']);
 
         }
+        else{
+            $returnValue = "fail";
+        }
 
 	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
