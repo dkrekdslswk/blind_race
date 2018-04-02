@@ -28,7 +28,7 @@ class RaceController extends Controller
         $userId = DB::table('users as u')
                   ->select(['u.user_num as user_num', 's.session_num as session_num'])
 		  ->join('sessions as s', 's.user_num', '=', 'u.user_num')
-                  ->where('user_id', '=', 'tamp1id')
+                  ->where('u.user_id', '=', 'tamp1id')
                   ->first();
 
         if(is_null($userId->session_num)){
