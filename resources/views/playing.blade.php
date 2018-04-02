@@ -64,8 +64,7 @@
 <script>
     window.onload = function () {
         var socket = io(':8890'); //1
-<<<<<<< HEAD
-        
+
         var room_num = '';
         socket.on('room_num', function(data){
             alert('참여완료');
@@ -77,9 +76,7 @@
         socket.on('message', function(data){
            $('<p>' + data + '</p>').appendTo('body');
         });
-=======
 
->>>>>>> bc9682b97c6d3589fa72af8e3b0e80e504677989
         socket.on('answer-sum', function(data){
            document.getElementById('answer_c').innerText= data;
         });

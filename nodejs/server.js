@@ -8,7 +8,7 @@ server.listen(8890);
 //소켓io 연결 비연결 !
 io.on('connection',function(socket){
     console.log('a user connected');
- 
+
     socket.on('disconnect',function(){
         console.log('a user disconnected');
     });
@@ -17,6 +17,7 @@ io.on('connection',function(socket){
 // ---------------------------------------------- 연결처리작업 
 //changes
 var count=1;
+
 var answer_c = 0;
 var quiz = 0;
 var countdown = 20000;
@@ -25,10 +26,10 @@ var countdown = 20000;
 io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
-    
+
     socket.on('answer', function(data){
        console.log('Client Send Data:', data);
-        
+
        answer_c++;
 
        io.sockets.emit('answer-sum',answer_c);
@@ -104,4 +105,81 @@ io.on('connection', function (socket){
 
 server.listen(8890, function(){ //4
     console.log('server on!');
+});
+
+
+
+
+
+/*kimseungmok*************************************/
+
+
+var race_StudentCount = 0;
+var racenav = '{\
+                "race":[{\
+                    "raceName":"스쿠스쿠문법1",\
+                    "raceCount":30}],\
+                "group":[{\
+                    "groupName":"2학년 특강 A반",\
+                    "groupStudentCount":6}]\
+                }';
+
+var user = '{\
+                "student":[{\
+                    "studentName":"김승목",\
+                    "studentNick":"모기모기"}]\
+                }';
+
+var getJsonDate_user = JSON.parse(user);
+
+
+var kim_app = require('express')();
+var kim_http = require('http').Server(kim_app);
+var kim_io = require('socket.io')(kim_http);
+var user_conn = true;
+
+
+/*kim_app.get('/',function (req, res) {
+    res.sendFile(__dirname + '../resources/views/main');
+});*/
+
+kim_io.on('connection', function(socket){
+    user_conn = true;
+    race_StudentCount++;
+    console.log('user in');
+
+
+    socket.on('disconnect', function(){
+
+        user_conn = false;
+        race_StudentCount--;
+
+        console.log('user out');
+    });
+
+    if (user_conn){
+
+        //레이스 네비 정보 전송
+        kim_io.sockets.emit('racenav data',racenav);
+
+        //유저 정보 전송
+        kim_io.sockets.emit('user data',user);
+
+        //현재 접속자 수
+        kim_io.sockets.emit('now user counting',race_StudentCount);
+
+    }else{
+
+        //나간 유저의 정보를 전송
+        kim_io.sockets.emit('disc user',user);
+
+        //현재 접속자 수
+        kim_io.sockets.emit('now user counting',race_StudentCount);
+    }
+
+});
+
+kim_http.listen(8891,function () {
+    console.log('listening on *: 8891');
+
 });

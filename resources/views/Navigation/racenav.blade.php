@@ -9,37 +9,37 @@
  */
 ?>
 
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Waiting Room</title>
+    <title>Waiting Room Navigator</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     <link href="js/bootstrap.min.js" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
 
-        var race = '{\
-                "race":[{\
-                    "raceName":"스쿠스쿠문법1",\
-                    "raceCount":30}],\
-                "group":[{\
-                    "groupName":"2학년 특강 A반",\
-                    "groupStudentCount":6}]\
-                }';
-        var members = ["egoing","k8805","sorialgi"];
+        var socket = io(':8891');
 
-        var getJsonDate = JSON.parse(race);
+        socket.on('racenav data',function(nav){
+            getJsonDate_nav = JSON.parse(nav);
+
+            $('#race_name').html(getJsonDate_nav.race[0].raceName);
+            $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
+            $('#group_name').html(getJsonDate_nav.group[0].groupName);
+            $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");
+        });
 
     </script>
 
 
-    <style>
+        <style>
         .race_container {
             background-color : #212529;
             margin : 0px;
@@ -84,7 +84,7 @@
 <div class="race_container">
     <nav class="navbar navbar-expand-lg" style="height: 100%;">
         <div class="navbar-brand">
-            <img class="nav-icon " src="img/golden_bell.png"></img>블라인드 레이스
+            <img style="width: 80px;height: 80px;" class="nav-icon " src="img/golden_bell.png"></img>블라인드 레이스
         </div>
 
         <div class="collapse navbar-collapse">
@@ -111,23 +111,12 @@
                     </span>
                 </li>
                 <li class="nav-item" >
-                    <img class="nav-icon " src="img/student.png" style="display: inline-block;"></img>
                     <span class="nav-link" style="height: 100%; display: inline-block;" id="group_student_count">학생 총 수
                     </span>
                 </li>
             </ul>
         </div>
-
     </nav>
 </div>
-
-
-<script>
-    $('#race_name').html(getJsonDate.race[0].raceName);
-    $('#race_count').html(getJsonDate.race[0].raceCount + "문항");
-    $('#group_name').html(getJsonDate.group[0].groupName);
-    $('#group_student_count').html("총 " + getJsonDate.group[0].groupStudentCount + "명");
-</script>
-
 </body>
 </html>
