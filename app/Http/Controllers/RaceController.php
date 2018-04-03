@@ -47,11 +47,11 @@ class RaceController extends Controller
         
         $groupData = DB::table('groups')
 		->select(['groups.group_num as groupId',
-			'groups.group_name as groupName',
-			DB::raw('COUNT(group_students.user_num) as studentCount')])
+			  'groups.group_name as groupName',
+			  DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		->where(['groups.group_num' => $postData['group']['groupId'],
-		'groups.user_t_num' => $sData->user_num])
+		->where(['groups.group_num'  => $postData['group']['groupId'],
+		         'groups.user_t_num' => $sData->user_num])
                 ->groupBy('groups.group_num')
 		->first();
 
@@ -87,13 +87,13 @@ class RaceController extends Controller
 
 	//return response()->json($groupData);
 	return response()->json($returnValue);
-	//return view('race/race_waitingroom')->with('json', response()->json($returnVelue));
+	//return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
     // race teacher is in to room 
-    public function roomIn(Request $request){
-        //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+    public function teacherIn(Request $request){
+        $json     = $request->input('post');
+        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
         $postData = json_decode($json, true);
 
         // race set exam check
@@ -121,6 +121,9 @@ class RaceController extends Controller
         // error incorrect race
         else {
              $returnValue = array('userTeacherCheck' => false;);
+        }
+
+        retrun response()->json($returnValue);
     }
 
     // race student is in to room
@@ -138,6 +141,8 @@ class RaceController extends Controller
 
         if($userCheck->check == 1)
         {
+            $countDown = 10;
+
             do{
             $character = DB::('characters as c')
                          ->select(['c.character_num as characterId', 'c.character_url as characterUrl']);
@@ -153,11 +158,15 @@ class RaceController extends Controller
                            ->update(['set_exam_num'  => postData['setExamId'],
                                      'character_num' => $character->characterId]);
 
-            } while($updateCheck != 1);
+                 $countDown--;
+            } while($updateCheck != 1 && $countDown > 0);
         
+            if($updateCheck == 1){
             $returnValue = array('userStudentCheck' => true,
                                  'characterUrl'     => $character->characterUrl);
-
+            } else {
+                $returnValue = array('userStudentCheck' => false);
+            }
         } else {
             $returnValue = array('userStudentCheck' => false);
         }
@@ -167,14 +176,17 @@ class RaceController extends Controller
 
     // get quiz
     public function quizNext(Request $request){
-        //$json     = $request->input('post');
+        $json     = $request->input('post');
         //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
-        //$postData = json_decode($json, true);
+        $postData = json_decode($json, true);
+
+        $raceId = DB::table('race_set_exam')
+                  ->select('set_exam_data.base as base', 'set_exam_data.bookPage as bookPage')
+                  ->where('set_exam_num', '=', $postData['race']['setExamId'])
+                  ->first();
+
         
-        DB::table('sessions')
-        ->select('session_num', '=', postData['sessionId'])
-        ->where(['room_pin_number' => postData['roomPin']])
-        ->join('race_set_exam');
+
         retrun response()->json($returnValue);
     }
 
