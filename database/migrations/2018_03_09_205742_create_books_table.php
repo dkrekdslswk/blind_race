@@ -15,7 +15,9 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->increments('book_num');
+
             $table->string('book_name', 100);
+
 	    $table->unsignedSmallInteger('book_page_max');
 	    $table->unsignedSmallInteger('book_page_min');
         });
