@@ -23,9 +23,11 @@ Vue.use(VueRouter);
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueConfetti from 'vue-confetti';
+
 Vue.use(VueAxios, axios);
 Vue.use(VueConfetti);
 import App from './App.vue';
+
 import Example from './components/Example.vue';
 import Login from './components/Login.vue';
 import Result from './components/Result.vue';
@@ -37,10 +39,11 @@ import playing from './components/playing';
 const routes = [
   {  path: '/ctest',  component: chat },
   {  path: '/login', component: Login   },
-  {  path: '/',      component :Footer },
-  {  path: '/',      component :Modal  },
+  // {  path: '/',      component :Footer },
+  // {  path: '/',      component :Modal  },
   {  path: '/AJH',      component :AJH },
-  {  path: '/playing',      component :playing }
+  {  path: '/playing',      component :playing },
+  {  path: '/recordbox',      component :Result }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

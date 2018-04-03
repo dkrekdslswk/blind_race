@@ -63,6 +63,9 @@
                 font-size: 18px;
             }
         }
+        #mid_result{
+            margin-left:160px;
+        }
     </style>
 </head>
 
@@ -81,31 +84,51 @@
         //아아아
         var quiz_number = 0;
 
-        var timeleft = 10;
+        var timeleft = 20;
 
         var quiz_JSON = [
-            {"quiz_num":"1", "name":"1今元気ですか",　"answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"},
-            {"quiz_num":"2", "name":"2怒った？",　"answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"},
-            {"quiz_num":"3", "name":"3持ちいいいいいい","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"},
-            {"quiz_num":"4", "name":"4いいいいいい","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"},
-            {"quiz_num":"5", "name":"5い","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"}
+            {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
+            {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
+            {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
+            {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
+            {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
         ];
 
+
+        
         //서버 카운트다운 인
         socket.emit('count','1');
+  
+  
+        socket.on('mid_ranking',function(data){
+            document.getElementById('counter').innerText= " ";
+            
+            $("#content").hide();
+            
+            
+            
+            $("#mid_result").html(data);
+            $("#mid_result").show();
+            setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide();  }, 3000);
+           
+        });
+
         socket.on('timer', function (data) {
             var counting = data/1000;
             document.getElementById('counter').innerText= counting;
+            
+             document.getElementById("progressBar")
+                    .value = 20 - counting;
+                if (timeleft == 0)
+                    timeleft = 20;
+        
+            
+            if(counting == 0 )
+                socket.emit('count_off','on');
         });
+
         //상탄 타임 게이지 바
-        var downloadTimer = setInterval(function () {
-                document
-                    .getElementById("progressBar")
-                    .value = 10 - --timeleft;
-                if (timeleft <= 0)
-                    clearInterval(downloadTimer);
-            }
-            , 1000);
+       
 
         var x = document.getElementById("mondai");
         var A1 = document.getElementById("answer1");
@@ -120,7 +143,7 @@
             if(data == 2)
             {
 
-                socket.emit('nextquiz','뭐넣징ㅎ');
+                socket.emit('count_off','on');
                 document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
 
             }
@@ -161,47 +184,46 @@
 
 
     <div id='content'>
-
-
-
         <div id="answer_c">0/6명(db) 풀이완료</div>
         <div id="load_tweets">
             <center>
-                <progress style="width:100%;"  value="0" max="10" id="progressBar"></progress>
-
+                <progress style="width:100%;"  value="0" max="20" id="progressBar"></progress>
                 <div id="questions">
                     <form name="formName" action="url_with_programming_here" method="POST">
-                        <h1 id="counter">zzz</h1>
-                        <h2 id="mondai">json을 잘몰겠슴다</h2>
-
+                        <h1 id="counter"></h1>
+                        <h2 id="mondai"></h2>
                     </form>
             </center>
         </div>
-    </div>
-
-
     <!--문제 번호-->
     <div class="row">
         <div class="column" style="background-color:#1bbc9b; ">
             <p id="answer1">1번</p>
         </div>
-
         <div class="column" style="background-color:#3598db;">
             <p id="answer2">2번</p>
         </div>
-
         <div class="column" style="background-color:#f1c40f;">
             <p id="answer3">3번</p>
         </div>
-
         <div class="column" style="background-color:#e84c3d;">
             <p id="answer4">4번</p>
         </div>
     </div>
+</div>
+</div>
 
-
-
-
+<div id='mid_result' style='display:none;'>
+   <div class="jumbotron">
+  <h1 class="display-4">Hello, world!</h1>
+  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+  </p>
+</div>
+   
 </div>
 
 </body>

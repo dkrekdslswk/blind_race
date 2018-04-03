@@ -28,11 +28,16 @@ class CreateRaceSetExamTable extends Migration
 
         Schema::create('race_set_exam', function (Blueprint $table) {
             $table->increments('set_exam_num');
+
 	    $table->unsignedInteger('group_num');
+
             $table->char('set_exam_state', 1);
 	    $table->foreign('set_exam_state')->references('keyword')->on('race_set_exam_state_keyword');
+
 	    $table->unsignedSmallInteger('exam_count');
+
 	    $table->json('set_exam_data')->nullable();
+
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

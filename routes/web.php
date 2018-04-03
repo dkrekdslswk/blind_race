@@ -31,12 +31,12 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-Route::get('/race_waitingroom', function(){
-    return view('Race/race_waitingroom');
+Route::get('/race_waiting', function(){
+    return view('Race/race_waiting');
 });
 
 Route::get('/recordbox', function(){
-    return view('Recordbox/recordbox');
+     return view('Race/Result');
 });
 
 Route::get('/feedback', function(){
@@ -67,6 +67,10 @@ Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
+//// ↓↓↓↓↓↓↓ transfer test _yoolme
+//Route::get('/', function(){
+//    return view('test');
+//});
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
