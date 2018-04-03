@@ -18,11 +18,9 @@ class CreatePlayingQuizsTable extends Migration
 	    $table->unsignedInteger('user_num');
 	    $table->unsignedInteger('sequence');
             $table->unsignedTinyInteger('retake')->default(0);
-	    $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
-
             $table->string('result', 100);
-
             $table->text('wrong_answer_note')->nullable();
+	    $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
         });
     }
 

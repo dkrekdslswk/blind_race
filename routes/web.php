@@ -11,9 +11,9 @@
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('main');
-});*/
+});
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
@@ -31,8 +31,13 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-Route::get('/race_waitingroom', function(){
+<<<<<<< HEAD
+Route::get('/race_waiting', function(){
+    return view('Race/race_waiting');
+=======
+Route::get('/race/race_waitingroom', function(){
     return view('Race/race_waitingroom');
+>>>>>>> efc7032725a8bb172272d550e0d3c1713d73cdbc
 });
 
 Route::get('/recordbox', function(){
@@ -75,5 +80,5 @@ Route::get('/', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController','RaceController@create');
+Route::post('/raceController/{post}','RaceController@create');
 
