@@ -25,7 +25,6 @@ class RaceController extends Controller
                   ->select(['user_num'])
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
-<<<<<<< HEAD
 
         if(is_null($userId->session_num)){
              Session::put('sessionId', DB::table('sessions')
@@ -114,14 +113,10 @@ class RaceController extends Controller
            && (($setExamTest->setExamCount != 0)
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
 
-             DB::table('sessions')
-             ->where('session_num', '=', postData['sessionId'])
-             ->update(['room_pin_number' => postData['roomPin']]);
-
              $returnValue = array('race' => array('setExamId'    => $setExamTast->setExamId,
                                                   'setExamCount' => $setExamTast->setExamCount),
                                   'group' => array('groupId'     => $setExamTast->groupId),
-                                  'userTeacherCheck' => true;);
+                                  'userTeacherCheck' => true);
         } 
         // error incorrect race
         else {
@@ -136,14 +131,36 @@ class RaceController extends Controller
         
         $userCheck = DB::table('groupStudent as gs')
                      ->select([DB::raw('COUNT(*) as check')])
-                     ->where(['gs.group_num'  => $postData['group']['groupId']
-                              's.session_num' => $postData['session']['sessionId']])
+                     ->where(['gs.group_num'  => $postData['groupId'],
+                              's.session_num' => $postData['sessionId']])
                      ->join('sessions as s', 's.user_num', '=', 'gs.user_num')
                      ->first();
 
-        DB::table('sessions')
-        ->where('session_num', '=', postData['sessionId'])
-        ->update(['room_pin_number' => postData['roomPin']]);
+        if($userCheck->check == 1)
+        {
+            do{
+            $character = DB::('characters as c')
+                         ->select(['c.character_num as characterId', 'c.character_url as characterUrl']);
+                         ->where(['rr.set_exam_num' => $postData['setExamId'],
+                                  DB::raw('s.session_num IS NULL')])
+                         ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
+                         ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
+                         ->inRandomOrder()
+                         ->first();
+
+            $updateCheck = DB::table('sessions')
+                           ->where('session_num', '=', postData['sessionId'])
+                           ->update(['set_exam_num'  => postData['setExamId'],
+                                     'character_num' => $character->characterId]);
+
+            } while($updateCheck != 1);
+        
+            $returnValue = array('userStudentCheck' => true,
+                                 'characterUrl'     => $character->characterUrl);
+
+        } else {
+            $returnValue = array('userStudentCheck' => false);
+        }
 
         retrun response()->json($returnValue);
     }
