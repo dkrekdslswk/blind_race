@@ -7,7 +7,7 @@
  */
 ?>
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,50 +24,50 @@
 
     <script type="text/javascript">
 
-    var getJsonDate_nav = '';
-    var getJsonDate_user = '';
+        var getJsonDate_nav = '';
+        var getJsonDate_user = '';
 
-    $(function () {
-        var socket = io(':8891');
-        var table_row_count = 0;
+        $(function () {
+            var socket = io(':8891');
+            var table_row_count = 0;
 
-        var char_ran = Math.floor(Math.random() * 4) + 1;
+            var char_ran = Math.floor(Math.random() * 4) + 1;
 
-        socket.on('now user counting',function(std){
+            socket.on('now user counting',function(std){
 
-            $('#student_count').html("접속자 : " + std);
+                $('#student_count').html("접속자 : " + std);
 
-            table_row_count = Math.floor(std / 10) + 1;
+                table_row_count = Math.floor(std / 10) + 1;
 
-            for (var i = 0 ; i < table_row_count ; i++){
-                $('#characterTable').append($('<tr id="characterTr' + table_row_count + '">'));
-            }
+                for (var i = 0 ; i < table_row_count ; i++){
+                    $('#characterTable').append($('<tr id="characterTr' + table_row_count + '">'));
+                }
 
-            $('#characterTr'+table_row_count).
-            append($('<td>').
-            html('<img style="width: 80px;height: 80px;" class="nav-icon " src="img/character/char'+char_ran+'.png"><br/>'));
+                $('#characterTr'+table_row_count).
+                append($('<td>').
+                html('<img style="width: 80px;height: 80px;" class="nav-icon " src="img/character/char'+char_ran+'.png"><br/>'));
+            });
+
+            socket.on('user data',function(conn){
+                getJsonDate_user = JSON.parse(conn);
+                var nick = getJsonDate_user.student[0].studentNick;
+
+                $('#messages').append($('<li>').text(nick+"님이 입장했습니다.")).fadeOut(1000);
+
+    /*            $('#characterTr'+table_row_count)
+                        .append('<td>')
+                        .html('<img src="img/character/char'+char_ran+'.png" style="width: 80px;height: 80px;"><br>' + nick))
+                .fadeOut(1000)*/
+            });
+
+            socket.on('disc user',function(disc){
+                getJsonDate_user = JSON.parse(disc);
+                var nick = getJsonDate_user.student[0].studentNick;
+
+                $('#messages').append($('<li>').text(nick+"님이 퇴장했습니다."));
+            });
+
         });
-
-        socket.on('user data',function(conn){
-            getJsonDate_user = JSON.parse(conn);
-            var nick = getJsonDate_user.student[0].studentNick;
-
-            $('#messages').append($('<li>').text(nick+"님이 입장했습니다."));
-
-/*            $('#characterTr'+table_row_count)
-                    .append('<td>')
-                    .html('<img src="img/character/char'+char_ran+'.png" style="width: 80px;height: 80px;"><br>' + nick))
-            .fadeOut(1000)*/
-        });
-
-        socket.on('disc user',function(disc){
-            getJsonDate_user = JSON.parse(disc);
-            var nick = getJsonDate_user.student[0].studentNick;
-
-            $('#messages').append($('<li>').text(nick+"님이 퇴장했습니다."));
-        });
-
-    });
 
     </script>
 
@@ -133,7 +133,7 @@
 
     </table>
 </div>
-<img style="width: 80px;height: 80px;" class="nav-icon " src="img/golden_bell.png">
+
 
 </body>
 </html>

@@ -31,13 +31,12 @@ Route::get('/race', function(){
     return view('Race/race');
 });
 
-<<<<<<< HEAD
-Route::get('/race_waiting', function(){
+Route::get('/race_waiting', function() {
     return view('Race/race_waiting');
-=======
+});
+
 Route::get('/race/race_waitingroom', function(){
     return view('Race/race_waitingroom');
->>>>>>> efc7032725a8bb172272d550e0d3c1713d73cdbc
 });
 
 Route::get('/recordbox', function(){
