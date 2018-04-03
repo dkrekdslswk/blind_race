@@ -16,14 +16,10 @@ class CreateRaceTable extends Migration
     {
         Schema::create('races', function (Blueprint $table) {
             $table->increments('race_num');
-
 	    $table->unsignedInteger('user_t_num');
 	    $table->foreign('user_t_num')->references('user_t_num')->on('user_teachers');
-
             $table->string('race_name', 100);
-
             $table->string('race_folder_name', 100);
-
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
