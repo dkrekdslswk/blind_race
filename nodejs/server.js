@@ -2,7 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// Mysql 노드 모듈 부분 
+// Mysql 노드 모듈 부분
 var mysql      = require('mysql');
 var dbconfig   = require('./config/database.js');
 var connection = mysql.createConnection(dbconfig);
@@ -50,85 +50,17 @@ var quiz = 0;
 var countdown = 10000;
 
 var TimerOn = false;
-<<<<<<< HEAD
-var Timer ; 
-=======
 var Timer ;
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
 
 
 io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
 
-<<<<<<< HEAD
 
     socket.on('android_nextkey',function(data){
-            io.sockets.emit('android_nextquiz','미정');
+        io.sockets.emit('android_nextquiz','미정');
     });
-    
-
-    // 타이머 시작함수
-    socket.on('count',function(data){
-        
-            Timer = setInterval(function () {
-                countdown -= 1000;
-                io.sockets.emit('timer', countdown);
-            }, 1000);
-            console.log('타임온','그만');
-            if( data == '1')
-                quiz = 0 ; socket.emit('nextok',quiz);
-    });
-
-    socket.on('count_off', function(data){
-        quiz++;
-        countdown = 10000;
-        socket.emit('nextok',quiz);
-        clearInterval(Timer);
-         answer_c = 0 ;
-         
-         
-         var ranking_query = "select user_num , count(result) from playing_quizs where result='1' and set_exam_num='1'  group by user_num";      
-         
-        
-         connection.query(ranking_query, function(err, rows) {
-            if(err) throw err;
-            console.log('The solution is: ', rows);
-            var query_result = JSON.stringify(rows);
-             
-        io.sockets.emit('mid_ranking' ,query_result);
-        console.log('타임 스탑', query_result);
-        
-         });      
-    });
-
-//퀴즈 답받는 소켓 함수
-    socket.on('answer', function(answer_num , student_num , nickname){
-        console.log('Client Send Data:', answer_num);
-        var quizin = quiz+1;
-        // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
-        var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
-        console.log('user',count);
-        connection.query(answer_query, function(err, rows) {
-            if(err) throw err;
-            console.log('The solution is: ', rows);
-        });
-        answer_c++;
-        io.sockets.emit('answer-sum',answer_c);
-        console.log('answer counting: ', answer_c);
-    });
-
-
-
-
-
-=======
-
-    // socket.on('race_on',function(data){
-    //     if(TimerOn == false){
-    //         socket.emit('race_on','connect');
-    //     }
-    // });
 
     // 타이머 시작함수
     socket.on('count',function(data){
@@ -158,13 +90,12 @@ io.on('connection', function (socket){
             console.log('The solution is: ', rows);
             var query_result = JSON.stringify(rows);
 
-            socket.emit('mid_ranking' ,query_result);
-            io.sockets.emit('permit_answer','미정');
+            io.sockets.emit('mid_ranking' ,query_result);
             console.log('타임 스탑', query_result);
 
         });
     });
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
+
 
 //퀴즈 답받는 소켓 함수
     socket.on('answer', function(answer_num , student_num , nickname){
@@ -181,9 +112,6 @@ io.on('connection', function (socket){
         io.sockets.emit('answer-sum',answer_c);
         console.log('answer counting: ', answer_c);
     });
-
-
-
 
 
 

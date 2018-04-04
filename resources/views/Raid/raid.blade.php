@@ -94,44 +94,21 @@
         ];
 
 
-<<<<<<< HEAD
-        
+
         socket.emit('count','1');
-  
+
         socket.on('mid_ranking',function(data){
             document.getElementById('counter').innerText= " ";
-            
+
             $("#content").hide();
             $("#mid_result").html(data);
             $("#mid_result").show();
             setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
-=======
-
-        socket.emit('count','1');
-
-        socket.on('mid_ranking',function(data){
-            document.getElementById('counter').innerText= " ";
-
-            $("#content").hide();
-            $("#mid_result").html(data);
-            $("#mid_result").show();
-            setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide();  }, 3000);
-            socket.emit('android_nextquiz','미정');
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
         });
 
         socket.on('timer', function (data) {
             var counting = data/1000;
             document.getElementById('counter').innerText= counting;
-<<<<<<< HEAD
-            
-             document.getElementById("progressBar")
-                    .value = 20 - counting;
-                if (timeleft == 0)
-                    timeleft = 20;
-        
-            
-=======
 
             document.getElementById("progressBar")
                 .value = 20 - counting;
@@ -139,17 +116,12 @@
                 timeleft = 20;
 
 
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
             if(counting == 0 )
                 socket.emit('count_off','on');
         });
 
         //상탄 타임 게이지 바
-<<<<<<< HEAD
-       
-=======
 
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
 
         var x = document.getElementById("mondai");
         var A1 = document.getElementById("answer1");
@@ -171,26 +143,9 @@
         });
 
         socket.on('nextok',function(data){
-<<<<<<< HEAD
-           
-            if(quiz_JSON.length == data){
-                 location.href="/recordbox";
-            }
-            else{
-             x.innerText  = quiz_JSON[data].name ;
-            A1.innerText = quiz_JSON[data].answer1;
-            A2.innerText = quiz_JSON[data].answer2;
-            A3.innerText = quiz_JSON[data].answer3;
-            A4.innerText = quiz_JSON[data].answer4;
-            
-=======
 
             if(quiz_JSON.length == data){
-                x.innerText  =  "문제끝";
-                A1.innerText =  "문제끝";
-                A2.innerText =  "문제끝";
-                A3.innerText =  "문제끝";
-                A4.innerText = "문제끝";
+                location.href="/recordbox";
             }
             else{
                 x.innerText  = quiz_JSON[data].name ;
@@ -199,7 +154,6 @@
                 A3.innerText = quiz_JSON[data].answer3;
                 A4.innerText = quiz_JSON[data].answer4;
 
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
             }
         });
 
@@ -240,32 +194,6 @@
                     </form>
             </center>
         </div>
-<<<<<<< HEAD
-    <!--문제 번호-->
-    <div class="row">
-        <div class="column" style="background-color:#1bbc9b; ">
-            <p id="answer1">1번</p>
-        </div>
-        <div class="column" style="background-color:#3598db;">
-            <p id="answer2">2번</p>
-        </div>
-        <div class="column" style="background-color:#f1c40f;">
-            <p id="answer3">3번</p>
-        </div>
-        <div class="column" style="background-color:#e84c3d;">
-            <p id="answer4">4번</p>
-        </div>
-    </div>
-</div>
-</div>
-
-<div id='mid_result' style='display:none;'>
-    <div id="app">
-    </div>
-</div>
- 
- 
-=======
         <!--문제 번호-->
         <div class="row">
             <div class="column" style="background-color:#1bbc9b; ">
@@ -285,17 +213,11 @@
 </div>
 
 <div id='mid_result' style='display:none;'>
-    <div class="jumbotron">
-        <h1 class="display-4">Hello, world!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-        <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p>
+    <div id="app">
     </div>
+</div>
 
->>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
+
 </div>
 
 </body>
