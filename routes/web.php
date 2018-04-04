@@ -77,7 +77,7 @@ Route::get('/raid', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController/{post}','RaceController@create');
+Route::post('/raceController/create/{post}','RaceController@create');
 Route::post('/raceController/teacherIn/{post}','RaceController@teacherIn');
 Route::post('/raceController/studentIn/{post}','RaceController@studentIn');
 Route::post('/raceController/quizNext/{post}','RaceController@quizNext');
