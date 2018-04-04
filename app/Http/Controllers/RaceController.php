@@ -89,7 +89,7 @@ class RaceController extends Controller
 	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
-
+/*
     // race teacher is in to room 
     public function teacherIn(Request $request){
         $json     = $request->input('post');
@@ -188,7 +188,7 @@ class RaceController extends Controller
         
 
         retrun response()->json($returnValue);
-    }
+    }*/
 
 
     public function destroy($id)
