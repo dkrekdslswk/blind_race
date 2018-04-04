@@ -36,9 +36,9 @@ class CreateQuizBankTable extends Migration
 
 	    $table->string('quiz_question',1000);
 	    $table->string('quiz_right_answer',100);
-	    $table->string('quiz_example1',100);
-	    $table->string('quiz_example2',100);
-	    $table->string('quiz_example3',100);
+	    $table->string('quiz_example1',100)->nullable();
+	    $table->string('quiz_example2',100)->nullable();
+	    $table->string('quiz_example3',100)->nullable();
 
             $table->char('quiz_type', 1);
 	    $table->foreign('quiz_type')->references('keyword')->on('quiz_type_keyword');

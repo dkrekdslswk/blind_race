@@ -11,14 +11,14 @@ class RaceController extends Controller
     // race create first order
     public function create(Request $request)
     {
-        //$json     = $request->input('post');
-        //$json     = json_encode(array('group' => array('groupId' => 1), 
-        //                              'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        //$postData = json_decode($json);
-        $postData = array('group' => array('groupId'   => $request->input('groupId')), 
-                          'race'  => array('raceMode'  => $request->input('raceMode'), 
-                                           'examCount' => $request->input('examCount'), 
-                                           'raceId'    => $request->input('raceId')));
+        $json     = $request->input('post');
+        $json     = json_encode(array('group' => array('groupId' => 1), 
+                                      'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
+        $postData = json_decode($json);
+        //$postData = array('group' => array('groupId'   => $request->input('groupId')), 
+        //                  'race'  => array('raceMode'  => $request->input('raceMode'), 
+        //                                   'examCount' => $request->input('examCount'), 
+        //                                   'raceId'    => $request->input('raceId')));
 
 	// test
         $userId = DB::table('users')
@@ -69,7 +69,7 @@ class RaceController extends Controller
                 'group_num'=>$groupData->groupId,
                 'set_exam_state'=>$postData['race']['raceMode'], 
                 'exam_count'=>$postData['race']['examCount'],
-                'set_exam_data'=>'{"base":"' . $raceCheck->race_num . '","bookPage":null}'
+                'race_num'=>$raceCheck->race_num
                 ], 'set_exam_num');
 
             DB::table('sessions')
@@ -89,11 +89,11 @@ class RaceController extends Controller
 	return response()->json($returnValue);
 	//return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
-
+/*
     // race teacher is in to room 
     public function teacherIn(Request $request){
-        $json     = $request->input('post');
-        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        //$json     = $request->input('post');
+        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 1));
         $postData = json_decode($json, true);
 
         // race set exam check
@@ -107,11 +107,15 @@ class RaceController extends Controller
                        ->where('sessions.session_num', '=', postData['sessionId'])
                        ->groupBy('sessions.session_num')
                        ->first();
-       
+        
         // first exam start
         if(isset($setExamTest->setExamCount)
            && (($setExamTest->setExamCount != 0)
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
+
+             $updateCheck = DB::table('sessions')
+                            ->where('session_num', '=', postData['sessionId'])
+                            ->update(['room_pin_num' => postData['roomPin']]);
 
              $returnValue = array('race' => array('setExamId'    => $setExamTast->setExamId,
                                                   'setExamCount' => $setExamTast->setExamCount),
@@ -128,8 +132,8 @@ class RaceController extends Controller
 
     // race student is in to room
     public function studentIn(Request $request){
-        $json     = $request->input('post');
-        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        //$json     = $request->input('post');
+        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 1, 'groupId' => 1));
         $postData = json_decode($json, true);
         
         $userCheck = DB::table('groupStudent as gs')
@@ -176,19 +180,50 @@ class RaceController extends Controller
 
     // get quiz
     public function quizNext(Request $request){
-        $json     = $request->input('post');
-        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => ));
+        //$json     = $request->input('post');
+        $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 1, 'sessionId' => 1));
         $postData = json_decode($json, true);
 
-        $raceId = DB::table('race_set_exam')
-                  ->select('set_exam_data.base as base', 'set_exam_data.bookPage as bookPage')
-                  ->where('set_exam_num', '=', $postData['race']['setExamId'])
-                  ->first();
+        $chaeck = DB::table('sessions')
+                  ->select(DB::raw('COUNT(*) as check'))
+                  ->where(['session_num'     => $postData['sessionId'],
+                           'set_exam_num'    => $postData['setExamId'],
+                           'room_pin_number' => $postData['roomPin']])
+                  ->first;
 
-        
+        if($chaeck->check == 1){
+            $raceId = DB::table('race_set_exam as rse')
+                      ->select('rse.race_num                 as base', 
+                               'rse.book_num                 as bookId', 
+                               'rse.book_page_start          as pageStart', 
+                               'rse.book_page_end            as pageEnd',
+                               'rse.exam_count               as setExamCount',
+			       DB::raw('COUNT(quiz.sequence) as examCount'),)
+                      ->where('rse.set_exam_num', '=', $postData['setExamId'])
+                      ->join('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
+                      ->groupBy('res.set_exam_num')
+                      ->first();
+
+            $returnValue = DB::table('race_quizs as rq')
+                        ->select('qb.quiz_question     as question',
+                                 'qb.quiz_right_answer as right',
+                                 'qb.quiz_example1     as exam1',
+                                 'qb.quiz_example1     as exam2',
+                                 'qb.quiz_example1     as exam3',
+                                 'qb.quiz_type         as type')
+                        ->where(['rq.race_num'       => $raceId->base,
+                                 'rseq.set_exam_num' => $postData['setExamId'],
+                                 DB::raw('rseq.sequence IS NULL')]);
+                        ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', 'rq.quiz_num')
+                        ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
+                        ->inRandomOrder()
+                        ->first();
+        } else {
+            $returnValue = "fail";
+        }
 
         retrun response()->json($returnValue);
-    }
+    }*/
 
 
     public function destroy($id)
