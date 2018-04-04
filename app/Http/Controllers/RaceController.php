@@ -27,11 +27,11 @@ class RaceController extends Controller
                   ->first();
 
         if(!isset($userId->session_num)){
-             Session::put('sessionId', DB::table('sessions')
+             $session['sessionId'] = DB::table('sessions')
                                        ->insertGetId(['user_num'    => $userId->user_num, 
-                                                      'session_num' => $userId->session_num]));
+                                                      'session_num' => $userId->session_num]);
         }else{
-             Session::put('sessionId', $userId->session_num);
+             $session['sessionId'] = $userId->session_num;
         }
         // test
 
@@ -41,7 +41,7 @@ class RaceController extends Controller
 
         $sData = DB::table('sessions')
                  ->select(['user_num'])
-                 ->where('session_num', '=', Session::get('sessionId'))
+                 ->where('session_num', '=', $session['sessionId'])
                  ->first();
         // test
         
@@ -73,7 +73,7 @@ class RaceController extends Controller
                 ], 'set_exam_num');
 
             DB::table('sessions')
-            ->where('session_num', '=', Session::get('sessionId'))
+            ->where('session_num', '=', $session['sessionId'])
             ->update(['set_exam_num' => $raceSetExamId]);
 
        	    $returnValue = array(
@@ -81,7 +81,7 @@ class RaceController extends Controller
                                        'examCount'         =>$postData['race']['examCount']),
        	                 'group'=>array('groupName'         => $groupData->groupName,
        	                                'groupStudentCount' => $groupData->studentCount),
-       	                 'sessionId'=>Session::get('sessionId'));
+       	                 'sessionId'=>$session['sessionId']);
 
         }
 
