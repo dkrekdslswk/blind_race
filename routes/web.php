@@ -39,6 +39,8 @@ Route::get('/recordbox', function(){
     return view('Race/Result');
 });
 
+
+
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });

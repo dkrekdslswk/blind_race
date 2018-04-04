@@ -66,16 +66,17 @@
             margin-left:160px;
         }
     </style>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body id="client">
-
-<script src="//code.jquery.com/jquery-1.11.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
-<div id="app">
-</div>
-<script src="{{asset('js/app.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script>
 
     window.onload = function () {
@@ -101,7 +102,7 @@
             document.getElementById('counter').innerText= " ";
 
             $("#content").hide();
-            $("#mid_result").html(data);
+            // $("#mid_result").html(data);
             $("#mid_result").show();
             setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
         });
@@ -212,14 +213,16 @@
     </div>
 </div>
 
-<div id='mid_result' style='display:none;'>
-    <div id="app">
-    </div>
+<div id='mid_result' style='display:none;' >
+
+    <!-- <div id="app">
+    </div> -->
+    @include('Race.midresult')
 </div>
 
 
 </div>
-
+<script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
 
