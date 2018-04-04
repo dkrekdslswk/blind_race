@@ -77,10 +77,10 @@ Route::get('/raid', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController/create/{post}','RaceController@create');
-Route::post('/raceController/teacherIn/{post}','RaceController@teacherIn');
-Route::post('/raceController/studentIn/{post}','RaceController@studentIn');
-Route::post('/raceController/quizNext/{post}','RaceController@quizNext');
+Route::post('/raceController/create','RaceController@create');
+Route::post('/raceController/teacherIn','RaceController@teacherIn');
+Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/quizNext','RaceController@quizNext');
 
 Route::get('/race', function(){
     return view('Race/race');
