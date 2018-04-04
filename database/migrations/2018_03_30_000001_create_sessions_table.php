@@ -25,7 +25,10 @@ class CreateSessionsTable extends Migration
 
             $table->unsignedInteger('set_exam_num')->nullable();
 	    $table->foreign('set_exam_num')->references('set_exam_num')->on('race_set_exam');
-	    $table->unique('set_exam_num');
+
+            $table->increments('character_num')->nullable();
+	    $table->foreign('character_num')->references('character_num')->on('characters');
+	    $table->unique(['set_exam_num', 'character_num']);
 
             $table->unsignedInteger('sequence')->nullable();
 	    $table->foreign('sequence')->references('sequence')->on('race_set_exam_quizs');
@@ -37,9 +40,6 @@ class CreateSessionsTable extends Migration
 
             $table->unsignedInteger('team_num')->nullable();
 	    $table->foreign('team_num')->references('team_num')->on('race_teams');
-
-            $table->increments('character_num')->nullable();
-	    $table->foreign('character_num')->references('character_num')->on('characters');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

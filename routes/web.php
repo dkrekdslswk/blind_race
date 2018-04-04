@@ -36,7 +36,11 @@ Route::get('/race_waiting', function(){
 });
 
 Route::get('/recordbox', function(){
+<<<<<<< HEAD
      return view('Race/Result');
+=======
+    return view('Race/Result');
+>>>>>>> f49fe5743c6aafafca2c009a04a41f2c8a8407e1
 });
 
 Route::get('/feedback', function(){
