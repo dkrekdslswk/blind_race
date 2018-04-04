@@ -31,15 +31,12 @@ class RaceController extends Controller
         if(!isset($userId->session_num)){
              $session['sessionId'] = DB::table('sessions')
                                        ->insertGetId(['user_num' => $userId->user_num],
-                                                     'session_num');
+                                                     'session_num')
+                                       ->first();
         }else{
              $session['sessionId'] = $userId->session_num;
         }
         // test
-
-        $session['sessionId']   = DB::table('sessions')
-                             ->insertGetId(['user_num' => $userId->user_num], 'session_num')
-                             ->first();
 
         $sData = DB::table('sessions')
                  ->select(['user_num'])
