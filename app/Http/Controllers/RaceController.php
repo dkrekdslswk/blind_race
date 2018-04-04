@@ -26,7 +26,7 @@ class RaceController extends Controller
                   ->where('user_id', '=', 'tamp1id')
                   ->first();
 
-        if(is_null($userId->session_num)){
+        if(isset($userId->session_num)){
              Session::put('sessionId', DB::table('sessions')
                                        ->insertGetId(['user_num'    => $userId->user_num, 
                                                       'session_num' => $userId->session_num]));
