@@ -72,5 +72,11 @@ class BlindDymmyTableSeeder extends Seeder
                 'quiz_num'=>$quizId
             ]);
 	}
+        
+        for($char = 1 ; $char <= 5 ; $char++){
+            DB::table('characters')->insert([
+                'character_url'   => 'img/character/char'.(string)$char
+            ]);
+        }
     }
 }

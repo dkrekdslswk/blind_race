@@ -47,16 +47,21 @@ io.on('connection',function(socket){
 var count=1;
 var answer_c = 0;
 var quiz = 0;
-var countdown = 20000;
+var countdown = 10000;
 
-//타이머온?
-var timerOn = true;
-var Timer ;
+var TimerOn = false;
+var Timer ; 
 
 
 io.on('connection', function (socket){
     var name = "user" + count++;
     console.log('connected',name);
+
+
+    socket.on('android_nextkey',function(data){
+            io.sockets.emit('android_nextquiz','미정');
+    });
+    
 
     // 타이머 시작함수
     socket.on('count',function(data){
@@ -72,7 +77,7 @@ io.on('connection', function (socket){
 
     socket.on('count_off', function(data){
         quiz++;
-        countdown = 20000;
+        countdown = 10000;
         socket.emit('nextok',quiz);
         clearInterval(Timer);
          answer_c = 0 ;
@@ -86,8 +91,9 @@ io.on('connection', function (socket){
             console.log('The solution is: ', rows);
             var query_result = JSON.stringify(rows);
              
-        socket.emit('mid_ranking' ,query_result);
+        io.sockets.emit('mid_ranking' ,query_result);
         console.log('타임 스탑', query_result);
+        
          });      
     });
 
@@ -109,78 +115,10 @@ io.on('connection', function (socket){
 
 
 
-    //
-    // var room_No = null;
-    // socket.on('join', function(room_num){
-    //     room_No = room_num;
-    //     socket.join(room_num);
-    //     console.log('join!',room_No);
-    //     if(answer_c == '5')
-    //         io.sockets.emit('room_num','12');
-    // });
-    //
-    // //룸참가
-    // socket.on('joinroom',function(student_num , nickname){
-    //     //   io.sockets.in('Name').emit('joinroom',student_num , nickname);
-    //     io.sockets.emit('joinroom',student_num , nickname);
-    //     console.log('joinroom',student_num);
-    // });
-    //
-    // socket.on('nextquiz',function(data){
-    //     //다음문제로 가기전 응답자수를 0으로 초기화
-    //     answer_c = 0 ;
-    //     //다음 퀴즈로넘어가도록 퀴즈번호를 업
-    //     quiz++;
-    //     //카운트가 다되어서 문제를 넘어갈 때
-    //     if (countdown == 1000) {
-    //         socket.emit('mid_result',quiz);
-    //         countdown = 10000;
-    //         console.log('time end add', quiz);
-    //     }
-    //     //문제를 다풀어서 넘어갈 때
-    //         if(data == 0) {
-    //             quiz = 0;
-    //             socket.emit('nextok', quiz);
-    //             countdown = 10000;
-    //             console.log('answer_sum add', quiz);
-    //         }
-    // });
-    //
-    // socket.on('nextok' , function(data){
-    //
-    // });
-
 
 
 
 });
-// 병찬이형 연습할 자리 
-
-
-
-
-
-// io.on('connection', function(socket){ //3
-//     console.log('user connected: ', socket.id);  //3-1
-//     var name = "user" + count++;                 //3-1
-//     io.to(socket.id).emit('change name',name);   //3-1
-//
-//     socket.on('disconnect', function(){ //3-2
-//         console.log('user disconnected: ', socket.id);
-//     });
-//
-//     socket.on('answer', function(text){
-//        answer_c++;
-//        console.log(answer_c);
-//        io.emit('receive answer', answer_c);
-//     });
-//
-//     socket.on('send message', function(name,text){ //3-3
-//         var msg = name + ' : ' + text;
-//         console.log(msg);
-//         io.emit('receive message', msg);
-//     });
-// });
 
 server.listen(8890, function(){ //4
     console.log('server on!');

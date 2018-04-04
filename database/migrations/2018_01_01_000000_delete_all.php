@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,13 +15,9 @@ class DeleteAll extends Migration
     {
         Schema::dropIfExists('playing_quizs');
 
-
-        //
-
         Schema::dropIfExists('sessions');
 
         Schema::dropIfExists('characters');
-        //
 
         Schema::dropIfExists('mistaken_quizs');
         Schema::dropIfExists('race_mistaken_quizs');

@@ -67,16 +67,16 @@ Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
-//// ↓↓↓↓↓↓↓ transfer test _yoolme
-//Route::get('/', function(){
-//    return view('test');
-//});
+// ↓↓↓↓↓↓↓ transfer test _yoolme
+// Route::get('/', function(){
+//     return view('test');
+// });
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController','RaceController@create');
+Route::post('/raceController/{post}','RaceController@create');
 
 Route::get('/race', function(){
-    return view('Race/Result');
+    return view('Race/race');
 });

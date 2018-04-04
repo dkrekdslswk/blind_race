@@ -34,7 +34,6 @@
             display: block;
             margin-right: 10px;
         }
-
         .sidenav a:hover {
             color: #064579;
         }
@@ -96,21 +95,15 @@
 
 
         
-        //서버 카운트다운 인
         socket.emit('count','1');
-  
   
         socket.on('mid_ranking',function(data){
             document.getElementById('counter').innerText= " ";
             
             $("#content").hide();
-            
-            
-            
             $("#mid_result").html(data);
             $("#mid_result").show();
-            setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide();  }, 3000);
-           
+            setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
         });
 
         socket.on('timer', function (data) {
@@ -150,12 +143,18 @@
         });
 
         socket.on('nextok',function(data){
-            x.innerText  = quiz_JSON[data].name ;
+           
+            if(quiz_JSON.length == data){
+                 location.href="/recordbox";
+            }
+            else{
+             x.innerText  = quiz_JSON[data].name ;
             A1.innerText = quiz_JSON[data].answer1;
             A2.innerText = quiz_JSON[data].answer2;
             A3.innerText = quiz_JSON[data].answer3;
             A4.innerText = quiz_JSON[data].answer4;
-
+            
+            }
         });
 
 
@@ -214,16 +213,11 @@
 </div>
 
 <div id='mid_result' style='display:none;'>
-   <div class="jumbotron">
-  <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
+    <div id="app">
+    </div>
 </div>
-   
+ 
+ 
 </div>
 
 </body>

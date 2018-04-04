@@ -21,8 +21,9 @@ class CreateMistakenQuizsTable extends Migration
 	    $table->unsignedInteger('sequence');
 	    $table->foreign('sequence')->references('sequence')->on('race_set_exam_quizs');
 
-            $table->unsignedTinyInteger('retake')->default(0);
 	    $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
+
+            $table->unsignedTinyInteger('retake')->default(0);
 
             $table->string('result', 100);
 

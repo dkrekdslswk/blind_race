@@ -22,10 +22,10 @@ class CreateRaceResultsTable extends Migration
 	    $table->foreign('user_num')->references('user_num')->on('users');
 	    $table->primary(['set_exam_num', 'user_num']);
 
-	    $table->unsignedInteger('result_score');
-
 	    $table->unsignedInteger('team_num');
 	    $table->foreign('team_num')->references('team_num')->on('race_teams');
+
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

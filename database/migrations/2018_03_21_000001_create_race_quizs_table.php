@@ -19,7 +19,6 @@ class CreateRaceQuizsTable extends Migration
 
 	    $table->unsignedInteger('quiz_num');
 	    $table->foreign('quiz_num')->references('quiz_num')->on('quiz_bank');
-
 	    $table->primary(['race_num', 'quiz_num']);
         });
     }

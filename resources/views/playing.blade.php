@@ -57,33 +57,71 @@
 
 <script src="//code.jquery.com/jquery-1.11.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
-
-
+<div id="app">
+</div>
 <script src="{{asset('js/app.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script>
     window.onload = function () {
         var socket = io(':8890'); //1
+
         var room_num = '';
-
-        // socket.on('room_num', function(data){
-        //     alert('참여완료');
-        // });
-        //  socket.emit('join','Name');
-
-
-        socket.on('joinroom', function(student_num , nickname){
-            $('<p>'+student_num +'번학생 :  '+ nickname + '</p>').appendTo('body');
+        socket.on('room_num', function(data){
+            alert('참여완료');
         });
+        
+         socket.emit('join','Name');   
+        
+        
+        socket.on('message', function(data){
+           $('<p>' + data + '</p>').appendTo('body');
+        });
+
+        socket.on('answer-sum', function(data){
+           document.getElementById('answer_c').innerText= data;
+        });
+
+        document.getElementById('sub').onclick = function (){
+            var text = $(':input[name=answer]:radio:checked').val();
+            socket.emit('answer' , text);
+        };
     };
+
+
 </script>
-<div id="app">
-</div>
-<div>
-    <form id="answer" >
+<form id="answer" >
 
-    </form>
-</div>
+    <p>Answers :</p>
+    <p id="answer_c"></p>
 
+    <div>
+        <input class="btn-info" type="radio" id="contactChoice1" name="answer" value="1">
+        <label for="contactChoice1">1번답안</label>
+
+        <input class="btn-info" type="radio" id="contactChoice2" name="answer" value="2">
+        <label for="contactChoice2">2번답안</label>
+
+        <input class="btn-info" type="radio" id="contactChoice3" name="answer" value="3">
+        <label for="contactChoice3">3번답안</label>
+
+        <input class="btn-info" type="radio" id="contactChoice4" name="answer" value="4">
+        <label for="contactChoice4">4번답안</label>
+    </div>
+    <br>
+    <div>
+        <input id="sub" type="button" value="answer">
+    </div>
+</form>
+</div>
+// function checkAnimal(){
+//     var answer = $(':input[name=answer]:radio:checked').val();
+//
+//     if( answer ){
+//
+//     }else{
+//         alert("답을 선택하세요");
+//
+//     }
+// }
 </body>
 </html>

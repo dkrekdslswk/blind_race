@@ -19,6 +19,7 @@
       <aside style="display:inline-block; vertical-align:top;">
           @include('play_list.mode_select')
       </aside>
+      
       <div style="margin-left:200px; display:inline-block; width:50%;">
          @include('play_list.race_list')
       </div>
