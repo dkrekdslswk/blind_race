@@ -181,7 +181,7 @@ class RaceController extends Controller
             $character = DB::table('characters as c')
                          ->select(['c.character_num as characterId', 'c.character_url as characterUrl'])
                          ->where(['rr.set_exam_num' => $postData['setExamId'],
-                                  's.session_num' => null)])
+                                  's.session_num' => null])
                          ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
                          ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
                          ->inRandomOrder()
