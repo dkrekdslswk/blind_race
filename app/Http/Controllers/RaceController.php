@@ -216,7 +216,7 @@ class RaceController extends Controller
                                  'qb.quiz_type         as type')
                         ->where(['rq.race_num'       => $raceId->base,
                                  'rseq.set_exam_num' => $postData['setExamId'],
-                                 DB::raw('rseq.sequence IS NULL')]);
+                                 DB::raw('rseq.sequence IS NULL')])
                         ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', 'rq.quiz_num')
                         ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
                         ->inRandomOrder()
