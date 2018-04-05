@@ -178,12 +178,21 @@ class RaceController extends Controller
             $countDown = 10;
 
             do{
-            $character = DB::table('characters as c')
-                         ->select(['c.character_num as characterId', 'c.character_url as characterUrl'])
-                         ->where(['rr.set_exam_nu' => $postData['setExamId'],
-                                  's.session_num' => null])
+            $characters = DB::table('characters as c')
+                         ->select('c.character_num as characterId')
+                         ->where('rr.set_exam_num' => $postData['setExamId'])
                          ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
                          ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
+                         ->get();
+
+            $charList = array();
+            foreach($characters as $charNumber){
+                array_push($charList, $charNumber->characterId);
+            }
+
+            $character = DB::table('characters')
+                         ->select('character_num as characterId')
+                         ->whereNotIn('character_num' => $charList)
                          ->inRandomOrder()
                          ->first();
 
