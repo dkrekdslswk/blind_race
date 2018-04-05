@@ -83,6 +83,9 @@ class RaceController extends Controller
        	                 'sessionId'=>$session['sessionId']);
 
         }
+        else {
+             $returnValue = array('raceCreateCheck' => false);
+        }
 
 	//return response()->json($groupData);
 	return response()->json($returnValue);
@@ -123,7 +126,7 @@ class RaceController extends Controller
         } 
         // error incorrect race
         else {
-             $returnValue = array('userTeacherCheck' => false;);
+             $returnValue = array('userTeacherCheck' => false);
         }
 
         retrun response()->json($returnValue);
