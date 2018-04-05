@@ -151,7 +151,7 @@ class RaceController extends Controller
             $countDown = 10;
 
             do{
-            $character = DB::('characters as c')
+            $character = DB::table('characters as c')
                          ->select(['c.character_num as characterId', 'c.character_url as characterUrl']);
                          ->where(['rr.set_exam_num' => $postData['setExamId'],
                                   DB::raw('s.session_num IS NULL')])
@@ -166,7 +166,7 @@ class RaceController extends Controller
                                      'character_num' => $character->characterId]);
 
                  $countDown--;
-            } while($updateCheck != 1 && $countDown > 0);
+            } while ($updateCheck != 1 && $countDown > 0);
         
             if($updateCheck == 1){
             $returnValue = array('userStudentCheck' => true,
