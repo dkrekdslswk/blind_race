@@ -151,8 +151,8 @@ class RaceController extends Controller
         
         $userCheck = DB::table('groupStudent as gs')
                      ->select([DB::raw('COUNT(*) as check')])
-                     ->where(['gs.group_num'  => $postData->groupId,
-                              's.session_num' => $postData->sessionId])
+                     ->where(['gs.group_num'  => $postData['groupId'],
+                              's.session_num' => $postData['sessionId']])
                      ->join('sessions as s', 's.user_num', '=', 'gs.user_num')
                      ->first();
 
@@ -171,9 +171,9 @@ class RaceController extends Controller
                          ->first();
 
             $updateCheck = DB::table('sessions')
-                           ->where('session_num', '=', $postData->sessionId)
-                           ->update(['set_exam_num'  => $postData->setExamId,
-                                     'character_num' => $character->characterId]);
+                           ->where('session_num', '=', $postData['sessionId'])
+                           ->update(['set_exam_num'  => $postData['setExamId'],
+                                     'character_num' => $character['characterId']]);
 
                  $countDown--;
             } while ($updateCheck != 1 && $countDown > 0);
