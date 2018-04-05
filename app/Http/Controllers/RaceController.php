@@ -130,7 +130,7 @@ class RaceController extends Controller
              $returnValue = array('userTeacherCheck' => 'false');
         }
 
-        retrun response()->json($returnValue);
+        return response()->json($returnValue);
     }
 
     // race student is in to room
@@ -178,7 +178,7 @@ class RaceController extends Controller
             $returnValue = array('userStudentCheck' => false);
         }
 
-        retrun response()->json($returnValue);
+        return response()->json($returnValue);
     }
 
     // get quiz
