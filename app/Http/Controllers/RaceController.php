@@ -82,11 +82,11 @@ class RaceController extends Controller
        	                 'group'=>array('groupName'         => $groupData->groupName,
        	                                'groupStudentCount' => $groupData->studentCount),
        	                 'sessionId' => $session['sessionId'],
-                         'raceCreateCheck' =>  true);
+                         'raceCreateCheck' =>  'true');
 
         }
         else {
-             $returnValue = array('raceCreateCheck' => false);
+             $returnValue = array('raceCreateCheck' => 'false');
         }
 
 	//return response()->json($groupData);
@@ -124,11 +124,11 @@ class RaceController extends Controller
              $returnValue = array('race' => array('setExamId'    => $setExamTast->setExamId,
                                                   'setExamCount' => $setExamTast->setExamCount),
                                   'group' => array('groupId'     => $setExamTast->groupId),
-                                  'userTeacherCheck' => true);
+                                  'userTeacherCheck' => 'true');
         } 
         // error incorrect race
         else {
-             $returnValue = array('userTeacherCheck' => false);
+             $returnValue = array('userTeacherCheck' => 'false');
         }
 
         retrun response()->json($returnValue);
