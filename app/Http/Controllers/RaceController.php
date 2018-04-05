@@ -199,10 +199,10 @@ class RaceController extends Controller
                 $returnValue = array('userStudentCheck' => true,
                                      'characterUrl'     => $character['characterUrl']);
             } else {
-                $returnValue = array('userStudentCheck' => false);
+                $returnValue = array('userStudentCheck' => 1);
             }
         } else {
-            $returnValue = array('userStudentCheck' => false);
+            $returnValue = array('userStudentCheck' => 2);
         }
 
         return response()->json($returnValue);
