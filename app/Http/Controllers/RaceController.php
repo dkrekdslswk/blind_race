@@ -80,7 +80,8 @@ class RaceController extends Controller
                                        'examCount'         =>$postData['race']['examCount']),
        	                 'group'=>array('groupName'         => $groupData->groupName,
        	                                'groupStudentCount' => $groupData->studentCount),
-       	                 'sessionId'=>$session['sessionId']);
+       	                 'sessionId' => $session['sessionId'],
+                         'raceCreateCheck' =>  true);
 
         }
         else {
