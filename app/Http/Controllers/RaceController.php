@@ -197,7 +197,7 @@ class RaceController extends Controller
         
             if($updateCheck == 1){
                 $returnValue = array('userStudentCheck' => true,
-                                     'characterUrl'     => $character['characterUrl'];
+                                     'characterUrl'     => $character['characterUrl']);
             } else {
                 $returnValue = array('userStudentCheck' => false);
             }
