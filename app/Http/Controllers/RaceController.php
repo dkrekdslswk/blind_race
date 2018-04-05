@@ -190,7 +190,7 @@ class RaceController extends Controller
             $updateCheck = DB::table('sessions')
                            ->where('session_num', '=', $postData['sessionId'])
                            ->update(['set_exam_num'  => $postData['setExamId'],
-                                     'character_num' => $character['characterId']]);
+                                     'character_nu' => $character['characterId']]);
 
                  $countDown--;
             } while ($updateCheck != 1 && $countDown > 0);
