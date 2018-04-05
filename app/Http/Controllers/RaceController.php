@@ -191,7 +191,7 @@ class RaceController extends Controller
             }
 
             $character = DB::table('characters')
-                         ->select('character_num as characterId'
+                         ->select('character_num as characterId',
                                   'character_url as characterUrl')
                          ->whereNotIn('character_num', $charList)
                          ->inRandomOrder()
