@@ -20,7 +20,7 @@ class RaceController extends Controller
         //$postData = json_decode($json);
 
         $json     = $request->input('post');
-        $json     = array('group' => array('groupId'   => 1), 
+        $postData     = array('group' => array('groupId'   => 1), 
                           'race'  => array('raceMode'  => 'n', 
                                            'examCount' => 30, 
                                            'raceId'    => 1));
