@@ -191,7 +191,8 @@ class RaceController extends Controller
             }
 
             $character = DB::table('characters')
-                         ->select('character_num as characterId')
+                         ->select('character_num as characterId'
+                                  'character_url as characterUrl')
                          ->whereNotIn('character_num', $charList)
                          ->inRandomOrder()
                          ->first();
@@ -206,7 +207,7 @@ class RaceController extends Controller
         
             if($updateCheck == 1){
                 $returnValue = array('userStudentCheck' => $updateCheck,
-                                     'characterUrl'     => $character['characterUrl']);
+                                     'characterUrl'     => $character->characterUrl);
             } else {
                 $returnValue = array('userStudentCheck' => $updateCheck);
             }
