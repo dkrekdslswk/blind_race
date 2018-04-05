@@ -229,7 +229,7 @@ class RaceController extends Controller
                   ->where(['session_num'     => $postData['sessionId'],
                            'set_exam_num'    => $postData['setExamId'],
                            'room_pin_number' => $postData['roomPin']])
-                  ->first;
+                  ->first();
 
         if($chaeck->check == 1){
             $raceId = DB::table('race_set_exam as rse')
