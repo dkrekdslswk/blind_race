@@ -65,14 +65,16 @@ class RaceController extends Controller
 		->first();
 
         $raceCheck = DB::table('races')
-		->select(['races.race_name', 'races.race_num', DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
+		->select(['races.race_name as race_name', 
+                          'races.race_num  as race_num', 
+                          DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
 		->join('race_quizs', 'race_quizs.race_num', '=', 'races.race_num')
 		->where(['races.race_num' => $postData['race']['raceId'],
                          'races.user_t_num' => $sData->user_num])
                 ->groupBy('races.race_num')
 		->first();
 
-        if(isset($raceCheck->race_num) && ($raceCheck->examCount > $postData['race']['examCount'])){
+        if(isset($raceCheck->race_num) && ($raceCheck->examCount >= $postData['race']['examCount'])){
 
             $raceSetExamId = DB::table('race_set_exam')->insertGetId([
                 'group_num'=>$groupData->groupId,
