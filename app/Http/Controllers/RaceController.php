@@ -180,7 +180,7 @@ class RaceController extends Controller
             do{
             $character = DB::table('characters as c')
                          ->select(['c.character_num as characterId', 'c.character_url as characterUrl'])
-                         ->where(['rr.set_exam_num' => $postData['setExamId'],
+                         ->where(['rr.set_exam_nu' => $postData['setExamId'],
                                   's.session_num' => null])
                          ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
                          ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
@@ -190,7 +190,7 @@ class RaceController extends Controller
             $updateCheck = DB::table('sessions')
                            ->where('session_num', '=', $postData['sessionId'])
                            ->update(['set_exam_num'  => $postData['setExamId'],
-                                     'character_nu' => $character['characterId']]);
+                                     'character_num' => $character['characterId']]);
 
                  $countDown--;
             } while ($updateCheck != 1 && $countDown > 0);
