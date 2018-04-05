@@ -114,7 +114,7 @@ class RaceController extends Controller
 		->select(['set.exam_count as setExamCount',
 			  DB::raw('COUNT(quiz.sequence) as examCount'),
                           'sessions.set_exam_num as setExamId',
-                          'race_set_exam.group_num as groupId'])
+                          'set.group_num as groupId'])
                        ->join('race_set_exam as set', 'set.set_exam_num', '=', 'sessions.set_exam_num')
                        ->join('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'sessions.set_exam_num')
                        ->where('sessions.session_num', '=', $postData['sessionId'])
