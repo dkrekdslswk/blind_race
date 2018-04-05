@@ -146,7 +146,7 @@ class RaceController extends Controller
     // race student is in to room
     public function studentIn(Request $request){
         //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 1, 'groupId' => 1));
+        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
         $postData = json_decode($json, true);
 
 	// test
@@ -221,7 +221,7 @@ class RaceController extends Controller
     // get quiz
     public function quizNext(Request $request){
         //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 1, 'sessionId' => 1));
+        $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
         $postData = json_decode($json, true);
 
         $chaeck = DB::table('sessions')
