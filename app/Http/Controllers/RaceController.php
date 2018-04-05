@@ -225,7 +225,7 @@ class RaceController extends Controller
             $returnValue = "fail";
         }
 
-        retrun response()->json($returnValue);
+        return response()->json($returnValue);
     }
 
 
