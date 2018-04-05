@@ -149,7 +149,7 @@ class RaceController extends Controller
         $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 1, 'groupId' => 1));
         $postData = json_decode($json, true);
         
-        $userCheck = DB::table('groupStudents as gs')
+        $userCheck = DB::table('group_students as gs')
                      ->select('gs.user_num as user_num')
                      ->where(['gs.group_num'  => $postData['groupId'],
                               's.session_num' => $postData['sessionId']])
