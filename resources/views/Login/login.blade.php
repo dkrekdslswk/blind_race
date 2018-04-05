@@ -13,9 +13,6 @@
 </head>
 
 <body>
-<nav>
-    @include('Navigation.mainnav')
-</nav>
 
 <div id="app" >
 </div>
@@ -35,6 +32,7 @@
                         <h2>LOGIN</h2>
                         <p>기존의 쥿뿐쥬-분 회원이시면 <br> 로그인해주세요^^</p>
                         <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                        
                     </div>
                 </div>
                 <div class="col_md_sign_up">
@@ -67,6 +65,7 @@
                     <input type="text" placeholder="Email" />
                     <input type="password" placeholder="Password" />
                     <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                    <div> <a href="/homepage"> <input type="button" value="Login"></div>
                 </div>
 
                 <div class="cont_form_sign_up">
@@ -77,6 +76,7 @@
                     <input type="password" placeholder="Password" />
                     <input type="password" placeholder="Confirm Password" />
                     <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                    <div> <a href="/homepage"> <input type="button" value="Login"></div>
 
                 </div>
 

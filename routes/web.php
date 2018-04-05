@@ -11,15 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main');
-});
+
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
 });
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('Login/login');
 });
 
@@ -41,7 +39,7 @@ Route::get('/recordbox', function(){
 
 
 
-Route::get('/feedback', function(){
+Route::get('/Feedback', function(){
     return view('Recordbox/Feedback');
 });
 
@@ -49,9 +47,7 @@ Route::get('/Quiz_tree', function(){
     return view('Quiz_tree/Quiz_list');
 });
 
-Route::get('/feedback', function(){
-    return view('Recordbox/Feedback');
-});
+
 
 Route::get('/chat', function(){
     return view('chat');
@@ -81,4 +77,8 @@ Route::post('/raceController/{post}','RaceController@create');
 
 Route::get('/race', function(){
     return view('Race/race');
+});
+
+Route::get('/homepage', function(){
+    return view('homepage');
 });
