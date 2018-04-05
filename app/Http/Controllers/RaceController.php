@@ -152,7 +152,7 @@ class RaceController extends Controller
 
             do{
             $character = DB::table('characters as c')
-                         ->select(['c.character_num as characterId', 'c.character_url as characterUrl']);
+                         ->select(['c.character_num as characterId', 'c.character_url as characterUrl'])
                          ->where(['rr.set_exam_num' => $postData['setExamId'],
                                   DB::raw('s.session_num IS NULL')])
                          ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
