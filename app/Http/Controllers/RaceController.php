@@ -153,13 +153,13 @@ class RaceController extends Controller
         $userId = DB::table('users as u')
                   ->select(['u.user_num as user_num',
                             's.session_num as session_num'])
-                  ->where('s.session_num', '=', $postData->session_num)
+                  ->where('s.session_num', '=', $postData['session_num'])
                   ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
                   ->first();
 
         if(!isset($userId->session_num)){
              $session['sessionId'] = DB::table('sessions')
-                                       ->insertGetId(['user_num' => $postData->sessionId],
+                                       ->insertGetId(['user_num' => $postData['sessionId']],
                                                      'session_num');
         }else{
              $session['sessionId'] = $userId->session_num;
