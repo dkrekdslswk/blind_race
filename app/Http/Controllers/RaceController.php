@@ -118,7 +118,7 @@ class RaceController extends Controller
                           'race_set_exam.group_num as groupId'])
                        ->join('race_set_exam as set', 'set.set_exam_num', '=', 'sessions.set_exam_num')
                        ->join('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'sessions.set_exam_num')
-                       ->where('sessions.session_num', '=', postData['sessionId'])
+                       ->where('sessions.session_num', '=', postData->sessionId)
                        ->groupBy('sessions.session_num')
                        ->first();
         
@@ -128,8 +128,8 @@ class RaceController extends Controller
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
 
              $updateCheck = DB::table('sessions')
-                            ->where('session_num', '=', postData['sessionId'])
-                            ->update(['room_pin_num' => postData['roomPin']]);
+                            ->where('session_num', '=', postData->sessionId)
+                            ->update(['room_pin_num' => postData->roomPin]);
 
              $returnValue = array('race' => array('setExamId'    => $setExamTast->setExamId,
                                                   'setExamCount' => $setExamTast->setExamCount),
@@ -152,8 +152,8 @@ class RaceController extends Controller
         
         $userCheck = DB::table('groupStudent as gs')
                      ->select([DB::raw('COUNT(*) as check')])
-                     ->where(['gs.group_num'  => $postData['groupId'],
-                              's.session_num' => $postData['sessionId']])
+                     ->where(['gs.group_num'  => $postData->groupId,
+                              's.session_num' => $postData->sessionId])
                      ->join('sessions as s', 's.user_num', '=', 'gs.user_num')
                      ->first();
 
@@ -164,7 +164,7 @@ class RaceController extends Controller
             do{
             $character = DB::table('characters as c')
                          ->select(['c.character_num as characterId', 'c.character_url as characterUrl'])
-                         ->where(['rr.set_exam_num' => $postData['setExamId'],
+                         ->where(['rr.set_exam_num' => $postData->setExamId,
                                   DB::raw('s.session_num IS NULL')])
                          ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
                          ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
@@ -172,8 +172,8 @@ class RaceController extends Controller
                          ->first();
 
             $updateCheck = DB::table('sessions')
-                           ->where('session_num', '=', postData['sessionId'])
-                           ->update(['set_exam_num'  => postData['setExamId'],
+                           ->where('session_num', '=', postData->sessionId)
+                           ->update(['set_exam_num'  => postData->setExamId,
                                      'character_num' => $character->characterId]);
 
                  $countDown--;
