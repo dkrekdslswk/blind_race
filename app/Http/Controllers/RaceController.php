@@ -225,13 +225,13 @@ class RaceController extends Controller
         $postData = json_decode($json, true);
 
         $chaeck = DB::table('sessions')
-                  ->select(DB::raw('COUNT(*) as check'))
+                  ->select('session_num')
                   ->where(['session_num'     => $postData['sessionId'],
                            'set_exam_num'    => $postData['setExamId'],
                            'room_pin_number' => $postData['roomPin']])
                   ->first();
 
-        if($chaeck->check == 1){
+        if(isset($chaeck->session_num)){
             $raceId = DB::table('race_set_exam as rse')
                       ->select('rse.race_num                 as base', 
                                'rse.book_num                 as bookId', 
