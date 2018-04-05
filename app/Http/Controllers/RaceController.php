@@ -128,8 +128,8 @@ class RaceController extends Controller
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
 
              $updateCheck = DB::table('sessions')
-                            ->where('session_num', '=', $postData->sessionId)
-                            ->update(['room_pin_num' => $postData->roomPin]);
+                            ->where('session_num', '=',  $postData->sessionId)
+                            ->update(['room_pin_num' =>  $postData->roomPin]);
 
              $returnValue = array('race' => array('setExamId'    => $setExamTast->setExamId,
                                                   'setExamCount' => $setExamTast->setExamCount),
