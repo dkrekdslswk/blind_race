@@ -62,7 +62,6 @@ class RaceController extends Controller
                 ->groupBy('races.race_num')
 		->first();
 
-        $returnValue;
         if(isset($raceCheck->race_num) && ($raceCheck->examCount > $postData['race']['examCount'])){
 
             $raceSetExamId = DB::table('race_set_exam')->insertGetId([
