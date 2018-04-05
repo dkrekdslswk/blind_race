@@ -11,10 +11,20 @@ class RaceController extends Controller
     // race create first order
     public function create(Request $request)
     {
+        //$json     = $request->input('post');
+        //$json     = json_encode(array('group' => array('groupId' => 1), 
+        //$json     = json_encode(array('group' => array('groupId'  => 1), 
+        //                              'race' => array('raceMode'  => 'n', 
+        //                                              'examCount' => 30, 
+        //                                              'raceId'    => 1)));
+        //$postData = json_decode($json);
+
         $json     = $request->input('post');
-        $json     = json_encode(array('group' => array('groupId' => 1), 
-                                      'race' => array('raceMode' => 'n', 'examCount' => 30, 'raceId' => 1)));
-        $postData = json_decode($json);
+        $json     = array('group' => array('groupId'   => 1), 
+                          'race'  => array('raceMode'  => 'n', 
+                                           'examCount' => 30, 
+                                           'raceId'    => 1));
+
         //$postData = array('group' => array('groupId'   => $request->input('groupId')), 
         //                  'race'  => array('raceMode'  => $request->input('raceMode'), 
         //                                   'examCount' => $request->input('examCount'), 
@@ -49,7 +59,7 @@ class RaceController extends Controller
 			  'groups.group_name as groupName',
 			  DB::raw('COUNT(group_students.user_num) as studentCount')])
 		->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		->where(['groups.group_num'  => $postData->group->groupId,
+		->where(['groups.group_num'  => $postData['group']['groupId'],
 		         'groups.user_t_num' => $sData->user_num])
                 ->groupBy('groups.group_num')
 		->first();
