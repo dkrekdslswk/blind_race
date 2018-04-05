@@ -150,13 +150,13 @@ class RaceController extends Controller
         $postData = json_decode($json, true);
         
         $userCheck = DB::table('groupStudent as gs')
-                     ->select([DB::raw('COUNT(*) as check')])
+                     ->select('gs.user_num as user_num')
                      ->where(['gs.group_num'  => $postData['groupId'],
                               's.session_num' => $postData['sessionId']])
                      ->join('sessions as s', 's.user_num', '=', 'gs.user_num')
                      ->first();
 
-        if($userCheck->check == 1)
+        if(isset($userCheck->user_num))
         {
             $countDown = 10;
 
