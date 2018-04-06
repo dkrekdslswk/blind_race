@@ -18,15 +18,15 @@ class RaceController extends Controller
         //                                              'raceId'    => 1)));
         //$postData = json_decode($json);
 
-        $postData     = array('group' => array('groupId'   => 1), 
-                          'race'  => array('raceMode'  => 'n', 
-                                           'examCount' => 30, 
-                                           'raceId'    => 1));
+        //$postData     = array('group' => array('groupId'   => 1),
+        //                  'race'  => array('raceMode'  => 'n',
+        //                                   'examCount' => 30,
+        //                                   'raceId'    => 1));
 
-        //$postData = array('group' => array('groupId'   => $request->input('groupId')), 
-        //                  'race'  => array('raceMode'  => $request->input('raceMode'), 
-        //                                   'examCount' => $request->input('examCount'), 
-        //                                   'raceId'    => $request->input('raceId')));
+        $postData = array('group' => array('groupId'   => $request->input('groupId')),
+                          'race'  => array('raceMode'  => $request->input('raceMode'),
+                                           'examCount' => $request->input('examCount'),
+                                           'raceId'    => $request->input('raceId')));
 
 	// test
         $userId = DB::table('users as u')
@@ -98,14 +98,15 @@ class RaceController extends Controller
         }
 
 	//return response()->json($groupData);
-	return response()->json($returnValue);
-	//return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+	//return response()->json($returnValue);
+	return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
     // race teacher is in to room 
     public function teacherIn(Request $request){
-        //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 1));
+        $json     = $request->input('post');
+        // 선생의 세션 아이디 필요
+        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => 1));
         $postData = json_decode($json, true);
 
         // race set exam check
@@ -144,21 +145,24 @@ class RaceController extends Controller
 
     // race student is in to room
     public function studentIn(Request $request){
-        //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
+        $json     = $request->input('post');
+        //학생의 세션 아이디 필요
+        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
+        // 데모버전용 학생 아이디로 학생을 검색
+        //$json     = json_encode(array('roomPin' => '123456', 'userId' => 'tamp2id', 'setExamId' => 2, 'groupId' => 1));
         $postData = json_decode($json, true);
 
-	// test
+	    // test
         $userId = DB::table('users as u')
                   ->select(['u.user_num as user_num',
                             's.session_num as session_num'])
-                  ->where('s.session_num', '=', $postData['sessionId'])
+                  ->where('s.user_id', '=', $postData['userId'])
                   ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
                   ->first();
 
         if(!isset($userId->session_num)){
              $session['sessionId'] = DB::table('sessions')
-                                       ->insertGetId(['user_num' => $postData['sessionId']],
+                                       ->insertGetId(['user_num' => $userId->user_num],
                                                      'session_num');
         }else{
              $session['sessionId'] = $userId->session_num;
@@ -219,8 +223,9 @@ class RaceController extends Controller
 
     // get quiz
     public function quizNext(Request $request){
-        //$json     = $request->input('post');
-        $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
+        $json     = $request->input('post');
+        //선생의 세션 아이디 필요
+        //$json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
         $postData = json_decode($json, true);
 
         $chaeck = DB::table('sessions')
