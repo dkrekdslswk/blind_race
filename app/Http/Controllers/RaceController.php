@@ -269,14 +269,15 @@ class RaceController extends Controller
                         ->first();
 
             $updateCheck = DB::table('race_set_exam_quizs')
-                ->insert(['set_exam_num' => $postData['setExamId'],
-                          'quiz_num' => $quizData->quizId]);
+                ->insertGetId(['set_exam_num' => $postData['setExamId'],
+                          'quiz_num' => $quizData->quizId], 'sequence');
 
-            $returnValue = array('quiz' => array('sequence' => $raceData->examCount + 1,
-                                                  'question' => $quizData->question,
-                                                  'right'    => $quizData->right,
-                                                  'example'  => array($quizData->exam1,$quizData->exam2,$quizData->exam3),
-                                                  'type'     => $quizData->type),
+            $returnValue = array('quiz' => array('examCount' => $raceData->setExamCount + 1,
+                                                  'sequence'  => $updateCheck,
+                                                  'question'  => $quizData->question,
+                                                  'right'     => $quizData->right,
+                                                  'example'   => array($quizData->exam1,$quizData->exam2,$quizData->exam3),
+                                                  'type'      => $quizData->type),
                                   'check' => true);
         } else {
             $returnValue = array('check' => false);
