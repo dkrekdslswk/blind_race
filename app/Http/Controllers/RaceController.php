@@ -236,7 +236,8 @@ class RaceController extends Controller
             ->where(DB::raw('set_exam_num IS NOT NULL'));
 
         if($updateCount == 1)
-            $returnValue = array('check' => true);
+            $returnValue = array('check' => true,
+                                'nick' => $postData['userNick']);
         else{
             $returnValue = array('check' => false);
         }
