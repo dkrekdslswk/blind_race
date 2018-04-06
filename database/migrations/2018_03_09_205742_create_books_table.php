@@ -18,8 +18,8 @@ class CreateBooksTable extends Migration
 
             $table->string('book_name', 100);
 
-	        $table->unsignedSmallInteger('book_page_max');
-	        $table->unsignedSmallInteger('book_page_min');
+	    $table->unsignedSmallInteger('book_page_max');
+	    $table->unsignedSmallInteger('book_page_min');
         });
     }
 
