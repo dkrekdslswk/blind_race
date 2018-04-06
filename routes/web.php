@@ -70,15 +70,12 @@ Route::get('/raid', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-// Route::get('/', function(){
-//     return view('test');
-// });
+/*Route::get('/', function(){
+     return view('test');
+});*/
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
 Route::post('/raceController/{post}','RaceController@create');
 
-Route::get('/race', function(){
-    return view('Race/race');
-});

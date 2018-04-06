@@ -77,16 +77,17 @@
 
 <div class="sidenav">
 
-    <a href="#contact"><span><img src="img/bars-chart.png" width="30px">2학년 A반용</span></a></li>
-    <div></a>
-        <button class="dropdown-btn"><img src="img/networking.png" width="30px">특강용 문제
+    <a href="#contact"><span><img src="img/folder.png" width="30">2학년 A반용</span></a>
+    <a href="#contact"><span><img src="img/folder.png" width="30">특강용 문제</span></a>
+    {{--<div></a>
+        <button class="dropdown-btn">특강용 문제
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
             <a href="#">특강B반</a>
             <a href="#">특강c반</a>
         </div>
-    </div>
+    </div>--}}
 
     <button name="make_quiz" class="btn btn-basic" style="position: relative;margin-left: 40px;margin-top: 20%;background-color: #4C6A92">
         <a href="Quiz_tree/Quiz_making" style="font-size: 15px; margin: 0px;">+문제 추가하기</a>
