@@ -205,13 +205,13 @@ class RaceController extends Controller
             } while ($updateCheck != 1 && $countDown > 0);
         
             if($updateCheck == 1){
-                $returnValue = array('userStudentCheck' => $updateCheck,
+                $returnValue = array('check' => true,
                                      'characterUrl'     => $character->characterUrl);
             } else {
-                $returnValue = array('userStudentCheck' => $updateCheck);
+                $returnValue = array('check' => false);
             }
         } else {
-            $returnValue = array('userStudentCheck' => $updateCheck);
+            $returnValue = array('check' => false);
         }
 
         return response()->json($returnValue);
