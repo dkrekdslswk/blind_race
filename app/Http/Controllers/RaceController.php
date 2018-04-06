@@ -97,9 +97,9 @@ class RaceController extends Controller
              $returnValue = array('check' => false);
         }
 
-	//return response()->json($groupData);
-	//return response()->json($returnValue);
-	return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+        //return response()->json($groupData);
+        //return response()->json($returnValue);
+        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
     // race teacher is in to room 
