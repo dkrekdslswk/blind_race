@@ -5,9 +5,23 @@
  * Date: 2018-03-30
  * Time: 오후 12:11
  */
+
+/*isset($json) ? $getJsonData = json_decode(json_encode($json)) : $getJsonData ='default';*/
+
+/*foreach ($getJsonData as $key => $value){
+    echo '<pre>';
+    var_dump($value);
+    echo '</pre>';
+}
+
+foreach ($getJsonData as $key => $value){
+    echo '<pre>';
+    echo $key;
+    echo '</pre>';
+}
+*/
+
 ?>
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -26,62 +40,54 @@
 
     <script type="text/javascript">
 
-<<<<<<< HEAD
-    var getJsonDate_nav = '';
-    var getJsonDate_user = '';
+        $(function () {
 
-    $(function () {
-        var socket = io(':8891');
-        var table_row_count = 0;
+            var getData = '{{isset($json) ? true : false}}';
+            var user_id = null;
+            var race_name = null;
 
-        var char_ran = Math.floor(Math.random() * 4) + 1;
+            if(getData){
 
-        socket.on('now user counting',function(std){
-
-            $('#student_count').html("접속자 : " + std);
-
-            table_row_count = Math.floor(std / 10) + 1;
-
-            for (var i = 0 ; i < table_row_count ; i++){
-                $('#characterTable').append($('<tr id="characterTr' + table_row_count + '">'));
+                var getJsonData = JSON.parse('@json($json)',function(key, value){
+                    switch (key){
+                        case 'raceName' :
+                            $('#race_name').html(value);
+                            race_name = value;
+                            break;
+                        case 'examCount' :
+                            $('#race_count').html(value);
+                            break;
+                        case 'groupName' :
+                            $('#group_name').html(value);
+                            break;
+                        case 'groupStudentCount' :
+                            $('#group_student_count').html(value);
+                            break;
+                        case 'sessionId' :
+                            user_id = value;
+                            break;
+                    }
+                });
             }
 
-            $('#characterTr'+table_row_count).
-            append($('<td>').
-            html('<img style="width: 80px;height: 80px;" class="nav-icon " src="img/character/char'+char_ran+'.png"><br/>'));
-        });
 
-        socket.on('user data',function(conn){
-            getJsonDate_user = JSON.parse(conn);
-            var nick = getJsonDate_user.student[0].studentNick;
-
-            $('#messages').append($('<li>').text(nick+"님이 입장했습니다.")).fadeOut(1000);
-
-/*            $('#characterTr'+table_row_count)
-                    .append('<td>')
-                    .html('<img src="img/character/char'+char_ran+'.png" style="width: 80px;height: 80px;"><br>' + nick))
-            .fadeOut(1000)*/
-        });
-
-        socket.on('disc user',function(disc){
-            getJsonDate_user = JSON.parse(disc);
-            var nick = getJsonDate_user.student[0].studentNick;
-
-            $('#messages').append($('<li>').text(nick+"님이 퇴장했습니다."));
-        });
-
-    });
-=======
-        var getJsonDate_nav = '';
-        var getJsonDate_user = '';
-
-        $(function () {
             var socket = io(':8891');
             var table_row_count = 0;
-
             var char_ran = Math.floor(Math.random() * 4) + 1;
 
-            socket.on('now user counting',function(std){
+            var joinData = {"userID" : user_id , "raceName" : race_name };
+
+            socket.emit('join',joinData);
+
+            socket.on('user connected',function(user){
+                $('#messages').append($('<li>').text(user+"님이 입장했습니다.")).fadeOut(1000);
+            });
+
+            socket.on('user disconnected',function(user){
+                $('#messages').append($('<li>').text(user+"님이 퇴장하였습니다.")).fadeOut(1000);
+            });
+
+            socket.on('now all user',function(std){
 
                 $('#student_count').html("접속자 : " + std);
 
@@ -93,30 +99,10 @@
 
                 $('#characterTr'+table_row_count).
                 append($('<td>').
-                html('<img style="width: 80px;height: 80px;" class="nav-icon " src="img/character/char'+char_ran+'.png"><br/>'));
-            });
-
-            socket.on('user data',function(conn){
-                getJsonDate_user = JSON.parse(conn);
-                var nick = getJsonDate_user.student[0].studentNick;
-
-                $('#messages').append($('<li>').text(nick+"님이 입장했습니다.")).fadeOut(1000);
-
-    /*            $('#characterTr'+table_row_count)
-                        .append('<td>')
-                        .html('<img src="img/character/char'+char_ran+'.png" style="width: 80px;height: 80px;"><br>' + nick))
-                .fadeOut(1000)*/
-            });
-
-            socket.on('disc user',function(disc){
-                getJsonDate_user = JSON.parse(disc);
-                var nick = getJsonDate_user.student[0].studentNick;
-
-                $('#messages').append($('<li>').text(nick+"님이 퇴장했습니다."));
+                html('<img style="width: 80px;height: 80px;" class="nav-icon " src="/img/character/char'+char_ran+'.png"><br/>'));
             });
 
         });
->>>>>>> e41e22d3316b40551316eef117162783ef8a6adb
 
     </script>
 
@@ -182,7 +168,6 @@
 
     </table>
 </div>
-
 
 </body>
 </html>
