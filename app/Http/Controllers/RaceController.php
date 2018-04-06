@@ -256,7 +256,8 @@ class RaceController extends Controller
             }
 
             $quizData = DB::table('race_quizs as rq')
-                        ->select('qb.quiz_question     as question',
+                        ->select('qb.quiz_num          as quizId',
+                                 'qb.quiz_question     as question',
                                  'qb.quiz_right_answer as right',
                                  'qb.quiz_example1     as exam1',
                                  'qb.quiz_example1     as exam2',
@@ -267,7 +268,11 @@ class RaceController extends Controller
                         ->inRandomOrder()
                         ->first();
 
-            $returnValue = array('quiz' => array('sequence' => $raceData->examCount,
+            $updateCheck = DB::table('race_set_exam_quizs')
+                ->update(['set_exam_num' => $postData['setExamId'],
+                          'quiz_num' => $quizData->quizId]);
+
+            $returnValue = array('quiz' => array('sequence' => $raceData->examCount + 1,
                                                   'question' => $quizData->question,
                                                   'right'    => $quizData->right,
                                                   'example'  => array($quizData->exam1,$quizData->exam2,$quizData->exam3),
