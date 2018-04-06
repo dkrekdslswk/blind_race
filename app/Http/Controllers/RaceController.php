@@ -222,16 +222,24 @@ class RaceController extends Controller
         return response()->json($returnValue);
     }
 
-    public function studentNickIn(Request $request){
+    public function nickIn(Request $request){
         $json     = $request->input('post');
         //학생의 세션 아이디 필요
         //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
         // 데모버전용 학생 아이디로 학생을 검색
-        //$json     = json_encode(array('roomPin' => '123456', 'userId' => 'tamp2id', 'setExamId' => 2, 'groupId' => 1));
+        $json     = json_encode(array('userId' => 'tamp2id', 'userNick' => 'baka'));
         $postData = json_decode($json, true);
 
-        $returnValue = array('check' => true);
+        $updateCount = DB::table('sessions')
+            ->update(['user_nick' => $postData['userNick']])
+            ->where('user_num', '=', $postData['userId'])
+            ->where(DB::raw('set_exam_num IS NOT NULL'));
 
+        if($updateCount == 1)
+            $returnValue = array('check' => true);
+        else{
+            $returnValue = array('check' => false);
+        }
 
         return response()->json($returnValue);
     }
