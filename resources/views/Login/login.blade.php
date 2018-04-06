@@ -60,24 +60,34 @@
                     <img src="background/japan.jpg" alt="">                
                 </div>
                 <div class="cont_form_login">
+                    <form action="{{URL::to('/미구현')}}" method="post">
+
                     <a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
                     <h2>LOGIN</h2>
-                    <input type="text" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" name="ID" placeholder="Email" />
+                    <input type="password" name="PW" placeholder="Password" />
+
+                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+
                     <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
-                    <div> <a href="/homepage"> <input type="button" value="Login"></div>
+                        <div> <a href="/homepage"> <input type="submit" value="Login"></a></div>
+
+                    </form>
                 </div>
 
                 <div class="cont_form_sign_up">
-                    <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
-                    <h2>SIGN UP</h2>
-                    <input type="text" placeholder="Email" />
-                    <input type="text" placeholder="User" />
-                    <input type="password" placeholder="Password" />
-                    <input type="password" placeholder="Confirm Password" />
-                    <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
-                    <div> <a href="/homepage"> <input type="button" value="Login"></div>
+                    <form action="{{URL::to('/store')}}" method="post">
 
+                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                    <h2>SIGN UP</h2>
+                    <input type="text" name="user_name" placeholder="user name" />
+                    <input type="text" name="ID" placeholder="your ID" />
+                    <input type="password" name="PW" placeholder="your Password" />
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                    <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                    <div> <a href="/homepage"> <input type="submit" value="Login"></a></div>
+
+                    </form>
                 </div>
 
             </div>
