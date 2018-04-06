@@ -145,7 +145,6 @@ var user = '{\
 
 var roomName = '';
 var userData = '';
-var race_allUser = 0;
 
 var kim_app = require('express')();
 var kim_http = require('http').Server(kim_app);
@@ -159,15 +158,15 @@ var kim_io = require('socket.io')(kim_http);
 
 kim_http.listen(8891,function () {
     console.log('listening on *: 8891');
-
 });
 
 
 kim_io.on('connection', function(socket){
     console.log('user in');
+    var race_allUser = 0;
 
     socket.on('join',function (room) {
-
+        race_allUser++;
         userData = room.userID;
         roomName = room.userID+room.raceName;
 
