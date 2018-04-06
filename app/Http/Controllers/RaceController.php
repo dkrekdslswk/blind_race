@@ -269,7 +269,7 @@ class RaceController extends Controller
                         ->first();
 
             $updateCheck = DB::table('race_set_exam_quizs')
-                ->update(['set_exam_num' => $postData['setExamId'],
+                ->insert(['set_exam_num' => $postData['setExamId'],
                           'quiz_num' => $quizData->quizId]);
 
             $returnValue = array('quiz' => array('sequence' => $raceData->examCount + 1,
