@@ -244,6 +244,18 @@ class RaceController extends Controller
                       ->groupBy('res.set_exam_num')
                       ->first();
 
+            $setExams = DB::table('race_quizs as rq')
+                        ->select('rq.quiz_num as quiz_num)
+                        ->where(['rq.race_num'       => $raceId->base,
+                                 'rseq.set_exam_num' => $postData['setExamId']])
+                        ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', 'rq.quiz_num')
+                        ->get();
+
+            $setExamList = array();
+            foreach($setExams as $exam){
+                array_push($setExamList, $exam->quiz_num);
+            }
+
             $returnValue = DB::table('race_quizs as rq')
                         ->select('qb.quiz_question     as question',
                                  'qb.quiz_right_answer as right',
@@ -251,10 +263,7 @@ class RaceController extends Controller
                                  'qb.quiz_example1     as exam2',
                                  'qb.quiz_example1     as exam3',
                                  'qb.quiz_type         as type')
-                        ->where(['rq.race_num'       => $raceId->base,
-                                 'rseq.set_exam_num' => $postData['setExamId'],
-                                 DB::raw('rseq.sequence IS NULL')])
-                        ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', 'rq.quiz_num')
+                        ->whereNotIn('rq.quiz_num', $setExamList)
                         ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
                         ->inRandomOrder()
                         ->first();
