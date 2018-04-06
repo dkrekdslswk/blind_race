@@ -272,7 +272,7 @@ class RaceController extends Controller
                 ->insertGetId(['set_exam_num' => $postData['setExamId'],
                           'quiz_num' => $quizData->quizId], 'sequence');
 
-            $returnValue = array('quiz' => array('examCount' => $raceData->setExamCount + 1,
+            $returnValue = array('quiz' => array('examCount' => $raceData->examCount + 1,
                                                   'sequence'  => $updateCheck,
                                                   'question'  => $quizData->question,
                                                   'right'     => $quizData->right,
