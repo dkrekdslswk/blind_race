@@ -310,7 +310,7 @@ transition: all 0.5s;
 }
 
   
-.cont_form_sign_up > form > input {
+.cont_form_sign_up > input {
 text-align: left;
   padding: 15px 5px;
 margin-left: 10px;
@@ -320,14 +320,14 @@ border: none;
     color: navy;
 }
 
-.cont_form_sign_up > form > h2 {
+.cont_form_sign_up > h2 {
 margin-top: 50px; 
 font-weight: 400;
   color: white;
 }
 
 
-.cont_form_login > form > input {
+.cont_form_login > input {
   padding: 15px 5px;
 margin-left: 10px;
 margin-top: 20px;
@@ -337,7 +337,7 @@ text-align: left;
   color: navy;
 }
 
-.cont_form_login > form > h2 {
+.cont_form_login > h2 {
 margin-top: 110px; 
 font-weight: 400;
   color: white;

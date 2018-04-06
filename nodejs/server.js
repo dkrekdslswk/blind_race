@@ -74,15 +74,28 @@ io.on('connection', function (socket){
             quiz = 0 ; socket.emit('nextok',quiz);
     });
 
+
+
     socket.on('count_off', function(data){
         quiz++;
         countdown = 10000;
-        socket.emit('nextok',quiz);
         clearInterval(Timer);
         answer_c = 0 ;
 
 
-        var ranking_query = "select user_num , count(result) from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
+        var answer_checking_query = "select count(case when result='1' then 1 end) o, count(case when result!='1' then 1 end) x from playing_quizs where set_exam_num=1 and sequence="+quiz;
+        connection.query(answer_checking_query, function(err, rows) {
+
+            if(err) throw err;
+            console.log('The solution is: ', rows);
+            var query_result = JSON.stringify(rows);
+
+            io.sockets.emit('right_checked' ,query_result , quiz);
+            console.log('right?', query_result);
+
+        });
+
+        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
 
 
         connection.query(ranking_query, function(err, rows) {
@@ -91,9 +104,9 @@ io.on('connection', function (socket){
             var query_result = JSON.stringify(rows);
 
             io.sockets.emit('mid_ranking' ,query_result);
-            console.log('타임 스탑', query_result);
 
         });
+        socket.emit('nextok',quiz);
     });
 
 
@@ -121,8 +134,6 @@ server.listen(8890, function(){ //4
     console.log('server on!');
 });
 
-
-
 /*kimseungmok**********************6***************/
 
 
@@ -148,7 +159,6 @@ var getJsonDate_user = JSON.parse(user);
 var kim_app = require('express')();
 var kim_http = require('http').Server(kim_app);
 var kim_io = require('socket.io')(kim_http);
-var user_conn = true;
 
 
 /*kim_app.get('/',function (req, res) {
@@ -156,9 +166,28 @@ var user_conn = true;
 });*/
 
 kim_io.on('connection', function(socket){
-    user_conn = true;
-    race_StudentCount++;
     console.log('user in');
+    var roomNum = null;
+    race_StudentCount++;
+
+    socket.on('join',function (raceNumber) {
+        console.log('join to room');
+
+        roomNum = raceNumber;
+
+        socket.join(raceNumber);
+    });
+
+    socket.on('message', function (data) {
+
+        kim_io.sockets.in(roomNum).emit('racenav data',racenav);
+
+        //유저 정보 전송
+        kim_io.sockets.in(roomNum).emit('user data',user);
+
+        //현재 접속자 수
+        kim_io.sockets.in(roomNum).emit('now user counting',race_StudentCount);
+    });
 
 
     socket.on('disconnect', function(){
@@ -167,28 +196,14 @@ kim_io.on('connection', function(socket){
         race_StudentCount--;
 
         console.log('user out');
-    });
-
-    if (user_conn){
-
-        //레이스 네비 정보 전송
-        kim_io.sockets.emit('racenav data',racenav);
-
-        //유저 정보 전송
-        kim_io.sockets.emit('user data',user);
-
-        //현재 접속자 수
-        kim_io.sockets.emit('now user counting',race_StudentCount);
-
-    }else{
 
         //나간 유저의 정보를 전송
-        kim_io.sockets.emit('disc user',user);
+        kim_io.sockets.in(roomNum).emit('disc user',user);
 
         //현재 접속자 수
-        kim_io.sockets.emit('now user counting',race_StudentCount);
-    }
+        kim_io.sockets.in(roomNum).emit('now user counting',race_StudentCount);
 
+    });
 });
 
 kim_http.listen(8891,function () {
