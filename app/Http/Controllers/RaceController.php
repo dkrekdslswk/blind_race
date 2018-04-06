@@ -260,8 +260,8 @@ class RaceController extends Controller
                                  'qb.quiz_question     as question',
                                  'qb.quiz_right_answer as right',
                                  'qb.quiz_example1     as exam1',
-                                 'qb.quiz_example1     as exam2',
-                                 'qb.quiz_example1     as exam3',
+                                 'qb.quiz_example2     as exam2',
+                                 'qb.quiz_example3     as exam3',
                                  'qb.quiz_type         as type')
                         ->whereNotIn('rq.quiz_num', $setExamList)
                         ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
