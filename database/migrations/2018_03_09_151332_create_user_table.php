@@ -21,13 +21,13 @@ class CreateUserTable extends Migration
 
             $table->char('user_password', 16);
 
-	    $table->char('user_name', 20);
+	        $table->char('user_name', 20);
         });
 
 	Schema::create('user_teachers',function (Blueprint $table) {
-	    $table->unsignedInteger('user_t_num');
-	    $table->foreign('user_t_num')->references('user_num')->on('users');
-	    $table->primary('user_t_num');
+	        $table->unsignedInteger('user_t_num');
+	        $table->foreign('user_t_num')->references('user_num')->on('users');
+	        $table->primary('user_t_num');
         });
     }
 
