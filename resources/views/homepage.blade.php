@@ -159,7 +159,7 @@
 								<div class="content">
 									<header class="align-center">
 										<p>플레이하며 효과적으로 배울수 있습니다.</p>
-										<h2>레코드 박스</h2>
+										<h2>레코드s sds박스</h2>
 									</header>
 									<p> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.</p>
 									<footer class="align-center">
