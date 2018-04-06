@@ -16,7 +16,7 @@ class CreateCharactersTable extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->increments('character_num');
-	    $table->string('character_url', 256);
+	        $table->string('character_url', 256);
         });
     }
 

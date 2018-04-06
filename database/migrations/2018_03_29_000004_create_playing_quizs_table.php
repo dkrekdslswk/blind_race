@@ -15,13 +15,13 @@ class CreateMistakenQuizsTable extends Migration
     {
         Schema::create('mistaken_quizs', function (Blueprint $table) {
             $table->unsignedInteger('set_exam_num');
-	    $table->unsignedInteger('user_num');
-	    $table->foreign(['set_exam_num', 'user_num'])->references(['set_exam_num', 'user_num'])->on('race_results');
+	        $table->unsignedInteger('user_num');
+	        $table->foreign(['set_exam_num', 'user_num'])->references(['set_exam_num', 'user_num'])->on('race_results');
 
-	    $table->unsignedInteger('sequence');
-	    $table->foreign('sequence')->references('sequence')->on('race_set_exam_quizs');
+	        $table->unsignedInteger('sequence');
+	        $table->foreign('sequence')->references('sequence')->on('race_set_exam_quizs');
 
-	    $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
+	        $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
 
             $table->unsignedTinyInteger('retake')->default(0);
 
