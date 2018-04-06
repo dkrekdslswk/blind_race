@@ -23,17 +23,25 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
     <script type="text/javascript">
 
+        $(function () {
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e41e22d3316b40551316eef117162783ef8a6adb
-/*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
-            $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
-            $('#group_name').html(getJsonDate_nav.group[0].groupName);
-            $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
+/*            var NavData = '';
+            var getJsonData = JSON.parse(NavData);
+
+            for(var i = 0 ; i < getJsonDate.users.length ; i++){
+                alert(i+"번 유저 이름:" + getJsonDate.users[i].userName + ", 점수:" +  getJsonDate.users[i].userScore);
+            }*/
+
+            /*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
+                        $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
+                        $('#group_name').html(getJsonDate_nav.group[0].groupName);
+                        $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
+        });
+
 
     </script>
 
@@ -79,6 +87,8 @@
 
 </head>
 <body>
+
+{{ isset($test) ? $test : 'Default' }}
 
 <div class="race_container">
     <nav class="navbar navbar-expand-lg" style="height: 100%;">

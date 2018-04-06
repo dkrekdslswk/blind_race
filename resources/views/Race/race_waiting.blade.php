@@ -26,13 +26,28 @@
 
     <script type="text/javascript">
 
-<<<<<<< HEAD
-    var getJsonDate_nav = '';
-    var getJsonDate_user = '';
+    var getJsonData = '';
+    var racenavData = '';
+    var userData = '';
 
     $(function () {
         var socket = io(':8891');
         var table_row_count = 0;
+
+        <?php
+            $postData = array("group" => array("groupId" => "groupId"),
+                "race"  => array("raceMode" => "raceMode",
+                    "examCount" => "examCount",
+                    "raceId" => "raceId"));
+
+        ?>
+
+        var user_data = '{{isset($postData) ? json_encode($postData) : false}}';
+
+        alert(user_data);
+
+        socket.emit('join','123');
+        socket.emit('message','response');
 
         var char_ran = Math.floor(Math.random() * 4) + 1;
 
@@ -71,7 +86,6 @@
         });
 
     });
-=======
         var getJsonDate_nav = '';
         var getJsonDate_user = '';
 
@@ -116,7 +130,6 @@
             });
 
         });
->>>>>>> e41e22d3316b40551316eef117162783ef8a6adb
 
     </script>
 
@@ -160,6 +173,9 @@
 <racenav>
     @include('Navigation.racenav')
 </racenav>
+
+{{--{{ isset($json) ? $json : 'Default' }}--}}
+
 
 <div class="student">
 
