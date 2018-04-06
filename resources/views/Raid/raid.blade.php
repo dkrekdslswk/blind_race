@@ -29,7 +29,7 @@
         .sidenav a {
             padding: 6px 8px 6px 16px;
             text-decoration: none;
-            font-size: 10px;
+            font-size: 25px;
             color: #2196F3;
             display: block;
             margin-right: 10px;
@@ -94,19 +94,14 @@
             {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
         ];
 
+
+
         socket.emit('count','1');
 
         socket.on('mid_ranking',function(data){
             document.getElementById('counter').innerText= " ";
-            $("#content").hide();
-            var ranking_JSON = JSON.parse(data);
-            var changehtml = "";
-            for(var i=0;  i <ranking_JSON.length; i++){
-                changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
-                // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
-            }
-            $(".sidenav").html(changehtml);
 
+            $("#content").hide();
             // $("#mid_result").html(data);
             $("#mid_result").show();
             setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
@@ -151,7 +146,7 @@
         socket.on('nextok',function(data){
 
             if(quiz_JSON.length == data){
-                setTimeout(function(){ location.href="/recordbox"; }, 2000);
+                location.href="/recordbox";
             }
             else{
                 x.innerText  = quiz_JSON[data].name ;
@@ -172,7 +167,19 @@
 
 
 <div class="main">
-    <div class="sidenav" style="border: 1px solid black;">
+    <div class="sidenav">
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
+        <p>asd</p>
     </div>
 
 
