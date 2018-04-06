@@ -96,6 +96,88 @@
 
         socket.emit('count','1');
 
+        socket.on('right_checked' ,function(data , quiz_num){
+            var right_checking_JSON = JSON.parse(data);
+            $("#quiz_number").text(quiz_num);
+            $("#right").text(right_checking_JSON[0].o);
+            $("#wrong").text(right_checking_JSON[0].x);
+
+            function sliceSize(dataNum, dataTotal) {
+                return (dataNum / dataTotal) * 360;
+            }
+            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+                $(pieElement).append(
+                    "<div class='slice " + sliceID + "'><span></span></div>"
+                );
+                var offset = offset - 1;
+                var sizeRotation = -179 + sliceSize;
+                $("." + sliceID).css({
+                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+                });
+                $("." + sliceID + " span").css({
+                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+                    "background-color": color
+                });
+            }
+            function iterateSlices(
+                sliceSize,
+                pieElement,
+                offset,
+                dataCount,
+                sliceCount,
+                color
+            ) {
+                var sliceID = "s" + dataCount + "-" + sliceCount;
+                var maxSize = 179;
+                if (sliceSize <= maxSize) {
+                    addSlice(sliceSize, pieElement, offset, sliceID, color);
+                } else {
+                    addSlice(maxSize, pieElement, offset, sliceID, color);
+                    iterateSlices(
+                        sliceSize - maxSize,
+                        pieElement,
+                        offset + maxSize,
+                        dataCount,
+                        sliceCount + 1,
+                        color
+                    );
+                }
+            }
+            function createPie(dataElement, pieElement) {
+                var listData = [];
+                $(dataElement + " span").each(function () {
+                    listData.push(Number($(this).html()));
+                });
+                var listTotal = 0;
+                for (var i = 0; i < listData.length; i++) {
+                    listTotal += listData[i];
+                }
+                var offset = 0;
+                var color = [
+                    "green",
+                    "red",
+                    "orange",
+                    "tomato",
+                    "crimson",
+                    "purple",
+                    "turquoise",
+                    "forestgreen",
+                    "navy",
+                    "gray"
+                ];
+                for (var i = 0; i < listData.length; i++) {
+                    var size = sliceSize(listData[i], listTotal);
+                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
+                    $(dataElement + " li:nth-child(" + (
+                        i + 1
+                    ) + ")").css("border-color", color[i]);
+                    offset += size;
+                }
+            }
+            createPie(".pieID.legend", ".pieID.pie");
+        });
+
+
         socket.on('mid_ranking',function(data){
             document.getElementById('counter').innerText= " ";
             $("#content").hide();
@@ -106,8 +188,6 @@
                 // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
             }
             $(".sidenav").html(changehtml);
-
-            // $("#mid_result").html(data);
             $("#mid_result").show();
             setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
         });
@@ -151,7 +231,7 @@
         socket.on('nextok',function(data){
 
             if(quiz_JSON.length == data){
-                setTimeout(function(){ location.href="/recordbox"; }, 2000);
+                setTimeout(function(){ location.href="/recordbox"; }, 2900);
             }
             else{
                 x.innerText  = quiz_JSON[data].name ;
