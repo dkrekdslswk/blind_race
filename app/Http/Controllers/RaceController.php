@@ -249,7 +249,7 @@ class RaceController extends Controller
         $updateCount = DB::table('sessions')
             ->update(['user_nick' => $postData['userNick']])
             ->where('session_num', '=', $session['sessionId'])
-            ->where(DB::raw('set_exam_num IS NOT NULL'));
+            ->whereNotNull('set_exam_num');
 
         if($updateCount == 1)
             $returnValue = array('check' => true,
