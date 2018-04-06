@@ -29,6 +29,14 @@
 
 </head>
 <body>
+
+<script>
+    // delete Quiz
+    function deleteQ() {
+        alert("Delete Quiz");
+    }
+</script>
+
 <nav>
     @include('Navigation.mainnav')
 </nav>
@@ -71,7 +79,7 @@
             <td>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">N3</button>
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">수정</button>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">삭제</button>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="deleteQ()">삭제</button>
 
             </td>
         </tr>
@@ -80,7 +88,7 @@
             <td>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">N3</button>
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">수정</button>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">삭제</button>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="deleteQ()">삭제</button>
             </td>
 
 

@@ -16,10 +16,12 @@
 		</style>
 	</head>
 	<body>
-	    
+	    <nav>
+        @include('nav.mainnav')
+        </nav>
       <!--aside 자리-->
       <aside style="display:inline-block; vertical-align:top;">
-          <!-- @include('Recordbox.Side_Bar') -->
+          @include('Recordbox.Side_Bar')
 
       </aside>
     <!--<div id="app"></div>-->

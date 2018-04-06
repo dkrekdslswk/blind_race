@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -11,13 +11,15 @@
 |
 */
 
-
+Route::get('/', function () {
+    return view('main');
+});
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
 });
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('Login/login');
 });
 
@@ -39,7 +41,7 @@ Route::get('/recordbox', function(){
 
 
 
-Route::get('/Feedback', function(){
+Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
 
@@ -47,7 +49,9 @@ Route::get('/Quiz_tree', function(){
     return view('Quiz_tree/Quiz_list');
 });
 
-
+Route::get('/feedback', function(){
+    return view('Recordbox/Feedback');
+});
 
 Route::get('/chat', function(){
     return view('chat');
@@ -66,19 +70,15 @@ Route::get('/raid', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-// Route::get('/', function(){
-//     return view('test');
-// });
+/*Route::get('/', function(){
+     return view('test');
+});*/
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
-Route::post('/raceController/{post}','RaceController@create');
+Route::post('/raceController/create','RaceController@create');
+Route::post('/raceController/teacherIn','RaceController@teacherIn');
+Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/quizNext','RaceController@quizNext');
 
-Route::get('/race', function(){
-    return view('Race/race');
-});
-
-Route::get('/homepage', function(){
-    return view('homepage');
-});

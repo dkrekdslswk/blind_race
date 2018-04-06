@@ -26,7 +26,7 @@
 
     <script type="text/javascript">
 
-<<<<<<< HEAD
+
     var getJsonDate_nav = '';
     var getJsonDate_user = '';
 
@@ -71,7 +71,7 @@
         });
 
     });
-=======
+
         var getJsonDate_nav = '';
         var getJsonDate_user = '';
 
@@ -116,7 +116,7 @@
             });
 
         });
->>>>>>> e41e22d3316b40551316eef117162783ef8a6adb
+
 
     </script>
 
