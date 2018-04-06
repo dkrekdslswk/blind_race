@@ -236,8 +236,8 @@ class RaceController extends Controller
                                'rse.book_num                 as bookId', 
                                'rse.book_page_start          as pageStart', 
                                'rse.book_page_end            as pageEnd',
-                               'rse.exam_count               as setExamCount',
-			                   /* DB::raw('COUNT(quiz.sequence) as examCount')*/)
+                               'rse.exam_count               as setExamCount'/*,
+			                    DB::raw('COUNT(quiz.sequence) as examCount')*/)
                       ->where('rse.set_exam_num', '=', $postData['setExamId'])
                       /*->leftJoin('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
                       ->groupBy('res.set_exam_num')*/
