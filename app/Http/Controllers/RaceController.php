@@ -230,9 +230,25 @@ class RaceController extends Controller
         $json     = json_encode(array('userId' => 'tamp2id', 'userNick' => 'baka'));
         $postData = json_decode($json, true);
 
+        // test
+        $userId = DB::table('users as u')
+            ->select(['u.user_num   as user_num',
+                's.session_num  as session_num'])
+            ->where('s.user_id', '=', $postData['userId'])
+            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
+            ->first();
+
+        if(!isset($userId->session_num)){
+            $session['sessionId'] = DB::table('sessions')
+                ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+        }else{
+            $session['sessionId'] = $userId->session_num;
+        }
+        // test
+
         $updateCount = DB::table('sessions')
             ->update(['user_nick' => $postData['userNick']])
-            ->where('user_num', '=', $postData['userId'])
+            ->where('session_num', '=', $session['sessionId'])
             ->where(DB::raw('set_exam_num IS NOT NULL'));
 
         if($updateCount == 1)
