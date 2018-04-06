@@ -226,7 +226,7 @@ class RaceController extends Controller
         //학생의 세션 아이디 필요
         //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
         // 데모버전용 학생 아이디로 학생을 검색
-        $json     = json_encode(array('userId' => 'tamp2id', 'userNick' => 'aho'));
+        $json     = json_encode(array('userId' => 'tamp2id', 'userNick' => 'baka'));
         $postData = json_decode($json, true);
 
         // test
@@ -246,9 +246,9 @@ class RaceController extends Controller
         // test
 
         $updateCount = DB::table('sessions')
-            ->update(['user_nick' => $postData['userNick']])
             ->where([['session_num', '=', $session['sessionId']],
-                    ['set_exam_num', '<>', null]]);
+                ['set_exam_num', '<>', null]])
+            ->update(['user_nick' => $postData['userNick']]);
 
         if($updateCount == 1)
             $returnValue = array('check' => true,
