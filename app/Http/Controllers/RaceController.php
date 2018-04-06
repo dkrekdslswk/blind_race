@@ -237,7 +237,7 @@ class RaceController extends Controller
                                'rse.book_page_start          as pageStart', 
                                'rse.book_page_end            as pageEnd',
                                'rse.exam_count               as setExamCount',
-			       DB::raw('COUNT(quiz.sequence) as examCount'))
+			                    DB::raw('COUNT(quiz.sequence) as examCount'))
                       ->where('rse.set_exam_num', '=', $postData['setExamId'])
                       ->leftJoin('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
                       ->groupBy('res.set_exam_num')
@@ -255,7 +255,7 @@ class RaceController extends Controller
                 array_push($setExamList, $exam->quiz_num);
             }
 
-            $returnValue = DB::table('race_quizs as rq')
+            $quizData = DB::table('race_quizs as rq')
                         ->select('qb.quiz_question     as question',
                                  'qb.quiz_right_answer as right',
                                  'qb.quiz_example1     as exam1',
@@ -267,8 +267,14 @@ class RaceController extends Controller
                         ->inRandomOrder()
                         ->first();
 
+            $returnValue = array('quiz' => array('sequence' => $raceData->examCount,
+                                                  'question' => $quizData->question,
+                                                  'right'    => $quizData->right,
+                                                  'example'  => array($quizData->exam1,$quizData->exam2,$quizData->exam3),
+                                                  'type'     => $quizData->type),
+                                  'check' => true);
         } else {
-            $returnValue = "fail";
+            $returnValue = array('check' => false);
         }
 
         return response()->json($returnValue);
