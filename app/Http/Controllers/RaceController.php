@@ -11,8 +11,7 @@ class RaceController extends Controller
     // race create first order
     public function create(Request $request)
     {
-        //$json     = $request->input('post');
-        //$json     = json_encode(array('group' => array('groupId' => 1), 
+        //$json     = $request->input('post'); 
         //$json     = json_encode(array('group' => array('groupId'  => 1), 
         //                              'race' => array('raceMode'  => 'n', 
         //                                              'examCount' => 30, 
@@ -245,7 +244,7 @@ class RaceController extends Controller
                       ->first();
 
             $setExams = DB::table('race_quizs as rq')
-                        ->select('rq.quiz_num as quiz_num)
+                        ->select('rq.quiz_num as quiz_num')
                         ->where(['rq.race_num'       => $raceData->raceId,
                                  'rseq.set_exam_num' => $postData['setExamId']])
                         ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', '=', 'rq.quiz_num')
