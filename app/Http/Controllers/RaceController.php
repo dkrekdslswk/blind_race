@@ -250,7 +250,7 @@ class RaceController extends Controller
                         ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', '=', 'rq.quiz_num')
                         ->get();
 
-            $setExamList = array();
+            $setExamList = array(0);
             foreach($setExams as $exam){
                 array_push($setExamList, $exam->quiz_num);
             }
