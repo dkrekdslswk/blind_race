@@ -18,8 +18,8 @@ class CreateGroupTable extends Migration
 
             $table->char('group_name', 80);
 
-	    $table->unsignedInteger('user_t_num');
-	    $table->foreign('user_t_num')->references('user_t_num')->on('user_teachers');
+	        $table->unsignedInteger('user_t_num');
+	        $table->foreign('user_t_num')->references('user_t_num')->on('user_teachers');
         });
     }
 

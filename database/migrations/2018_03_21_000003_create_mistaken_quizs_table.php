@@ -15,10 +15,10 @@ class CreatePlayingQuizsTable extends Migration
     {
         Schema::create('playing_quizs', function (Blueprint $table) {
             $table->unsignedInteger('set_exam_num');
-	    $table->unsignedInteger('user_num');
-	    $table->unsignedInteger('sequence');
+	        $table->unsignedInteger('user_num');
+	        $table->unsignedInteger('sequence');
             $table->unsignedTinyInteger('retake')->default(0);
-	    $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
+	        $table->primary(['set_exam_num', 'user_num', 'sequence', 'retake']);
 
             $table->string('result', 100);
 
