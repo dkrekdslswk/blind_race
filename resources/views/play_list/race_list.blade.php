@@ -115,7 +115,6 @@
         <div class="modal-dialog" role="document">
             <form action="/race_waiting">
                 <div class="modal-content">
-                    <form action="/test">
                     <div class="modal-header" style="text-align: center">
                         <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
                     </div>
@@ -133,12 +132,10 @@
                                     <a role="menuitem" tabindex="-1" href="#">1-특강 B반</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> 
                     </div>
                     <div class="modal-footer" style="text-align: center">
-                        <form action="/test">
-                            <button type="submit" class="btn btn-primary">선택하기</button>
-                        </form>
+                        <button type="submit" class="btn btn-primary">선택하기</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                     </div>
                 </div>

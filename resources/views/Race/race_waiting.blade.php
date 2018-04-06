@@ -30,6 +30,9 @@
     var racenavData = '';
     var userData = '';
 
+    var getJsonDate_nav = '';
+    var getJsonDate_user = '';
+
     $(function () {
         var socket = io(':8891');
         var table_row_count = 0;
@@ -86,6 +89,7 @@
         });
 
     });
+
         var getJsonDate_nav = '';
         var getJsonDate_user = '';
 
@@ -130,6 +134,7 @@
             });
 
         });
+
 
     </script>
 

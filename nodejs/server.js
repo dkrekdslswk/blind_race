@@ -82,7 +82,7 @@ io.on('connection', function (socket){
         answer_c = 0 ;
 
 
-        var ranking_query = "select user_num , count(result) from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
+        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
 
 
         connection.query(ranking_query, function(err, rows) {

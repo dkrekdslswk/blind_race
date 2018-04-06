@@ -36,7 +36,14 @@ class CreateRaceSetExamTable extends Migration
 
 	    $table->unsignedSmallInteger('exam_count');
 
-	    $table->json('set_exam_data')->nullable();
+	    $table->unsignedInteger('race_num')->nullable();
+	    $table->foreign('race_num')->references('race_num')->on('races');
+
+	    $table->unsignedInteger('book_num')->nullable();
+	    $table->foreign('book_num')->references('book_num')->on('books');
+
+	    $table->unsignedSmallInteger('book_page_start')->nullable();
+	    $table->unsignedSmallInteger('book_page_end')->nullable();
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
