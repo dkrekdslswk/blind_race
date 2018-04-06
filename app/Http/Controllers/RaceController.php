@@ -232,23 +232,23 @@ class RaceController extends Controller
                   ->first();
 
         if(isset($chaeck->session_num)){
-            $raceId = DB::table('race_set_exam as rse')
-                      ->select('rse.race_num                 as base', 
+            $raceData = DB::table('race_set_exam as rse')
+                      ->select('rse.race_num                 as raceId', 
                                'rse.book_num                 as bookId', 
                                'rse.book_page_start          as pageStart', 
                                'rse.book_page_end            as pageEnd',
                                'rse.exam_count               as setExamCount',
 			       DB::raw('COUNT(quiz.sequence) as examCount'))
-                      ->where('quiz.set_exam_num', '=', $postData['setExamId'])
+                      ->where('rse.set_exam_num', '=', $postData['setExamId'])
                       ->join('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
                       ->groupBy('res.set_exam_num')
                       ->first();
 
             $setExams = DB::table('race_quizs as rq')
                         ->select('rq.quiz_num as quiz_num)
-                        ->where(['rq.race_num'       => $raceId->base,
+                        ->where(['rq.race_num'       => $raceData->raceId,
                                  'rseq.set_exam_num' => $postData['setExamId']])
-                        ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', 'rq.quiz_num')
+                        ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', '=', 'rq.quiz_num')
                         ->get();
 
             $setExamList = array();
