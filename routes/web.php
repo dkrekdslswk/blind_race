@@ -11,6 +11,9 @@
 |
 */
 
+Route::post('/store',"UserController@store");
+Route::post('/user_login',"UserController@user_login");
+
 Route::get('/', function () {
     return view('homepage');
 });
