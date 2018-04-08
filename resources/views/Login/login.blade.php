@@ -60,11 +60,11 @@
                     <img src="background/japan.jpg" alt="">                
                 </div>
                 <div class="cont_form_login">
-                    <form action="{{URL::to('/미구현')}}" method="post">
+                    <form action="{{URL::to('/user_login')}}" method="post">
 
                     <a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
                     <h2>LOGIN</h2>
-                    <input type="text" name="ID" placeholder="Email" />
+                    <input type="text" name="ID" placeholder="ID" />
                     <input type="password" name="PW" placeholder="Password" />
 
                     <input type="hidden" name="_token" value="{{csrf_token()}}">

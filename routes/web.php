@@ -11,9 +11,16 @@
 |
 */
 
+Route::post('/store',"UserController@store");
+Route::post('/user_login',"UserController@user_login");
+
 Route::get('/', function () {
-    return view('main');
+    return view('homepage');
 });
+//
+//Route::get('/homepage', function() {
+//    return view('homepage');
+//});
 
 Route::get('/nav', function(){
     return view('nav/mainnav');
@@ -80,4 +87,6 @@ Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');
 Route::post('/raceController/quizNext','RaceController@quizNext');
+
+Route::post('/raceController/{post}','RaceController@create');
 

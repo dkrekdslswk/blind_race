@@ -26,10 +26,6 @@
     <script type="text/javascript">
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e41e22d3316b40551316eef117162783ef8a6adb
 /*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
             $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
             $('#group_name').html(getJsonDate_nav.group[0].groupName);
@@ -83,7 +79,7 @@
 <div class="race_container">
     <nav class="navbar navbar-expand-lg" style="height: 100%;">
         <div class="navbar-brand">
-            <img style="width: 80px;height: 80px;" class="nav-icon " src="img/golden_bell.png"></img>블라인드 레이스
+            <img style="width: 80px;height: 80px;" class="nav-icon " src="/img/golden_bell.png"></img>블라인드 레이스
         </div>
 
         <div class="collapse navbar-collapse">
