@@ -1,4 +1,4 @@
-﻿<?php
+﻿ <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +39,6 @@ Route::get('/recordbox', function(){
     return view('Race/Result');
 });
 
-
-
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
@@ -77,6 +75,7 @@ Route::get('/raid', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
+
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');
