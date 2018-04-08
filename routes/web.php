@@ -90,5 +90,3 @@ Route::post('/raceController/studentIn','RaceController@studentIn');
 Route::post('/raceController/nickIn','RaceController@nickIn');
 Route::post('/raceController/quizNext','RaceController@quizNext');
 
-Route::post('/raceController/{post}','RaceController@create');
-

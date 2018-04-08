@@ -336,7 +336,9 @@ class RaceController extends Controller
         $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
         $postData = json_decode($json, true);
 
-
+        $data = DB::table('race_result')
+            ->where()
+            ->insert();
 
         $returnValue = array();
         return response()->json($returnValue);

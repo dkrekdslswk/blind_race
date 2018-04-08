@@ -10,16 +10,39 @@ class UserController extends Controller{
         $user_id = $request->input('ID');
         $password = $request->input('PW');
 
-       $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password]);
-        $user_num = $data[0]->user_num;
+        $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password])->first();
 
-       if(count($data)){
-           session(['connect_num' => $user_num]);
-           return view('homepage');
-       }else{
-           echo "login failed";
+        if(count($data)){
+            session(['sessionId' => $this->sessionCreate($data->user_num)]);
+            return view('homepage');
+        }else{
+            echo "login failed";
+        }
+    }
 
-       }
+    public function sessionCreate($userNum){
+        $this->oldLoginCheck();
+
+        $data = DB::table('sessions')
+            ->select(['session_num'])
+            ->where(['user_num' => $userNum])
+            ->first();
+
+        if(count($data)){
+            $sessionId = $data->session_num;
+        }else{
+            $sessionId = DB::table('sessions')
+                ->insertGetId(['user_num' => $userNum], 'session_num');
+        }
+
+        return $sessionId;
+    }
+
+    public function oldLoginCheck(){
+        DB::table('sessions')
+            ->where(DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'))
+            ->where(DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))'))
+            ->delete();
     }
 
     public function store(Request $request){
