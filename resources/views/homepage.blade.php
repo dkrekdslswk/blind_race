@@ -13,11 +13,11 @@
 	</head>
 	<body>
 
-		<!-- Header
+
 			<header id="header" class="alt">
 				<div class="logo"><a href="index.html">十分十分 <span></span></a></div>
-				<a href="#menu">Menu</a>
-			</header> -->
+				<a href="#menu"><?php echo session()->get('connect_num','')." 번 로그인"; ?></a>
+			</header>
 
 		<!-- Nav -->
 			<!-- <nav id="menu">

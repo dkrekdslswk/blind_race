@@ -113,36 +113,33 @@
     {{--Modal : select group--}}
     <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form action="/race_waiting">
-                <div class="modal-content">
-                    <form action="/test">
-                    <div class="modal-header" style="text-align: center">
-                        <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
-                    </div>
-                    <div class="modal-body">
-                        {{--드롭 다운--}}
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" id="mystatus" value="title" type="button" data-toggle="dropdown" aria-expanded="true">
-                                그룹명
-                            </button>
-                            <ul id="mytype" class="dropdown-menu" role="menu" aria-labelledby="searchType">
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">2-특강 A반</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">1-특강 B반</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="text-align: center">
-                        <form action="/test">
-                            <button type="submit" class="btn btn-primary">선택하기</button>
-                        </form>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <div class="modal-content">
+                <form action="/test">
+                <div class="modal-header" style="text-align: center">
+                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                </div>
+                <div class="modal-body">
+                    {{--드롭 다운--}}
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" id="mystatus" value="title" type="button" data-toggle="dropdown" aria-expanded="true">
+                            그룹명
+                        </button>
+                        <ul id="mytype" class="dropdown-menu" role="menu" aria-labelledby="searchType">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">2-특강 A반</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">1-특강 B반</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </form>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="submit" class="btn btn-primary">선택하기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+                </form>
+            </div>
         </div>
     </div>
 

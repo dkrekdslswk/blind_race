@@ -1,4 +1,4 @@
-﻿<?php
+﻿ <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('/store',"UserController@store");
+Route::post('/user_login',"UserController@user_login");
 
 Route::get('/', function () {
     return view('homepage');
@@ -42,8 +45,6 @@ Route::get('/race_waiting', function(){
 Route::get('/recordbox', function(){
     return view('Race/Result');
 });
-
-
 
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
@@ -81,6 +82,7 @@ Route::get('/raid', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
+
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');
