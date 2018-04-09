@@ -22,7 +22,9 @@ foreach ($getJsonData as $key => $value){
 */
 
 ?>
-<!DOCTYPE html>
+
+
+        <!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -45,6 +47,7 @@ foreach ($getJsonData as $key => $value){
             var getData = '{{isset($json) ? true : false}}';
             var user_id = null;
             var race_name = null;
+            var group_student_count = 0;
 
             if(getData){
 
@@ -62,6 +65,7 @@ foreach ($getJsonData as $key => $value){
                             break;
                         case 'groupStudentCount' :
                             $('#group_student_count').html(value);
+                            group_student_count = value;
                             break;
                         case 'sessionId' :
                             user_id = value;
@@ -71,35 +75,42 @@ foreach ($getJsonData as $key => $value){
             }
 
 
+            //group_student_count(그룹 총 학생수)를 사용하여 숫자 0부터 group_student_count 까지의 숫자중에 랜덤으로 학생들에게 부여
+            //하지만 이미지가 4개 밖에 없으므로 4로 지정
+            group_student_count = 4;
+
             var socket = io(':8891');
             var table_row_count = 0;
-            var char_ran = Math.floor(Math.random() * 4) + 1;
+            var char_ran = Math.floor(Math.random() * group_student_count) + 1;
 
-            var joinData = {"userID" : user_id , "raceName" : race_name };
+            var joinData = {"userID" : user_id , "raceName" : race_name , "groupStudentCount" : group_student_count};
 
-            socket.emit('join',joinData);
+            socket.emit('join to raceroom',joinData);
 
+            //유저 입장
             socket.on('user connected',function(user){
                 $('#messages').append($('<li>').text(user+"님이 입장했습니다.")).fadeOut(1000);
             });
 
+            //유저 퇴장
             socket.on('user disconnected',function(user){
                 $('#messages').append($('<li>').text(user+"님이 퇴장하였습니다.")).fadeOut(1000);
             });
 
-            socket.on('now all user',function(std){
+            //현재 유저수 받기
+            socket.on('now all user',function(std_count){
 
-                $('#student_count').html("접속자 : " + std);
+                $('#student_count').html("현재 접속자 수 : " + std_count);
 
-                table_row_count = Math.floor(std / 10) + 1;
-
+                table_row_count = Math.floor(std_count / 10) + 1;
                 for (var i = 0 ; i < table_row_count ; i++){
-                    $('#characterTable').append($('<tr id="characterTr' + table_row_count + '">'));
+                    $('#characterTable').append($('<tr id="characterTr' + (table_row_count - 1) + '">'));
                 }
 
-                $('#characterTr'+table_row_count).
-                append($('<td>').
-                html('<img style="width: 80px;height: 80px;" class="nav-icon " src="/img/character/char'+char_ran+'.png"><br/>'));
+                for( var i = 0 ; i < std_count ; i++){
+                    $('#characterTr'+ i).append($('<td>').
+                    html('<img style="width: 80px;height: 80px;" class="nav-icon" src="/img/character/char'+char_ran+'.png"><br/>'+user_id));
+                }
             });
 
         });

@@ -115,7 +115,8 @@ io.on('connection', function (socket){
         console.log('Client Send Data:', answer_num);
         var quizin = quiz+1;
         // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
-        var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
+        var answer_query = "insert into playing_quizs values (1,\"+student_num+\",\"+quizin+\",0,'\"+answer_num+ \"','0')" ;
+
         console.log('user',count);
         connection.query(answer_query, function(err, rows) {
             if(err) throw err;
@@ -136,20 +137,21 @@ server.listen(8890, function(){ //4
 
 /*kimseungmok**********************6***************/
 
-var user = '{\
-                "student":[{\
-                    "studentName":"김승목",\
-                    "studentNick":"모기모기"}]\
-                }';
-
-
+var user_conn = false;
 var roomName = '';
 var userData = '';
+var groupAllStudent = 0;
+var request_query = '';
+
 
 var kim_app = require('express')();
 var kim_http = require('http').Server(kim_app);
 var kim_io = require('socket.io')(kim_http);
 
+var kim_mysql      = require('mysql');
+var kim_dbconfig   = require('./config/database.js');
+var kim_connection = kim_mysql.createConnection(kim_dbconfig);
+var char_card = [];
 
 /*kim_app.get('/',function (req, res) {
     res.sendFile(__dirname + '../resources/views/main');
@@ -157,43 +159,91 @@ var kim_io = require('socket.io')(kim_http);
 
 
 kim_http.listen(8891,function () {
+    var groupAllStudent = 0;
+
     console.log('listening on *: 8891');
 });
 
 
+// socket.on('select character', function (card) {
+//
+//     for(var i = 0 ; i < card ; i++){
+//         char_card[i] = i+1;
+//     }
+//
+//     kim_io.sockets.in(roomName).emit('character number' , char_card);
+//
+// });
+
+
+//컬럼 추가
+//ALTER TABLE races ADD user_now_num int(10) NOT NULL;
+
 kim_io.on('connection', function(socket){
     console.log('user in');
-    var race_allUser = 0;
 
-    socket.on('join',function (room) {
-        race_allUser++;
+    socket.on('join to raceroom',function (room) {
         userData = room.userID;
-        roomName = room.userID+room.raceName;
+        roomName = room.raceName;
+        groupAllStudent = room.groupStudentCount;
+        user_conn = true;
 
+        //소켓 방 조인하기
         socket.join(roomName);
-        console.log('join to race room : '+ roomName + ' race name : ' + room.raceName);
+        console.log('join to race room : '+ roomName);
 
         //유저 정보 전송
         kim_io.sockets.in(roomName).emit('user connected',userData);
         console.log('send to userData : '+ userData );
 
-        //현재 접속자 수
-        kim_io.sockets.in(roomName).emit('now all user',race_allUser);
-        console.log('send to all users : '+ race_allUser);
+        //DB 현재 인원수 쿼리해서 추가하기
+        request_query = "select count(*) " + " user_num " + " from " + " race_results ";
+        kim_connection.query(request_query, function(err, rows) {
+            if(err){ throw err; }
+            else{
+                var race_now_users = rows[0].user_num;
+                //현재 인원수 1 추가하기
+                var race_new_users = race_now_users + 1;
+
+                //1추가한 현재 인원수 보내기
+                kim_io.sockets.in(roomName).emit('now all user',race_new_users);
+
+                //race DB에 1추가된 현재 인원수로 업데이트
+                request_query = "UPDATE " + " race_results " + " SET " + " user_num " + " = " + race_new_users + " WHERE " + " user_num " + " = '" + race_now_users + "'";
+                kim_connection.query(request_query,function (err, rows) {
+                    if(err){ throw err;}
+                });
+            }
+        });
 
     });
 
     socket.on('disconnect', function(){
+        console.log(userData + 'user disconnected');
 
         //나간 유저의 정보를 전송
         kim_io.sockets.in(roomName).emit('user disconnected',userData);
         console.log('send to userData : '+ userData );
 
-        //현재 접속자 수
-        kim_io.sockets.in(roomName).emit('now all user',race_allUser--);
-        console.log('send to all users : '+ race_allUser);
+        //DB 현재 인원수 쿼리해서 감소시키기
+        request_query = "select count(*) " + " user_num " + " from " + " race_results ";
+        kim_connection.query(request_query, function(err, rows) {
+            if(err){ throw err; }
+            else{
+                var race_now_users = rows[0].user_num;
+                //현재 인원수 1 감소하기
+                var race_new_users = race_now_users - 1;
 
-        console.log(userData + 'user disconnected');
+                //1감소한 현재 인원수 보내기
+                kim_io.sockets.in(roomName).emit('now all user',race_new_users);
+
+                //race DB에 1감소된 현재 인원수로 업데이트
+                request_query = "UPDATE " + " race_results " + " SET " + " user_num " + " = " + race_new_users + " WHERE " + " user_num " + " = '" + race_now_users + "'";
+                kim_connection.query(request_query,function (err, rows) {
+                    if(err){ throw err;}
+                });
+            }
+        });
     });
 
 });
