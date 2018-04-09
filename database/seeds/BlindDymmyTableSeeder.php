@@ -56,27 +56,40 @@ class BlindDymmyTableSeeder extends Seeder
             'race_folder_name'=>'-'
         ], 'race_num');
 
-        for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++){
-	    $quizId = DB::table('quiz_bank')->insertGetId([
-                'quiz_question'=>''.($quiz_count%4+1).'',
-                'quiz_right_answer'=>''.($quiz_count%4+1).'',
-                'quiz_example1'=>''.(($quiz_count+1)%4+1).'',
-                'quiz_example2'=>''.(($quiz_count+2)%4+1).'',
-                'quiz_example3'=>''.(($quiz_count+3)%4+1).'',
-                'quiz_type'=>'o',
-                'quiz_level'=>'5'
+        for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++) {
+            $quizId = DB::table('quiz_bank')->insertGetId([
+                'quiz_question' => '' . ($quiz_count % 4 + 1) . '',
+                'quiz_right_answer' => '' . ($quiz_count % 4 + 1) . '',
+                'quiz_example1' => '' . (($quiz_count + 1) % 4 + 1) . '',
+                'quiz_example2' => '' . (($quiz_count + 2) % 4 + 1) . '',
+                'quiz_example3' => '' . (($quiz_count + 3) % 4 + 1) . '',
+                'quiz_type' => 'o',
+                'quiz_level' => '5'
             ], 'quiz_num');
 
             DB::table('race_quizs')->insert([
-                'race_num'=>$raceId,
-                'quiz_num'=>$quizId
+                'race_num' => $raceId,
+                'quiz_num' => $quizId
             ]);
-	}
-        
-        for($char = 1 ; $char <= 5 ; $char++){
+        }
+
+        for ($char = 1; $char <= 5; $char++) {
             DB::table('characters')->insert([
-                'character_url'   => 'img/character/char'.(string)$char
+                'character_url' => 'img/character/char' . (string)$char
             ]);
+        }
+
+        $raceSetExamId = DB::table('race_set_exam')->insertGetId([
+            'group_num'=>$groupId,
+            'set_exam_state'=>'n',
+            'exam_count'=>30,
+            'race_num'=>$raceId
+        ], 'set_exam_num');
+
+        for($user_num = 2 ; $user_num <= 6 ; $user_num++){
+            DB::table('race_results')
+                ->insert(['set_exam_num' => $raceSetExamId,
+                    'user_num' => $user_num]);
         }
     }
 }

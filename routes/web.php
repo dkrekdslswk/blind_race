@@ -89,4 +89,6 @@ Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');
 Route::post('/raceController/nickIn','RaceController@nickIn');
 Route::post('/raceController/quizNext','RaceController@quizNext');
+//Route::post('/raceController/resultIn','RaceController@resultIn');
+//Route::post('/raceController/destroy','RaceController@destroy');
 

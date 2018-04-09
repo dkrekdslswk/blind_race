@@ -13,26 +13,30 @@ class UserController extends Controller{
         $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password])->first();
 
         if(count($data)){
-            session(['sessionId' => $this->sessionCreate($data->user_num)]);
+            $session['sessionId'] = $this->sessionIdGet($data->user_num);
             return view('homepage');
         }else{
             echo "login failed";
         }
     }
 
-    public function sessionCreate($userNum){
+    public function sessionDataGet($sessionId){
+
+    }
+
+    public function sessionIdGet($userId){
         $this->oldLoginCheck();
 
         $data = DB::table('sessions')
             ->select(['session_num'])
-            ->where(['user_num' => $userNum])
+            ->where(['user_num' => $userId])
             ->first();
 
         if(count($data)){
             $sessionId = $data->session_num;
         }else{
             $sessionId = DB::table('sessions')
-                ->insertGetId(['user_num' => $userNum], 'session_num');
+                ->insertGetId(['user_num' => $userId], 'session_num');
         }
 
         return $sessionId;

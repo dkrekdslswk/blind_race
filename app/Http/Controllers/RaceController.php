@@ -29,7 +29,7 @@ class RaceController extends Controller
             'examCount' => $request->input('examCount'),
             'raceId'    => $request->input('raceId')));
 
-	// test
+	    // test 임시로 유저 세션 부여
         $userId = DB::table('users as u')
             ->select(['u.user_num   as user_num',
                     's.session_num  as session_num'])
@@ -126,6 +126,7 @@ class RaceController extends Controller
             && (($setExamTest->setExamCount != 0)
                 && ($setExamTest->examCount <= $setExamTest->setExamCount))){
 
+            // 올바르게 방번호가 입력되었는지 확인
             $updateCheck = DB::table('sessions')
                 ->where('session_num', '=', $postData['sessionId'])
                 ->update(['room_pin_number' => $postData['roomPin']]);
@@ -168,7 +169,8 @@ class RaceController extends Controller
              $session['sessionId'] = $userId->session_num;
         }
         // test
-        
+
+        // 현재 유저가 그룹에 소속된 유저인지 확인
         $userCheck = DB::table('group_students as gs')
             ->select('gs.user_num as user_num')
             ->where(['gs.group_num'  => $postData['groupId'],
@@ -181,34 +183,45 @@ class RaceController extends Controller
             $countDown = 10;
 
             do{
-            $characters = DB::table('characters as c')
-                         ->select('c.character_num as characterId')
-                         ->where('rr.set_exam_num', $postData['setExamId'])
-                         ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
-                         ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
-                         ->get();
+                // 이미 선택된 캐릭터 목록 획득
+                $characters = DB::table('characters as c')
+                             ->select('c.character_num as characterId')
+                             ->where('rr.set_exam_num', $postData['setExamId'])
+                             ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
+                             ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
+                             ->get();
 
-            $charList = array();
-            foreach($characters as $charNumber){
-                array_push($charList, $charNumber->characterId);
-            }
+                $charList = array();
+                foreach($characters as $charNumber){
+                    array_push($charList, $charNumber->characterId);
+                }
 
-            $character = DB::table('characters')
-                ->select('character_num as characterId',
-                                  'character_url as characterUrl')
-                ->whereNotIn('character_num', $charList)
-                ->inRandomOrder()
-                ->first();
+                // 캐릭터 url 획득
+                $character = DB::table('characters')
+                    ->select('character_num as characterId',
+                                      'character_url as characterUrl')
+                    ->whereNotIn('character_num', $charList)
+                    ->inRandomOrder()
+                    ->first();
 
-            $updateCheck = DB::table('sessions')
-                ->where('session_num', '=', $postData['sessionId'])
-                ->update(['set_exam_num' => $postData['setExamId'],
-                        'character_num'  => $character->characterId]);
+                // 유저 세션에 정보 저장
+                $updateCheck = DB::table('sessions')
+                    ->where('session_num', '=', $postData['sessionId'])
+                    ->update(['set_exam_num' => $postData['setExamId'],
+                            'character_num'  => $character->characterId,
+                            'room_pin_number' => $postData['roomId']]);
 
                 $countDown--;
             } while ($updateCheck != 1 && $countDown > 0);
-        
+
+            // 캐릭터 획득 성공 여부 확인
             if($updateCheck == 1){
+                // 참가 유저 정보 입력
+                DB::table('race_results')
+                    ->insert(['set_exam_num' => $postData['setExamId'],
+                        'user_num' => $userCheck->user_num]);
+
+                // 성공 값 반납
                 $returnValue = array('check' => true,
                     'characterUrl' => $character->characterUrl);
             } else {
@@ -333,18 +346,37 @@ class RaceController extends Controller
     public function resultIn(Request $request){
         //$json     = $request->input('post');
         // 학생의 세션 아이디 필요
-        $json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
+        $json     = json_encode(array(
+            'roomPin' => '123456',
+            'sessionId' => 1,
+            'exam_data' => array(
+                'setExamId' => 2,
+                'sequence' => 1,
+                'exam_result'=>'1')
+        ));
         $postData = json_decode($json, true);
 
-        $data = DB::table('race_result')
-            ->where()
-            ->insert();
+        $data = DB::table('race_result as rr')
+            ->select('rr.user_num as userId', 'rr.set_exam_num as setExamId')
+            ->where(['s.session_num' => $postData['sessionId'],
+                's.room_pin_num' => $postData['roomPin'],
+                'rr.set_exam_num' => $postData['setExamId']])
+            ->join('sessions as s', 's.user_num', '=', 'rr.user_num')
+            ->first();
+
+        if(isset($data->userId)){
+            DB::table('playing_quizs')
+                ->insert(['set_exam_num' => $data->setExamId,
+                    'user_num' => $data->userId,
+                    'sequence' => $postData['exam_result'],
+                    'result' => $postData['exam_result']]);
+        }
 
         $returnValue = array();
         return response()->json($returnValue);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
 	/*
       $item = Item::find($id);
