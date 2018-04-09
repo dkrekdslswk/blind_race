@@ -7,7 +7,7 @@ var mysql      = require('mysql');
 var dbconfig   = require('./config/database.js');
 var connection = mysql.createConnection(dbconfig);
 
-
+//server.js 18.04.09
 
 app.get('/', function(req, res){
     res.send('Root');

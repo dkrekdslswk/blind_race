@@ -247,7 +247,7 @@
 <div id="wait_room">
     <div class="student">
 
-        <!--<form action="">-->
+        <!--<18.04.09 룸 + 플레잉 페이지 ="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
         <!--</form>-->
 
