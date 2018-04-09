@@ -79,7 +79,7 @@ foreach ($getJsonData as $key => $value){
             //하지만 이미지가 4개 밖에 없으므로 4로 지정
             group_student_count = 4;
 
-            var socket = io(':8891');
+            var socket = io(':8890');
             var table_row_count = 0;
             var char_ran = Math.floor(Math.random() * group_student_count) + 1;
 
@@ -111,6 +111,7 @@ foreach ($getJsonData as $key => $value){
                     $('#characterTr'+ i).append($('<td>').
                     html('<img style="width: 80px;height: 80px;" class="nav-icon" src="/img/character/char'+char_ran+'.png"><br/>'+user_id));
                 }
+
             });
 
         });
