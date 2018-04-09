@@ -1,30 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: kimseungmok
- * Date: 2018-03-30
- * Time: 오후 12:11
- */
-
-/*isset($json) ? $getJsonData = json_decode(json_encode($json)) : $getJsonData ='default';*/
-
-/*foreach ($getJsonData as $key => $value){
-    echo '<pre>';
-    var_dump($value);
-    echo '</pre>';
-}
-
-foreach ($getJsonData as $key => $value){
-    echo '<pre>';
-    echo $key;
-    echo '</pre>';
-}
-*/
-
-?>
-
-
-        <!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -41,79 +15,6 @@ foreach ($getJsonData as $key => $value){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
     <script type="text/javascript">
-
-        $(function () {
-
-            var getData = '{{isset($json) ? true : false}}';
-            var user_id = null;
-            var race_name = null;
-            var group_student_count = 0;
-
-            if(getData){
-
-                var getJsonData = JSON.parse('@json($json)',function(key, value){
-                    switch (key){
-                        case 'raceName' :
-                            $('#race_name').html(value);
-                            race_name = value;
-                            break;
-                        case 'examCount' :
-                            $('#race_count').html(value);
-                            break;
-                        case 'groupName' :
-                            $('#group_name').html(value);
-                            break;
-                        case 'groupStudentCount' :
-                            $('#group_student_count').html(value);
-                            group_student_count = value;
-                            break;
-                        case 'sessionId' :
-                            user_id = value;
-                            break;
-                    }
-                });
-            }
-
-
-            //group_student_count(그룹 총 학생수)를 사용하여 숫자 0부터 group_student_count 까지의 숫자중에 랜덤으로 학생들에게 부여
-            //하지만 이미지가 4개 밖에 없으므로 4로 지정
-            group_student_count = 4;
-
-            var socket = io(':8891');
-            var table_row_count = 0;
-            var char_ran = Math.floor(Math.random() * group_student_count) + 1;
-
-            var joinData = {"userID" : user_id , "raceName" : race_name , "groupStudentCount" : group_student_count};
-
-            socket.emit('join to raceroom',joinData);
-
-            //유저 입장
-            socket.on('user connected',function(user){
-                $('#messages').append($('<li>').text(user+"님이 입장했습니다.")).fadeOut(1000);
-            });
-
-            //유저 퇴장
-            socket.on('user disconnected',function(user){
-                $('#messages').append($('<li>').text(user+"님이 퇴장하였습니다.")).fadeOut(1000);
-            });
-
-            //현재 유저수 받기
-            socket.on('now all user',function(std_count){
-
-                $('#student_count').html("현재 접속자 수 : " + std_count);
-
-                table_row_count = Math.floor(std_count / 10) + 1;
-                for (var i = 0 ; i < table_row_count ; i++){
-                    $('#characterTable').append($('<tr id="characterTr' + (table_row_count - 1) + '">'));
-                }
-
-                for( var i = 0 ; i < std_count ; i++){
-                    $('#characterTr'+ i).append($('<td>').
-                    html('<img style="width: 80px;height: 80px;" class="nav-icon" src="/img/character/char'+char_ran+'.png"><br/>'+user_id));
-                }
-            });
-
-        });
 
     </script>
 
@@ -149,7 +50,192 @@ foreach ($getJsonData as $key => $value){
         #messages li { padding: 5px 10px; }
 
     </style>
+    <script>
+        window.onload = function() {
+            var socket = io(':8890');
+            var foo = '<?php echo $json['group']['groupName']; ?>';
+            socket.emit('join', foo);
 
+            socket.on('user_in',function(user , user_num){
+                $('<li id="'+ user_num +'">' + user + '</li>').appendTo('body');
+                // $('#student_count').html(student_count);
+            });
+
+            socket.on('leaveRoom', function(user_num){
+                $('#'+user_num).remove();
+            })
+            //  document.getElementById('start_btn').onclick = function() {
+
+            //  };
+        };
+        function btn_click(){
+
+            $('#wait_room').hide();
+            $('#playing_contents').show();
+            var socket = io(':8890'); //1
+            //아아아
+            var quiz_number = 0;
+
+            var timeleft = 20;
+
+            var quiz_JSON = [
+                {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
+                {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
+                {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
+                {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
+                {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
+            ];
+
+            socket.emit('count','1');
+
+            socket.on('right_checked' ,function(data , quiz_num){
+                var right_checking_JSON = JSON.parse(data);
+                $("#quiz_number").text(quiz_num);
+                $("#right").text(right_checking_JSON[0].o);
+                $("#wrong").text(right_checking_JSON[0].x);
+
+                function sliceSize(dataNum, dataTotal) {
+                    return (dataNum / dataTotal) * 360;
+                }
+                function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+                    $(pieElement).append(
+                        "<div class='slice " + sliceID + "'><span></span></div>"
+                    );
+                    var offset = offset - 1;
+                    var sizeRotation = -179 + sliceSize;
+                    $("." + sliceID).css({
+                        "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+                    });
+                    $("." + sliceID + " span").css({
+                        "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+                        "background-color": color
+                    });
+                }
+                function iterateSlices(
+                    sliceSize,
+                    pieElement,
+                    offset,
+                    dataCount,
+                    sliceCount,
+                    color
+                ) {
+                    var sliceID = "s" + dataCount + "-" + sliceCount;
+                    var maxSize = 179;
+                    if (sliceSize <= maxSize) {
+                        addSlice(sliceSize, pieElement, offset, sliceID, color);
+                    } else {
+                        addSlice(maxSize, pieElement, offset, sliceID, color);
+                        iterateSlices(
+                            sliceSize - maxSize,
+                            pieElement,
+                            offset + maxSize,
+                            dataCount,
+                            sliceCount + 1,
+                            color
+                        );
+                    }
+                }
+                function createPie(dataElement, pieElement) {
+                    var listData = [];
+                    $(dataElement + " span").each(function () {
+                        listData.push(Number($(this).html()));
+                    });
+                    var listTotal = 0;
+                    for (var i = 0; i < listData.length; i++) {
+                        listTotal += listData[i];
+                    }
+                    var offset = 0;
+                    var color = [
+                        "green",
+                        "red",
+                        "orange",
+                        "tomato",
+                        "crimson",
+                        "purple",
+                        "turquoise",
+                        "forestgreen",
+                        "navy",
+                        "gray"
+                    ];
+                    for (var i = 0; i < listData.length; i++) {
+                        var size = sliceSize(listData[i], listTotal);
+                        iterateSlices(size, pieElement, offset, i, 0, color[i]);
+                        $(dataElement + " li:nth-child(" + (
+                            i + 1
+                        ) + ")").css("border-color", color[i]);
+                        offset += size;
+                    }
+                }
+                createPie(".pieID.legend", ".pieID.pie");
+            });
+
+
+            socket.on('mid_ranking',function(data){
+                document.getElementById('counter').innerText= " ";
+                $("#content").hide();
+                var ranking_JSON = JSON.parse(data);
+                var changehtml = "";
+                for(var i=0;  i <ranking_JSON.length; i++){
+                    changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
+                    // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
+                }
+                $(".sidenav").html(changehtml);
+                $("#mid_result").show();
+                setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
+            });
+
+            socket.on('timer', function (data) {
+                var counting = data/1000;
+                document.getElementById('counter').innerText= counting;
+
+                document.getElementById("progressBar")
+                    .value = 20 - counting;
+                if (timeleft == 0)
+                    timeleft = 20;
+
+
+                if(counting == 0 )
+                    socket.emit('count_off','on');
+            });
+
+            //상탄 타임 게이지 바
+
+
+            var x = document.getElementById("mondai");
+            var A1 = document.getElementById("answer1");
+            var A2 = document.getElementById("answer2");
+            var A3 = document.getElementById("answer3");
+            var A4 = document.getElementById("answer4");
+
+
+            socket.on('answer-sum', function(data){
+                document.getElementById('answer_c').innerText= data+ "/6명(db) 풀이완료";
+
+                if(data == 2)
+                {
+
+                    socket.emit('count_off','on');
+                    document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
+
+                }
+            });
+
+            socket.on('nextok',function(data){
+
+                if(quiz_JSON.length == data){
+                    setTimeout(function(){ location.href="/recordbox"; }, 2900);
+                }
+                else{
+                    x.innerText  = quiz_JSON[data].name ;
+                    A1.innerText = quiz_JSON[data].answer1;
+                    A2.innerText = quiz_JSON[data].answer2;
+                    A3.innerText = quiz_JSON[data].answer3;
+                    A4.innerText = quiz_JSON[data].answer4;
+
+                }
+            });
+        };
+    </script>
 </head>
 <body>
 
@@ -158,27 +244,33 @@ foreach ($getJsonData as $key => $value){
     @include('Navigation.racenav')
 </racenav>
 
-<div class="student">
+<div id="wait_room">
+    <div class="student">
 
-    <form action="">
-        <button class="btn btn-lg btn-primary" style="">시작하기</button>
-    </form>
+        <!--<form action="">-->
+        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
+        <!--</form>-->
 
-    <div class="counting">
-        <span id="student_count" > 학생 수</span>
+        <div class="counting">
+            <span id="student_count" > 학생 수</span>
+        </div>
+
     </div>
 
+
+    <ul id="messages"></ul>
+
+
+    <div class="waitingTable">
+        <table class="table table-bordered" id="characterTable" style="text-align: center;">
+
+        </table>
+    </div>
+</div>
+<div id="playing_contents" style="display:none;">
+    @include('Raid.raid')
 </div>
 
-
-<ul id="messages"></ul>
-
-
-<div class="waitingTable">
-    <table class="table table-bordered" id="characterTable" style="text-align: center;">
-
-    </table>
-</div>
 
 </body>
 </html>
