@@ -1,4 +1,4 @@
-﻿<?php
+﻿ <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -46,15 +46,17 @@ Route::get('/recordbox', function(){
     return view('Race/Result');
 });
 
-
-
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
 
-Route::get('/Quiz_tree', function(){
+Route::get('/Quiz_list', function(){
     return view('Quiz_tree/Quiz_list');
 });
+
+ Route::get('/Quiz_making', function(){
+     return view('Quiz_tree/Quiz_making');
+ });
 
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
@@ -76,6 +78,11 @@ Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
+// 임시용 민수가
+Route::get('/sidebar', function(){
+    return view('sidebar');
+});
+
 // ↓↓↓↓↓↓↓ transfer test _yoolme
 /*Route::get('/', function(){
      return view('test');
@@ -84,6 +91,7 @@ Route::get('/raid', function(){
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
+
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');

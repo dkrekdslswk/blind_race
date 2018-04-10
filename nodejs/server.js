@@ -55,23 +55,54 @@ var Timer ;
 
 io.on('connection', function (socket){
     var name = "user" + count++;
-    console.log('connected',name);
+    var roomName = '';
+    var userData = '';
+    var race_allUser = 0;
 
+    //대기방 참가
+    socket.on('join',function (room) {
+        socket.join(room);
+        console.log('join',room);
+    });
+
+    // 대기방 이탈
+    socket.on('leaveRoom', function( group_num, user_num){
+        io.sockets.in(group_num).emit('leaveRoom',user_num);
+
+        var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
+        connection.query(leaveRoom_Query, function(err, rows) {if(err){ throw err; } else{ console.log('user',user_num+'퇴장'); }   });
+
+        socket.leave(group_num);
+    });
+
+
+    //대기방 인원참가
+    socket.on('user_in',function(group_num , nickname , user_num){
+        //DB 현재 인원수 쿼리해서 추가하기
+        var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num, created_at) VALUES ('1', ' "+user_num+" ', '0', NULL, CURRENT_TIMESTAMP);";
+        connection.query(add_user_query, function(err, rows) {  if(err){ throw err; } else{ console.log('user',user_num+'입장'); }  });
+
+
+        io.sockets.in(group_num).emit('user_in',nickname , user_num);
+        console.log('group_num' ,nickname);
+
+
+    });
 
     socket.on('android_nextkey',function(data){
         io.sockets.emit('android_nextquiz','미정');
     });
 
     // 타이머 시작함수
-    socket.on('count',function(data){
+    socket.on('count',function(data,group_num){
 
         Timer = setInterval(function () {
             countdown -= 1000;
-            io.sockets.emit('timer', countdown);
+            io.sockets.in(group_num).emit('timer',countdown);
         }, 1000);
-        console.log('타임온','그만');
+        console.log('타임온',group_num);
         if( data == '1')
-            quiz = 0 ; socket.emit('nextok',quiz);
+            quiz = 0 ; io.sockets.in(group_num).emit('nextok',quiz);
     });
 
 
@@ -91,7 +122,7 @@ io.on('connection', function (socket){
             var query_result = JSON.stringify(rows);
 
             io.sockets.emit('right_checked' ,query_result , quiz);
-            console.log('right?', query_result);
+            console.log('right?', quiz);
 
         });
 
@@ -99,6 +130,7 @@ io.on('connection', function (socket){
 
 
         connection.query(ranking_query, function(err, rows) {
+
             if(err) throw err;
             console.log('The solution is: ', rows);
             var query_result = JSON.stringify(rows);
@@ -118,7 +150,7 @@ io.on('connection', function (socket){
         var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
         console.log('user',count);
         connection.query(answer_query, function(err, rows) {
-            if(err) throw err;
+            // if(err) throw err; 값이 이미 있을시 실패함
             console.log('The solution is: ', rows);
         });
         answer_c++;
@@ -127,74 +159,25 @@ io.on('connection', function (socket){
     });
 
 
+    socket.on('race_ending',function(data){
 
+
+        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
+
+
+        connection.query(ranking_query, function(err, rows) {
+
+            if(err) throw err;
+            console.log('The solution is: ', rows);
+            var query_result = JSON.stringify(rows);
+
+            io.sockets.emit('race_ending', query_result);
+
+        });
+    })
 });
 
 server.listen(8890, function(){ //4
     console.log('server on!');
 });
 
-/*kimseungmok**********************6***************/
-
-var user = '{\
-                "student":[{\
-                    "studentName":"김승목",\
-                    "studentNick":"모기모기"}]\
-                }';
-
-
-var roomName = '';
-var userData = '';
-var race_allUser = 0;
-
-var kim_app = require('express')();
-var kim_http = require('http').Server(kim_app);
-var kim_io = require('socket.io')(kim_http);
-
-
-/*kim_app.get('/',function (req, res) {
-    res.sendFile(__dirname + '../resources/views/main');
-});*/
-
-
-kim_http.listen(8891,function () {
-    console.log('listening on *: 8891');
-
-});
-
-
-kim_io.on('connection', function(socket){
-    console.log('user in');
-
-    socket.on('join',function (room) {
-
-        userData = room.userID;
-        roomName = room.userID+room.raceName;
-
-        socket.join(roomName);
-        console.log('join to race room : '+ roomName + ' race name : ' + room.raceName);
-
-        //유저 정보 전송
-        kim_io.sockets.in(roomName).emit('user connected',userData);
-        console.log('send to userData : '+ userData );
-
-        //현재 접속자 수
-        kim_io.sockets.in(roomName).emit('now all user',race_allUser);
-        console.log('send to all users : '+ race_allUser);
-
-    });
-
-    socket.on('disconnect', function(){
-
-        //나간 유저의 정보를 전송
-        kim_io.sockets.in(roomName).emit('user disconnected',userData);
-        console.log('send to userData : '+ userData );
-
-        //현재 접속자 수
-        kim_io.sockets.in(roomName).emit('now all user',race_allUser--);
-        console.log('send to all users : '+ race_allUser);
-
-        console.log(userData + 'user disconnected');
-    });
-
-});

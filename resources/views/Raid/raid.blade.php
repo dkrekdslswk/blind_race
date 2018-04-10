@@ -79,183 +79,182 @@
 <body id="client">
 <script>
 
-    window.onload = function () {
-        var socket = io(':8890'); //1
-        //아아아
-        var quiz_number = 0;
+    // window.onload = function () {
+    //     var socket = io(':8890'); //1
+    //     //아아아
+    //     var quiz_number = 0;
 
-        var timeleft = 20;
+    //     var timeleft = 20;
 
-        var quiz_JSON = [
-            {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
-            {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
-            {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
-            {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
-            {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
-        ];
+    //     var quiz_JSON = [
+    //         {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
+    //         {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
+    //         {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
+    //         {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
+    //         {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
+    //     ];
 
-        socket.emit('count','1');
+    //     socket.emit('count','1');
 
-        socket.on('right_checked' ,function(data , quiz_num){
-            var right_checking_JSON = JSON.parse(data);
-            $("#quiz_number").text(quiz_num);
-            $("#right").text(right_checking_JSON[0].o);
-            $("#wrong").text(right_checking_JSON[0].x);
+    //     socket.on('right_checked' ,function(data , quiz_num){
+    //         var right_checking_JSON = JSON.parse(data);
+    //         $("#quiz_number").text(quiz_num);
+    //         $("#right").text(right_checking_JSON[0].o);
+    //         $("#wrong").text(right_checking_JSON[0].x);
 
-            function sliceSize(dataNum, dataTotal) {
-                return (dataNum / dataTotal) * 360;
-            }
-            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-                $(pieElement).append(
-                    "<div class='slice " + sliceID + "'><span></span></div>"
-                );
-                var offset = offset - 1;
-                var sizeRotation = -179 + sliceSize;
-                $("." + sliceID).css({
-                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-                });
-                $("." + sliceID + " span").css({
-                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-                    "background-color": color
-                });
-            }
-            function iterateSlices(
-                sliceSize,
-                pieElement,
-                offset,
-                dataCount,
-                sliceCount,
-                color
-            ) {
-                var sliceID = "s" + dataCount + "-" + sliceCount;
-                var maxSize = 179;
-                if (sliceSize <= maxSize) {
-                    addSlice(sliceSize, pieElement, offset, sliceID, color);
-                } else {
-                    addSlice(maxSize, pieElement, offset, sliceID, color);
-                    iterateSlices(
-                        sliceSize - maxSize,
-                        pieElement,
-                        offset + maxSize,
-                        dataCount,
-                        sliceCount + 1,
-                        color
-                    );
-                }
-            }
-            function createPie(dataElement, pieElement) {
-                var listData = [];
-                $(dataElement + " span").each(function () {
-                    listData.push(Number($(this).html()));
-                });
-                var listTotal = 0;
-                for (var i = 0; i < listData.length; i++) {
-                    listTotal += listData[i];
-                }
-                var offset = 0;
-                var color = [
-                    "green",
-                    "red",
-                    "orange",
-                    "tomato",
-                    "crimson",
-                    "purple",
-                    "turquoise",
-                    "forestgreen",
-                    "navy",
-                    "gray"
-                ];
-                for (var i = 0; i < listData.length; i++) {
-                    var size = sliceSize(listData[i], listTotal);
-                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
-                    $(dataElement + " li:nth-child(" + (
-                        i + 1
-                    ) + ")").css("border-color", color[i]);
-                    offset += size;
-                }
-            }
-            createPie(".pieID.legend", ".pieID.pie");
-        });
-
-
-        socket.on('mid_ranking',function(data){
-            document.getElementById('counter').innerText= " ";
-            $("#content").hide();
-            var ranking_JSON = JSON.parse(data);
-            var changehtml = "";
-            for(var i=0;  i <ranking_JSON.length; i++){
-                changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
-                // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
-            }
-            $(".sidenav").html(changehtml);
-            $("#mid_result").show();
-            setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
-        });
-
-        socket.on('timer', function (data) {
-            var counting = data/1000;
-            document.getElementById('counter').innerText= counting;
-
-            document.getElementById("progressBar")
-                .value = 20 - counting;
-            if (timeleft == 0)
-                timeleft = 20;
+    //         function sliceSize(dataNum, dataTotal) {
+    //             return (dataNum / dataTotal) * 360;
+    //         }
+    //         function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+    //             $(pieElement).append(
+    //                 "<div class='slice " + sliceID + "'><span></span></div>"
+    //             );
+    //             var offset = offset - 1;
+    //             var sizeRotation = -179 + sliceSize;
+    //             $("." + sliceID).css({
+    //                 "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+    //             });
+    //             $("." + sliceID + " span").css({
+    //                 "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+    //                 "background-color": color
+    //             });
+    //         }
+    //         function iterateSlices(
+    //             sliceSize,
+    //             pieElement,
+    //             offset,
+    //             dataCount,
+    //             sliceCount,
+    //             color
+    //         ) {
+    //             var sliceID = "s" + dataCount + "-" + sliceCount;
+    //             var maxSize = 179;
+    //             if (sliceSize <= maxSize) {
+    //                 addSlice(sliceSize, pieElement, offset, sliceID, color);
+    //             } else {
+    //                 addSlice(maxSize, pieElement, offset, sliceID, color);
+    //                 iterateSlices(
+    //                     sliceSize - maxSize,
+    //                     pieElement,
+    //                     offset + maxSize,
+    //                     dataCount,
+    //                     sliceCount + 1,
+    //                     color
+    //                 );
+    //             }
+    //         }
+    //         function createPie(dataElement, pieElement) {
+    //             var listData = [];
+    //             $(dataElement + " span").each(function () {
+    //                 listData.push(Number($(this).html()));
+    //             });
+    //             var listTotal = 0;
+    //             for (var i = 0; i < listData.length; i++) {
+    //                 listTotal += listData[i];
+    //             }
+    //             var offset = 0;
+    //             var color = [
+    //                 "green",
+    //                 "red",
+    //                 "orange",
+    //                 "tomato",
+    //                 "crimson",
+    //                 "purple",
+    //                 "turquoise",
+    //                 "forestgreen",
+    //                 "navy",
+    //                 "gray"
+    //             ];
+    //             for (var i = 0; i < listData.length; i++) {
+    //                 var size = sliceSize(listData[i], listTotal);
+    //                 iterateSlices(size, pieElement, offset, i, 0, color[i]);
+    //                 $(dataElement + " li:nth-child(" + (
+    //                     i + 1
+    //                 ) + ")").css("border-color", color[i]);
+    //                 offset += size;
+    //             }
+    //         }
+    //         createPie(".pieID.legend", ".pieID.pie");
+    //     });
 
 
-            if(counting == 0 )
-                socket.emit('count_off','on');
-        });
+    //     socket.on('mid_ranking',function(data){
+    //         document.getElementById('counter').innerText= " ";
+    //         $("#content").hide();
+    //         var ranking_JSON = JSON.parse(data);
+    //         var changehtml = "";
+    //         for(var i=0;  i <ranking_JSON.length; i++){
+    //             changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
+    //             // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
+    //         }
+    //         $(".sidenav").html(changehtml);
+    //         $("#mid_result").show();
+    //         setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
+    //     });
 
-        //상탄 타임 게이지 바
+    //     socket.on('timer', function (data) {
+    //         var counting = data/1000;
+    //         document.getElementById('counter').innerText= counting;
 
-
-        var x = document.getElementById("mondai");
-        var A1 = document.getElementById("answer1");
-        var A2 = document.getElementById("answer2");
-        var A3 = document.getElementById("answer3");
-        var A4 = document.getElementById("answer4");
-
-
-        socket.on('answer-sum', function(data){
-            document.getElementById('answer_c').innerText= data+ "/6명(db) 풀이완료";
-
-            if(data == 2)
-            {
-
-                socket.emit('count_off','on');
-                document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
-
-            }
-        });
-
-        socket.on('nextok',function(data){
-
-            if(quiz_JSON.length == data){
-                setTimeout(function(){ location.href="/recordbox"; }, 2900);
-            }
-            else{
-                x.innerText  = quiz_JSON[data].name ;
-                A1.innerText = quiz_JSON[data].answer1;
-                A2.innerText = quiz_JSON[data].answer2;
-                A3.innerText = quiz_JSON[data].answer3;
-                A4.innerText = quiz_JSON[data].answer4;
-
-            }
-        });
+    //         document.getElementById("progressBar")
+    //             .value = 20 - counting;
+    //         if (timeleft == 0)
+    //             timeleft = 20;
 
 
-    };
+    //         if(counting == 0 )
+    //             socket.emit('count_off','on');
+    //     });
+
+    //     //상탄 타임 게이지 바
+
+
+    //     var x = document.getElementById("mondai");
+    //     var A1 = document.getElementById("answer1");
+    //     var A2 = document.getElementById("answer2");
+    //     var A3 = document.getElementById("answer3");
+    //     var A4 = document.getElementById("answer4");
+
+
+    //     socket.on('answer-sum', function(data){
+    //         document.getElementById('answer_c').innerText= data+ "/6명(db) 풀이완료";
+
+    //         if(data == 2)
+    //         {
+
+    //             socket.emit('count_off','on');
+    //             document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
+
+    //         }
+    //     });
+
+    //     socket.on('nextok',function(data){
+
+    //         if(quiz_JSON.length == data){
+    //             setTimeout(function(){ location.href="/recordbox"; }, 2900);
+    //         }
+    //         else{
+    //             x.innerText  = quiz_JSON[data].name ;
+    //             A1.innerText = quiz_JSON[data].answer1;
+    //             A2.innerText = quiz_JSON[data].answer2;
+    //             A3.innerText = quiz_JSON[data].answer3;
+    //             A4.innerText = quiz_JSON[data].answer4;
+
+    //         }
+    //     });
+
+
+    // };
 
 
 </script>
 
+<div>
+    @include('Race.sidebar')
+</div>
 
 
-<div class="main">
-    <div class="sidenav" style="border: 1px solid black;">
-    </div>
-
-
+<div class="main" style="margin-left:18%">
     <div id='content'>
         <div id="answer_c">0/6명(db) 풀이완료</div>
         <div id="load_tweets">
@@ -288,8 +287,8 @@
 
 <div id='mid_result' style='display:none;' >
 
-    <!-- <div id="app">
-    </div> -->
+    <div id="app">
+    </div>
     @include('Race.midresult')
 </div>
 
