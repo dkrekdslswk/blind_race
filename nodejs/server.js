@@ -7,7 +7,7 @@ var mysql      = require('mysql');
 var dbconfig   = require('./config/database.js');
 var connection = mysql.createConnection(dbconfig);
 
-//server.js 18.04.09
+
 
 app.get('/', function(req, res){
     res.send('Root');
@@ -61,10 +61,7 @@ io.on('connection', function (socket){
 
     //대기방 참가
     socket.on('join',function (room) {
-
-
         socket.join(room);
-
         console.log('join',room);
     });
 
@@ -97,15 +94,15 @@ io.on('connection', function (socket){
     });
 
     // 타이머 시작함수
-    socket.on('count',function(data){
+    socket.on('count',function(data,group_num){
 
         Timer = setInterval(function () {
             countdown -= 1000;
-            io.sockets.emit('timer', countdown);
+            io.sockets.in(group_num).emit('timer',countdown);
         }, 1000);
-        console.log('타임온','그만');
+        console.log('타임온',group_num);
         if( data == '1')
-            quiz = 0 ; socket.emit('nextok',quiz);
+            quiz = 0 ; io.sockets.in(group_num).emit('nextok',quiz);
     });
 
 
@@ -125,7 +122,7 @@ io.on('connection', function (socket){
             var query_result = JSON.stringify(rows);
 
             io.sockets.emit('right_checked' ,query_result , quiz);
-            console.log('right?', query_result);
+            console.log('right?', quiz);
 
         });
 
@@ -162,7 +159,22 @@ io.on('connection', function (socket){
     });
 
 
+    socket.on('race_ending',function(data){
 
+
+        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
+
+
+        connection.query(ranking_query, function(err, rows) {
+
+            if(err) throw err;
+            console.log('The solution is: ', rows);
+            var query_result = JSON.stringify(rows);
+
+            io.sockets.emit('race_ending', query_result);
+
+        });
+    })
 });
 
 server.listen(8890, function(){ //4

@@ -51,10 +51,13 @@
 
     </style>
     <script>
+        var pub_group_num = '<?php echo $json['group']['groupName']; ?>';
+
         window.onload = function() {
             var socket = io(':8890');
-            var foo = '<?php echo $json['group']['groupName']; ?>';
-            socket.emit('join', foo);
+
+
+            socket.emit('join', pub_group_num);
 
             socket.on('user_in',function(user , user_num){
                 $('<li id="'+ user_num +'">' + user + '</li>').appendTo('body');
@@ -70,9 +73,12 @@
         };
         function btn_click(){
 
+            var Mid_result_Timer;
+
             $('#wait_room').hide();
             $('#playing_contents').show();
             var socket = io(':8890'); //1
+            socket.emit('join', pub_group_num);
             //아아아
             var quiz_number = 0;
 
@@ -86,13 +92,18 @@
                 {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
             ];
 
-            socket.emit('count','1');
+            socket.emit('count','1',pub_group_num);
 
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
                 $("#quiz_number").text(quiz_num);
                 $("#right").text(right_checking_JSON[0].o);
                 $("#wrong").text(right_checking_JSON[0].x);
+
+                --quiz_num;
+
+                $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
+                $("#Mid_A_Right").text(quiz_JSON[quiz_num].answer1);
 
                 function sliceSize(dataNum, dataTotal) {
                     return (dataNum / dataTotal) * 360;
@@ -171,8 +182,11 @@
 
 
             socket.on('mid_ranking',function(data){
+
+
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
+                document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
                 var ranking_JSON = JSON.parse(data);
                 var changehtml = "";
                 for(var i=0;  i <ranking_JSON.length; i++){
@@ -181,10 +195,29 @@
                 }
                 $(".sidenav").html(changehtml);
                 $("#mid_result").show();
-                setTimeout(function(){ socket.emit('count','time on');  $("#content").show();  $("#mid_result").hide(); socket.emit('android_nextkey','미정'); }, 3000);
+
+                Mid_result_Timer = setTimeout(function(){
+
+                    socket.emit('count','time on',pub_group_num);
+                    $("#content").show();
+                    $("#mid_result").hide();
+                    socket.emit('android_nextkey','미정');
+
+                }, 3000);
             });
 
+
+            $("#Mid_skip_btn").click(function(){
+                clearTimeout(Mid_result_Timer);
+                socket.emit('count','time on',pub_group_num);
+                $("#content").show();
+                $("#mid_result").hide();
+                socket.emit('android_nextkey','미정');
+            });
+
+
             socket.on('timer', function (data) {
+
                 var counting = data/1000;
                 document.getElementById('counter').innerText= counting;
 
@@ -216,7 +249,6 @@
 
                     socket.emit('count_off','on');
                     document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
-
                 }
             });
 
@@ -238,7 +270,7 @@
     </script>
 </head>
 <body>
-
+<?php print_r($json); ?>
 {{--레이스 네비게이션--}}
 <racenav>
     @include('Navigation.racenav')
@@ -247,7 +279,7 @@
 <div id="wait_room">
     <div class="student">
 
-        <!--<18.04.09 룸 + 플레잉 페이지 ="">-->
+        <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
         <!--</form>-->
 
