@@ -138,8 +138,8 @@
                     {{--Dropdowns--}}
                     <select id="groupSelect" class="selectpicker">
                         <option>그룹명</option>
-                        <option value="1">2-특강 A반</option>
-                        <option value="2">1-특강 B반</option>
+                        <option value="1">1-특강 A반</option>
+                        <option value="2">2-특강 B반</option>
                     </select>
                 </div>
                 <div class="modal-footer">

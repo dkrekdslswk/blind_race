@@ -56,7 +56,7 @@
         window.onload = function() {
             var socket = io(':8890');
 
-
+            
             socket.emit('join', pub_group_num);
 
             socket.on('user_in',function(user , user_num){
