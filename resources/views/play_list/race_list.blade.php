@@ -58,93 +58,97 @@
 </style>
 <script></script>
 <body>
-    <div class="btn-process" style="margin-left:20%; margin-top:50px;">
-        <form id="" class="form-inline my-2 my-lg-0 mr-lg-2">
-            <div class="input-group">
-                <select class="selectpicker btn btn-primary">
-                    <optgroup label="검색옵션">
-                        <option>제목</option>
-                        <option>난이도</option>
-                        <option>페이지</option>
-                    </optgroup>
-                </select>
-                <input class="form-control" type="text" placeholder="Search for...">
-                <span class="input-group-append">
+<div class="btn-process" style="margin-left:20%; margin-top:50px;">
+    <form id="" class="form-inline my-2 my-lg-0 mr-lg-2">
+        <div class="input-group">
+            <select class="selectpicker btn btn-primary">
+                <optgroup label="검색옵션">
+                    <option>제목</option>
+                    <option>난이도</option>
+                    <option>페이지</option>
+                </optgroup>
+            </select>
+            <input class="form-control" type="text" placeholder="Search for...">
+            <span class="input-group-append">
                     <button class="btn btn-primary" type="button">
                       <i class="fa fa-search">검색</i>
                     </button>
                   </span>
-                <button class="btn btn-info" style="margin-left:100px;">목록</button>
-            </div>
-        </form>
-    </div>
+            <button class="btn btn-info" style="margin-left:100px;">목록</button>
+        </div>
+    </form>
+</div>
 
-    <div class="table-responsive">
-        <table class="" >
-            <thead>
-            <tr class="bg-dark" style="height:40px">
-                <th>Name</th>
-                <th>Level</th>
-                <th>page</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tr class="content">
-                <td>스쿠스쿠 레이스 1</td>
-                <td>Level</td>
-                <td>p15 - p30</td>
-                <td><button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button></td>
-            </tr>
-            <tr class="content">
-                <td>스쿠스쿠 레이스 2</td>
-                <td>Level</td>
-                <td>p30 - p45</td>
-                <td><button class="btn btn-info">시작하기</button></td>
-            </tr>
-            <tr class="content">
-                <td>스쿠스쿠 레이스 3</td>
-                <td>Level</td>
-                <td>p45 - p60</td>
-                <td><button class="btn btn-info">시작하기</button></td>
-            </tr>
-        </table>
-    </div>
+<div class="table-responsive">
+    <table class="" >
+        <thead>
+        <tr class="bg-dark" style="height:40px">
+            <th>Name</th>
+            <th>Level</th>
+            <th>page</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tr class="content">
+            <td>스쿠스쿠 레이스 1</td>
+            <td>Level</td>
+            <td>p15 - p30</td>
+            <td><button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button></td>
+        </tr>
+        <tr class="content">
+            <td>스쿠스쿠 레이스 2</td>
+            <td>Level</td>
+            <td>p30 - p45</td>
+            <td><button class="btn btn-info">시작하기</button></td>
+        </tr>
+        <tr class="content">
+            <td>스쿠스쿠 레이스 3</td>
+            <td>Level</td>
+            <td>p45 - p60</td>
+            <td><button class="btn btn-info">시작하기</button></td>
+        </tr>
+    </table>
+</div>
 
-    {{--Modal : select group--}}
-    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form action="/race_waiting">
-                <div class="modal-content">
-                    <form action="/test">
-                    <div class="modal-header" style="text-align: center">
-                        <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+{{--Modal : select group--}}
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+                <div class="modal-header" style="text-align: center">
+                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                </div>
+                <div class="modal-body">
+                    {{--드롭 다운--}}
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" id="mystatus" value="title" type="button" data-toggle="dropdown" aria-expanded="true">
+                            그룹명
+                        </button>
+                        <ul id="mytype" class="dropdown-menu" role="menu" aria-labelledby="searchType">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">2-특강 A반</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">1-특강 B반</a>
+                            </li>
+                        </ul>
+                        {{csrf_field()}}
+                        <input value="1" type="text" name="groupId" id="groupId" placeholder="groupId">
+                        <input value="n"type="text" name="raceMode" id="raceMode" placeholder="raceMode">
+                        <input value="30" type="text" name="examCount" id="examCount" placeholder="examCount">
+                        <input value="1" type="text" name="raceId" id="raceId" placeholder="raceId">
+
                     </div>
-                    <div class="modal-body">
-                        {{--드롭 다운--}}
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" id="mystatus" value="title" type="button" data-toggle="dropdown" aria-expanded="true">
-                                그룹명
-                            </button>
-                            <ul id="mytype" class="dropdown-menu" role="menu" aria-labelledby="searchType">
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">2-특강 A반</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#">1-특강 B반</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="text-align: center">
-                        <form action="/test">
-                            <button type="submit" class="btn btn-primary">선택하기</button>
-                        </form>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+
+                    <button type="submit" class="btn btn-primary">선택하기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
 </body>
 </html>
