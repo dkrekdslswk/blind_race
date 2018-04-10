@@ -42,13 +42,14 @@ class DeleteAll extends Migration
 
         Schema::dropIfExists('books');
 
-	DB::unprepared('DROP TRIGGER IF EXISTS tr_races_user_division_check');
+	    DB::unprepared('DROP TRIGGER IF EXISTS tr_races_user_division_check');
         Schema::dropIfExists('races');
+        Schema::dropIfExists('race_folders');
 
         Schema::dropIfExists('group_students');
         Schema::dropIfExists('group_student_state_keyword');
 
-	DB::unprepared('DROP TRIGGER IF EXISTS tr_groups_user_division_check');
+	    DB::unprepared('DROP TRIGGER IF EXISTS tr_groups_user_division_check');
         Schema::dropIfExists('groups');
 
 	/******************************* 

@@ -38,17 +38,17 @@ class RaceController extends Controller
             ->first();
 
         if(!isset($userId->session_num)){
-             $session['sessionId'] = DB::table('sessions')
+            $_SESSION['sessionId'] = DB::table('sessions')
                                        ->insertGetId(['user_num' => $userId->user_num],
                                                      'session_num');
         }else{
-             $session['sessionId'] = $userId->session_num;
+            $_SESSION['sessionId'] = $userId->session_num;
         }
         // test
 
         $sData = DB::table('sessions')
             ->select(['user_num'])
-            ->where('session_num', '=', $session['sessionId'])
+            ->where('session_num', '=', $_SESSION['sessionId'])
             ->first();
         
         $groupData = DB::table('groups')
@@ -81,7 +81,7 @@ class RaceController extends Controller
                 ], 'set_exam_num');
 
             DB::table('sessions')
-            ->where('session_num', '=', $session['sessionId'])
+            ->where('session_num', '=', $_SESSION['sessionId'])
             ->update(['set_exam_num' => $raceSetExamId]);
 
        	    $returnValue = array(
@@ -89,7 +89,7 @@ class RaceController extends Controller
                                 'examCount'         =>$postData['race']['examCount']),
        	        'group'=>array('groupName'          => $groupData->groupName,
        	                        'groupStudentCount' => $groupData->studentCount),
-       	        'sessionId' => $session['sessionId'],
+       	        'sessionId' => $_SESSION['sessionId'],
                 'check' =>  true);
 
         }
@@ -251,15 +251,15 @@ class RaceController extends Controller
             ->first();
 
         if(!isset($userId->session_num)){
-            $session['sessionId'] = DB::table('sessions')
+            $_SESSION['sessionId'] = DB::table('sessions')
                 ->insertGetId(['user_num' => $userId->user_num], 'session_num');
         }else{
-            $session['sessionId'] = $userId->session_num;
+            $_SESSION['sessionId'] = $userId->session_num;
         }
         // test
 
         $updateCount = DB::table('sessions')
-            ->where([['session_num', '=', $session['sessionId']],
+            ->where([['session_num', '=', $_SESSION['sessionId']],
                 ['set_exam_num', '<>', null]])
             ->update(['user_nick' => $postData['userNick']]);
 

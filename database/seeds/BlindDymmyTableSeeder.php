@@ -53,7 +53,6 @@ class BlindDymmyTableSeeder extends Seeder
         $raceId = DB::table('races')->insertGetId([
             'user_t_num'=>$userFirstId,
             'race_name'=>"테스트용 레이스1",
-            'race_folder_name'=>'-'
         ], 'race_num');
 
         for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++) {
@@ -90,6 +89,57 @@ class BlindDymmyTableSeeder extends Seeder
             DB::table('race_results')
                 ->insert(['set_exam_num' => $raceSetExamId,
                     'user_num' => $user_num]);
+        }
+
+        $bookId =DB::table('books')->insertGetId([
+            'book_name'=>"급소공략 N1",
+            'book_page_max'=>12,
+            'book_page_min'=>195
+        ], 'book_num');
+
+        $quizs = [
+            [
+                17,
+                '苦労してためたお金なのだから、一円（　　）無駄には使いたくない。',
+                'たりとも',
+                ['ばかりも', 'だけさえ', 'とはいえ'],
+                'o', '1'
+            ],
+            [
+                17,
+                'この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。',
+                'とあって',
+                ['からして', 'にあって', 'にしては'],
+                'o', '1'
+            ],
+            [
+                18,
+                '姉は市役所に勤める（　　）、ボランティアで日本語を教えています。',
+                'かたわら',
+                ['かたがた', 'こととて', 'うちに'],
+                'o', '1'
+            ],
+            [
+                18,
+                '周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。',
+                'ところで',
+                ['かぎりで', 'もので', 'ようで'],
+                'o', '1'
+            ]];
+
+        foreach ($quizs as $quiz){
+            DB::table('quiz_bank')
+                ->insert([
+                    'book_num'          => $bookId,
+                    'book_page'         => $quiz[0],
+                    'quiz_question'     => $quiz[1],
+                    'quiz_right_answer' => $quiz[2],
+                    'quiz_example1'     => $quiz[3][0],
+                    'quiz_example2'     => $quiz[3][1],
+                    'quiz_example3'     => $quiz[3][2],
+                    'quiz_type'         => $quiz[4],
+                    'quiz_level'        => $quiz[5]
+                ]);
         }
     }
 }
