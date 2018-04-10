@@ -142,7 +142,7 @@
         .table thead, .table thead tr th{
             font-size : 10px;
             padding: 1px 1px 1px 1px;
-        1}
+        }
 
         .main {
             margin-left: 40%;
@@ -158,14 +158,10 @@
 <body>
 
 <div class="sidenav">
-    <div class="selection">
-        <button type="button" class="btn btn-default">직접 만들기</button>
-        <button type="button" class="btn btn-default">문제 가져오기</button>
-    </div>
 
     <form class="select">
         <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">교제 선택</option>
+            <option data-tokens="ketchup mustard">교재 선택</option>
             <option data-tokens="mustard">특강 B반</option>
             <option data-tokens="frosting">특강 C반</option>
         </select>
@@ -182,7 +178,7 @@
 
     <form class="select">
         <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">교제 선택</option>
+            <option data-tokens="ketchup mustard">페이지</option>
             <option data-tokens="mustard">특강 B반</option>
             <option data-tokens="frosting">특강 C반</option>
         </select>
@@ -194,14 +190,6 @@
             <option data-tokens="mustard">사지선다</option>
             <option data-tokens="frosting">작성</option>
             <option data-tokens="frosting">순서 맞추기</option>
-        </select>
-    </form>
-
-    <form class="select">
-        <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">종류</option>
-            <option data-tokens="mustard">문법</option>
-            <option data-tokens="frosting">단어</option>
         </select>
     </form>
 

@@ -1,62 +1,77 @@
 <template>
-    <div>
-        <button @click="start">Start</button>
-        <img src="https://i.imgur.com/guhQqnS.png" width="150px">
-            <img src="https://i.imgur.com/jbVKOQW.gif" width="350px">
-                <b-progress
-                    height="30px"
-                    :value="92"
-                    variant="success"
-                    striped="striped"
-                    :animated="animate"
-                    class="mb-2 w-75 "></b-progress>
+  <main>
+      
+       <button @click="start">Start</button>
+      <button @click="stop">Stop</button>
 
-                <img src="https://i.imgur.com/KARrYZA.png" width="150px">
-                    <img src="https://i.imgur.com/7zAsK3l.gif" width="300px">
-                        <b-progress
-                            height="30px"
-                            :value="50"
-                            variant="info"
-                            striped="striped"
-                            :animated="animate"
-                            class="mb-2 w-75 "></b-progress>
 
-                        <img src="https://i.imgur.com/ageVYAE.png" width="120px">
-                            <img src="https://i.imgur.com/xJ8OMIG.gif" width="250px">
-                                <b-progress
-                                    height="30px"
-                                    :value="30"
-                                    variant="warning"
-                                    striped="striped"
-                                    :animated="animate"
-                                    class="mb-2 w-75 "></b-progress>
+    <button v-on:click="show = !show">결과 표시</button>
 
-                            </div>
-                        </template>
+  <div class="d2"><transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/wlfxK1r.png"></p></transition></div>
+  <transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/HJdZ4qZ.png"></p></transition>
+  <transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/VXh9aAI.png"></p></transition>
 
-                        <script>
-                            export default {
-                               mounted: {
-                                  function() {
-                                    $confetti
-                                    .start()
-                                  }
-                               },
-                                data() {
-                                    return {animate, show: true}
 
-                                },
-                                methods: {
-                                    start() {
-                                        this
-                                            .$confetti
-                                            .start()
-                                    }
-                                }
-                            }
-                        </script>
-                        <style>
-                            .inline {
-                                display: inline-block;
-                            }
-                        </style>
+  
+
+  </main> 
+  
+  
+</template>
+
+
+
+
+<script>
+export default {
+  data() {
+    
+    return {
+      show : true
+    }
+  },
+
+   methods: {
+      start () {
+        this.$confetti.start()
+      },
+
+      stop () {
+        this.$confetti.stop()
+      }
+    }
+  
+}
+
+
+</script>
+
+
+
+
+    <style>
+         body {    
+        
+          background-image: url('https://i.imgur.com/aiJMdSy.png');
+          background-size: 65%;
+          background-repeat: no-repeat;
+         }
+
+         
+      
+          .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+          }
+          .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            opacity: 0;
+          }
+        
+
+        /* .d2 {
+          position: absolute;
+          bottom:5px;
+          right: 20px;
+        } */
+
+
+        </style>

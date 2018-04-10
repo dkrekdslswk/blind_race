@@ -14,7 +14,9 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+
+    </script>
 
     <style>
         .student {
@@ -253,7 +255,7 @@
             socket.on('nextok',function(data){
 
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/recordbox"; }, 2500);
+                    setTimeout(function(){ location.href="/recordbox"; }, 2900);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
