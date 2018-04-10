@@ -55,7 +55,7 @@ Route::get('/Quiz_list', function(){
 });
 
  Route::get('/Quiz_making', function(){
-     return view('Quiz_tree/Quiz_list');
+     return view('Quiz_tree/Quiz_making');
  });
 
 Route::get('/feedback', function(){
