@@ -104,38 +104,7 @@
             <td>스쿠스쿠 레이스 1</td>
             <td>Level</td>
             <td>p15 - p30</td>
-            <td>
-                <button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button>
-                {{--Modal : select group--}}
-                <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <input type="hidden" name="groupId" id="groupId" value="">
-                            <input type="hidden" name="raceMode" id="raceMode" value="n">
-                            <input type="hidden" name="examCount" id="examCount" value="30">
-                            <input type="hidden" name="raceId" id="raceId" value="1">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
-                                </div>
-                                <div class="modal-body" style="text-align: center">
-                                    {{--Dropdowns--}}
-                                    <select id="groupSelect" class="selectpicker">
-                                        <option>그룹명</option>
-                                        <option value="1">2-특강 A반</option>
-                                        <option value="2">1-특강 B반</option>
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">선택하기</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </td>
+            <td><button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button></td>
         </tr>
         <tr class="content">
             <td>스쿠스쿠 레이스 2</td>
@@ -152,7 +121,35 @@
     </table>
 </div>
 
-
+{{--Modal : select group--}}
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+            {{csrf_field()}}
+            <input type="hidden" name="groupId" id="groupId" value="">
+            <input type="hidden" name="raceMode" id="raceMode" value="n">
+            <input type="hidden" name="examCount" id="examCount" value="30">
+            <input type="hidden" name="raceId" id="raceId" value="1">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    {{--Dropdowns--}}
+                    <select id="groupSelect" class="selectpicker">
+                        <option>그룹명</option>
+                        <option value="1">2-특강 A반</option>
+                        <option value="2">1-특강 B반</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">선택하기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
