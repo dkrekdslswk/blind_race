@@ -5,7 +5,7 @@
             <img src="https://i.imgur.com/jbVKOQW.gif" width="350px">
                 <b-progress
                     height="30px"
-                    :value="90"
+                    :value="95"
                     variant="success"
                     striped="striped"
                     :animated="animate"
