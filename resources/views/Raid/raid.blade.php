@@ -249,13 +249,12 @@
 
 </script>
 
+<div>
+    @include('Race.sidebar')
+</div>
 
 
-<div class="main">
-    <div class="sidenav" style="border: 1px solid black;">
-    </div>
-
-
+<div class="main" style="margin-left:18%">
     <div id='content'>
         <div id="answer_c">0/6명(db) 풀이완료</div>
         <div id="load_tweets">

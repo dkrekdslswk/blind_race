@@ -77,7 +77,7 @@
 
             $('#wait_room').hide();
             $('#playing_contents').show();
-            var socket = io(':8890'); //1
+            var socket = io(':8890'); //14
             socket.emit('join', pub_group_num);
             //아아아
             var quiz_number = 0;
@@ -278,6 +278,7 @@
 
 <div id="wait_room">
     <div class="student">
+        
 
         <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
