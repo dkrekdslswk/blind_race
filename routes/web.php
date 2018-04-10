@@ -73,6 +73,12 @@ Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
+// 임시용 민수가
+Route::get('/sidebar', function(){
+    return view('sidebar');
+});
+
+
 // ↓↓↓↓↓↓↓ transfer test _yoolme
 /*Route::get('/', function(){
      return view('test');

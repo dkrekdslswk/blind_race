@@ -1,83 +1,259 @@
-
-<!-- {{-- SIM YOULIM --}} -->
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>main</title>
-</head>
-<style>
-    .barStyle {
-        width: 100%;
-        height: 120px;
-        margin: 0 auto;
-        background-color: #002266;
+<style >
+    .nav-side-menu {
+        overflow: auto;
+        font-family: verdana;
+        font-size: 12px;
+        font-weight: 200;
+        background-color: #2e353d;
+        position: fixed;
+        top: 0;
+        width: 300px;
+        height: 100%;
+        color: #e1ffff;
     }
-    .backgroundStyle {
-        width: 90%;
-        height: 400px;
-        margin: 0 auto;
-        border: 1px solid black;
+    .nav-side-menu .brand {
+        background-color: #23282e;
+        line-height: 50px;
+        display: block;
         text-align: center;
+        font-size: 14px;
     }
-    .backgroundStyle2 {
-        width: 90%;
-        height: 200px;
-        margin: 0 auto;
-        text-align: center;
+    .nav-side-menu .toggle-btn {
+        display: none;
     }
-    img {
-        width: 180px;
-        height: 180px;
+    .nav-side-menu li,
+    .nav-side-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        line-height: 35px;
+        cursor: pointer;
+        /*    
+    .collapsed{
+       .arrow:before{
+                 font-family: FontAwesome;
+                 content: "\f053";
+                 display: inline-block;
+                 padding-left:10px;
+                 padding-right: 10px;
+                 vertical-align: middle;
+                 float:right;
+            }
+     }
+*/
+    }
+    .nav-side-menu li :not(collapsed) .arrow:before,
+    .nav-side-menu ul :not(collapsed) .arrow:before {
+        font-family: FontAwesome;
+        content: "\f078";
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+        float: right;
+    }
+    .nav-side-menu li .active,
+    .nav-side-menu ul .active {
+        border-left: 3px solid #d19b3d;
+        background-color: #4f5b69;
+    }
+    .nav-side-menu li .sub-menu li.active,
+    .nav-side-menu ul .sub-menu li.active {
+        color: #d19b3d;
+    }
+    .nav-side-menu li .sub-menu li.active a,
+    .nav-side-menu ul .sub-menu li.active a {
+        color: #d19b3d;
+    }
+    .nav-side-menu li .sub-menu li,
+    .nav-side-menu ul .sub-menu li {
+        background-color: #181c20;
+        border: none;
+        line-height: 28px;
+        border-bottom: 1px solid #23282e;
+        margin-left: 0;
+    }
+    .nav-side-menu li .sub-menu li:hover,
+    .nav-side-menu ul .sub-menu li:hover {
+        background-color: #020203;
+    }
+    .nav-side-menu li .sub-menu li:before,
+    .nav-side-menu ul .sub-menu li:before {
+        font-family: FontAwesome;
+        content: "\f105";
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+    }
+    .nav-side-menu li {
+        padding-left: 0;
+        border-left: 3px solid #2e353d;
+        border-bottom: 1px solid #23282e;
+    }
+    .nav-side-menu li a {
+        text-decoration: none;
+        color: #e1ffff;
+    }
+    .nav-side-menu li a i {
+        padding-left: 10px;
+        width: 20px;
+        padding-right: 20px;
+    }
+    .nav-side-menu li:hover {
+        border-left: 3px solid #d19b3d;
+        background-color: #4f5b69;
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -o-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        transition: all 1s ease;
+    }
+    @media (max-width: 767px) {
+        .nav-side-menu {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .nav-side-menu .toggle-btn {
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            z-index: 10 !important;
+            padding: 3px;
+            background-color: #ffffff;
+            color: #000;
+            width: 40px;
+            text-align: center;
+        }
+        .brand {
+            text-align: left !important;
+            font-size: 22px;
+            padding-left: 20px;
+            line-height: 50px !important;
+        }
+    }
+    @media (min-width: 767px) {
+        .nav-side-menu .menu-list .menu-content {
+            display: block;
+        }
+    }
+    body {
+        margin: 0;
+        padding: 0;
     }
 </style>
-<body>
-<div class="barStyle" style="text-align: left">
-    <a href="/"><img src="img/logo.png" style="width: 300px; height: auto; margin: 10px 0"></a>
-</div>
-<div style="height: 50px"></div> <!--여백-->
-<div class="backgroundStyle">
-    <div style="display: inline-block; margin: 180px 0">
-        <font size="10" style="font-family: a옛날사진관3">백그라운드 이미지</font>
-    </div>
-</div>
-<div style="height: 50px"></div> <!--여백-->
-<div class="backgroundStyle2">
-    <div style="width: 20%; height: 100%; float: left">
-        <a href="/mygroup"><img src="img/networking.png"></a>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-        <a href="/race"><img src="img/race.png"></a>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-        <a href="/raid"><img src="img/sword.png"></a>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-          <a href="/Quiz_tree"> <img src="img/tree.png"></a>
-    </div>
-    <div style="width: 19%; height: 100%; float: left">
-         <a href="/recordbox"> <img src="img/bars-chart.png"></a>
-    </div>
-  
-</div>
-<div style="height: 20px"></div> <!--여백-->
-<!--글자-->
-<div class="backgroundStyle2" style="height: 80px">
-    <div style="width: 20%; height: 100%; float: left">
-        <font size="40" style="font-family: a옛날사진관3">나의 그룹</font>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-        <font size="40" style="font-family: a옛날사진관3">레이스</font>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-        <font size="40" style="font-family: a옛날사진관3">레이드</font>
-    </div>
-    <div style="width: 20%; height: 100%; float: left">
-        <font size="40" style="font-family: a옛날사진관3">문제 나무</font>
-    </div>
-    <div style="width: 19%; height: 100%; float: left">
-        <font size="40" style="font-family: a옛날사진관3">레코드 박스</font>
-    </div>
-</div>
-</body>
-</html>
+
+<link
+    href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    rel="stylesheet"
+    id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+        rel="stylesheet">
+
+        <div class="nav-side-menu">
+            <div class="brand">Brand Logo</div>
+            <i
+                class="fa fa-bars fa-2x toggle-btn"
+                data-toggle="collapse"
+                data-target="#menu-content"></i>
+
+            <div class="menu-list">
+
+                <ul id="menu-content" class="menu-content collapse out">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-dashboard fa-lg"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <a href="#">
+                            <i class="fa fa-gift fa-lg"></i>
+                            UI Elements
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                    <ul class="sub-menu collapse" id="products">
+                        <li class="active">
+                            <a href="#">CSS3 Animation</a>
+                        </li>
+                        <li>
+                            <a href="#">General</a>
+                        </li>
+                        <li>
+                            <a href="#">Buttons</a>
+                        </li>
+                        <li>
+                            <a href="#">Tabs & Accordions</a>
+                        </li>
+                        <li>
+                            <a href="#">Typography</a>
+                        </li>
+                        <li>
+                            <a href="#">FontAwesome</a>
+                        </li>
+                        <li>
+                            <a href="#">Slider</a>
+                        </li>
+                        <li>
+                            <a href="#">Panels</a>
+                        </li>
+                        <li>
+                            <a href="#">Widgets</a>
+                        </li>
+                        <li>
+                            <a href="#">Bootstrap Model</a>
+                        </li>
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#service" class="collapsed">
+                        <a href="#">
+                            <i class="fa fa-globe fa-lg"></i>
+                            Services
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                    <ul class="sub-menu collapse" id="service">
+                        <li>New Service 1</li>
+                        <li>New Service 2</li>
+                        <li>New Service 3</li>
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#new" class="collapsed">
+                        <a href="#">
+                            <i class="fa fa-car fa-lg"></i>
+                            New
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new">
+                        <li>New New 1</li>
+                        <li>New New 2</li>
+                        <li>New New 3</li>
+                    </ul>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user fa-lg"></i>
+                            Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-users fa-lg"></i>
+                            Users
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
