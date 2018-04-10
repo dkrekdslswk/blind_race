@@ -49,7 +49,7 @@ id = "bootstrap-css" > <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js
                 <li data-toggle="collapse" data-target="#products" class="box collapsed active">
                     <img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>
                     <i class="fa fa-lg"></i>
-                    스폰지밥
+                    스폰지준
                     <i class="magin fas fa-trophy"></i>
                     <span >90</span>
                     <i class="margin">
