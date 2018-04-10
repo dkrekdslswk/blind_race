@@ -50,9 +50,13 @@ Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
 });
 
-Route::get('/Quiz_tree', function(){
+Route::get('/Quiz_list', function(){
     return view('Quiz_tree/Quiz_list');
 });
+
+ Route::get('/Quiz_making', function(){
+     return view('Quiz_tree/Quiz_list');
+ });
 
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
@@ -78,7 +82,6 @@ Route::get('/raid', function(){
 Route::get('/sidebar', function(){
     return view('sidebar');
 });
-
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
 /*Route::get('/', function(){
