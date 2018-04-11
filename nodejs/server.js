@@ -14,12 +14,10 @@ app.get('/', function(req, res){
 });
 
 app.post('/persons', function(req, res){
-
-
     connection.query('SELECT * from users ', function(err, rows) {
         if(err) throw err;
 
-        console.log('The solution is: ', rows);
+        console.log('O ', "로그인");
 //   var row = JSON.parse(rows);
         res.send(rows);
     });
@@ -44,25 +42,31 @@ io.on('connection',function(socket){
 
 // ---------------------------------------------- 연결처리작업
 //changes
+
 var count=1;
 var answer_c = 0;
 var quiz = 0;
-var countdown = 10000;
 
-var TimerOn = false;
-var Timer ;
 
 
 io.on('connection', function (socket){
+    var TimerOn = false;
+    var Timer ;
+    var countdown = 10000;
+
+    var group_num ="";
+
+
     var name = "user" + count++;
     var roomName = '';
     var userData = '';
     var race_allUser = 0;
 
-    //대기방 참가
+    //대기방 참가 (인수 room : 참가하려는 방의 이름 )
     socket.on('join',function (room) {
         socket.join(room);
         console.log('join',room);
+        group_num= room;
     });
 
     // 대기방 이탈
@@ -73,24 +77,39 @@ io.on('connection', function (socket){
         connection.query(leaveRoom_Query, function(err, rows) {if(err){ throw err; } else{ console.log('user',user_num+'퇴장'); }   });
 
         socket.leave(group_num);
+        console.log('danger', group_num);
+        console.log('danger', user_num);
+
     });
 
 
     //대기방 인원참가
-    socket.on('user_in',function(group_num , nickname , user_num){
+    socket.on('user_in',function(group_num , nickname , user_num ,character_num){
         //DB 현재 인원수 쿼리해서 추가하기
         var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num, created_at) VALUES ('1', ' "+user_num+" ', '0', NULL, CURRENT_TIMESTAMP);";
-        connection.query(add_user_query, function(err, rows) {  if(err){ throw err; } else{ console.log('user',user_num+'입장'); }  });
+        connection.query(add_user_query, function(err, rows) {  if(err){ //throw err;
+        }
+        else{ console.log('user',user_num+'입장'); }  });
 
+
+        //유저 정보 추가하기
+        var add_user_info_query = "INSERT INTO sessions (user_num, user_nick, set_exam_num, character_num, room_pin_number, team_num, created_at, updated_at) VALUES ('"+user_num+"', '"+nickname+"', '1', '"+character_num+ "', '"+group_num+"', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
+        connection.query(add_user_info_query, function(err,rows){
+            if(err)
+                throw err ;
+            else
+                console.log('유저참가', '핀번호:'+group_num+'등록번호:'+user_num+'닉네임'+nickname+'캐릭터번호:'+character_num);
+        });
 
         io.sockets.in(group_num).emit('user_in',nickname , user_num);
-        console.log('group_num' ,nickname);
+        //console.log('group_num' ,nickname);
 
 
     });
 
+    //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
     socket.on('android_nextkey',function(data){
-        io.sockets.emit('android_nextquiz','미정');
+        io.sockets.in(group_num).emit('android_nextquiz','미정');
     });
 
     // 타이머 시작함수
@@ -106,8 +125,9 @@ io.on('connection', function (socket){
     });
 
 
-
+    //다음문제로 넘어가기전 Timer를 취소하는 함수
     socket.on('count_off', function(data){
+        console.log('group_num',group_num)
         quiz++;
         countdown = 10000;
         clearInterval(Timer);
@@ -118,60 +138,64 @@ io.on('connection', function (socket){
         connection.query(answer_checking_query, function(err, rows) {
 
             if(err) throw err;
-            console.log('The solution is: ', rows);
+            console.log('순위결정쿼리: ', rows);
             var query_result = JSON.stringify(rows);
 
-            io.sockets.emit('right_checked' ,query_result , quiz);
-            console.log('right?', quiz);
+            io.sockets.in(group_num).emit('right_checked' ,query_result , quiz);
+            console.log('퀴즈몇번??', quiz);
 
         });
 
-        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
-
-
+        var ranking_query = "select p.user_num , user_nick nickname, count(result) point from playing_quizs p join sessions s on p.user_num = s.user_num  where result='1' and p.set_exam_num='1'  group by user_num";
         connection.query(ranking_query, function(err, rows) {
 
             if(err) throw err;
             console.log('The solution is: ', rows);
             var query_result = JSON.stringify(rows);
 
-            io.sockets.emit('mid_ranking' ,query_result);
+            io.sockets.in(group_num).emit('mid_ranking' ,query_result);
 
         });
-        socket.emit('nextok',quiz);
+        io.sockets.in(group_num).emit('nextok',quiz);
     });
 
 
 //퀴즈 답받는 소켓 함수
     socket.on('answer', function(answer_num , student_num , nickname){
         console.log('Client Send Data:', answer_num);
+        console.log('stu',student_num);
+        console.log('nickname',nickname);
         var quizin = quiz+1;
+        console.log('답찍을때 퀴즈',quizin)
+
+
         // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
+
         var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
+
         console.log('user',count);
+
         connection.query(answer_query, function(err, rows) {
-            // if(err) throw err; 값이 이미 있을시 실패함
-            console.log('The solution is: ', rows);
+            if(err) throw err;
+            console.log('문제답안저장쿼리: ', rows);
         });
         answer_c++;
-        io.sockets.emit('answer-sum',answer_c);
+        io.sockets.in(group_num).emit('answer-sum',answer_c);
         console.log('answer counting: ', answer_c);
     });
 
 
     socket.on('race_ending',function(data){
-
+        clearInterval(Timer);
 
         var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
-
-
         connection.query(ranking_query, function(err, rows) {
 
             if(err) throw err;
-            console.log('The solution is: ', rows);
+            console.log('엔딩쿼리: ', rows);
             var query_result = JSON.stringify(rows);
-
-            io.sockets.emit('race_ending', query_result);
+            io.sockets.emit('race_ending',query_result);
+            // io.sockets.in(group_num).emit('race_ending', query_result);
 
         });
     })

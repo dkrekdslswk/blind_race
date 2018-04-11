@@ -46,11 +46,8 @@ class QuizTreeController extends Controller
 
         $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
 
-        $bookList = $this->getBookGet();
-
         $returnValue = array('folderList' => $folderList,
             'raceList' => $raceList,
-            'bookList' => $bookList,
             'selectFolder' => $postData['folderId']);
 
         return $returnValue;
@@ -142,10 +139,13 @@ class QuizTreeController extends Controller
                 'user_t_num' => $userData['userId']]
             , 'race_num');
 
+        $bookList = $this->getBookGet();
+
         if (isset($raceId)) {
             $returnValue = array(
                 'raceId' => $raceId,
                 'raceName' => $postData['raceName'],
+                'bookList' => $bookList,
                 'check' => true);
         }else{
             $returnValue = array('check' => false);
@@ -161,23 +161,18 @@ class QuizTreeController extends Controller
             ->select('book_num', 'book_name','book_page_max', 'book_page_min')
             ->orderBy('book_name')
             ->get();
+
         $bookList = array();
+
         foreach ($bookData as $book){
-            array_push($folderList, array('bookId' => $book->book_num,
+            array_push($bookList, array(
+                'bookId' => $book->book_num,
                 'bookName' => $book->book_name,
                 'pageMax' => $book->book_page_max,
                 'pageMin' => $book->book_page_min));
         }
 
-        if (isset($raceId)) {
-            $returnValue = array(
-                'raceId' => $bookList,
-                'check' => true);
-        }else{
-            $returnValue = array('check' => false);
-        }
-
-        return $returnValue;
+        return $bookList;
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 

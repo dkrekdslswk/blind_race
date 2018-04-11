@@ -28,12 +28,6 @@
             color: #818181;
         }
 
-        .selection {
-            margin: 20px 5px 5px 10px;
-            width: 100%;
-            text-align: center;
-        }
-
         .select {
             width: 90%;
             margin: 5%;
@@ -53,84 +47,22 @@
             text-align: left;
         }
 
-
-        .dropdown {
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .dropdown-btn {
-            text-align: left;
-            padding: 10px 19px 10px 19px;
-            margin: 10px;
-            text-decoration: none;
-            font-size: 15px;
-            color: #818181;
-            display: block;
-            border: none;
-            background: #b9bbbe;
-            width: 90%;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .dropdown2-btn {
-            padding: 6px 0px 6px 0px;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #818181;
-            display: inline;
-            border: none;
-            background: none;
-            width: 45%;
-            cursor: pointer;
-            outline: none;
-        }
-
         /* On mouse-over */
         .sidenav a:hover, .dropdown-btn:hover {
             color: black;
-        }
-
-        /* Main content */
-        .main {
-            margin-left: 200px; /* Same as the width of the sidenav */
-            font-size: 20px; /* Increased text to enable scrolling */
-            padding: 0px 10px;
-        }
-
-        /* Add an active class to the active dropdown button */
-        .active {
-            background-color: grey;
-            color: white;
-        }
-
-        /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-        .dropdown-container {
-            display: none;
-            background-color: #262626;
-            padding: 10px 19px 10px 19px;
-            margin: 5%;
         }
 
         .dropdown-container a {
             display: block;
         }
 
-        /* Optional: Style the caret down icon */
-        .fa-caret-down {
-            float: right;
-            padding-right: 8px;
-        }
-
         .sample_quiz {
             margin-top: 20px;
-            margin-left: 10px;
+            margin-left: 25px;
             text-align: center;
             border: 1px solid black;
             overflow-y: scroll;
-            width: 95%;
+            width: 90%;
             height: 50%;
             background-color: #f8f8f8;
         }
@@ -144,10 +76,6 @@
             padding: 1px 1px 1px 1px;
         }
 
-        .main {
-            margin-left: 40%;
-        }
-
         /* Some media queries for responsiveness */
         @media screen and (max-height: 450px) {
             .sidenav {padding-top: 15px;}
@@ -158,6 +86,23 @@
 
 <script>
 
+    function btnClick() {
+        var xmlReqObj = new XMLHttpRequest();
+
+        // 접속 대상 설정
+        var url;
+
+        xmlReqObj.onreadystatechange = function() {
+            // 통신이 완료되면
+            if(xmlReqObj.readyState == 4 && xmlReqObj.status == 200) {
+                resultObj.value = xmlReqObj.responseText;
+            }
+        };
+
+        xmlReqObj.open("POST", url, true);
+        xmlReqObj.send();
+    }
+
 </script>
 
 <body>
@@ -166,39 +111,38 @@
 <div class="sidenav">
 
     <form class="select">
-        <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">교재 선택</option>
-            <option data-tokens="mustard">급소공략</option>
+        <select class="form-control">
+            <option>교재 선택</option>
+            <option>급소공략</option>
         </select>
     </form>
 
     <form class="select">
-        <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">난이도 선택</option>
-            <option data-tokens="mustard">N1</option>
-            <option data-tokens="mustard">N2</option>
-            <option data-tokens="mustard">N3</option>
+        <select class="form-control">
+            <option>난이도 선택</option>
+            <option>N1</option>
+            <option>N2</option>
+            <option>N3</option>
         </select>
     </form>
 
-    <form class="select">
-        <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">페이지</option>
-            <option data-tokens="mustard">특강 B반</option>
-            <option data-tokens="frosting">특강 C반</option>
+    <form class="form-inline" style="margin: 5%">
+        <select class="form-control">
+            <option>페이지</option>
+            <option>1p</option>
+            <option>2p</option>
         </select>
+        &nbsp;~&nbsp;
+        <select class="form-control">
+            <option>페이지</option>
+            <option>1p</option>
+            <option>2p</option>
+        </select>
+        <button type="button" class="btn btn-info" style="margin-left: 5%" onclick="btnClick()">검색</button>
     </form>
 
-    <form class="select">
-        <select class="form-control" data-live-search="true">
-            <option data-tokens="ketchup mustard">문제 유형</option>
-            <option data-tokens="mustard">사지선다</option>
-            <option data-tokens="frosting">작성</option>
-            <option data-tokens="frosting">순서 맞추기</option>
-        </select>
-    </form>
 
-    <div class="sample_quiz">
+    {{--<div class="sample_quiz">
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
@@ -223,48 +167,8 @@
 
             </tbody>
         </table>
-
-    </div>
+    </div>--}}
 
 </div>
-
-
-<script>
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var dropdown2 = document.getElementsByClassName("dropdown2-btn");
-    var i;
-
-    for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
-        });
-    }
-
-    for (i = 0; i < dropdown2.length; i++) {
-        dropdown2[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
-        });
-    }
-
-</script>
-
 </body>
 </html>
-
-<?
-#퀴즈리스트 사이드 바
-#김승목
-?>
