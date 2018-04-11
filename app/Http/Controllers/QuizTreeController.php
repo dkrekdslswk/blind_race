@@ -46,11 +46,8 @@ class QuizTreeController extends Controller
 
         $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
 
-        $bookList = $this->getBookGet();
-
         $returnValue = array('folderList' => $folderList,
             'raceList' => $raceList,
-            'bookList' => $bookList,
             'selectFolder' => $postData['folderId']);
 
         return $returnValue;
@@ -142,10 +139,13 @@ class QuizTreeController extends Controller
                 'user_t_num' => $userData['userId']]
             , 'race_num');
 
+        $bookList = $this->getBookGet();
+
         if (isset($raceId)) {
             $returnValue = array(
                 'raceId' => $raceId,
                 'raceName' => $postData['raceName'],
+                'bookList' => $bookList,
                 'check' => true);
         }else{
             $returnValue = array('check' => false);
