@@ -14,9 +14,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
-    <script type="text/javascript">
-
-    </script>
+    <script type="text/javascript"></script>
 
     <style>
         .student {
@@ -51,9 +49,10 @@
 
     </style>
     <script>
-        var pub_group_num = '<?php echo $json['group']['groupName']; ?>';
+        var pub_group_num = prompt('방 비밀번호를 입력해주세요','');
 
         window.onload = function() {
+            $('#room_name').html(pub_group_num);
             var socket = io(':8890');
 
 
@@ -97,6 +96,7 @@
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
                 $("#quiz_number").text(quiz_num);
+                $("#winners").text(right_checking_JSON[0].o+"명 정답!");
                 $("#right").text(right_checking_JSON[0].o);
                 $("#wrong").text(right_checking_JSON[0].x);
 
@@ -183,17 +183,41 @@
 
             socket.on('mid_ranking',function(data){
 
-
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
                 var ranking_JSON = JSON.parse(data);
+
                 var changehtml = "";
+
                 for(var i=0;  i <ranking_JSON.length; i++){
-                    changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
+
+                    var rank = i+1;
+
+                    changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active ">';
+                    switch(i){
+                        case 0: changehtml += '<img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
+                        case 1: changehtml += '<img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
+                        case 2: changehtml += '<img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
+                    }
+                    changehtml+=
+                        '<i class="fa fa-lg"></i>'
+                        +rank
+                        +" 등"
+                        + ranking_JSON[i].nickname
+                        +'<i class="magin fas fa-trophy"></i><span >'
+                        + ranking_JSON[i].point
+                        +" point"
+                        +'</span><i class="margin"><img src="https://i.imgur.com/GqML11K.gif" width="60px">'
+                        +'</i></a>'
+                        +'</li>' ;
+
+
+
+                    // changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
                     // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
                 }
-                $(".sidenav").html(changehtml);
+                $(".nav-side-menu").html(changehtml);
                 $("#mid_result").show();
 
                 Mid_result_Timer = setTimeout(function(){
@@ -255,7 +279,7 @@
             socket.on('nextok',function(data){
 
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/recordbox"; }, 2900);
+                    setTimeout(function(){ location.href="/recordbox"; }, 2500);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
@@ -278,11 +302,15 @@
 
 <div id="wait_room">
     <div class="student">
-        
+
 
         <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
         <!--</form>-->
+        <div id="room_name" class="counting">
+
+        </div>
+        <br><br>
 
         <div class="counting">
             <span id="student_count" > 학생 수</span>
