@@ -149,7 +149,7 @@ class QuizTreeController extends Controller
         }
 
 //        return $returnValue;
-        return view('Quiz_making')->with('response', $returnValue);
+        return view('Quiz_tree/Quiz_making')->with('response', $returnValue);
     }
 
     public function getBookGet(){
