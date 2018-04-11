@@ -78,7 +78,7 @@ class QuizTreeController extends Controller
 
         $folderId = DB::table('race_folders')
             ->insertGetId(['folder_name' => $postData['folderName'],
-                    'user_t_num' => $userData->userId]
+                    'user_t_num' => $userData['userId']]
                 , 'folder_num');
 
         $folderData = DB::table('race_folders as rf')
@@ -132,7 +132,7 @@ class QuizTreeController extends Controller
         $raceId = DB::table('races')
             ->insertGetId(['raceName' => $postData['raceName'],
                 'folderId' => $postData['folderId'],
-                'user_t_num' => $userData->userId]
+                'user_t_num' => $userData['userId']]
             , 'race_num');
 
         if (isset($raceId)) {
