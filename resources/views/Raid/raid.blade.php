@@ -259,7 +259,7 @@
         <div id="answer_c">0/6명(db) 풀이완료</div>
         <div id="load_tweets">
             <center>
-                <progress style="width:100%;"  value="0" max="20" id="progressBar"></progress>
+                <progress style="width:100%;  height:30px;"  value="0" max="20" id="progressBar"></progress>
                 <div id="questions">
                     <form name="formName" action="url_with_programming_here" method="POST">
                         <h1 id="counter"></h1>
@@ -294,7 +294,20 @@
 
 
 </div>
+
 <script src="{{asset('js/app.js')}}"></script>
+<script>
+    $("#progress").progressTimer({
+        timeLimit: 20,
+        warningThreshold: 10,
+        baseStyle: 'progress-bar-warning',
+        warningStyle: 'progress-bar-danger',
+        completeStyle: 'progress-bar-info',
+        onFinish: function() {
+            console.log("I'm done");
+        }
+    });
+</script>
 </body>
 </html>
 
