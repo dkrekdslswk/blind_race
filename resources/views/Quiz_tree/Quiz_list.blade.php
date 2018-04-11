@@ -34,7 +34,7 @@
         $('#quizName').change(function () {
             var quizName = $("#quizName").val();
 
-            var quizNameObj = document.getElementById("post");
+            var quizNameObj = document.getElementById("raceName");
             quizNameObj.value = quizName;
         });
     });
@@ -97,7 +97,8 @@
     <div class="modal-dialog" role="document">
         <form action="{{url('quizTreeController/createRace')}}"  method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
-            <input type="hidden" name="post" id="post" value="">
+            <input type="hidden" name="raceName" id="raceName" value="">
+            <input type="hidden" name="folderId" id="folderId" value="">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">퀴즈 만들기</h5>
