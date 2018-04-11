@@ -77,9 +77,9 @@ class QuizTreeController extends Controller
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $folderId = DB::table('race_folders')
-            ->insertGetId(['folder_name' => $postData['folderName'],
+            ->insertGetId(['race_folder_name' => $postData['folderName'],
                     'user_t_num' => $userData['userId']]
-                , 'folder_num');
+                , 'race_folder_num');
 
         $folderData = DB::table('race_folders as rf')
             ->select('rf.race_folder_num as raceFolderId', 'rf.race_folder_name as raceFolderName')
@@ -135,7 +135,7 @@ class QuizTreeController extends Controller
 
         $raceId = DB::table('races')
             ->insertGetId(['race_name' => $postData['raceName'],
-                'folder_num' => $postData['folderId'],
+                'race_folder_num' => $postData['folderId'],
                 'user_t_num' => $userData['userId']]
             , 'race_num');
 
@@ -188,40 +188,44 @@ class QuizTreeController extends Controller
 //            'level' => 5));
         $postData = json_decode($json);
 
-        $quizData = DB::table('quiz_bank')
-            ->select('quiz_num as quizId',
-                'book_num as bookId',
-                'book_page as page',
-                'quiz_question as question',
-                'quiz_right_answer as right',
-                'uiz_example1 as example1',
-                'quiz_example2 as example2',
-                'quiz_example3 as example3',
-                'quiz_type as type',
-                'quiz_level as level')
-            ->where([
-                'book_num' => $postData['bookId'],
-                'quiz_type' => $postData['type'],
-                'quiz_level' => $postData['level']
-            ])
-            ->where('book_page', '>', $postData['pageStart'])
-            ->where('book_page', '<', $postData['pageEnd'])
-            ->get();
+        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
-        $quizList = array();
-        foreach ($quizData as $quiz){
-            array_push($quizList, array(
-                'quizId' => $quiz->quizId,
-                'bookId' => $quiz->bookId,
-                'question' => $quiz->question,
-                'page' => $quiz->page,
-                'question' => $quiz->question,
-                'right' => $quiz->right,
-                'example1' => $quiz->example1,
-                'example2' => $quiz->example2,
-                'example3' => $quiz->example3,
-                'type' => $quiz->type,
-                'level' => $quiz->level));
+        if($userData['tCheck'] == 't') {
+            $quizData = DB::table('quiz_bank')
+                ->select('quiz_num as quizId',
+                    'book_num as bookId',
+                    'book_page as page',
+                    'quiz_question as question',
+                    'quiz_right_answer as right',
+                    'uiz_example1 as example1',
+                    'quiz_example2 as example2',
+                    'quiz_example3 as example3',
+                    'quiz_type as type',
+                    'quiz_level as level')
+                ->where([
+                    'book_num' => $postData['bookId'],
+                    'quiz_type' => $postData['type'],
+                    'quiz_level' => $postData['level']
+                ])
+                ->where('book_page', '>', $postData['pageStart'])
+                ->where('book_page', '<', $postData['pageEnd'])
+                ->get();
+
+            $quizList = array();
+            foreach ($quizData as $quiz) {
+                array_push($quizList, array(
+                    'quizId' => $quiz->quizId,
+                    'bookId' => $quiz->bookId,
+                    'question' => $quiz->question,
+                    'page' => $quiz->page,
+                    'question' => $quiz->question,
+                    'right' => $quiz->right,
+                    'example1' => $quiz->example1,
+                    'example2' => $quiz->example2,
+                    'example3' => $quiz->example3,
+                    'type' => $quiz->type,
+                    'level' => $quiz->level));
+            }
         }
 
         if (isset($raceId)) {

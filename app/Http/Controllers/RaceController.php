@@ -131,10 +131,14 @@ class RaceController extends Controller
                 ->where('session_num', '=', $postData['sessionId'])
                 ->update(['room_pin_number' => $postData['roomPin']]);
 
-            $returnValue = array('race' => array('setExamId'    => $setExamTest->setExamId,
-                'setExamCount' => $setExamTest->setExamCount),
-                'group' => array('groupId'     => $setExamTest->groupId),
-                'check' => true);
+            $returnValue = array(
+                'race' => array(
+                    'setExamId'    => $setExamTest->setExamId,
+                    'setExamCount' => $setExamTest->setExamCount),
+                'group' => array(
+                    'groupId'     => $setExamTest->groupId),
+                'check' => true
+            );
         }
         // error incorrect race
         else {
