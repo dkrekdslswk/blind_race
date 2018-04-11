@@ -23,7 +23,7 @@ class UserController extends Controller{
     public static function sessionDataGet($sessionId){
         DB::table('sessions')
             ->where('session_num', '=', $sessionId)
-            ->update(['updated_at' => 'now()']);
+            ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
         $userData = DB::table('users as u')
             ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck')
