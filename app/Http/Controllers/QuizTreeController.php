@@ -46,8 +46,11 @@ class QuizTreeController extends Controller
 
         $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
 
+        $bookList = $this->getBookGet();
+
         $returnValue = array('folderList' => $folderList,
             'raceList' => $raceList,
+            'bookList' => $bookList,
             'selectFolder' => $postData['folderId']);
 
         return $returnValue;
