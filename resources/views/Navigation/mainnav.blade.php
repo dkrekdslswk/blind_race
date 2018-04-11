@@ -18,27 +18,27 @@
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="/mygroup">
-            <span class="nav-link-text"><img class="nav-icon " src="img/networking.png"></img>  나의그룹</span>
+            <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'networking.png') }}"></img>  나의그룹</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
           <a class="nav-link" href="/race">
-            <span class="nav-link-text"><img class="nav-icon " src="img/race.png"></img>  레이스</span>
+            <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'race.png') }}"></img>  레이스</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="#">
-            <span class="nav-link-text"><img class="nav-icon " src="img/sword.png"></img>  레이드</span>
+            <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'sword.png') }}"></img>  레이드</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
           <a class="nav-link" href="/Quiz_list" >
-            <span class="nav-link-text"><img class="nav-icon " src="img/tree.png"></img>  문제나무</span>
+            <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'tree.png') }}"></img>  문제나무</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="/recordbox" data-parent="#exampleAccordion">
-            <span class="nav-link-text"><img class="nav-icon " src="img/bars-chart.png"></img>  레코드박스</span>
+            <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'bars-chart.png') }}"></img>  레코드박스</span>
           </a>
         </li>
       </ul>
