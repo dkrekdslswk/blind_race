@@ -110,7 +110,24 @@ class QuizTreeController extends Controller
 //            'folderId' => null));
         $postData = json_decode($json);
 
-        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+        // test 임시로 유저 세션 부여
+        $userData = DB::table('users as u')
+            ->select(['u.user_num   as user_num',
+                's.session_num  as session_num'])
+            ->where('u.user_id', '=', 'tamp1id')
+            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
+            ->first();
+
+        if(!isset($userData->session_num)){
+            $_SESSION['sessionId'] = DB::table('sessions')
+                ->insertGetId(['user_num' => $userData->user_num],
+                    'session_num');
+        }else{
+            $_SESSION['sessionId'] = $userData->session_num;
+        }
+        // test
+
+//        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $raceId = DB::table('races')
             ->insertGetId(['raceName' => $postData['raceName'],
