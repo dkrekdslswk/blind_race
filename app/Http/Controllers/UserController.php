@@ -73,7 +73,7 @@ class UserController extends Controller{
             ,[$request->input('ID'),$request->input('PW'),$request->input('user_name')]);
 
         if($result == 1 )
-            return view('login/login');
+            return view('Login/login');
     }
 }
 

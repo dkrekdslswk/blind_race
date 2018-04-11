@@ -18,33 +18,34 @@
         margin-top: 1em;
     }
 </style>
-<div class="jumbotron">
-    <h1 id="quiz_number" class="display-3">1번</h1>
-    <a id="Mid_skip_btn" class="btn btn-primary btn-lg nextbutton" href="#" role="button">다음문제 넘어가기</a>
-</div>
-<section>
-    <div class="divss">
-        <div id="Mid_Q_Name"class="well well-lg ">문제 : 왜 미응답이 있나구요?</div>
-        <div id="Mid_A_Right" class="well well-lg">정덥 : 니들 힘들어라고 ^^</div>
+<div id="mid_content" style="margin-left:15%">
+    <div class="jumbotron" >
+        <h1 id="quiz_number" class="display-3">1번</h1>
+        <a id="Mid_skip_btn" class="btn btn-primary btn-lg nextbutton" href="#" role="button">다음문제 넘어가기</a>
     </div>
+    <section>
+        <div class="divss">
+            <div id="Mid_Q_Name"class="well well-lg ">문제</div>
+            <div id="Mid_A_Right" class="well well-lg">정덥</div>
+        </div>
 
-    <div class="pieID pie"></div>
-    <ul class="pieID legend">
+        <div class="pieID pie"></div>
+        <h4 id="winners" class="pieID"></h4>
+        <ul class="pieID legend" style="display:none;">
 
-        <li>
-            <em>1번</em>
-            <span id="right">10</span>
-        </li>
-        <li>
-            <em>2번</em>
-            <span id="wrong">25</span>
-        </li>
+            <li>
+                <em>1번</em>
+                <span id="right">10</span>
+            </li>
+            <li>
+                <em>2번</em>
+                <span id="wrong">25</span>
+            </li>
 
-    </ul>
+        </ul>
 
-</section>
-
-
+    </section>
+</div>
 <style>
     @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
@@ -76,7 +77,9 @@
         margin: 0 30px 30px 0;
     }
     .pie::before {
-        content: "";
+        text-align: center;
+        font-size: 20pt;
+        content: "100";
         display: block;
         position: absolute;
         z-index: 1;
@@ -86,6 +89,7 @@
         border-radius: 50%;
         top: 50px;
         left: 50px;
+        line-height:100px;
     }
     .pie::after {
         content: "";
@@ -295,7 +299,7 @@
         }
     }
     .well {
-        width: 800px;
+        width: 600px;
         min-height: 120px;
         padding: 19px;
         margin-bottom: 20px;
@@ -311,7 +315,7 @@
         display: inline-block;
     }
     .nextbutton {
-        margin-left: 800px;
+        margin-left: 550px;
     }
 </style>
 

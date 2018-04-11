@@ -11,27 +11,12 @@
 
     <style type="text/css">
 
-        .container {
-            margin-left: 280px;
-        }
-
-        .wrap {
-            margin : 10px;
-            position: relative;
-            align: left;
-            display : block;
-        }
-
         .contents {
             margin-left: 25%;
         }
 
         .quiz {
             margin: 20px;
-        }
-
-        .quiz_table {
-            border: 1px solid black;
         }
 
         .table tr{
@@ -43,9 +28,6 @@
             text-align: right;
         }
 
-        #curve_chart {
-            margin-top: 1em;
-        }
     </style>
 
 </head>
