@@ -127,7 +127,7 @@ class QuizTreeController extends Controller
         }
         // test
 
-//        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $raceId = DB::table('races')
             ->insertGetId(['raceName' => $postData['raceName'],
