@@ -161,7 +161,9 @@ class QuizTreeController extends Controller
             ->select('book_num', 'book_name','book_page_max', 'book_page_min')
             ->orderBy('book_name')
             ->get();
+
         $bookList = array();
+
         foreach ($bookData as $book){
             array_push($bookList, array(
                 'bookId' => $book->book_num,
@@ -170,15 +172,7 @@ class QuizTreeController extends Controller
                 'pageMin' => $book->book_page_min));
         }
 
-        if (isset($raceId)) {
-            $returnValue = array(
-                'raceId' => $bookList,
-                'check' => true);
-        }else{
-            $returnValue = array('check' => false);
-        }
-
-        return $returnValue;
+        return $bookList;
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
