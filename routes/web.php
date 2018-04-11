@@ -95,7 +95,13 @@ Route::get('/cbcSocketTest', function(){
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/nickIn','RaceController@nickIn');
 Route::post('/raceController/quizNext','RaceController@quizNext');
+//Route::post('/raceController/resultIn','RaceController@resultIn');
+//Route::post('/raceController/destroy','RaceController@destroy');
 
-Route::post('/raceController/{post}','RaceController@create');
 
+ Route::post('/quizTreeController/quizTreeMain','QuizTreeController@quizTreeMain');
+ Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
+ Route::post('/quizTreeController/getBookGet','QuizTreeController@getBookGet');
+ Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');

@@ -21,8 +21,6 @@ class CreateSessionsTable extends Migration
 	        $table->foreign('user_num')->references('user_num')->on('users');
 	        $table->unique('user_num');
 
-	        $table->string('user_nick', 20)->nullable();
-
             $table->unsignedInteger('set_exam_num')->nullable();
 	        $table->foreign('set_exam_num')->references('set_exam_num')->on('race_set_exam');
 
@@ -30,7 +28,10 @@ class CreateSessionsTable extends Migration
 	        $table->foreign('character_num')->references('character_num')->on('characters');
             $table->unique(['set_exam_num', 'character_num']);
 
+            $table->string('user_nick', 20)->nullable();
+
             $table->string('room_pin_number',10)->nullable();
+            $table->unique(['user_nick', 'room_pin_number']);
 
             $table->unsignedInteger('team_num')->nullable();
 	        $table->foreign('team_num')->references('team_num')->on('race_teams');
