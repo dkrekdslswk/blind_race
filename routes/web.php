@@ -100,3 +100,8 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/resultIn','RaceController@resultIn');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
+
+ Route::post('/quizTreeController/quizTreeMain','QuizTreeController@quizTreeMain');
+ Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
+ Route::post('/quizTreeController/getBookGet','QuizTreeController@getBookGet');
+ Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
