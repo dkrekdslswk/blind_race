@@ -32,10 +32,10 @@
 <script>
     $(document).ready(function () {
         $('#quizName').change(function () {
-            var testT = $("#quizName").attr('value');
+            var quizName = $("#quizName").val();
 
-            var quizNameObj = document.getElementById("test");
-            quizNameObj.value = testT;
+            var quizNameObj = document.getElementById("post");
+            quizNameObj.value = quizName;
         });
     });
 
@@ -95,9 +95,9 @@
 {{--Modal : make quiz--}}
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+        <form action="{{url('quizTreeController/createRace')}}"  method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
-            <input type="hidden" name="groupId" id="groupId" value="1">
+            <input type="hidden" name="post" id="post" value="">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">퀴즈 만들기</h5>
@@ -105,7 +105,6 @@
                 <div class="modal-body" style="text-align: center">
                     {{--퀴즈명 입력란--}}
                     퀴즈 이름 <input type="text" id="quizName">
-                    <input type="text" id="test">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">만들기</button>
