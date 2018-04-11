@@ -155,15 +155,20 @@
         }
     </style>
 </head>
+
+<script>
+
+</script>
+
 <body>
+<?php ?>
 
 <div class="sidenav">
 
     <form class="select">
         <select class="form-control" data-live-search="true">
             <option data-tokens="ketchup mustard">교재 선택</option>
-            <option data-tokens="mustard">특강 B반</option>
-            <option data-tokens="frosting">특강 C반</option>
+            <option data-tokens="mustard">급소공략</option>
         </select>
     </form>
 

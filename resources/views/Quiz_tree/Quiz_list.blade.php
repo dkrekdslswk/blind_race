@@ -49,7 +49,7 @@
 </nav>
 
 <aside style="display:inline-block; vertical-align:top;">
-    @include('Quiz_tree.Nav_side_bar.Quiz_side_bar')
+    @include('Quiz_tree.Quiz_list_side_bar')
 
 </aside>
 
