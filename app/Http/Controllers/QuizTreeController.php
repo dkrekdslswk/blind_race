@@ -105,10 +105,14 @@ class QuizTreeController extends Controller
     }
 
     public function createRace(Request $request){
-        $json     = $request->input('post');
+//        $json     = $request->input('post');
 //        $json     = json_encode(array('raceName' => '스스쿠쿠스쿠스쿠',
 //            'folderId' => null));
-        $postData = json_decode($json);
+//        $postData = json_decode($json);
+        $postData = array(
+            'raceName' => $request->input('raceName'),
+            'folderId' => $request->input('folderId')
+        );
 
         // test 임시로 유저 세션 부여
         $userDataUp = DB::table('users as u')
@@ -130,8 +134,8 @@ class QuizTreeController extends Controller
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $raceId = DB::table('races')
-            ->insertGetId(['raceName' => $postData['raceName'],
-                'folderId' => $postData['folderId'],
+            ->insertGetId(['race_name' => $postData['raceName'],
+                'folder_num' => $postData['folderId'],
                 'user_t_num' => $userData['userId']]
             , 'race_num');
 
