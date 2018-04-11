@@ -163,7 +163,8 @@ class QuizTreeController extends Controller
             ->get();
         $bookList = array();
         foreach ($bookData as $book){
-            array_push($folderList, array('bookId' => $book->book_num,
+            array_push($bookList, array(
+                'bookId' => $book->book_num,
                 'bookName' => $book->book_name,
                 'pageMax' => $book->book_page_max,
                 'pageMin' => $book->book_page_min));
