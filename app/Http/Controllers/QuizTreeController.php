@@ -177,14 +177,14 @@ class QuizTreeController extends Controller
     }
 
     public function getQuiz(Request $request){
-        $requsetData     = $request->all();
+        $json     = $request->all();
 //        $json     = json_encode(array(
 //            'bookId' => 1,
 //            'pageStart' => 5,
 //            'pageEnd' => 20,
 //            'type' => 'o',
 //            'level' => 1));
-        $postData = $requsetData->post;
+        $postData = json_decode($json);
 
 //        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 //
@@ -233,7 +233,7 @@ class QuizTreeController extends Controller
 //            $returnValue = array('check' => false);
 //        }
 
-        return response()->json($postData);
+        return response()->json($postData->post);
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
