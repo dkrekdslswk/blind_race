@@ -240,7 +240,7 @@ class QuizTreeController extends Controller
             $returnValue = array('check' => false);
         }
 
-        return $postData;
+        return $returnValue;
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
