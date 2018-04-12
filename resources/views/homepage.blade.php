@@ -55,7 +55,7 @@
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">블라인드 레이스</a>
+                                    <a href="/race">블라인드 레이스</a>
                                 </li>
                                 <li>
                                     <a href="#">도전 골든벨</a>
@@ -101,31 +101,31 @@
                     -->
                     <ul class="nospace group">
                         <li>
-                            <a class="mt-green" href="#">
+                            <a class="mt-green" href="/race">
                                 <i class="fa fa-5x fa-gamepad"></i>
                                 <em>Race</em>
                             </a>
                         </li>
                         <li>
-                            <a class="mt-orange" href="#">
+                            <a class="mt-orange" href="/raid">
                                 <i class="fa fa-5x fa-trophy"></i>
                                 <em>Raid</em>
                             </a>
                         </li>
                         <li>
-                            <a class="mt-purple" href="#">
+                            <a class="mt-purple" href="/mygroup">
                                 <i class="fa fa-5x fa-child"></i>
                                 <em>My group</em>
                             </a>
                         </li>
                         <li>
-                            <a class="mt-red" href="#">
+                            <a class="mt-red" href="/recordbox">
                                 <i class="fa fa-5x fa-box-open"></i>
                                 <em>Record Box</em>
                             </a>
                         </li>
                         <li>
-                            <a class="mt-yellow" href="#">
+                            <a class="mt-yellow" href="/Quiz_tree">
                                 <i class="fa fa-5x fa-tree"></i>
                                 <em>문제 나무</em>
                             </a>
