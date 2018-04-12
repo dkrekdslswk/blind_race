@@ -191,6 +191,7 @@ class QuizTreeController extends Controller
             'type' => $request->input('type'),
             'level' => $request->input('level'));
 
+        $_SESSION['sessionId'] = 1;
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $quizList = array();
