@@ -20,7 +20,7 @@ class QuizTreeController extends Controller
         $userData = DB::table('users as u')
             ->select(['u.user_num   as user_num',
                 's.session_num  as session_num'])
-            ->where('u.user_id', '=', 'tamp1')
+            ->where('u.user_id', '=', 'tamp1id')
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
@@ -118,7 +118,7 @@ class QuizTreeController extends Controller
         $userDataUp = DB::table('users as u')
             ->select(['u.user_num as user_num',
                 's.session_num  as session_num'])
-            ->where('u.user_id', '=', 'tamp1')
+            ->where('u.user_id', '=', 'tamp1id')
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
