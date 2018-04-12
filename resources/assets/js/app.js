@@ -27,6 +27,8 @@ import VueConfetti from 'vue-confetti';
 Vue.use(VueAxios, axios);
 Vue.use(VueConfetti);
 import App from './App.vue';
+import Vulma from 'vulma'
+Vue.use(Vulma)
 
 import Example from './components/Example.vue';
 import Login from './components/Login.vue';

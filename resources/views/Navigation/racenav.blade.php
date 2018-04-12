@@ -9,7 +9,7 @@
  */
 ?>
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,15 +26,15 @@
     <script type="text/javascript">
 
 
-/*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
-            $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
-            $('#group_name').html(getJsonDate_nav.group[0].groupName);
-            $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
+        /*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
+                    $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
+                    $('#group_name').html(getJsonDate_nav.group[0].groupName);
+                    $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
 
     </script>
 
 
-        <style>
+    <style>
         .race_container {
             background-color : #212529;
             margin : 0px;
@@ -79,7 +79,7 @@
 <div class="race_container">
     <nav class="navbar navbar-expand-lg" style="height: 100%;">
         <div class="navbar-brand">
-            <img style="width: 80px;height: 80px;" class="nav-icon " src="/img/golden_bell.png"></img>블라인드 레이스
+            블라인드 레이스
         </div>
 
         <div class="collapse navbar-collapse">

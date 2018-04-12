@@ -25,8 +25,12 @@
     </div>
     <section>
         <div class="divss">
-            <div id="Mid_Q_Name"class="well well-lg ">문제</div>
-            <div id="Mid_A_Right" class="well well-lg">정덥</div>
+            <div class="btn btn-primary" style="background-color:black; color:white; width:600px;">문제</div>
+            <div id="Mid_Q_Name" class="well well-lg"  style="font-size:20px;" >문제</div>
+
+            <div class="btn btn-primary" style="background-color:black; color:white; width:600px;">정답</div>
+            <div id="Mid_A_Right" class="well well-lg" style="font-size:20px;" >정답</div>
+
         </div>
 
         <div class="pieID pie"></div>
@@ -78,8 +82,8 @@
     }
     .pie::before {
         text-align: center;
-        font-size: 20pt;
-        content: "100";
+        font-size: 35pt;
+        content: "";
         display: block;
         position: absolute;
         z-index: 1;
@@ -308,7 +312,10 @@
         border-radius: 4px;
         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
         box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+        font-weight:bold;
 
+        font-size: 20px;
+        text-align:center;
     }
 
     .divss {
