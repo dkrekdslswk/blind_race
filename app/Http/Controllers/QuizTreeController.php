@@ -177,14 +177,14 @@ class QuizTreeController extends Controller
     }
 
     public function getQuiz(Request $request){
-        $json     = $request->input('post');
+        $postData     = $request->input('post');
 //        $json     = json_encode(array(
 //            'bookId' => 1,
 //            'pageStart' => 5,
 //            'pageEnd' => 20,
 //            'type' => 'o',
 //            'level' => 1));
-        $postData = json_decode($json);
+//        $postData = json_decode($json);
 
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
@@ -201,12 +201,12 @@ class QuizTreeController extends Controller
                     'quiz_type as type',
                     'quiz_level as level')
                 ->where([
-                    'book_num' => $postData['bookId'],
-                    'quiz_type' => $postData['type'],
-                    'quiz_level' => $postData['level']
+                    'book_num' => $postData->bookId,
+                    'quiz_type' => $postData->type,
+                    'quiz_level' => $postData->level
                 ])
-                ->where('book_page', '>', $postData['pageStart'])
-                ->where('book_page', '<', $postData['pageEnd'])
+                ->where('book_page', '>', $postData->pageStart)
+                ->where('book_page', '<', $postData->pageEnd)
                 ->get();
 
             $quizList = array();
