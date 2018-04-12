@@ -232,7 +232,7 @@ class QuizTreeController extends Controller
             }
         }
 
-        if (isset($raceId)) {
+        if (count($quizList) > 0) {
             $returnValue = array(
                 'raceId' => $quizList,
                 'check' => true);
