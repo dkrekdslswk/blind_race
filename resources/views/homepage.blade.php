@@ -2,23 +2,23 @@
 
 <html>
     <head>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+        <script
+            defer="defer"
+            src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
+            integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+            crossorigin="anonymous"></script>
         <title>YourChoice</title>
         <meta charset="utf-8">
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link
-            href="css/homemain.css"
-            rel="stylesheet"
-            type="text/css"
-            media="all">
-            
+        <link href="css/homemain.css" rel="stylesheet" type="text/css" media="all">
+
     </head>
     <body
         id="top"
         class="bgded fixed"
-        style="background-image:url('https://i.imgur.com/FNhu1L9.jpg');">
+        style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">
         <!--
         ################################################################################################
         -->
@@ -45,10 +45,10 @@
                             <a href="index.html">Home</a>
                         </li>
                         <li>
-                            <a href="#">나의 그룹</a>
+                            <a href="/mygroup">나의 그룹</a>
                         </li>
                         <li>
-                            <a href="#">문제 나무</a>
+                            <a href="/Quiz_list">문제 나무</a>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">퀴즈 시작
@@ -61,7 +61,7 @@
                                     <a href="#">도전 골든벨</a>
                                 </li>
                                 <li>
-                                    <a href="#">레이드</a>
+                                    <a href="/raid">레이드</a>
                                 </li>
                             </ul>
                         </li>
@@ -70,18 +70,18 @@
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">레코드 박스</a>
+                                    <a href="/recordbox">레코드 박스</a>
                                 </li>
                                 <li>
                                     <a href="#">오답노트</a>
                                 </li>
                                 <li>
-                                    <a href="#">피드백</a>
+                                    <a href="/Feedback">피드백</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Login</a>
+                            <a href="/login">Login</a>
                         </li>
                         <ul></ul>
                     </nav>
@@ -125,7 +125,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mt-yellow" href="/Quiz_tree">
+                            <a class="mt-yellow" href="/Quiz_list">
                                 <i class="fa fa-5x fa-tree"></i>
                                 <em>문제 나무</em>
                             </a>
@@ -148,41 +148,53 @@
                         ################################################################################################
                         -->
                         <figure class="group">
-                            <div class="one_half first"><img src="https://i.imgur.com/Wyhn9wW.png" alt=""></div>
-                            <figcaption class="one_half"><img src="https://i.imgur.com/mssAP27.png" alt="">
-                                <h3 class="xxl"></h3>
+                            <div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>
+                            <figcaption class="one_half">
+                                <h1 class="xxl">十分十分
+                                </h1>
+                                <h1 class="xxl">
+                                    Free download Now!</h1>
+                                <p></p>
+
                             </figcaption>
                         </figure>
+
                         <!--
                         ################################################################################################
                         -->
+                        <!-- / main body -->
                         <div class="clear"></div>
                     </main>
                 </div>
             </div>
+
+            <div
+                class="wrapper "
+                style="background-image:url('https://i.imgur.com/TblNDot.png');">
+                <div>
+                    <div id="cta" class="clear center">
+                        <!--
+                        ################################################################################################
+                        -->
+                        <h2 class="heading"></h2>
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <!--
+                        ################################################################################################
+                        -->
+                    </div>
+                </div>
+            </div>
+
+  
             <!--
             ################################################################################################
             -->
-            <div class="wrapper row3">
-                <div class="lrspace">
-                    <main class="container clear">
-                        <!-- main body -->
-                        <!--
-                        ################################################################################################
-                        -->
-                        <figure class="group">
-                            <div class="one_half first"><img src="https://i.imgur.com/SpnjDsK.png" alt=""></div>
-                            <figcaption class="one_half"><img src="https://i.imgur.com/UUyCkbP.png" alt="">
-                                <h3 class="xxl"></h3>
-                            </figcaption>
-                        </figure>
-                        <!--
-                        ################################################################################################
-                        -->
-                        <div class="clear"></div>
-                    </main>
-                </div>
-            </div>
+ 
 
         </div>
     </div>
@@ -254,12 +266,11 @@
     <i class="fa fa-chevron-up"></i>
 </a>
 <!-- JAVASCRIPTS -->
-            <script src="js/jquery.min.js"></script>
-			<script src="js/jquery.backtotop.js"></script>
-            <script src="js/jquery.mobilemenu.js"></script>
-            <script src="js/skel.min.js"></script>
-			<script src="js/util.js"></script>
-			<script src="js/main.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/mi.js"></script>
+<script src="js/jquery.backtotop.js"></script>
+<script src="js/jquery.mobilemenu.js"></script>
+
 <script>
     $(function () {
         $("body div").fadeIn(500, function () {
