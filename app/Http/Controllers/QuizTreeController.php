@@ -177,7 +177,7 @@ class QuizTreeController extends Controller
     }
 
     public function getQuiz(Request $request){
-        $postData     = $request->input('post');
+        $postData     = $request->all();
 //        $json     = json_encode(array(
 //            'bookId' => 1,
 //            'pageStart' => 5,
