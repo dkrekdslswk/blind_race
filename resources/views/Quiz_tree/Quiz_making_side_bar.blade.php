@@ -87,9 +87,7 @@
 
 <script>
 
-    /*
-
-    $.ajax({
+    /*$.ajax({
         type: "POST",
         url: "",
         dataType: "json",
@@ -115,7 +113,7 @@
             error:function(e){
                 alert(e.responseText);
             }
-        });*!/
+        });
     });*/
 
    $(document).on('click', '#btn', function (e) {
@@ -142,17 +140,19 @@
            type: $('#type').val()
        };
 
-       alert(JSON.stringify(params));;
+       alert(JSON.stringify(params));
+
+       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
       $.ajax({
            type: 'POST',
            url: "{{url('quizTreeController/getQuiz')}}",
-           processData: false,
-           contentType: false,
+           //processData: false,
+           //contentType: false,
            dataType: 'json',
            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-           data: {'post': params},
-
+           //data: {_token: CSRF_TOKEN, 'post':params},
+           data: params,
            success: function (data) {
                alert(JSON.stringify(data));
            },
