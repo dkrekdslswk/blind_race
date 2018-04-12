@@ -9,12 +9,10 @@
         integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
         crossorigin="anonymous"></script>
 
-<link
-        href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
-        rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
+<div class="brand"><h3>순위 발표</h3></div>
 <div class="nav-side-menu">
-    <div class="brand"><h3>순위 발표</h3></div>
     <i
             class="fa fa-bars fa-2x toggle-btn "
             data-toggle="collapse"
@@ -24,38 +22,38 @@
 
         <ul id="menu-content" class="menu-content collapse out">
 
-            <li data-toggle="collapse" data-target="#products" class="box collapsed active ">
-                <img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>
-                <i class="fa fa-lg"></i>
-                징징이
+            <!--<li data-toggle="collapse" data-target="#products" class="box collapsed active ">-->
+            <!--    <img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>-->
+            <!--    <i class="fa fa-lg"></i>-->
+            <!--    징징이-->
 
-                <i class="magin fas fa-trophy"></i>
-                <span >100</span>
-                <i class="margin">
-                    <img src="https://i.imgur.com/GqML11K.gif" width="60px"></i>
-                </a>
-            </li>
-            <li data-toggle="collapse" data-target="#products" class="box collapsed active">
-                <img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>
-                <i class="fa fa-lg"></i>
-                별가
+            <!--    <i class="magin fas fa-trophy"></i>-->
+            <!--    <span >100</span>-->
+            <!--    <i class="margin">-->
+            <!--        <img src="https://i.imgur.com/GqML11K.gif" width="60px"></i>-->
+            <!--    </a>-->
+            <!--</li>-->
+            <!--<li data-toggle="collapse" data-target="#products" class="box collapsed active">-->
+            <!--    <img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>-->
+            <!--    <i class="fa fa-lg"></i>-->
+            <!--    별가-->
 
-                <i class="magin fas fa-trophy"></i>
-                <span >100</span>
-                <i class="margin">
-                    <img src="https://i.imgur.com/bLqSyYO.gif" width="55px"></i>
-                </a>
-            </li>
-            <li data-toggle="collapse" data-target="#products" class="box collapsed active">
-                <img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>
-                <i class="fa fa-lg"></i>
-                스폰지준
-                <i class="magin fas fa-trophy"></i>
-                <span >90</span>
-                <i class="margin">
-                    <img src="https://i.imgur.com/a21ovjk.gif" width="50px"></i>
-                </a>
-            </li>
+            <!--    <i class="magin fas fa-trophy"></i>-->
+            <!--    <span >100</span>-->
+            <!--    <i class="margin">-->
+            <!--        <img src="https://i.imgur.com/bLqSyYO.gif" width="55px"></i>-->
+            <!--    </a>-->
+            <!--</li>-->
+            <!--<li data-toggle="collapse" data-target="#products" class="box collapsed active">-->
+            <!--    <img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>-->
+            <!--    <i class="fa fa-lg"></i>-->
+            <!--    스폰지준-->
+            <!--    <i class="magin fas fa-trophy"></i>-->
+            <!--    <span >90</span>-->
+            <!--    <i class="margin">-->
+            <!--        <img src="https://i.imgur.com/a21ovjk.gif" width="50px"></i>-->
+            <!--    </a>-->
+            <!--</li>-->
             <!-- <li data-toggle="collapse" data-target="#products" class="collapsed active">
 ZZ
                 4위 감기콜드

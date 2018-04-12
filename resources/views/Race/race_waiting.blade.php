@@ -58,8 +58,8 @@
 
             socket.emit('join', pub_group_num);
 
-            socket.on('user_in',function(user , user_num){
-                $('<li id="'+ user_num +'">' + user + '</li>').appendTo('body');
+            socket.on('user_in',function(nickname , user_num, character_num){
+                $('<img src="/img/character/char'+character_num+'.png"></img><li id="'+ user_num +'">' + nickname + '</li>').appendTo('body');
                 // $('#student_count').html(student_count);
             });
 
@@ -97,6 +97,9 @@
                 var right_checking_JSON = JSON.parse(data);
                 var correct_count = right_checking_JSON[0].o;
                 var incorrect_count = right_checking_JSON[0].x;
+
+                if(correct_count == 0)
+                    incorrect_count = 1 ;
 
                 $("#quiz_number").text(quiz_num);
 
@@ -167,7 +170,7 @@
                     var offset = 0;
                     var color = [
                         "green",
-                        "red",
+                        "silver",
                         "orange",
                         "tomato",
                         "crimson",
@@ -190,12 +193,12 @@
             });
 
 
-            socket.on('mid_ranking',function(data){
+            socket.on('mid_ranking',function(ranking_j){
 
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
-                document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
-                var ranking_JSON = JSON.parse(data);
+                document.getElementById('answer_c').innerText= "Answers";
+                var ranking_JSON = JSON.parse(ranking_j);
 
                 var changehtml = "";
 
@@ -203,23 +206,39 @@
 
                     var rank = i+1;
 
-                    changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active ">';
+                    changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active "';
                     switch(i){
-                        case 0: changehtml += '<img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
-                        case 1: changehtml += '<img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
-                        case 2: changehtml += '<img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
+                        case 0: changehtml += 'style="background-color:gold;"><img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
+                        case 1: changehtml += 'style="background-color:silver;"><img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
+                        case 2: changehtml += 'style="background-color:saddlebrown;"><img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
+                        default : changehtml += '>';
                     }
                     changehtml+=
                         +rank
                         +" 등"
                         + ranking_JSON[i].nickname
                         +'<i class="magin fas fa-trophy"></i><span >'
-                        + ranking_JSON[i].point
+                        + ranking_JSON[i].point*100
                         +" point"
-                        +'</span><i class="margin"><img src="https://i.imgur.com/GqML11K.gif" width="60px">'
+                        +'</span><i class="margin"><img src="/img/character/char'
+                        +ranking_JSON[i].character_num
+                        +'.png" width="60px">'
                         +'</i></a>'
                         +'</li>' ;
 
+                    var colors = [
+                        'gold',
+                        'silver',
+                        'saddlebrown',
+                        'white'
+                    ];
+                    var boxes = document.querySelectorAll(".box");
+
+                    // for (var i = 0; i < boxes.length; i++) {
+                    //         boxes[i].style.backgroundColor = colors[i];
+                    //     // else
+                    //     //     boxes[i].style.backgroundColor = colors[3];
+                    // }
 
 
                     // changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
@@ -235,7 +254,7 @@
                     $("#mid_result").hide();
                     socket.emit('android_nextkey','미정');
 
-                }, 3000);
+                }, 7000);
             });
 
 
@@ -274,13 +293,13 @@
 
 
             socket.on('answer-sum', function(data){
-                document.getElementById('answer_c').innerText= data+ "/6명(db) 풀이완료";
+                document.getElementById('answer_c').innerText= data;
 
                 if(data == 2)
                 {
 
                     socket.emit('count_off','on');
-                    document.getElementById('answer_c').innerText= "0/6명(db) 풀이완료";
+                    document.getElementById('answer_c').innerText="Answers";
                 }
             });
 
@@ -305,7 +324,7 @@
 <?php print_r($json); ?>
 {{--레이스 네비게이션--}}
 <racenav>
-    @include('Navigation.racenav')
+    @include('Navigation.mainnav')
 </racenav>
 
 <div id="wait_room">
