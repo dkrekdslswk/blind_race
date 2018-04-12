@@ -103,5 +103,5 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 
  Route::post('/quizTreeController/quizTreeMain','QuizTreeController@quizTreeMain');
  Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
- Route::post('/quizTreeController/getBookGet','QuizTreeController@getBookGet');
  Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
+ Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');

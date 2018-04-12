@@ -14,11 +14,11 @@ class BlindDymmyTableSeeder extends Seeder
     {
         $users = [
             ['tamp1id','temp1password','temp1name'],
-            ['tamp2id','temp2password','temp2name'],
-            ['tamp3id','temp3password','temp3name'],
-            ['tamp4id','temp4password','temp4name'],
-            ['tamp5id','temp5password','temp5name'],
-            ['tamp6id','temp6password','temp6name']
+            ['tamp2','tamp2','tamp2'],
+            ['tamp3','tamp3','tamp3'],
+            ['tamp4','tamp4','tamp4'],
+            ['tamp5','tamp5','tamp5'],
+            ['tamp6','tamp6','tamp6']
         ];
  
         foreach($users as $user){
