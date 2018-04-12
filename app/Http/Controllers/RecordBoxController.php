@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class RecordBoxController extends Controller{
-    public function user_login(Request $request){
+    public function totalScoreGet(Request $request){
         //$postData     = array('group' => array('groupId'   => 1),
         //                  'race'  => array('raceMode'  => 'n',
         //                                   'examCount' => 30,
@@ -39,18 +39,30 @@ class RecordBoxController extends Controller{
             ->select([
                 'rse.set_exam_num as setExamId',
                 'rse.created_at as createDate',
-                DB::raw('AVG(rr.race_score) as total_score')
+                DB::raw('AVG(rr.race_score) as avg_score'),
+                DB::raw('MIN(rr.race_score) as min_score')
             ])
             ->where([
                 'rse.group_num' => $postData['groupId']
             ])
             ->join('race_results as rr', 'rr.set_exam_num', '=', 'rse.set_exam_num')
-            ->groupBy()
-            ->orderBy()
+            ->groupBy('rse.set_exam_num')
+            ->orderBy('rse.created_at')
             ->offset(0)
             ->limit(5)
             ->get();
 
+        $finalStudentScores = DB::table('race_results as rr')
+            ->select('rr.user_num as userId',
+                'rr.race_score as raceScore')
+            ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
+            ->join('playing_quizs as pq', function($join)
+            {
+                $join->on('pq.user_num', '=', 'rr.user_num');
+                $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
+            })
+            ->orderBy('rr.race_score')
+            ->get();
     }
 }
 

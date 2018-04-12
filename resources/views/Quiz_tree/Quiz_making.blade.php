@@ -53,37 +53,26 @@
             </tr>
             <tr>
                 <td style="background-color: #d9edf7">문제</td>
-                <td colspan="5">生活習慣病は40代を（　　）増え始める.</td>
+                <td colspan="5">
+                    <textarea style="width: 100%; border: 0"></textarea>
+                </td>
             </tr>
             <tr>
                 <td rowspan="3" style="background-color: #d9edf7">정답</td>
-                <td colspan="3" style="background-color: #ffa500">さかいに</td>
-                <td td colspan="2">とたんに</td >
+                <td colspan="3" style="background-color: #ffa500">
+                    <input type="text" style="width: 100%; background-color: #ffa500; border: 0">
+                </td>
+                <td td colspan="2">
+                    <input type="text" style="width: 100%; border: 0">
+                </td >
             </tr>
             <tr>
-                <td td colspan="3">たびに</td>
-                <td colspan="2">もとに</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="quiz">
-        <table class="table table-bordered">
-            <tr>
-                <td style="background-color: #d9edf7">문항</td>
-                <td>2</td>
-                <td style="background-color: #d9edf7">난이도</td>
-                <td>N1</td>
-                <td style="background-color: #d9edf7">문제 유형</td>
-                <td>작성</td>
-            </tr>
-            <tr>
-                <td style="background-color: #d9edf7">문제</td>
-                <td colspan="5">この小説は[읽을 만한 가치가 없는]つまらないものだ</td>
-            </tr>
-            <tr>
-                <td rowspan="3" style="background-color: #d9edf7">정답</td>
-                <td colspan="5" style="background-color: #ffa500">読むに足りない</td>
+                <td td colspan="3">
+                    <input type="text" style="width: 100%; border: 0">
+                </td>
+                <td colspan="2">
+                    <input type="text" style="width: 100%; border: 0">
+                </td>
             </tr>
         </table>
     </div>

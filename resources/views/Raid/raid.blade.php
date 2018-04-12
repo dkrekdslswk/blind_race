@@ -65,6 +65,33 @@
         #mid_result{
             margin-left:160px;
         }
+        #counter{
+            margin-top:50px;
+            margin-left:50px;
+            display:inline-block;
+            color:black;
+            width:150px;
+            height:150px;
+            font-size:50px;
+            font-weight:bold;
+            line-height:100px;
+            border: 20px solid purple;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,.84);
+            position:fixed;
+        }
+        #mondai{
+            display:inline-block;
+            box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+            background-color: rgba(255,255,255,.84);
+            width: 600px;
+            height:250px;
+            border-radius: 20px;
+            line-height: 250px;
+        }
+        .row{
+            margin-top:150px;
+        }
     </style>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -262,8 +289,8 @@
                 <progress style="width:100%;  height:30px;"  value="0" max="20" id="progressBar"></progress>
                 <div id="questions">
                     <form name="formName" action="url_with_programming_here" method="POST">
-                        <h1 id="counter"></h1>
-                        <h2 id="mondai"></h2>
+                        <div id="mondai"></div>
+                        <div id="counter"></div>
                     </form>
             </center>
         </div>
