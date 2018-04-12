@@ -347,6 +347,7 @@ class RaceController extends Controller
         return response()->json($returnValue);
     }
 
+    /*
     public function resultIn(Request $request){
         //$json     = $request->input('post');
         // 학생의 세션 아이디 필요
@@ -380,6 +381,7 @@ class RaceController extends Controller
         $returnValue = array();
         return response()->json($returnValue);
     }
+    */
 
     public function destroy(Request $request)
     {
