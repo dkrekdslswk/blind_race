@@ -372,8 +372,9 @@ class RaceController extends Controller
             DB::table('playing_quizs')
                 ->insert(['set_exam_num' => $data->setExamId,
                     'user_num' => $data->userId,
-                    'sequence' => $postData['exam_result'],
-                    'result' => $postData['exam_result']]);
+                    'sequence' => $postData['sequence'],
+                    'result' => $postData['exam_result']
+                ]);
         }
 
         $returnValue = array();

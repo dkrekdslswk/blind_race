@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class RecordBoxController extends Controller{
-    public function user_login(Request $request){
+    public function totalScoreGet(Request $request){
         //$postData     = array('group' => array('groupId'   => 1),
         //                  'race'  => array('raceMode'  => 'n',
         //                                   'examCount' => 30,
