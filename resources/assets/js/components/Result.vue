@@ -1,77 +1,216 @@
 <template>
-  <main>
-      
-       <button @click="start">Start</button>
-      <button @click="stop">Stop</button>
 
+    <main>
+        <div>
+            <button @click="start">Start</button>
 
-    <button v-on:click="show = !show">결과 표시</button>
+            <!-- START NAV -->
+            <div class="navbar is-white">
+                <div>
+                    <div class="navbar-brand">
 
-  <div class="d2"><transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/wlfxK1r.png"></p></transition></div>
-  <transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/HJdZ4qZ.png"></p></transition>
-  <transition name="fade"><p v-if="!show"><img src="https://i.imgur.com/VXh9aAI.png"></p></transition>
+                        <div class="navbar-burger burger" data-target="navMenu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+            <!-- END NAV -->
 
-  
+            <div class="Main">
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title">
+                                최종 결과
+                            </h1>
 
-  </main> 
-  
-  
-</template>
+                        </div>
+                    </div>
+                </section>
+                <section class="info-tiles">
+                    <div class="tile is-ancestor has-text-centered">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">율무</p>
+                                <p class="subtitle">349점</p>
+                                <img src="https://i.imgur.com/7zAsK3l.gif" width="250px">
+                                    <b-progress
+                                        height="30px"
+                                        :value="30"
+                                        variant="warning"
+                                        striped="striped"
+                                        :animated="animate"
+                                        class="mb-2 w-100 "></b-progress>
+                                </article>
+                            </div>
+                            <div class="tile is-parent">
+                                <article class="tile is-child box">
+                                    <p class="title">민뚜</p>
+                                    <p class="subtitle">320점</p>
+                                    <img src="https://i.imgur.com/xJ8OMIG.gif" width="250px">
+                                        <b-progress
+                                            height="30px"
+                                            :value="30"
+                                            variant="warning"
+                                            striped="striped"
+                                            :animated="animate"
+                                            class="mb-2 w-100 "></b-progress>
+                                    </article>
+                                </div>
+                                <div class="tile is-parent">
+                                    <article class="tile is-child box">
+                                        <p class="title">불도저</p>
+                                        <p class="subtitle">212점</p>
+                                        <img src="https://i.imgur.com/jbVKOQW.gif" width="250px">
+                                            <b-progress
+                                                height="30px"
+                                                :value="92"
+                                                variant="success"
+                                                striped="striped"
+                                                :animated="animate"
+                                                class="mb-2 w-100 "></b-progress>
+                                        </article>
+                                    </div>
 
+                                    <div class="tile is-parent">
+                                        <article class="tile is-child box">
+                                            <p class="title">스모기</p>
+                                            <p class="subtitle">150점</p>
+                                            <img src="https://i.imgur.com/B2olO8b.gif" width="300px">
+                                                <b-progress
+                                                    height="30px"
+                                                    :value="50"
+                                                    variant="info"
+                                                    striped="striped"
+                                                    :animated="animate"
+                                                    class="mb-2 w-100 "></b-progress>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </section>
 
+                                <div class="columns">
+                                    <div class="column is-13">
+                                        <div class="card events-card">
+                                            <header class="card-header">
+                                                <p class="card-header-title" width="40px">
+                                                    아쉬운 사람들
+                                                </p>
+                                                <a href="#" class="card-header-icon" aria-label="more options">
+                                                    <span class="icon">
+                                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                    </span>
+                                                </a>
+                                            </header>
+                                            <div class="card-table">
+                                                <div class="content">
+                                                    <table class="table is-fullwidth is-striped">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="5%">
+                                                                    <i class="fa fa-bell-o"></i>
+                                                                </td>
+                                                                <td>컴백홈</td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">4등</a>
+                                                                </td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">120점</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="5%">
+                                                                    <i class="fa fa-bell-o"></i>
+                                                                </td>
+                                                                <td>징징이</td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">5등</a>
+                                                                </td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">100점</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="5%">
+                                                                    <i class="fa fa-bell-o"></i>
+                                                                </td>
+                                                                <td>병찬</td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">6등</a>
+                                                                </td>
+                                                                <td>
+                                                                    <a class="button is-big is-primary">90.2점</a>
+                                                                </td>
+                                                            </tr>
 
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
 
-<script>
-export default {
-  data() {
-    
-    return {
-      show : true
-    }
-  },
+                                            <footer class="card-footer">
+                                                <a href="#" class="card-footer-item">View All</a>
+                                            </footer>
+                                        </div>
+                                    </div>
 
-   methods: {
-      start () {
-        this.$confetti.start()
-      },
+                                    <!-- <div class="column is-6"> <div class="card"> <header class="card-header">
+                                    <p class="card-header-title"> Inventory Search </p> <a href="#"
+                                    class="card-header-icon" aria-label="more options"> <span class="icon"> <i
+                                    class="fa fa-angle-down" aria-hidden="true"></i> </span> </a> </header> <div
+                                    class="card-content"> <div class="content"> <div class="control has-icons-left
+                                    has-icons-right"> <input class="input is-large" type="text" placeholder="">
+                                    <span class="icon is-medium is-left"> <i class="fa fa-search"></i> </span> <span
+                                    class="icon is-medium is-right"> <i class="fa fa-check"></i> </span> </div>
+                                    </div> </div> </div> -->
+                                    <!-- <div class="card"> <header class="card-header"> <p
+                                    class="card-header-title"> User Search </p> <a href="#" class="card-header-icon"
+                                    aria-label="more options"> <span class="icon"> <i class="fa fa-angle-down"
+                                    aria-hidden="true"></i> </span> </a> </header> <div class="card-content"> <div
+                                    class="content"> <div class="control has-icons-left has-icons-right"> <input
+                                    class="input is-large" type="text" placeholder=""> <span class="icon is-medium
+                                    is-left"> <i class="fa fa-search"></i> </span> <span class="icon is-medium
+                                    is-right"> <i class="fa fa-check"></i> </span> </div> </div> </div> </div> -->
+                                </div>
+                            </div>
+                        </div>
 
-      stop () {
-        this.$confetti.stop()
-      }
-    }
-  
-}
+                    </main>
 
+                </template>
 
-</script>
+                <script>
+                    export default {
+                        mounted: {
+                            function () {
+                                $confetti.start()
+                            }
+                        },
+                        data() {
+                            return {animate, show: true}
 
-
-
-
-    <style>
-         body {    
-        
-          background-image: url('https://i.imgur.com/aiJMdSy.png');
-          background-size: 65%;
-          background-repeat: no-repeat;
-         }
-
-         
-      
-          .fade-enter-active, .fade-leave-active {
-            transition: opacity .5s;
-          }
-          .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-            opacity: 0;
-          }
-        
-
-        /* .d2 {
-          position: absolute;
-          bottom:5px;
-          right: 20px;
-        } */
-
-
-        </style>
+                        },
+                        methods: {
+                            start() {
+                                this
+                                    .$confetti
+                                    .start()
+                            }
+                        }
+                    }
+                </script>
+                <style>
+                    .inline {
+                        display: inline-block;
+                    }
+                    .divi {
+                        width: 100%;
+                    }
+                    .Main {
+                      width : 100%;
+                    }
+                </style>

@@ -183,7 +183,7 @@ class QuizTreeController extends Controller
 //            'pageStart' => 5,
 //            'pageEnd' => 20,
 //            'type' => 'o',
-//            'level' => 5));
+//            'level' => 1));
         $postData = json_decode($json);
 
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
@@ -214,7 +214,6 @@ class QuizTreeController extends Controller
                 array_push($quizList, array(
                     'quizId' => $quiz->quizId,
                     'bookId' => $quiz->bookId,
-                    'question' => $quiz->question,
                     'page' => $quiz->page,
                     'question' => $quiz->question,
                     'right' => $quiz->right,
@@ -238,4 +237,67 @@ class QuizTreeController extends Controller
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
+    public function insertRace(Request $request){
+        $json     = $request->input('post');
+//        $json     = json_encode(array(
+//            'raceId' => 9,
+//            'quizList' => array(
+//                [
+//                    'bookId' => 1,
+//                    'page' => 20,
+//                    'question' => '1',
+//                    'right' => '1',
+//                    'example1' => '2',
+//                    'example2' => '3',
+//                    'example3' => '4',
+//                    'type' => 'o',
+//                    'level' => 1
+//                ],
+//                [
+//                    'bookId' => 1,
+//                    'page' => 20,
+//                    'question' => '1',
+//                    'right' => '1',
+//                    'example1' => '2',
+//                    'example2' => '3',
+//                    'example3' => '4',
+//                    'type' => 'o',
+//                    'level' => 1
+//                ])
+//            )
+//        );
+        $postData = json_decode($json);
+
+        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+
+        $insertCount = 0;
+        foreach($postData['quizList'] as $quiz){
+            $quizId = DB::table('quiz_bank')
+                ->insertGetId([
+                    'book_num'          => $quiz['bookId'],
+                    'book_page'         => $quiz['page'],
+                    'quiz_question'     => $quiz['question'],
+                    'quiz_right_answer' => $quiz['right'],
+                    'quiz_example1'     => $quiz['example1'],
+                    'quiz_example2'     => $quiz['example2'],
+                    'quiz_example3'     => $quiz['example3'],
+                    'quiz_type'         => $quiz['type'],
+                    'quiz_level'        => $quiz['level'],
+                    'user_t_num'        => $userData['userId']
+                ], 'quiz_num');
+
+            $insertCheck = DB::table('race_quizs')
+                ->insert([
+                    'race_num' => $postData['raceId'],
+                    'quiz_num' => $quizId
+                ]);
+
+            if(!is_null($insertCheck)){
+                $insertCount++;
+            }
+        }
+
+        return $insertCount;
+//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+    }
 }

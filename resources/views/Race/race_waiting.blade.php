@@ -95,10 +95,18 @@
 
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
+                var correct_count = right_checking_JSON[0].o;
+                var incorrect_count = right_checking_JSON[0].x;
+
                 $("#quiz_number").text(quiz_num);
-                $("#winners").text(right_checking_JSON[0].o+"명 정답!");
-                $("#right").text(right_checking_JSON[0].o);
-                $("#wrong").text(right_checking_JSON[0].x);
+
+                $("#winners").text(correct_count+"명 정답!");
+                $("#right").text(correct_count);
+                $("#wrong").text(incorrect_count);
+
+                var correct_percentage = correct_count / (correct_count + incorrect_count) * 100;
+
+                // $('.pie::before').css('content',correct_percentage);
 
                 --quiz_num;
 
@@ -121,6 +129,7 @@
                         "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
                         "background-color": color
                     });
+
                 }
                 function iterateSlices(
                     sliceSize,
@@ -201,7 +210,6 @@
                         case 2: changehtml += '<img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
                     }
                     changehtml+=
-                        '<i class="fa fa-lg"></i>'
                         +rank
                         +" 등"
                         + ranking_JSON[i].nickname
