@@ -266,7 +266,7 @@ class QuizTreeController extends Controller
 //                ])
 //            )
 //        );
-        $postData = json_decode($json);
+        $postData = json_decode($request->all());
 
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
