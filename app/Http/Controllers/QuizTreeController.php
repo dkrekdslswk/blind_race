@@ -177,14 +177,14 @@ class QuizTreeController extends Controller
     }
 
     public function getQuiz(Request $request){
-        $postData     = $request->all();
+        $requsetData     = $request->all();
 //        $json     = json_encode(array(
 //            'bookId' => 1,
 //            'pageStart' => 5,
 //            'pageEnd' => 20,
 //            'type' => 'o',
 //            'level' => 1));
-//        $postData = json_decode($json);
+        $postData = $requsetData->post;
 
 //        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 //
