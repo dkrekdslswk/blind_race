@@ -33,7 +33,7 @@ class RaceController extends Controller
         $userId = DB::table('users as u')
             ->select(['u.user_num   as user_num',
                     's.session_num  as session_num'])
-            ->where('u.user_id', '=', 'tamp1id')
+            ->where('u.user_id', '=', 'tamp1')
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
