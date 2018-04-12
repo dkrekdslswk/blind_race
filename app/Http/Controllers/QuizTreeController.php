@@ -188,6 +188,8 @@ class QuizTreeController extends Controller
 
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
+        $quizList = array();
+
         if($userData['tCheck'] == 't') {
             $quizData = DB::table('quiz_bank')
                 ->select('quiz_num as quizId',
@@ -209,7 +211,6 @@ class QuizTreeController extends Controller
                 ->where('book_page', '<', $postData['pageEnd'])
                 ->get();
 
-            $quizList = array();
             foreach ($quizData as $quiz) {
                 array_push($quizList, array(
                     'quizId' => $quiz->quizId,

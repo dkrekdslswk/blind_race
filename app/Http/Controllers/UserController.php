@@ -26,16 +26,21 @@ class UserController extends Controller{
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
         $userData = DB::table('users as u')
-            ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck')
+            ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck',
+                's.set_exam_num setExamId', 's.room_pin_number as roomId', 's.team_num as teamId')
             ->where('s.session_num', '=', $sessionId)
             ->join('sessions as s', 's.user_num', '=', 'u.user_num')
             ->leftJoin('user_teachers as t', 't.user_t_num', '=', 'u.user_num')
             ->first();
 
         return array(
-            'userId' => $userData->userId,
-            'userName' => $userData->userName,
-            'tCheck' => (is_null($userData) ? 's' : 't'));
+            'userId'    => $userData->userId,
+            'userName'  => $userData->userName,
+            'tCheck'    => (is_null($userData->tCheck) ? 's' : 't'),
+            'setExamId' => $userData->setExamId,
+            'roomId'    => $userData->roomId,
+            'teamId'    => $userData->teamId
+        );
     }
 
     public function sessionIdGet($userId){
