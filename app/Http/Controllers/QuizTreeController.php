@@ -186,54 +186,54 @@ class QuizTreeController extends Controller
 //            'level' => 1));
 //        $postData = json_decode($json);
 
-        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+//        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+//
+//        if($userData['tCheck'] == 't') {
+//            $quizData = DB::table('quiz_bank')
+//                ->select('quiz_num as quizId',
+//                    'book_num as bookId',
+//                    'book_page as page',
+//                    'quiz_question as question',
+//                    'quiz_right_answer as right',
+//                    'uiz_example1 as example1',
+//                    'quiz_example2 as example2',
+//                    'quiz_example3 as example3',
+//                    'quiz_type as type',
+//                    'quiz_level as level')
+//                ->where([
+//                    'book_num' => $postData['bookId'],
+//                    'quiz_type' => $postData['type'],
+//                    'quiz_level' => $postData['level']
+//                ])
+//                ->where('book_page', '>', $postData['pageStart'])
+//                ->where('book_page', '<', $postData['pageEnd'])
+//                ->get();
+//
+//            $quizList = array();
+//            foreach ($quizData as $quiz) {
+//                array_push($quizList, array(
+//                    'quizId' => $quiz->quizId,
+//                    'bookId' => $quiz->bookId,
+//                    'page' => $quiz->page,
+//                    'question' => $quiz->question,
+//                    'right' => $quiz->right,
+//                    'example1' => $quiz->example1,
+//                    'example2' => $quiz->example2,
+//                    'example3' => $quiz->example3,
+//                    'type' => $quiz->type,
+//                    'level' => $quiz->level));
+//            }
+//        }
+//
+//        if (isset($raceId)) {
+//            $returnValue = array(
+//                'raceId' => $quizList,
+//                'check' => true);
+//        }else{
+//            $returnValue = array('check' => false);
+//        }
 
-        if($userData['tCheck'] == 't') {
-            $quizData = DB::table('quiz_bank')
-                ->select('quiz_num as quizId',
-                    'book_num as bookId',
-                    'book_page as page',
-                    'quiz_question as question',
-                    'quiz_right_answer as right',
-                    'uiz_example1 as example1',
-                    'quiz_example2 as example2',
-                    'quiz_example3 as example3',
-                    'quiz_type as type',
-                    'quiz_level as level')
-                ->where([
-                    'book_num' => $postData['bookId'],
-                    'quiz_type' => $postData['type'],
-                    'quiz_level' => $postData['level']
-                ])
-                ->where('book_page', '>', $postData['pageStart'])
-                ->where('book_page', '<', $postData['pageEnd'])
-                ->get();
-
-            $quizList = array();
-            foreach ($quizData as $quiz) {
-                array_push($quizList, array(
-                    'quizId' => $quiz->quizId,
-                    'bookId' => $quiz->bookId,
-                    'page' => $quiz->page,
-                    'question' => $quiz->question,
-                    'right' => $quiz->right,
-                    'example1' => $quiz->example1,
-                    'example2' => $quiz->example2,
-                    'example3' => $quiz->example3,
-                    'type' => $quiz->type,
-                    'level' => $quiz->level));
-            }
-        }
-
-        if (isset($raceId)) {
-            $returnValue = array(
-                'raceId' => $quizList,
-                'check' => true);
-        }else{
-            $returnValue = array('check' => false);
-        }
-
-        return $returnValue;
+        return response()->json($postData);
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
