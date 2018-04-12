@@ -52,15 +52,16 @@ class RecordBoxController extends Controller{
             ->limit(5)
             ->get();
 
-        $finalStudentScore = DB::table('race_results as rr')
-            ->select('rr.race_score')
+        $finalStudentScores = DB::table('race_results as rr')
+            ->select('rr.user_num as userId',
+                'rr.race_score as raceScore')
             ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
             ->join('playing_quizs as pq', function($join)
             {
                 $join->on('pq.user_num', '=', 'rr.user_num');
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
-            ->orderBy()
+            ->orderBy('rr.race_score')
             ->get();
     }
 }
