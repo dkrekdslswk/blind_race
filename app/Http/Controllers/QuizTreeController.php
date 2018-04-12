@@ -203,7 +203,7 @@ class QuizTreeController extends Controller
                     'book_page as page',
                     'quiz_question as question',
                     'quiz_right_answer as right',
-                    'uiz_example1 as example1',
+                    'quiz_example1 as example1',
                     'quiz_example2 as example2',
                     'quiz_example3 as example3',
                     'quiz_type as type',
