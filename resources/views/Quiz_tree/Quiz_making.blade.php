@@ -23,7 +23,7 @@
             background-color: white;
         }
         
-        .three_button {
+        .two_button {
             margin: 10px 20px 10px 0px;
             text-align: right;
         }
@@ -59,8 +59,8 @@
             </tr>
             <tr>
                 <td rowspan="3" style="background-color: #d9edf7">정답</td>
-                <td colspan="3" style="background-color: #ffa500">
-                    <input type="text" style="width: 100%; background-color: #ffa500; border: 0">
+                <td colspan="3" style="background-color: #EAEAEA">
+                    <input type="text" style="width: 100%; background-color: #EAEAEA; border: 0">
                 </td>
                 <td td colspan="2">
                     <input type="text" style="width: 100%; border: 0">
@@ -77,10 +77,9 @@
         </table>
     </div>
 
-    <div class="three_button">
+    <div class="two_button">
         <button type="button" class="btn btn-primary">저장</button>
         <button type="button" class="btn btn-primary">추가</button>
-        <button type="button" class="btn btn-primary">삭제</button>
     </div>
 
 
