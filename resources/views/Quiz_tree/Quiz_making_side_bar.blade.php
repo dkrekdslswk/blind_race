@@ -57,13 +57,13 @@
         }
 
         .sample_quiz {
-            margin-top: 20px;
-            margin-left: 25px;
+            margin-top: 25px;
+            margin-left: 20px;
             text-align: center;
             border: 1px solid black;
             overflow-y: scroll;
             width: 90%;
-            height: 50%;
+            height: 70%;
             background-color: #f8f8f8;
         }
 
@@ -86,7 +86,7 @@
 
 <script>
 
-    function btnClick() {
+    /*function btnClick() {
         var xmlReqObj = new XMLHttpRequest();
 
         // 접속 대상 설정
@@ -103,56 +103,87 @@
         xmlReqObj.send();
     }
 
+    $.ajax({
+        type: "POST",
+        url: "",
+        dataType: "json",
+        data:
+
+    });*/
+
+    $('#btn').on("click", function () {
+        e.preventDefault();
+        var formDataValues = document.forms.namedItem("signup-form");
+        var formValues = new FormData(formDataValues);
+
+
+        $.ajax({
+            type: 'POST',
+            url: siteUrl + '/signup',
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data: formValues,
+
+            success: function (data) {},
+            error: function (data) {}
+        });
+    });
+
+    $(document).ready(function () {
+        $('#bookSelect').change(function () {
+            var selectedBook = $("#bookSelect :selected").attr(value);
+
+            var testObj = document.getElementById("test");
+            testObj.value = selectedBook;
+        });
+    });
+
 </script>
 
 <body>
-<?php ?>
 
 <div class="sidenav">
 
-    <form class="select">
-        <select class="form-control">
-            <option>교재 선택</option>
-            <option>급소공략</option>
-        </select>
+    <form action="{{url('quizTreeController/getBookGet')}}"  method="Post" enctype="multipart/form-data" class="form-horizontal">
+        {{csrf_field()}}
+        <div class="select">
+            <select id="bookSelect" class="form-control" >
+                <option>교재 선택</option>
+                <option value="1">급소공략</option>
+            </select>
+        </div>
+
+        <div class="select">
+            <select id="levelSelect" class="form-control">
+                <option>난이도 선택</option>
+                <option value="1">N1</option>
+                <option value="2">N2</option>
+                <option value="3">N3</option>
+            </select>
+        </div>
+
+        <div class="form-inline" style="margin: 5%">
+            <input id="minPage" class="form-control" type="text" placeholder="페이지" style="width: 6em">
+            &nbsp;~&nbsp;
+            <input id="maxPage" class="form-control" type="text" placeholder="페이지" style="width: 6em">
+            <button id="btn" type="button" class="btn btn-info" style="margin-left: 5%" onclick="btnClick()">검색</button>
+            {{--<input id="test" type="text">--}}
+        </div>
     </form>
 
-    <form class="select">
-        <select class="form-control">
-            <option>난이도 선택</option>
-            <option>N1</option>
-            <option>N2</option>
-            <option>N3</option>
-        </select>
-    </form>
-
-    <form class="form-inline" style="margin: 5%">
-        <select class="form-control">
-            <option>페이지</option>
-            <option>1p</option>
-            <option>2p</option>
-        </select>
-        &nbsp;~&nbsp;
-        <select class="form-control">
-            <option>페이지</option>
-            <option>1p</option>
-            <option>2p</option>
-        </select>
-        <button type="button" class="btn btn-info" style="margin-left: 5%" onclick="btnClick()">검색</button>
-    </form>
-
-
-    {{--<div class="sample_quiz">
+    {{--예문--}}
+    <div class="sample_quiz">
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
                 <th>번호</th>
                 <th>예문</th>
-                <th>난이도</th>
             </tr>
             </thead>
 
-            <tbody>
+            {{--<tbody>
             <tr>
                 <td><a href="#">1</a></td>
                 <td><a href="#">生活習慣病は40代を（　　）増え始める</a></td>
@@ -165,9 +196,9 @@
                 <td>70%</td>
             </tr>
 
-            </tbody>
+            </tbody>--}}
         </table>
-    </div>--}}
+    </div>
 
 </div>
 </body>
