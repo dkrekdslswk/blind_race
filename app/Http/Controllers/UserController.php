@@ -27,7 +27,7 @@ class UserController extends Controller{
 
         $userData = DB::table('users as u')
             ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck',
-                's.set_exam_num setExamId', 's.room_pin_number as roomId', 's.team_num as teamId')
+                's.set_exam_num as setExamId', 's.room_pin_number as roomId', 's.team_num as teamId')
             ->where('s.session_num', '=', $sessionId)
             ->join('sessions as s', 's.user_num', '=', 'u.user_num')
             ->leftJoin('user_teachers as t', 't.user_t_num', '=', 'u.user_num')
