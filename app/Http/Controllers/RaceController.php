@@ -360,12 +360,12 @@ class RaceController extends Controller
         ));
         $postData = json_decode($json, true);
 
-        $data = DB::table('race_result as rr')
-            ->select('rr.user_num as userId', 'rr.set_exam_num as setExamId')
-            ->where(['s.session_num' => $postData['sessionId'],
-                's.room_pin_num' => $postData['roomPin'],
-                'rr.set_exam_num' => $postData['setExamId']])
-            ->join('sessions as s', 's.user_num', '=', 'rr.user_num')
+        UserController::sessionDataGet($postData['sessionId']);
+
+        $data = DB::table('race_result')
+            ->select('user_num as userId', 'set_exam_num as setExamId')
+            ->where([
+                'set_exam_num' => $postData['setExamId']])
             ->first();
 
         if(isset($data->userId)){
