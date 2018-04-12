@@ -213,8 +213,8 @@ class QuizTreeController extends Controller
                     'quiz_type' => $postData['type'],
                     'quiz_level' => $postData['level']
                 ])
-                ->where('book_page', '>', $postData['pageStart'])
-                ->where('book_page', '<', $postData['pageEnd'])
+                ->where('book_page', '>=', $postData['pageStart'])
+                ->where('book_page', '<=', $postData['pageEnd'])
                 ->get();
 
             foreach ($quizData as $quiz) {
