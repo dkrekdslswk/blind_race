@@ -84,9 +84,9 @@ Route::get('/sidebar', function(){
 });
 
 // ↓↓↓↓↓↓↓ transfer test _yoolme
-/*Route::get('/', function(){
+Route::get('/test', function(){
      return view('test');
-});*/
+});
 
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');

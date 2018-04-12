@@ -15,15 +15,11 @@
             margin-left: 25%;
         }
 
-        .quiz {
-            margin: 20px;
-        }
-
         .table tr{
             background-color: white;
         }
         
-        .three_button {
+        .two_button {
             margin: 10px 20px 10px 0px;
             text-align: right;
         }
@@ -40,47 +36,66 @@
     @include('Quiz_tree.Quiz_making_side_bar')
 </aside>
 
+<script>
+
+    // 문항 추가
+    $(document).on('click', '#add', function (e) {
+        e.preventDefault();
+
+        $(".quizBox").append("<div class='quiz' style='margin: 20px'>" + $(".quiz").html() + "</div>");
+    });
+
+    // 퀴즈 저장
+    $(document).on('click', '#save', function (e) {
+        e.preventDefault();
+
+        alert("save");
+    });
+
+</script>
+
 <div class="contents">
-    <div class="quiz">
-        <table class="table table-bordered">
-            <tr>
-                <td style="background-color: #d9edf7">문항</td>
-                <td>1</td>
-                <td style="background-color: #d9edf7">난이도</td>
-                <td>N1</td>
-                <td style="background-color: #d9edf7">문제 유형</td>
-                <td>사지선다</td>
-            </tr>
-            <tr>
-                <td style="background-color: #d9edf7">문제</td>
-                <td colspan="5">
-                    <textarea style="width: 100%; border: 0"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td rowspan="3" style="background-color: #d9edf7">정답</td>
-                <td colspan="3" style="background-color: #ffa500">
-                    <input type="text" style="width: 100%; background-color: #ffa500; border: 0">
-                </td>
-                <td td colspan="2">
-                    <input type="text" style="width: 100%; border: 0">
-                </td >
-            </tr>
-            <tr>
-                <td td colspan="3">
-                    <input type="text" style="width: 100%; border: 0">
-                </td>
-                <td colspan="2">
-                    <input type="text" style="width: 100%; border: 0">
-                </td>
-            </tr>
-        </table>
+    <div class="quizBox">
+        <div class="quiz" style="margin: 20px">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="background-color: #d9edf7">문항</td>
+                    <td>1</td>
+                    <td style="background-color: #d9edf7">난이도</td>
+                    <td>N1</td>
+                    <td style="background-color: #d9edf7">문제 유형</td>
+                    <td>사지선다</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #d9edf7">문제</td>
+                    <td colspan="5">
+                        <textarea style="width: 100%; border: 0"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="3" style="background-color: #d9edf7">정답</td>
+                    <td colspan="3" style="background-color: #EAEAEA">
+                        <input type="text" style="width: 100%; background-color: #EAEAEA; border: 0">
+                    </td>
+                    <td td colspan="2">
+                        <input type="text" style="width: 100%; border: 0">
+                    </td >
+                </tr>
+                <tr>
+                    <td td colspan="3">
+                        <input type="text" style="width: 100%; border: 0">
+                    </td>
+                    <td colspan="2">
+                        <input type="text" style="width: 100%; border: 0">
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
-    <div class="three_button">
-        <button type="button" class="btn btn-primary">저장</button>
-        <button type="button" class="btn btn-primary">추가</button>
-        <button type="button" class="btn btn-primary">삭제</button>
+    <div class="two_button">
+        <button type="button" class="btn btn-primary" id="save">저장</button>
+        <button type="button" class="btn btn-primary" id="add">추가</button>
     </div>
 
 
