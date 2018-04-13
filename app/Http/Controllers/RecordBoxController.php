@@ -12,11 +12,7 @@ class RecordBoxController extends Controller{
         //                                   'examCount' => 30,
         //                                   'raceId'    => 1));
 
-        $postData = array(
-            'group' => array('groupId'   => $request->input('groupId')),
-            'race'  => array('raceMode'  => $request->input('raceMode'),
-                'examCount' => $request->input('examCount'),
-                'raceId'    => $request->input('raceId')));
+        $postData = array('groupId'   => $request->input('groupId'));
 
         // test 임시로 유저 세션 부여
         $userId = DB::table('users as u')
@@ -39,32 +35,45 @@ class RecordBoxController extends Controller{
             ->select([
                 'rse.set_exam_num as setExamId',
                 'rse.created_at as createDate',
-                DB::raw('AVG(rr.race_score) as avg_score'),
-                DB::raw('MIN(rr.race_score) as min_score')
+                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END as rightCount'),
+                DB::raw('COUNT(pq.result) as quizCount')
             ])
             ->where([
                 'rse.group_num' => $postData['groupId']
             ])
             ->join('race_results as rr', 'rr.set_exam_num', '=', 'rse.set_exam_num')
+            ->join('playing_quizs as pq', function($join)
+            {
+                $join->on('pq.user_num', '=', 'rr.user_num');
+                $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
+            })
             ->groupBy('rse.set_exam_num')
             ->orderBy('rse.created_at')
             ->offset(0)
             ->limit(5)
             ->get();
 
-        $finalStudentScores = DB::table('race_results as rr')
+        $rastRaceData = DB::table('race_results as rr')
             ->select('rr.user_num as userId',
-                'rr.race_score as raceScore')
+                'rr.race_score as raceScore',
+                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END as rightCount'),
+                DB::raw('COUNT(pq.result) as quizCount'))
             ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
             ->join('playing_quizs as pq', function($join)
             {
                 $join->on('pq.user_num', '=', 'rr.user_num');
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
+            ->groupBy('rr.user_num')
             ->orderBy('rr.race_score')
             ->get();
 
+        $retrutnValue = array(
+            'raceData' => $raceDataList,
+            'rastRaceData' => $rastRaceData
+        );
 
+        return $retrutnValue;
     }
 }
 

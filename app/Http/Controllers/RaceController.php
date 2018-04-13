@@ -335,12 +335,16 @@ class RaceController extends Controller
                 ->insertGetId(['set_exam_num' => $postData['setExamId'],
                     'quiz_num' => $quizData->quizId], 'sequence');
 
-            $returnValue = array('quiz' => array('examCount' => $raceData->examCount + 1,
-                'sequence'  => $updateCheck,
-                'question'  => $quizData->question,
-                'right'     => $quizData->right,
-                'example'   => array($quizData->exam1,$quizData->exam2,$quizData->exam3),
-                'type'      => $quizData->type),
+            $returnValue = array(
+                'quiz' => array(
+                    'examCount' => $raceData->examCount + 1,
+                    'sequence'  => $updateCheck,
+                    'question'  => $quizData->question,
+                    'right'     => $quizData->right,
+                    'example1'  => $quizData->exam1,
+                    'example2'  => $quizData->exam2,
+                    'example3'  => $quizData->exam3,
+                    'type'      => $quizData->type),
                 'check' => true);
         } else {
             $returnValue = array('check' => false);
