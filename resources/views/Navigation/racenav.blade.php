@@ -19,17 +19,22 @@
     <title>Waiting Room Navigator</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
-    <link href="js/bootstrap.min.js" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
 
+        // Array ( [race] => Array ( [raceName] => 테스트용 레이스1 [examCount] => 30 ) [group] =>
+        // Array ( [groupName] => group1 [groupStudentCount] => 5 ) [sessionId] => 1 [check] => 1 )
 
-        /*          $('#race_name').html(getJsonDate_nav.race[0].raceName);
-                    $('#race_count').html(getJsonDate_nav.race[0].raceCount + "문항");
-                    $('#group_name').html(getJsonDate_nav.group[0].groupName);
-                    $('#group_student_count').html("총 " + getJsonDate_nav.group[0].groupStudentCount + "명");*/
+        function nav_load(){
+            $('#race_name').html('<?php echo $json['race']['raceName']; ?>');
+            $('#race_count').html('<?php echo $json['race']['examCount']; ?>');
+            $('#group_name').html('<?php echo $json['group']['groupName']; ?>');
+            $('#group_student_count').html('<?php echo $json['group']['groupStudentCount']; ?>' + "명");
+        }
+
 
     </script>
 
@@ -70,14 +75,16 @@
             font-size: 30px;
             margin-right: 15px;
         }
-
+        .nav-color{
+            background-color:#2e353d;
+        }
     </style>
 
 </head>
-<body>
+<body onload="nav_load();">
 
 <div class="race_container">
-    <nav class="navbar navbar-expand-lg" style="height: 100%;">
+    <nav class="navbar navbar-expand-lg nav-color" style="height: 100%;">
         <div class="navbar-brand">
             블라인드 레이스
         </div>

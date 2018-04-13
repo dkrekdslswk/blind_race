@@ -117,11 +117,6 @@
     });*/
 
    $(document).on('click', '#btn', function (e) {
-       //$('#bookId').val();
-       //$('#level').val();
-       //$('#pageStart').val();
-       //$('#pageEnd').val();
-       //$('#type').val();
 
        e.preventDefault();
 
@@ -140,9 +135,9 @@
            type: $('#type').val()
        };
 
-       alert(JSON.stringify(params));
+       //alert(JSON.stringify(params));
 
-       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+       //var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
       $.ajax({
            type: 'POST',
@@ -154,7 +149,25 @@
            //data: {_token: CSRF_TOKEN, 'post':params},
            data: params,
            success: function (data) {
-               alert(JSON.stringify(data));
+
+               //alert(data.raceId[0].question);
+               //alert(data.raceId.length);
+               //var $tr = $('<tr />').appendTo('#example');
+               //$('<td />').text('test').appendTo($tr);
+
+               // 테이블 비우기
+               //$('#example').empty();
+               $('#example *').remove();
+
+               for(var i = 0; i < data.raceId.length; i++) {
+                   var $tbody = $('<tr id=""/>').appendTo('#example');
+
+                   $('<td />').text(i+1).appendTo($tbody);
+                   $('<td />').text(data.raceId[i].question).appendTo($tbody);
+
+                   // a태그 추가
+
+               }
            },
            error: function (data) {
                alert("error");
@@ -257,7 +270,6 @@
                 <td><a href="#">食中毒を起こしたら店にはさすがに誰も（　）しない.</a></td>
                 <td>70%</td>
             </tr>--}}
-
             </tbody>
         </table>
     </div>
