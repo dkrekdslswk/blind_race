@@ -156,12 +156,17 @@
                //$('<td />').text('test').appendTo($tr);
 
                // 테이블 비우기
-               $('#example').empty();
+               //$('#example').empty();
+               $('#example *').remove();
 
                for(var i = 0; i < data.raceId.length; i++) {
-                   var $tr = $('<tr />').appendTo('#example');
-                   $('<td />').text(i+1).appendTo($tr);
-                   $('<td />').text(data.raceId[i].question).appendTo($tr);
+                   var $tbody = $('<tr id=""/>').appendTo('#example');
+
+                   $('<td />').text(i+1).appendTo($tbody);
+                   $('<td />').text(data.raceId[i].question).appendTo($tbody);
+
+                   // a태그 추가
+
                }
            },
            error: function (data) {
@@ -265,7 +270,6 @@
                 <td><a href="#">食中毒を起こしたら店にはさすがに誰も（　）しない.</a></td>
                 <td>70%</td>
             </tr>--}}
-
             </tbody>
         </table>
     </div>

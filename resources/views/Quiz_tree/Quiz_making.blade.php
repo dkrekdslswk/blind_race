@@ -18,6 +18,10 @@
         .table tr{
             background-color: white;
         }
+
+        td {
+            text-align: center;
+        }
         
         .two_button {
             margin: 10px 20px 10px 0px;
@@ -55,26 +59,26 @@
 </script>
 
 <div class="contents">
+    {{--문항 박스 : div--}}
     <div class="quizBox">
         <div class="quiz" style="margin: 20px">
             <table class="table table-bordered">
                 <tr>
-                    <td style="background-color: #d9edf7">문항</td>
-                    <td>1</td>
-                    <td style="background-color: #d9edf7">난이도</td>
-                    <td>N1</td>
-                    <td style="background-color: #d9edf7">문제 유형</td>
-                    <td>사지선다</td>
+                    <td style="background-color: #d9edf7; width: 10%">문항</td>
+                    <td id="qustionNum" style="width: 20%">1</td>
+                    <td style="background-color: #d9edf7; width: 20%;">문제유형</td>
+                    <td style="width: 30%">사지선다</td>
+                    <td style="width: 10%"><a href="#">삭제</a></td>
                 </tr>
                 <tr>
                     <td style="background-color: #d9edf7">문제</td>
-                    <td colspan="5">
+                    <td colspan="4">
                         <textarea style="width: 100%; border: 0"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="3" style="background-color: #d9edf7">정답</td>
-                    <td colspan="3" style="background-color: #EAEAEA">
+                    <td rowspan="2" style="background-color: #d9edf7">정답</td>
+                    <td colspan="2" style="background-color: #EAEAEA">
                         <input type="text" style="width: 100%; background-color: #EAEAEA; border: 0">
                     </td>
                     <td td colspan="2">
@@ -82,7 +86,7 @@
                     </td >
                 </tr>
                 <tr>
-                    <td td colspan="3">
+                    <td td colspan="2">
                         <input type="text" style="width: 100%; border: 0">
                     </td>
                     <td colspan="2">
