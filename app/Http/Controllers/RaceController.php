@@ -293,7 +293,8 @@ class RaceController extends Controller
 
         if(isset($chaeck->session_num)){
             $raceData = DB::table('race_set_exam as rse')
-                ->select('rse.race_num                 as raceId',
+                ->select(
+                    'rse.race_num                 as raceId',
                     'rse.book_num                 as bookId',
                     'rse.book_page_start          as pageStart',
                     'rse.book_page_end            as pageEnd',
@@ -317,7 +318,8 @@ class RaceController extends Controller
             }
 
             $quizData = DB::table('race_quizs as rq')
-                ->select('qb.quiz_num          as quizId',
+                ->select(
+                    'qb.quiz_num          as quizId',
                     'qb.quiz_question     as question',
                     'qb.quiz_right_answer as right',
                     'qb.quiz_example1     as exam1',
@@ -347,6 +349,7 @@ class RaceController extends Controller
         return response()->json($returnValue);
     }
 
+    /*
     public function resultIn(Request $request){
         //$json     = $request->input('post');
         // 학생의 세션 아이디 필요
@@ -380,6 +383,7 @@ class RaceController extends Controller
         $returnValue = array();
         return response()->json($returnValue);
     }
+    */
 
     public function destroy(Request $request)
     {

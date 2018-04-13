@@ -17,7 +17,7 @@ app.post('/persons', function(req, res){
     connection.query('SELECT * from users ', function(err, rows) {
         if(err) throw err;
 
-        console.log('O ', "로그인");
+        console.log('O', rows);
 //   var row = JSON.parse(rows);
         res.send(rows);
     });
@@ -74,7 +74,9 @@ io.on('connection', function (socket){
         io.sockets.in(group_num).emit('leaveRoom',user_num);
 
         var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
-        connection.query(leaveRoom_Query, function(err, rows) {if(err){ throw err; } else{ console.log('user',user_num+'퇴장'); }   });
+        connection.query(leaveRoom_Query, function(err, rows)
+        {if(err){ console.log('대기방이탈쿼리에러'); throw err; }
+        else{ console.log('user',user_num+'퇴장'); }   });
 
         socket.leave(group_num);
         console.log('danger', group_num);
@@ -95,13 +97,15 @@ io.on('connection', function (socket){
         //유저 정보 추가하기
         var add_user_info_query = "INSERT INTO sessions (user_num, user_nick, set_exam_num, character_num, room_pin_number, team_num, created_at, updated_at) VALUES ('"+user_num+"', '"+nickname+"', '1', '"+character_num+ "', '"+group_num+"', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);";
         connection.query(add_user_info_query, function(err,rows){
-            if(err)
+            if(err){
+                console.log('유저정보추가 에러 ');
                 throw err ;
+            }
             else
                 console.log('유저참가', '핀번호:'+group_num+'등록번호:'+user_num+'닉네임'+nickname+'캐릭터번호:'+character_num);
         });
 
-        io.sockets.in(group_num).emit('user_in',nickname , user_num);
+        io.sockets.in(group_num).emit('user_in',nickname , user_num , character_num);
         //console.log('group_num' ,nickname);
 
 
@@ -138,6 +142,7 @@ io.on('connection', function (socket){
         connection.query(answer_checking_query, function(err, rows) {
 
             if(err) throw err;
+
             console.log('순위결정쿼리: ', rows);
             var query_result = JSON.stringify(rows);
 
@@ -146,7 +151,12 @@ io.on('connection', function (socket){
 
         });
 
-        var ranking_query = "select p.user_num , user_nick nickname, count(result) point from playing_quizs p join sessions s on p.user_num = s.user_num  where result='1' and p.set_exam_num='1'  group by user_num";
+        var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
+            +"from playing_quizs p join sessions s on p.user_num = s.user_num "
+            +"where p.set_exam_num='1' "
+            +"group by user_num "
+            +"order by point desc";
+
         connection.query(ranking_query, function(err, rows) {
 
             if(err) throw err;
@@ -170,16 +180,24 @@ io.on('connection', function (socket){
 
 
         // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
+        if(answer_num == 0)
+            quizin = 0;
+
 
         var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
 
         console.log('user',count);
 
         connection.query(answer_query, function(err, rows) {
-            if(err) throw err;
+            if(err) {
+                console.log('문제저장쿼리오류 ',"학생번호"+student_num+",퀴즈번호"+quizin+",정답번호"+answer_num);
+                throw err;
+            }
             console.log('문제답안저장쿼리: ', rows);
         });
-        answer_c++;
+        if(answer_num != 0 )
+            answer_c++;
+
         io.sockets.in(group_num).emit('answer-sum',answer_c);
         console.log('answer counting: ', answer_c);
     });
@@ -188,7 +206,12 @@ io.on('connection', function (socket){
     socket.on('race_ending',function(data){
         clearInterval(Timer);
 
-        var ranking_query = "select user_num , count(result) point from playing_quizs where result='1' and set_exam_num='1'  group by user_num";
+        var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
+            +"from playing_quizs p join sessions s on p.user_num = s.user_num "
+            +"where p.set_exam_num='1' "
+            +"group by user_num "
+            +"order by point desc";
+
         connection.query(ranking_query, function(err, rows) {
 
             if(err) throw err;
@@ -196,8 +219,13 @@ io.on('connection', function (socket){
             var query_result = JSON.stringify(rows);
             io.sockets.emit('race_ending',query_result);
             // io.sockets.in(group_num).emit('race_ending', query_result);
-
         });
+
+        var delete_session_query = "delete from sessions where user_num <> 1;"
+        connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
+
+        var delete_quizs_query = "delete from playing_quizs where user_num <> 1;"
+        connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
     })
 });
 

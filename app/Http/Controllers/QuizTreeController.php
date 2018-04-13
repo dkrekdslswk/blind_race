@@ -177,16 +177,24 @@ class QuizTreeController extends Controller
     }
 
     public function getQuiz(Request $request){
-        $json     = $request->input('post');
+//        $json     = $request->all();
 //        $json     = json_encode(array(
-//            'bookId' => 1,
-//            'pageStart' => 5,
-//            'pageEnd' => 20,
-//            'type' => 'o',
-//            'level' => 1));
-        $postData = json_decode($json);
+//            'bookId' => $request->input('bookId'),
+//            'pageStart' => $request->input('pageStart'),
+//            'pageEnd' => $request->input('pageEnd'),
+//            'type' => $request->input('type'),
+//            'level' => $request->input('level')));
+        $postData = array(
+            'bookId' => $request->input('bookId'),
+            'pageStart' => $request->input('pageStart'),
+            'pageEnd' => $request->input('pageEnd'),
+            'type' => $request->input('type'),
+            'level' => $request->input('level'));
 
+        $_SESSION['sessionId'] = 1;
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+
+        $quizList = array();
 
         if($userData['tCheck'] == 't') {
             $quizData = DB::table('quiz_bank')
@@ -195,7 +203,7 @@ class QuizTreeController extends Controller
                     'book_page as page',
                     'quiz_question as question',
                     'quiz_right_answer as right',
-                    'uiz_example1 as example1',
+                    'quiz_example1 as example1',
                     'quiz_example2 as example2',
                     'quiz_example3 as example3',
                     'quiz_type as type',
@@ -205,11 +213,10 @@ class QuizTreeController extends Controller
                     'quiz_type' => $postData['type'],
                     'quiz_level' => $postData['level']
                 ])
-                ->where('book_page', '>', $postData['pageStart'])
-                ->where('book_page', '<', $postData['pageEnd'])
+                ->where('book_page', '>=', $postData['pageStart'])
+                ->where('book_page', '<=', $postData['pageEnd'])
                 ->get();
 
-            $quizList = array();
             foreach ($quizData as $quiz) {
                 array_push($quizList, array(
                     'quizId' => $quiz->quizId,
@@ -225,7 +232,7 @@ class QuizTreeController extends Controller
             }
         }
 
-        if (isset($raceId)) {
+        if (count($quizList) > 0) {
             $returnValue = array(
                 'raceId' => $quizList,
                 'check' => true);
@@ -233,7 +240,7 @@ class QuizTreeController extends Controller
             $returnValue = array('check' => false);
         }
 
-        return $returnValue;
+        return response()->json($returnValue);
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 
