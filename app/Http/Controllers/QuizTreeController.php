@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 class QuizTreeController extends Controller
 {
     // race create first order
-    public function quizTreeMain(Request $request)
+    public function folderRaceDataGet(Request $request)
     {
         $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
@@ -33,6 +33,19 @@ class QuizTreeController extends Controller
         }
         // test
 
+        $folderList = $this->folderGet();
+
+        $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
+
+        $returnValue = array('folderList' => $folderList,
+            'raceList' => $raceList,
+            'selectFolder' => $postData['folderId']);
+
+        return $returnValue;
+//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+    }
+
+    public function folderGet(){
         $folderData = DB::table('race_folders as rf')
             ->select('rf.race_folder_num as raceFolderId', 'rf.race_folder_name as raceFolderName')
             ->where('s.session_num', '=', $_SESSION['sessionId'])
@@ -44,14 +57,7 @@ class QuizTreeController extends Controller
             array_push($folderList, array('folderId' => $folder->raceFolderId, 'folderName' => $folder->raceFolderName));
         }
 
-        $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
-
-        $returnValue = array('folderList' => $folderList,
-            'raceList' => $raceList,
-            'selectFolder' => $postData['folderId']);
-
-        return $returnValue;
-//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+        return $folderList;
     }
 
     public function raceGet($folderId, $userId){
