@@ -65,7 +65,7 @@ class RecordBoxController extends Controller{
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
             ->groupBy('rr.user_num')
-            ->orderBy('rr.race_score')
+            ->orderBy('rightCount')
             ->get();
 
         $retrutnValue = array(
