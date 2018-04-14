@@ -172,7 +172,7 @@ class BlindDymmyTableSeeder extends Seeder
             ], 'sequence');
 
             for($user_num = 2 ; $user_num <= count($users) ; $user_num++) {
-                DB::table('race_set_exam_quizs')->insert([
+                DB::table('playing_quizs')->insert([
                     'set_exam_num' => $raceSetExamId,
                     'user_num' => $user_num,
                     'sequence' => $setQuizId,
