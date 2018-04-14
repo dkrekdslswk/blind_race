@@ -43,7 +43,7 @@ class CreateQuizBankTable extends Migration
             $table->char('quiz_type', 1);
 	        $table->foreign('quiz_type')->references('keyword')->on('quiz_type_keyword');
 
-            $table->char('quiz_level', 1);
+            $table->char('quiz_level', 1)->nullable();
 
 	        $table->unsignedInteger('user_t_num')->nullable();
 	        $table->foreign('user_t_num')->references('user_t_num')->on('user_teachers');

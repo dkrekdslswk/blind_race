@@ -9,7 +9,7 @@
     <title>Waiting Room</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
-    <link href="js/bootstrap.min.js" rel="stylesheet">
+
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -70,25 +70,65 @@
 
             //  };
         };
+
+        //순위 변동 함수 정의
+        function ranking_process(ranking_j){
+            var ranking_JSON = JSON.parse(ranking_j);
+
+            var changehtml = "";
+
+            for(var i=0;  i <ranking_JSON.length; i++){
+
+                var rank = i+1;
+
+                changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active "';
+                switch(i){
+                    case 0: changehtml += 'style="background-color:gold;"><img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
+                    case 1: changehtml += 'style="background-color:silver;"><img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
+                    case 2: changehtml += 'style="background-color:saddlebrown;"><img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
+                    default : changehtml += '>';
+                }
+                changehtml+=
+                    +rank
+                    +" 등"
+                    + ranking_JSON[i].nickname
+                    +'<i class="magin fas fa-trophy"></i><span >'
+                    + ranking_JSON[i].point*100
+                    +" point"
+                    +'</span><i class="margin"><img src="/img/character/char'
+                    +ranking_JSON[i].character_num
+                    +'.png" width="60px">'
+                    +'</i></a>'
+                    +'</li>' ;
+            }
+            $(".nav-side-menu").html(changehtml);
+        }
+
+
         function btn_click(){
 
             var Mid_result_Timer;
 
-            $('#wait_room').hide();
-            $('#playing_contents').show();
             var socket = io(':8890'); //14
             socket.emit('join', pub_group_num);
-            //아아아
-            var quiz_number = 0;
 
+            socket.emit('android_game_start',pub_group_num);
+
+            socket.on('entrance_ranking', function(ranking_j){
+                ranking_process(ranking_j);
+            });
+
+            $('#wait_room').hide();
+            $('#playing_contents').show();
+            //아아아
+
+            var quiz_number = 0;
             var timeleft = 20;
 
             var quiz_JSON = [
-                {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
-                {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
-                {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
-                {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
-                {"quiz_num":"5", "name":"하","answer1":"は", "answer2":"ひ",	"answer3":"ふ","answer4":"へ"}
+                {"quiz_num":"1", "name":"苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",　"answer1":"たりとも", "answer2":"ばかりも",	"answer3":"だけさえ","answer4":"とはいえ"},
+                {"quiz_num":"2", "name":"この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。",　"answer1":"とあって", "answer2":"からして",	"answer3":"にあって","answer4":"にしては"},
+                {"quiz_num":"3", "name":"姉は市役所に勤める（　　）、ボランティアで日本語を教えています。","answer1":"かたわら", "answer2":"かたがた",	"answer3":"こととて","answer4":"うちに"},
             ];
 
             socket.emit('count','1',pub_group_num);
@@ -198,53 +238,9 @@
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
-                var ranking_JSON = JSON.parse(ranking_j);
 
-                var changehtml = "";
+                ranking_process(ranking_j);
 
-                for(var i=0;  i <ranking_JSON.length; i++){
-
-                    var rank = i+1;
-
-                    changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active "';
-                    switch(i){
-                        case 0: changehtml += 'style="background-color:gold;"><img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
-                        case 1: changehtml += 'style="background-color:silver;"><img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
-                        case 2: changehtml += 'style="background-color:saddlebrown;"><img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
-                        default : changehtml += '>';
-                    }
-                    changehtml+=
-                        +rank
-                        +" 등"
-                        + ranking_JSON[i].nickname
-                        +'<i class="magin fas fa-trophy"></i><span >'
-                        + ranking_JSON[i].point*100
-                        +" point"
-                        +'</span><i class="margin"><img src="/img/character/char'
-                        +ranking_JSON[i].character_num
-                        +'.png" width="60px">'
-                        +'</i></a>'
-                        +'</li>' ;
-
-                    var colors = [
-                        'gold',
-                        'silver',
-                        'saddlebrown',
-                        'white'
-                    ];
-                    var boxes = document.querySelectorAll(".box");
-
-                    // for (var i = 0; i < boxes.length; i++) {
-                    //         boxes[i].style.backgroundColor = colors[i];
-                    //     // else
-                    //     //     boxes[i].style.backgroundColor = colors[3];
-                    // }
-
-
-                    // changehtml+='<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>';
-                    // $('<a href="#">' + ranking_JSON[i].user_num + "학생" + ranking_JSON[i].point + "개맞춤" + '</a>').appendTo('.sidenav');
-                }
-                $(".nav-side-menu").html(changehtml);
                 $("#mid_result").show();
 
                 Mid_result_Timer = setTimeout(function(){
@@ -254,7 +250,7 @@
                     $("#mid_result").hide();
                     socket.emit('android_nextkey','미정');
 
-                }, 7000);
+                }, 5000);
             });
 
 
@@ -285,7 +281,7 @@
             //상탄 타임 게이지 바
 
 
-            var x = document.getElementById("mondai");
+            var x = document.getElementById("mondai-content");
             var A1 = document.getElementById("answer1");
             var A2 = document.getElementById("answer2");
             var A3 = document.getElementById("answer3");
@@ -295,7 +291,7 @@
             socket.on('answer-sum', function(data){
                 document.getElementById('answer_c').innerText= data;
 
-                if(data == 2)
+                if(data == 3)
                 {
 
                     socket.emit('count_off','on');
@@ -306,7 +302,7 @@
             socket.on('nextok',function(data){
 
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/recordbox"; }, 2500);
+                    setTimeout(function(){ location.href="/recordbox"; }, 3000);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
