@@ -39,7 +39,13 @@
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">nickIn</button>
+    <button type="submit">resultIn</button>
+</form>
+<form action="{{url('recordBoxController/totalScoreGet')}}"  method="Post" enctype="multipart/form-data">
+    {{csrf_field()}}
+    <h3 class="form-section">Person Info</h3>
+    <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
+    <button type="submit">totalScoreGet</button>
 </form>
 </body>
 </html>
