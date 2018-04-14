@@ -33,6 +33,7 @@
                     <div class="tile is-ancestor has-text-centered">
                         <div class="tile is-parent">
                             <article class="tile is-child box">
+                                <p class="title">1위</p>
                                 <p class="title" id="0_nick" ></p>
                                 <p class="subtitle" id="0_point"></p>
                                 <img id="0_character" src="#" width="250px">
@@ -47,6 +48,7 @@
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child box">
+                                <p class="title">2위</p>
                                 <p class="title" id="1_nick" ></p>
                                 <p class="subtitle" id="1_point"></p>
                                 <img id="1_character" src="#" width="250px">
@@ -61,6 +63,7 @@
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child box">
+                                <p class="title">3위</p>
                                 <p class="title" id="2_nick" ></p>
                                 <p class="subtitle" id="2_point"></p>
                                 <img id="2_character" src="#" width="250px">
@@ -76,6 +79,7 @@
 
                         <div class="tile is-parent">
                             <article class="tile is-child box">
+                                <p class="title">4위</p>
                                 <p class="title" id="3_nick" ></p>
                                 <p class="subtitle" id="3_point"></p>
                                 <img id="3_character" src="#" width="250px">
@@ -112,36 +116,36 @@
                                             <td width="5%">
                                                 <i class="fa fa-bell-o"></i>
                                             </td>
-                                            <td>컴백홈</td>
-                                            <td>
-                                                <a class="button is-big is-primary">4등</a>
-                                            </td>
-                                            <td>
-                                                <a class="button is-big is-primary">120점</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%">
-                                                <i class="fa fa-bell-o"></i>
-                                            </td>
-                                            <td>징징이</td>
+                                            <td id="4_nick"></td>
                                             <td>
                                                 <a class="button is-big is-primary">5등</a>
                                             </td>
                                             <td>
-                                                <a class="button is-big is-primary">100점</a>
+                                                <a class="button is-big is-primary" id="4_point"></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td width="5%">
                                                 <i class="fa fa-bell-o"></i>
                                             </td>
-                                            <td>병찬</td>
+                                            <td id="5_nick"></td>
                                             <td>
                                                 <a class="button is-big is-primary">6등</a>
                                             </td>
                                             <td>
-                                                <a class="button is-big is-primary">90.2점</a>
+                                                <a class="button is-big is-primary" id="5_point"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%">
+                                                <i class="fa fa-bell-o"></i>
+                                            </td>
+                                            <td id="6_nick"></td>
+                                            <td>
+                                                <a class="button is-big is-primary">7등</a>
+                                            </td>
+                                            <td>
+                                                <a class="button is-big is-primary" id="6_point"></a>
                                             </td>
                                         </tr>
 
