@@ -49,7 +49,7 @@
                 success: function (data) {
 
                     console.log(data);
-                    console.log(data.lastData[0][0].userName);
+                    console.log(data.lastData[0].userName);
 
                     for(var i = 0; i < data.lastData.length; i++) {
                         var $tbody = $('<tr id=""/>').appendTo('#student_table_tbody');
