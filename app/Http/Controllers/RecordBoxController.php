@@ -67,7 +67,7 @@ class RecordBoxController extends Controller{
             })
             ->join('users as u', 'u.user_num', '=', 'rr.user_num')
             ->groupBy('rr.user_num')
-            ->orderBy('rightCount')
+            ->orderBy('rightCount', 'DESC')
             ->get();
 
         $raceData = array();
