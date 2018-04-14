@@ -72,11 +72,11 @@ class RecordBoxController extends Controller{
 
         $raceData = array();
         foreach ($raceDataList as $data){
-            array_push($raceData, array([
+            array_push($raceData, array(
                 'setExamId' => $data->setExamId,
                 'createDate' => $data->createDate,
                 'avgScore' => (int)((int)$data->rightCount / (int)$data->quizCount * 100)
-            ]));
+            ));
         }
 
         $lastData = array();
