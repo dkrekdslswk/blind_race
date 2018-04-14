@@ -63,8 +63,6 @@ class RecordBoxController extends Controller{
             })
             ->orderBy('rr.race_score')
             ->get();
-
-
     }
 }
 
