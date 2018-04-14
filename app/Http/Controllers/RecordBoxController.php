@@ -75,7 +75,7 @@ class RecordBoxController extends Controller{
             array_push($raceData, array([
                 'setExamId' => $data->setExamId,
                 'createDate' => $data->createDate,
-                'avgScore' => (int)$data->rightCount / (int)$data->quizCount
+                'avgScore' => (int)((int)$data->rightCount / (int)$data->quizCount * 100)
             ]));
         }
 
@@ -91,7 +91,7 @@ class RecordBoxController extends Controller{
 
         $retrutnValue = array(
             'raceData' => $raceData,
-            '$rastData' => $rastData
+            'rastData' => $rastData
         );
 
         return $retrutnValue;
