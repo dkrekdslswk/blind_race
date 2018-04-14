@@ -54,7 +54,7 @@ class RecordBoxController extends Controller{
             ->limit(5)
             ->get();
 
-        $rastRaceData = DB::table('race_results as rr')
+        $lastRaceData = DB::table('race_results as rr')
             ->select('rr.user_num as userId',
                 'u.user_name as userName',
                 DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END) as rightCount'),
@@ -79,9 +79,9 @@ class RecordBoxController extends Controller{
             ]));
         }
 
-        $rastData = array();
-        foreach ($rastRaceData as $data){
-            array_push($rastData, array([
+        $lastData = array();
+        foreach ($lastRaceData as $data){
+            array_push($lastData, array([
                 'userId' => $data->userId,
                 'userName' => $data->userName,
                 'rightCount' => (int)$data->rightCount,
@@ -89,12 +89,12 @@ class RecordBoxController extends Controller{
             ]));
         }
 
-        $retrutnValue = array(
+        $returnValue = array(
             'raceData' => $raceData,
-            'rastData' => $rastData
+            'lastData' => $lastData
         );
 
-        return $retrutnValue;
+        return $returnValue;
     }
 }
 
