@@ -12,8 +12,8 @@ class RecordBoxController extends Controller{
         //                                   'examCount' => 30,
         //                                   'raceId'    => 1));
 
-//        $postData = array('groupId'   => $request->input('groupId'));
-        $postData = array('groupId'   => 1);
+        $postData = array('groupId'   => $request->input('groupId'));
+//        $postData = array('groupId'   => 1);
 
         // test 임시로 유저 세션 부여
         $userId = DB::table('users as u')
