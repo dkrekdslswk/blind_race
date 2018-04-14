@@ -81,12 +81,12 @@ class RecordBoxController extends Controller{
 
         $rastData = array();
         foreach ($rastRaceData as $data){
-            array_push($rastData, array([
+            array_push($rastData, array(
                 'userId' => $data->userId,
                 'userName' => $data->userName,
                 'rightCount' => (int)$data->rightCount,
                 'quizCount' => $data->quizCount
-            ]));
+            ));
         }
 
         $retrutnValue = array(
