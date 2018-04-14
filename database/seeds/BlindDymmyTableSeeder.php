@@ -142,42 +142,44 @@ class BlindDymmyTableSeeder extends Seeder
                 ]);
         }
 
-        $raceSetExamId = DB::table('race_set_exam')->insertGetId([
-            'group_num'=>$groupId,
-            'set_exam_state'=>'n',
-            'exam_count'=>30,
-            'race_num'=>$raceId
-        ], 'set_exam_num');
+        for($count = 0 ; $count < 5 ; $count++) {
+            $raceSetExamId = DB::table('race_set_exam')->insertGetId([
+                'group_num' => $groupId,
+                'set_exam_state' => 'n',
+                'exam_count' => 30,
+                'race_num' => $raceId
+            ], 'set_exam_num');
 
-        for($user_num = 2 ; $user_num <= count($users) ; $user_num++){
-            DB::table('race_results')
-                ->insert(['set_exam_num' => $raceSetExamId,
-                    'user_num' => $user_num]);
-        }
+            for ($user_num = 2; $user_num <= count($users); $user_num++) {
+                DB::table('race_results')
+                    ->insert(['set_exam_num' => $raceSetExamId,
+                        'user_num' => $user_num]);
+            }
 
-        for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++){
-            $quizId = DB::table('quiz_bank')->insertGetId([
-                'quiz_question' => '' . ($quiz_count % 4 + 1) . '',
-                'quiz_right_answer' => '' . ($quiz_count % 4 + 1) . '',
-                'quiz_example1' => '' . (($quiz_count + 1) % 4 + 1) . '',
-                'quiz_example2' => '' . (($quiz_count + 2) % 4 + 1) . '',
-                'quiz_example3' => '' . (($quiz_count + 3) % 4 + 1) . '',
-                'quiz_type' => 'o',
-                'quiz_level' => '5'
-            ], 'quiz_num');
+            for ($quiz_count = 1; $quiz_count <= 30; $quiz_count++) {
+                $quizId = DB::table('quiz_bank')->insertGetId([
+                    'quiz_question' => '' . ($quiz_count % 4 + 1) . '',
+                    'quiz_right_answer' => '' . ($quiz_count % 4 + 1) . '',
+                    'quiz_example1' => '' . (($quiz_count + 1) % 4 + 1) . '',
+                    'quiz_example2' => '' . (($quiz_count + 2) % 4 + 1) . '',
+                    'quiz_example3' => '' . (($quiz_count + 3) % 4 + 1) . '',
+                    'quiz_type' => 'o',
+                    'quiz_level' => '5'
+                ], 'quiz_num');
 
-            $setQuizId = DB::table('race_set_exam_quizs')->insertGetId([
-                'set_exam_num' => $raceSetExamId,
-                'quiz_num' => $quizId
-            ], 'sequence');
-
-            for($user_num = 2 ; $user_num <= count($users) ; $user_num++) {
-                DB::table('race_set_exam_quizs')->insert([
+                $setQuizId = DB::table('race_set_exam_quizs')->insertGetId([
                     'set_exam_num' => $raceSetExamId,
-                    'user_num' => $user_num,
-                    'sequence' => $setQuizId,
-                    'result' => (string)mt_rand(1, 4)
-                ]);
+                    'quiz_num' => $quizId
+                ], 'sequence');
+
+                for ($user_num = 2; $user_num <= count($users); $user_num++) {
+                    DB::table('playing_quizs')->insert([
+                        'set_exam_num' => $raceSetExamId,
+                        'user_num' => $user_num,
+                        'sequence' => $setQuizId,
+                        'result' => (string)mt_rand(1, 4)
+                    ]);
+                }
             }
         }
     }

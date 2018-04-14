@@ -12,8 +12,8 @@ class RecordBoxController extends Controller{
         //                                   'examCount' => 30,
         //                                   'raceId'    => 1));
 
-//        $postData = array('groupId'   => $request->input('groupId'));
-        $postData = array('groupId'   => 1);
+        $postData = array('groupId'   => $request->input('groupId'));
+//        $postData = array('groupId'   => 1);
 
         // test 임시로 유저 세션 부여
         $userId = DB::table('users as u')
@@ -36,7 +36,7 @@ class RecordBoxController extends Controller{
             ->select([
                 'rse.set_exam_num as setExamId',
                 'rse.created_at as createDate',
-                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END as rightCount'),
+                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END) as rightCount'),
                 DB::raw('COUNT(pq.result) as quizCount')
             ])
             ->where([
@@ -54,10 +54,10 @@ class RecordBoxController extends Controller{
             ->limit(5)
             ->get();
 
-        $rastRaceData = DB::table('race_results as rr')
+        $lastRaceData = DB::table('race_results as rr')
             ->select('rr.user_num as userId',
-                'rr.race_score as raceScore',
-                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END as rightCount'),
+                'u.user_name as userName',
+                DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END) as rightCount'),
                 DB::raw('COUNT(pq.result) as quizCount'))
             ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
             ->join('playing_quizs as pq', function($join)
@@ -65,16 +65,36 @@ class RecordBoxController extends Controller{
                 $join->on('pq.user_num', '=', 'rr.user_num');
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
+            ->join('users as u', 'u.user_num', '=', 'rr.user_num')
             ->groupBy('rr.user_num')
-            ->orderBy('rr.race_score')
+            ->orderBy('rightCount', 'DESC')
             ->get();
 
-        $retrutnValue = array(
-            'raceData' => $raceDataList,
-            'rastRaceData' => $rastRaceData
+        $raceData = array();
+        foreach ($raceDataList as $data){
+            array_push($raceData, array([
+                'setExamId' => $data->setExamId,
+                'createDate' => $data->createDate,
+                'avgScore' => (int)((int)$data->rightCount / (int)$data->quizCount * 100)
+            ]));
+        }
+
+        $lastData = array();
+        foreach ($lastRaceData as $data){
+            array_push($lastData, array(
+                'userId' => $data->userId,
+                'userName' => $data->userName,
+                'rightCount' => (int)$data->rightCount,
+                'quizCount' => $data->quizCount
+            ));
+        }
+
+        $returnValue = array(
+            'raceData' => $raceData,
+            'lastData' => $lastData
         );
 
-        return $retrutnValue;
+        return $returnValue;
     }
 }
 
