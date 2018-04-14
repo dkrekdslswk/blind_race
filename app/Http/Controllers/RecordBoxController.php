@@ -56,7 +56,6 @@ class RecordBoxController extends Controller{
 
         $rastRaceData = DB::table('race_results as rr')
             ->select('rr.user_num as userId',
-                'rr.race_score as raceScore',
                 DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END) as rightCount'),
                 DB::raw('COUNT(pq.result) as quizCount'))
             ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
