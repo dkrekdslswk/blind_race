@@ -2,8 +2,8 @@
 
 <html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard with Off-canvas Sidebar</title>
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -37,39 +37,60 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
 
-        <?php
-            $postData     = array('group' => array('groupId'   => 1,
-                                                                ),
-                                  'race'  => array('raceMode'  => 'n',
-                                                   'examCount' => 30,
-                                                   'raceId'    => 1));
-            $check = isset($postData) ? $postData : null;
-        ?>
+        window.onload = function(){
+            var groupID = { groupId : 1 };
 
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+            $.ajax({
+                type: 'POST',
+                url: "{{url('recordBoxController/totalScoreGet')}}",
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: groupID,
+                success: function (data) {
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2004',  1000,      400],
-                ['2005',  1170,      460],
-                ['2006',  660,       1120],
-                ['2007',  1030,      540]
-        ]);
+                    console.log(data);
+                    console.log(data.lastData[0][0].userName);
 
-        var options = {
-            title: 'Company Performance',
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
+                    for(var i = 0; i < data.lastData.length; i++) {
+                        var $tbody = $('<tr id=""/>').appendTo('#student_table_tbody');
 
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                        $('<td />').text(data.lastData[i].userName).appendTo($tbody);
+
+                    }
+
+                },
+                error: function(request, status, error) {
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                }
+            });
 
 
-        chart.draw(data, options);
 
-    }
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Year', 'Sales', 'Expenses'],
+                    ['2004',  1000,      400],
+                    ['2005',  1170,      460],
+                    ['2006',  660,       1120],
+                    ['2007',  1030,      540]
+                ]);
+
+                var options = {
+                    title: 'Company Performance',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+
+                chart.draw(data, options);
+
+            }
+        }
 
 
 
