@@ -56,6 +56,7 @@ class RecordBoxController extends Controller{
 
         $rastRaceData = DB::table('race_results as rr')
             ->select('rr.user_num as userId',
+                'u.user_name as userName',
                 DB::raw('SUM(CASE WHEN pq.result = "1" THEN 1 ELSE 0 END) as rightCount'),
                 DB::raw('COUNT(pq.result) as quizCount'))
             ->where('rr.set_exam_num', '=', $raceDataList[0] -> setExamId)
@@ -64,13 +65,33 @@ class RecordBoxController extends Controller{
                 $join->on('pq.user_num', '=', 'rr.user_num');
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
+            ->join('users as u', 'u.user_num', '=', 'rr.user_num')
             ->groupBy('rr.user_num')
             ->orderBy('rightCount')
             ->get();
 
+        $raceData = array();
+        foreach ($raceDataList as $data){
+            array_push($raceData, array([
+                'setExamId' => $data->setExamId,
+                'createDate' => $data->createDate,
+                'avgScore' => (int)$data->rightCount / (int)$data->quizCount
+            ]));
+        }
+
+        $rastData = array();
+        foreach ($rastRaceData as $data){
+            array_push($raceData, array([
+                'userId' => $data->userId,
+                'userName' => $data->userName,
+                'rightCount' => (int)$data->rightCount,
+                'quizCount' => $data->quizCount
+            ]));
+        }
+
         $retrutnValue = array(
-            'raceData' => $raceDataList,
-            'rastRaceData' => $rastRaceData
+            'raceData' => $raceData,
+            '$rastData' => $rastData
         );
 
         return $retrutnValue;
