@@ -116,65 +116,81 @@
         });
     });*/
 
-   $(document).on('click', '#btn', function (e) {
+    // example quiz data 저장용
+    var raceData;
 
-       e.preventDefault();
+    $(document).on('click', '#btn', function (e) {
 
-       //var formDataValues = document.forms.namedItem("form_data");
-       //var formValues = new FormData(formDataValues);
+        e.preventDefault();
+
+        //var formDataValues = document.forms.namedItem("form_data");
+        //var formValues = new FormData(formDataValues);
 
 
-       //var params = jQuery("#form_data").serialize();
+        //var params = jQuery("#form_data").serialize();
 
 
-       var params = {
-           bookId: $('#bookId').val(),
-           level: $('#level').val(),
-           pageStart: $('#pageStart').val(),
-           pageEnd: $('#pageEnd').val(),
-           type: $('#type').val()
-       };
+        var params = {
+            bookId: $('#bookId').val(),
+            level: $('#level').val(),
+            pageStart: $('#pageStart').val(),
+            pageEnd: $('#pageEnd').val(),
+            type: $('#type').val()
+        };
 
-       //alert(JSON.stringify(params));
+        //alert(JSON.stringify(params));
 
-       //var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        //var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-      $.ajax({
-           type: 'POST',
-           url: "{{url('quizTreeController/getQuiz')}}",
-           //processData: false,
-           //contentType: false,
-           dataType: 'json',
-           headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-           //data: {_token: CSRF_TOKEN, 'post':params},
-           data: params,
-           success: function (data) {
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/getQuiz')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
 
-               //alert(data.raceId[0].question);
-               //alert(data.raceId.length);
-               //var $tr = $('<tr />').appendTo('#example');
-               //$('<td />').text('test').appendTo($tr);
+                //alert(data.raceId[0].question);
+                //alert(data.raceId.length);
+                //var $tr = $('<tr />').appendTo('#example');
+                //$('<td />').text('test').appendTo($tr);
 
-               // 테이블 비우기
-               //$('#example').empty();
-               $('#example *').remove();
+                // 테이블 비우기
+                //$('#example').empty();
+                $('#example *').remove();
 
-               for(var i = 0; i < data.raceId.length; i++) {
-                   var $tbody = $('<tr id=""/>').appendTo('#example');
+                raceData = data.raceId;
 
-                   $('<td />').text(i+1).appendTo($tbody);
-                   $('<td />').text(data.raceId[i].question).appendTo($tbody);
+                for(var i = 0; i < raceData.length; i++) {
+                    var $tr = $('<tr />').appendTo('#example');
+                    $tr.attr({id : i+1});
+                    $('<td />').text(i+1).appendTo($tr);
+                    $('<td />').text(raceData[i].question).appendTo($tr);
 
-                   // a태그 추가
+                    // tr에 onclick method 추가
+                    $(document).on('click', '#'+(i+1) , function (e) {
+                        e.preventDefault();
 
-               }
-           },
-           error: function (data) {
-               alert("error");
-           }
-       });
+                        /*alert(raceData[this.id-1].question +
+                            raceData[this.id-1].right +
+                            raceData[this.id-1].example1 +
+                            raceData[this.id-1].example2 +
+                            raceData[this.id-1].example3);*/
 
-   });
+                        quizAdd(raceData[this.id-1]);
+                    });
+                }
+            },
+            error: function (data) {
+                alert("모든 항목에 입력 필요!");
+            }
+        });
+    });
+
+
 
     /*<input type="hidden" name="bookId" value="">
         <input type="hidden" name="level" value="">
@@ -199,13 +215,13 @@
             var pageS = $('#pageS').val();
             var pageStartObj = document.getElementById("pageStart");
             pageStartObj.value = pageS;
-        })
+        });
 
         $('#pageE').change(function () {
             var pageE = $('#pageE').val();
             var pageEndObj = document.getElementById("pageEnd");
             pageEndObj.value = pageE;
-        })
+        });
     });
 
 </script>
