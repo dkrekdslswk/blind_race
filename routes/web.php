@@ -105,3 +105,5 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
  Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
  Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
  Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
+
+ Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');

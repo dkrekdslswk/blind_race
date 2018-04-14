@@ -155,7 +155,30 @@ class BlindDymmyTableSeeder extends Seeder
                     'user_num' => $user_num]);
         }
 
+        for($quiz_count = 1 ; $quiz_count <= 30 ; $quiz_count++){
+            $quizId = DB::table('quiz_bank')->insertGetId([
+                'quiz_question' => '' . ($quiz_count % 4 + 1) . '',
+                'quiz_right_answer' => '' . ($quiz_count % 4 + 1) . '',
+                'quiz_example1' => '' . (($quiz_count + 1) % 4 + 1) . '',
+                'quiz_example2' => '' . (($quiz_count + 2) % 4 + 1) . '',
+                'quiz_example3' => '' . (($quiz_count + 3) % 4 + 1) . '',
+                'quiz_type' => 'o',
+                'quiz_level' => '5'
+            ], 'quiz_num');
 
+            $setQuizId = DB::table('race_set_exam_quizs')->insertGetId([
+                'set_exam_num' => $raceSetExamId,
+                'quiz_num' => $quizId
+            ], 'sequence');
 
+            for($user_num = 2 ; $user_num <= count($users) ; $user_num++) {
+                DB::table('race_set_exam_quizs')->insert([
+                    'set_exam_num' => $raceSetExamId,
+                    'user_num' => $user_num,
+                    'sequence' => $setQuizId,
+                    'result' => (string)mt_rand(1, 4)
+                ]);
+            }
+        }
     }
 }
