@@ -42,7 +42,7 @@ class BlindDymmyTableSeeder extends Seeder
             'user_t_num'    => $userFirstId
         ], 'group_num');
 
-        for($user_num = 2 ; $user_num <= 6 ; $user_num++){
+        for($user_num = 2 ; $user_num <= count($users) ; $user_num++){
             DB::table('group_students')->insert([
                 'group_num'           => $groupId,
                 'user_num'            => $user_num,
@@ -85,7 +85,7 @@ class BlindDymmyTableSeeder extends Seeder
             'race_num'=>$raceId
         ], 'set_exam_num');
 
-        for($user_num = 2 ; $user_num <= 6 ; $user_num++){
+        for($user_num = 2 ; $user_num <= count($users) ; $user_num++){
             DB::table('race_results')
                 ->insert(['set_exam_num' => $raceSetExamId,
                     'user_num' => $user_num]);
@@ -141,5 +141,21 @@ class BlindDymmyTableSeeder extends Seeder
                     'quiz_level'        => $quiz[5]
                 ]);
         }
+
+        $raceSetExamId = DB::table('race_set_exam')->insertGetId([
+            'group_num'=>$groupId,
+            'set_exam_state'=>'n',
+            'exam_count'=>30,
+            'race_num'=>$raceId
+        ], 'set_exam_num');
+
+        for($user_num = 2 ; $user_num <= count($users) ; $user_num++){
+            DB::table('race_results')
+                ->insert(['set_exam_num' => $raceSetExamId,
+                    'user_num' => $user_num]);
+        }
+
+
+
     }
 }
