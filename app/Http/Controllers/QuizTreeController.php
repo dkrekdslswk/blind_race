@@ -60,6 +60,16 @@ class QuizTreeController extends Controller
         return $folderList;
     }
 
+    public function postRaceGet(Request $request){
+        $postData = array(
+            'folderId' => $request->input('folderId')
+        );
+
+        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+
+        return $this->raceGet($postData['folderId'], $userData['userId']);
+    }
+
     public function raceGet($folderId, $userId){
         $data = DB::table('races')
             ->select('race_num, race_name')
