@@ -120,6 +120,7 @@
     $(document).on('click', '#save', function (e) {
         e.preventDefault();
 
+        alert(JSON.stringify(raceData));
     });
 
 </script>

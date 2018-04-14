@@ -266,26 +266,20 @@ class QuizTreeController extends Controller
 //            'raceId' => 9,
 //            'quizList' => array(
 //                [
-//                    'bookId' => 1,
-//                    'page' => 20,
 //                    'question' => '1',
 //                    'right' => '1',
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'o',
-//                    'level' => 1
+//                    'type' => 'o'
 //                ],
 //                [
-//                    'bookId' => 1,
-//                    'page' => 20,
 //                    'question' => '1',
 //                    'right' => '1',
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'o',
-//                    'level' => 1
+//                    'type' => 'o'
 //                ])
 //            )
 //        );
@@ -297,15 +291,12 @@ class QuizTreeController extends Controller
         foreach($postData['quizList'] as $quiz){
             $quizId = DB::table('quiz_bank')
                 ->insertGetId([
-                    'book_num'          => $quiz['bookId'],
-                    'book_page'         => $quiz['page'],
                     'quiz_question'     => $quiz['question'],
                     'quiz_right_answer' => $quiz['right'],
                     'quiz_example1'     => $quiz['example1'],
                     'quiz_example2'     => $quiz['example2'],
                     'quiz_example3'     => $quiz['example3'],
                     'quiz_type'         => $quiz['type'],
-                    'quiz_level'        => $quiz['level'],
                     'user_t_num'        => $userData['userId']
                 ], 'quiz_num');
 
