@@ -24,6 +24,7 @@
     }
 
     .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+        text-align: center;
         width: 100px;
     }
 
@@ -103,17 +104,17 @@
                     <thead>
                     <tr>
                         <th class="hidden-xs">#</th>
-                        <th>퀴즈명</th>
-                        <th>문항수</th>
+                        <th style="text-align: center">퀴즈명</th>
+                        <th style="text-align: center">문항수</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody id="list">
 
                     <tr>
-                        <td class="hidden-xs">1</td>
-                        <td>스쿠스쿠 레이스 1</td>
-                        <td>30</td>
+                        <td class="hidden-xs" style="text-align: center">1</td>
+                        <td style="text-align: center">스쿠스쿠 레이스 1</td>
+                        <td style="text-align: center">30</td>
                         <td align="center">
                             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#Modal">시작하기</button>
                         </td>

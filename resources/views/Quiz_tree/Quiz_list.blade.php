@@ -25,7 +25,7 @@
 
     .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
         text-align:center;
-        width: 100px;
+        width: 150px;
     }
 
     .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
@@ -112,9 +112,9 @@
                     <thead>
                     <tr>
                         <th><em class="fa fa-cog"></em></th>
-                        <th class="hidden-xs">#</th>
-                        <th>퀴즈명</th>
-                        <th>문항수</th>
+                        <th class="hidden-xs" style="text-align: center">#</th>
+                        <th style="text-align: center">퀴즈명</th>
+                        <th style="text-align: center">문항수</th>
                     </tr>
                     </thead>
                     <tbody id="list">
@@ -125,9 +125,9 @@
                             <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
                             <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
                         </td>
-                        <td class="hidden-xs">{{$raceData['raceId']}}</td>
-                        <td>{{$raceData['raceName']}}</td>
-                        <td>{{$raceData['quizCount']}}</td>
+                        <td class="hidden-xs" style="text-align: center">{{$raceData['raceId']}}</td>
+                        <td style="text-align: center">{{$raceData['raceName']}}</td>
+                        <td style="text-align: center">{{$raceData['quizCount']}}</td>
                     </tr>
                     <?php endforeach; ?>
 
