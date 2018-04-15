@@ -261,7 +261,6 @@ class QuizTreeController extends Controller
     }
 
     public function insertRace(Request $request){
-        $json     = $request->input('post');
 //        $json     = json_encode(array(
 //            'raceId' => 9,
 //            'quizList' => array(
@@ -283,8 +282,12 @@ class QuizTreeController extends Controller
 //                ])
 //            )
 //        );
-        $postData = json_decode($json);
+        $postData = array(
+            'raceId' => $request->input('raceId'),
+            'quizList' => $request->input('quizList')
+        );
 
+        $_SESSION['sessionId'] = 1;
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $insertCount = 0;
@@ -308,10 +311,19 @@ class QuizTreeController extends Controller
 
             if(!is_null($insertCheck)){
                 $insertCount++;
+                $returnValue = array(
+                    'check' => true,
+                    'insertCount' => $insertCount
+                );
+            }
+            else{
+                $returnValue = array(
+                    'check' => false
+                );
             }
         }
 
-        return $insertCount;
-//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+//        return $returnValues;
+        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 }

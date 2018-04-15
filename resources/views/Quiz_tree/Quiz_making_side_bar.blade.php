@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <style>
@@ -189,8 +188,6 @@
             }
         });
     });
-
-
 
     /*<input type="hidden" name="bookId" value="">
         <input type="hidden" name="level" value="">
