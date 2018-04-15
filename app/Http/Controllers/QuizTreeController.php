@@ -15,7 +15,7 @@ class QuizTreeController extends Controller
 //        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
 //        $postData = json_decode($json);
-        $postData = array('folderId' => $folderId);
+        $postData = array('folderId' => $folderId == 'null' ? '' : $folderId);
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
@@ -72,6 +72,7 @@ class QuizTreeController extends Controller
     }
 
     public function raceGet($folderId, $userId){
+
         $data = DB::table('races as r')
             ->select('r.race_num as raceId',
                 'r.race_name as raceName',
