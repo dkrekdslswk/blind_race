@@ -83,6 +83,10 @@ Route::get('/sidebar', function(){
     return view('sidebar');
 });
 
+ Route::get('/Race_result', function(){
+     return view('Race/Result');
+ });
+
 // ↓↓↓↓↓↓↓ transfer test _yoolme
 Route::get('/test', function(){
      return view('test');

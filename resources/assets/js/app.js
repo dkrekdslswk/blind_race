@@ -45,7 +45,7 @@ const routes = [
   // {  path: '/',      component :Modal  },
   {  path: '/AJH',      component :AJH },
   {  path: '/playing',      component :playing },
-  {  path: '/recordbox',      component :Result }
+  {  path: '/Race_result',      component :Result }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

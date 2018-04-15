@@ -302,7 +302,7 @@
             socket.on('nextok',function(data){
 
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/recordbox"; }, 3000);
+                    setTimeout(function(){ location.href="/Race_result"; }, 3000);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
