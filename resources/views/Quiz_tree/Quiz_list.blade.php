@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz_tree list</title>
+    <title>Quiz list</title>
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -22,8 +22,53 @@
             display : block;
         }
 
-        #curve_chart {
-            margin-top: 1em;
+        .content{
+            height:80px;
+        }
+
+        table {
+            border-spacing: 1;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        table * {
+            position: relative;
+        }
+
+        table td, table th {
+            padding-left: 8px;
+            vertical-align:middle;
+        }
+
+        table thead tr {
+            height: 60px;
+            background: navy;
+            color:white;
+            font-size: 16px;
+        }
+
+        table tbody tr {
+            height: 48px;
+            border-bottom: 1px solid #E3F1D5;
+        }
+
+        table tbody tr:last-child {
+            border: 0;
+        }
+
+        table td, table th {
+            text-align: center;
+        }
+
+        .btn-process{
+            margin-left:40%;
+            margin-bottom:40px;
         }
     </style>
 
@@ -53,39 +98,40 @@
 
 </aside>
 
-<div class="container" >
-
-    <div class="wrap" style="margin-bottom: 30px;">
-        <a href="#" class="btn btn-primary">N1 문법 모음</a>
-        <a href="#" class="btn btn-primary">퀴즈 2개</a>
-        <button class="btn btn-info" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+<div style="margin-left:20%; display:inline-block; width:50%;">
+    <div class="container" >
+        <div class="wrap" style="margin-bottom: 30px;">
+            {{--<a href="#" class="btn btn-primary">N1 문법 모음</a>
+            <a href="#" class="btn btn-primary">퀴즈 2개</a>--}}
+            <button class="btn btn-info" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+        </div>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>퀴즈명</th>
-            <th>레벨</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>스쿠스쿠 레이스1</td>
-            <td>
-                <button type="button" class="btn btn-default">N3</button>
-                <button type="button" class="btn btn-info btn">수정</button>
-                <button type="button" class="btn btn-info btn">삭제</button>
-            </td>
-        </tr>
-        <tr>
-            <td>스쿠스쿠 레이스2</td>
-            <td>
-                <button type="button" class="btn btn-default">N3</button>
-                <button type="button" class="btn btn-info btn">수정</button>
-                <button type="button" class="btn btn-info btn">삭제</button>
-            </td>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="">
+            <thead>
+                <tr class="bg-dark" style="height:40px">
+                    <th>퀴즈명</th>
+                    <th>문항수</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="list">
+
+            <?php foreach ($response['raceList'] as $raceData): ?>
+            <tr class="content">
+                <input type="hidden" id="{{$raceData['raceId']}}">
+                <td>{{$raceData['raceName']}}</td>
+                <td><button type="button" class="btn btn-default">{{$raceData['quizCount']}}</button></td>
+                <td><button type="button" class="btn btn-info btn">수정</button></td>
+                <td><button type="button" class="btn btn-info btn">삭제</button></td>
+            </tr>
+            <?php endforeach; ?>
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {{--Modal : make quiz--}}

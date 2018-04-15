@@ -32,7 +32,7 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link" href="/Quiz_list" >
+          <a class="nav-link" href="{{ url('quizTreeController/folderRaceDataGet/null') }}" >
             <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'tree.png') }}"></img>  문제나무</span>
           </a>
         </li>
