@@ -48,7 +48,7 @@
                             <a href="/mygroup">나의 그룹</a>
                         </li>
                         <li>
-                            <a href="/Quiz_list">문제 나무</a>
+                            <a href="{{ url('quizTreeController/folderRaceDataGet/null') }}">문제 나무</a>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">퀴즈 시작
@@ -125,7 +125,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mt-yellow" href="/Quiz_list">
+                            <a class="mt-yellow" href="{{ url('quizTreeController/folderRaceDataGet/null') }}">
                                 <i class="fa fa-5x fa-tree"></i>
                                 <em>문제 나무</em>
                             </a>

@@ -10,7 +10,7 @@
 </head>
 <style type="text/css">
     .content{
-        height:80px;
+        height:60px;
     }
 
     table {
