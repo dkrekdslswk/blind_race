@@ -16,6 +16,7 @@
             display : inline-block;
         }
         .chart {
+            margin-top: 1em;
             width: 900px;
             height: 500px;
         }
@@ -23,22 +24,19 @@
             margin-top: 10px;
         }
 
-        .container table {
+        .container table , .container table thead tr th{
             width: 900px;
-        }
-
-        #curve_chart {
-            margin-top: 1em;
-
+            text-align: center;
         }
 
     </style>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
+    <script type="text/javascript">
+
+        var groupID = { groupId : 1 };
 
         window.onload = function(){
-            var groupID = { groupId : 1 };
 
             $.ajax({
                 type: 'POST',
@@ -46,50 +44,63 @@
                 dataType: 'json',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: groupID,
-                success: function (data) {
+                success: function (recordData) {
+                    console.log(recordData);
 
-                    console.log(data);
-                    console.log(data.lastData[0].userName);
+                    for(var i = 0; i < recordData.lastData.length; i++) {
+                        var $tbody = $('<tr id/>').appendTo('#student_table_tbody');
+                        var score  = recordData.lastData[i].quizCount / recordData.lastData[i].rightCount;
 
-                    for(var i = 0; i < data.lastData.length; i++) {
-                        var $tbody = $('<tr id=""/>').appendTo('#student_table_tbody');
-
-                        $('<td />').text(data.lastData[i].userName).appendTo($tbody);
-
+                        $('<td />').text(recordData.lastData[i].userName).appendTo($tbody);
+                        $('<td />').text(score.toFixed(1) + "점").appendTo($tbody);
+                        $('<td />').text(recordData.lastData[i].rightCount + ' / ' + recordData.lastData[i].quizCount).appendTo($tbody);
                     }
 
+                    //그래프 출력
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'Date');
+                        data.addColumn('number', '현재반 평균 점수');
+                        data.addColumn('number', '전체반 평균 점수');
+
+                        for (var i = 0 ; i < recordData.raceData.length ; i++){
+                            var race_DateTimeSplit = recordData.raceData[i].createDate.split(' ');
+                            var race_DateSplit = race_DateTimeSplit[0].split('-');
+                            var race_TimeSplit = race_DateTimeSplit[1].split(':');
+
+                            data.addRows([[race_DateSplit[1]+"월 "+race_DateSplit[2]+"일 "+race_TimeSplit[0]+":"+race_TimeSplit[1]+":"+race_TimeSplit[2],
+                                recordData.raceData[i].avgScore ,
+                                80]
+                            ]);
+                        }
+
+                        var options = {
+                            title: '블라인드 레이스 평균 점수',
+                            curveType: 'function',
+                            legend: {position: 'bottom'},
+                            vAxis: {
+                                viewWindowMode:'explicit',
+                                viewWindow: {
+                                    max:100,
+                                    min:0
+                                }
+                            }
+                        };
+
+
+                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                        chart.draw(data, options);
+                    }
                 },
                 error: function(request, status, error) {
                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                 }
             });
 
-
-
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Year', 'Sales', 'Expenses'],
-                    ['2004',  1000,      400],
-                    ['2005',  1170,      460],
-                    ['2006',  660,       1120],
-                    ['2007',  1030,      540]
-                ]);
-
-                var options = {
-                    title: 'Company Performance',
-                    curveType: 'function',
-                    legend: { position: 'bottom' }
-                };
-
-                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-
-                chart.draw(data, options);
-
-            }
         }
 
 
@@ -130,9 +141,9 @@
 
             <div class="container" >
 
-                <table class="table" id="student_table">
+                <table class="table">
                     <thead>
-                        <tr>
+                        <tr style="text-align: center">
                             <th>이름</th>
                             <th>시험점수</th>
                             <th>레이스</th>

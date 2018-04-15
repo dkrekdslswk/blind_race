@@ -11,7 +11,7 @@
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-<div class="brand"><h3>순위 발표</h3></div>
+<div id="ranking_head">순위 발표</div>
 <div class="nav-side-menu">
     <i
             class="fa fa-bars fa-2x toggle-btn "
@@ -79,6 +79,16 @@ ZZ
 </div>
 
 <style>
+    #ranking_head {
+        background-color: #23282e;
+        width:230px;
+        line-height: 50px;
+        display: block;
+        text-align: center;
+        font-size: 20px;
+        color:white;
+    }
+
     .nav-side-menu {
         overflow: auto;
         font-family: verdana;
@@ -87,7 +97,7 @@ ZZ
         background-color: #2e353d;
         position:fixed;
         top: 0;
-        margin-top:140px;
+        margin-top:180px;
         width: 230px;
         height: 100%;
         color: #e1ffff;
@@ -209,13 +219,10 @@ ZZ
             width: 40px;
             text-align: center;
         }
-        .brand {
-            text-align: left !important;
-            font-size: 22px;
-            padding-left: 20px;
-            line-height: 50px !important;
-        }
+
     }
+
+
     @media (min-width: 767px) {
         .nav-side-menu .menu-list .menu-content {
             display: block;
