@@ -12,9 +12,10 @@ class QuizTreeController extends Controller
     // race create first order
     public function folderRaceDataGet(Request $request)
     {
-        $json     = $request->input('post');
+//        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
-        $postData = json_decode($json);
+//        $postData = json_decode($json);
+        $postData = array('folderId' => $request->input('folderId'));
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
@@ -41,8 +42,8 @@ class QuizTreeController extends Controller
             'raceList' => $raceList,
             'selectFolder' => $postData['folderId']);
 
-        return $returnValue;
-//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+//        return $returnValue;
+        return view('Quiz_tree/Quiz_list')->with('response', $returnValue);
     }
 
     public function folderGet(){
@@ -71,15 +72,22 @@ class QuizTreeController extends Controller
     }
 
     public function raceGet($folderId, $userId){
-        $data = DB::table('races')
-            ->select('race_num, race_name')
+        $data = DB::table('races as r')
+            ->select('r.race_num as raceId',
+                'r.race_name as raceName',
+                DB::raw('COUNT(r.race_num) as quizCount'))
             ->where(['user_t_num' => $userId,
                 'race_folder_num' => $folderId])
+            ->join('race_quizs as rq', 'rq.race_num', '=', 'r.race_num')
+            ->groupBy('r.race_num')
             ->get();
 
         $raceDatas = array();
         foreach ($data as $race){
-            array_push($raceDatas, array('raceId' => $race->race_num, 'raceName' => $race->race_name));
+            array_push($raceDatas, array(
+                'raceId' => $race->raceId,
+                'raceName' => $race->raceName,
+                'quizCount' => $race->quizCount));
         }
 
         return $raceDatas;
