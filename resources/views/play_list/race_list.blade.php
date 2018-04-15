@@ -71,55 +71,31 @@
     });
 
 </script>
+
 <div class="btn-process" style="margin-left:20%; margin-top:50px;">
-    <form id="" class="form-inline my-2 my-lg-0 mr-lg-2">
-        <div class="input-group">
-            <select class="selectpicker btn btn-primary">
-                <optgroup label="검색옵션">
-                    <option>제목</option>
-                    <option>난이도</option>
-                    <option>페이지</option>
-                </optgroup>
-            </select>
-            <input class="form-control" type="text" placeholder="Search for...">
-            <span class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                      <i class="fa fa-search">검색</i>
-                    </button>
-                  </span>
-            <button class="btn btn-info" style="margin-left:100px;">목록</button>
-        </div>
-    </form>
+
 </div>
 
 <div class="table-responsive">
     <table class="" >
         <thead>
         <tr class="bg-dark" style="height:40px">
-            <th>Name</th>
-            <th>Level</th>
-            <th>page</th>
+            <th>퀴즈명</th>
+            <th>문항수</th>
             <th></th>
         </tr>
         </thead>
-        <tr class="content">
-            <td>스쿠스쿠 레이스 1</td>
-            <td>Level</td>
-            <td>p15 - p30</td>
-            <td><button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button></td>
-        </tr>
-        <tr class="content">
-            <td>스쿠스쿠 레이스 2</td>
-            <td>Level</td>
-            <td>p30 - p45</td>
-            <td><button class="btn btn-info">시작하기</button></td>
-        </tr>
-        <tr class="content">
-            <td>스쿠스쿠 레이스 3</td>
-            <td>Level</td>
-            <td>p45 - p60</td>
-            <td><button class="btn btn-info">시작하기</button></td>
-        </tr>
+
+        <tbody id="list">
+
+            {{--foreach문 추가--}}
+            <tr class="content">
+                <td>스쿠스쿠 레이스 1</td>
+                <td>30</td>
+                <td><button class="btn btn-info" data-toggle="modal" data-target="#Modal">시작하기</button></td>
+            </tr>
+
+        </tbody>
     </table>
 </div>
 
