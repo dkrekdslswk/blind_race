@@ -76,8 +76,8 @@ class QuizTreeController extends Controller
             ->select('r.race_num as raceId',
                 'r.race_name as raceName',
                 DB::raw('COUNT(r.race_num) as quizCount'))
-            ->where(['r.user_t_num' => $userId,
-                'r.race_folder_num' => $folderId])
+            ->where(['r.user_t_num' => $userId/*,
+                'r.race_folder_num' => $folderId*/])
             ->join('race_quizs as rq', 'rq.race_num', '=', 'r.race_num')
             ->groupBy('r.race_num')
             ->get();
