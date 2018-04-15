@@ -84,13 +84,40 @@ class RaceController extends Controller
                 ->where('session_num', '=', $_SESSION['sessionId'])
                 ->update(['set_exam_num' => $raceSetExamId]);
 
+            // 임시 데모용 문제 보내기 구문
+            $quiz_data = DB::table('race_quizs as rq')
+                ->select([
+                    'qb.quiz_num as quizId',
+                    'qb.quiz_question as question',
+                    'qb.quiz_right_answer as right',
+                    'qb.quiz_example1 as example1',
+                    'qb.quiz_example2 as example2',
+                    'qb.quiz_example3 as example3'])
+                ->where('rq.race_num', '=', $raceCheck->race_num)
+                ->join('quiz_bank as qb', 'qb.quiz_num', '=', 'rq.quiz_num')
+                ->inRandomOrder()
+                ->get();
+
+            $quizList = array();
+            foreach ($quiz_data as $data){
+                array_push($quizList, array(
+                    'quiz_num' => $quiz_data->quizId,
+                    'name' => $quiz_data->question,
+                    'answer1' => $quiz_data->right,
+                    'answer2' => $quiz_data->example1,
+                    'answer3' => $quiz_data->example2,
+                    'answer4' => $quiz_data->example3
+                ));
+            }
+
             $returnValue = array(
                 'race'=>array('raceName'          =>$raceCheck->race_name,
                     'examCount'         =>$postData['race']['examCount']),
                 'group'=>array('groupName'         => $groupData->groupName,
                     'groupStudentCount' => $groupData->studentCount),
                 'sessionId' => $_SESSION['sessionId'],
-                'check' =>  true);
+                'check' =>  true,
+                'quizData' => $quizList);
 
         }
         else {
