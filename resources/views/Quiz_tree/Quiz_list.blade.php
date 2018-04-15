@@ -77,16 +77,16 @@
             <td>스쿠스쿠 레이스1</td>
             <td>
                 <button type="button" class="btn btn-default">N3</button>
-                <button type="button" class="btn btn-info btn-lg">수정</button>
-                <button type="button" class="btn btn-info btn-lg">삭제</button>
+                <button type="button" class="btn btn-info btn">수정</button>
+                <button type="button" class="btn btn-info btn">삭제</button>
             </td>
         </tr>
         <tr>
             <td>스쿠스쿠 레이스2</td>
             <td>
                 <button type="button" class="btn btn-default">N3</button>
-                <button type="button" class="btn btn-info btn-lg">수정</button>
-                <button type="button" class="btn btn-info btn-lg">삭제</button>
+                <button type="button" class="btn btn-info btn">수정</button>
+                <button type="button" class="btn btn-info btn">삭제</button>
             </td>
         </tbody>
     </table>

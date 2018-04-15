@@ -77,8 +77,8 @@
 
 <div class="sidenav">
 
-    <a href="#contact"><span><img src="img/folder.png" width="30px">2학년 A반용</span></a></li>
-    <a href="#contact"><span><img src="img/folder.png" width="30px">특강 문제</span></a></li>
+    <a href="#contact"><span><img src="{{ URL::to('/img/'.'folder.png') }}" width="30px">2학년 A반용</span></a></li>
+    <a href="#contact"><span><img src="{{ URL::to('/img/'.'folder.png') }}" width="30px">특강 문제</span></a></li>
 
     <button class="btn btn-basic" style="position: relative;margin-left: 40px;margin-top: 20%;background-color: #4C6A92">폴더 만들기</button>
 </div>

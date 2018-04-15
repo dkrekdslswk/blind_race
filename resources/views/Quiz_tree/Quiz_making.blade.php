@@ -192,7 +192,7 @@
             success: function (data) {
                 if(data.check == true) {
                     alert("저장 완료");
-                    window.location.href = "{{url('quizTreeController/folderRaceDataGet')}}";
+                    window.location.href = "{{url('quizTreeController/folderRaceDataGet/null')}}";
                 }
             },
             error: function (data) {
