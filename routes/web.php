@@ -43,8 +43,12 @@ Route::get('/race_waiting', function(){
 });
 
 Route::get('/recordbox', function(){
-    return view('Recordbox/recordbox');
+ return view('Recordbox/recordbox');
 });
+
+ Route::get('/re/test', function(){
+     return view('Recordbox/test');
+ });
 
 Route::get('/feedback', function(){
     return view('Recordbox/Feedback');
