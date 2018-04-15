@@ -10,12 +10,12 @@ use App\Http\Controllers\UserController;
 class QuizTreeController extends Controller
 {
     // race create first order
-    public function folderRaceDataGet(Request $request)
+    public function folderRaceDataGet($folderId)
     {
 //        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
 //        $postData = json_decode($json);
-        $postData = array('folderId' => $request->input('folderId'));
+        $postData = array('folderId' => $folderId);
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
