@@ -9,7 +9,7 @@
 
 
   <!-- 안준휘 - 상단 Navigation ( 아직 로그인부분및 링크작업은 되지않았음) -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav" style="margin:0px;">
     <a class="navbar-brand" href="/">
       <!--<img src="img/logo.png" width="100" height="40" alt="">-->
       十分十分
