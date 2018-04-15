@@ -95,7 +95,7 @@ io.on('connection', function (socket){
 
         var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
         connection.query(leaveRoom_Query, function(err, rows)
-        {if(err){ console.log('대기방이탈쿼리에러'); throw err; }
+        {if(err){ console.log('대기방이탈���리에러'); throw err; }
         else{ console.log('user',user_num+'퇴장'); }   });
 
         var delete_session_query = "delete from sessions where user_num="+user_num;
@@ -129,7 +129,7 @@ io.on('connection', function (socket){
             if(err){
                 console.log('유저정보추가 에러 ');
                 // throw err ;
-                io.sockets.emit('err_msg',"이미 있는 닉네임 혹은 캐릭터입니다.");
+                io.sockets.in(group_num).emit('err_msg',"이미 있는 닉네임 혹은 캐릭터입니다.");
 
                 error = true;
             }
@@ -145,7 +145,7 @@ io.on('connection', function (socket){
     socket.on('android_nextkey',function(data){
         io.sockets.in(group_num).emit('android_nextquiz','미정');
     });
-    socket.on('android_gamestart',function(group_key){
+    socket.on('android_game_start',function(group_key){
         io.sockets.in(group_key).emit('android_game_start','입장');
     });
 
@@ -278,6 +278,7 @@ io.on('connection', function (socket){
 
         var delete_quizs_query = "delete from playing_quizs where user_num <> 1;"
         connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
+
     });
 
 
