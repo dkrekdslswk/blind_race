@@ -147,7 +147,8 @@ class BlindDymmyTableSeeder extends Seeder
                 'group_num' => $groupId,
                 'set_exam_state' => 'n',
                 'exam_count' => 30,
-                'race_num' => $raceId
+                'race_num' => $raceId,
+                'created_at' => DB::raw('subdate(now(), INTERVAL '.$count.' DAY)')
             ], 'set_exam_num');
 
             for ($user_num = 2; $user_num <= count($users); $user_num++) {
