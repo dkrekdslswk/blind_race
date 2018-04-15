@@ -190,7 +190,10 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
-                alert("저장 완료");
+                if(data.check == true) {
+                    alert("저장 완료");
+                    window.location.href = "{{url('quizTreeController/folderRaceDataGet')}}";
+                }
             },
             error: function (data) {
                 alert("저장 실패");

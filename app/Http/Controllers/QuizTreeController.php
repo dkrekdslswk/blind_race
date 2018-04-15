@@ -331,7 +331,7 @@ class QuizTreeController extends Controller
             }
         }
 
-//        return $returnValues;
-        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+        return $returnValue;
+//        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
     }
 }
