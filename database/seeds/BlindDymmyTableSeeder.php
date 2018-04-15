@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +18,13 @@ class BlindDymmyTableSeeder extends Seeder
             ['tamp3','tamp3','tamp3'],
             ['tamp4','tamp4','tamp4'],
             ['tamp5','tamp5','tamp5'],
-            ['tamp6','tamp6','tamp6']
+            ['tamp6','tamp6','tamp6'],
+            ['a','a','김똘똘'],
+            ['b','b','최천재'],
+            ['c','c','안예민'],
+            ['d','d','심샤쵸']
         ];
- 
+
         foreach($users as $user){
             $userId = DB::table('users')->insertGetId([
                 'user_id'       => array_get($user, 0),
