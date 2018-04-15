@@ -11,6 +11,10 @@
     <link href="js/bootstrap.min.js" rel="stylesheet">
     <style type="text/css">
 
+        body {
+            background-color: #f5f8fa;
+        }
+
         .record_page {
             margin-left: 260px;
             display : inline-block;
@@ -27,6 +31,11 @@
         .container table , .container table thead tr th{
             width: 900px;
             text-align: center;
+        }
+
+        .container table thead{
+            background-color: #d9edf7;
+
         }
 
     </style>

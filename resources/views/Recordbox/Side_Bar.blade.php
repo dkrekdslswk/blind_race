@@ -106,13 +106,6 @@
         <style>
             @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
 
-
-
-            
-            body {
-                background: lightgray;
-            }
-
             .navbar-fixed-top {
                 top: 0;
                 border-width: 0 0 1px;
