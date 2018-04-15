@@ -101,12 +101,12 @@ class RaceController extends Controller
             $quizList = array();
             foreach ($quiz_data as $data){
                 array_push($quizList, array(
-                    'quiz_num' => $quiz_data->quizId,
-                    'name' => $quiz_data->question,
-                    'answer1' => $quiz_data->right,
-                    'answer2' => $quiz_data->example1,
-                    'answer3' => $quiz_data->example2,
-                    'answer4' => $quiz_data->example3
+                    'quiz_num' => $data->quizId,
+                    'name' => $data->question,
+                    'answer1' => $data->right,
+                    'answer2' => $data->example1,
+                    'answer3' => $data->example2,
+                    'answer4' => $data->example3
                 ));
             }
 
