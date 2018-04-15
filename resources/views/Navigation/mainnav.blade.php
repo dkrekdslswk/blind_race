@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="/mygroup">
+          <a class="nav-link" href="#">
             <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'networking.png') }}"></img>  나의그룹</span>
           </a>
         </li>
@@ -37,7 +37,7 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="/recordbox" data-parent="#exampleAccordion">
+          <a class="nav-link" href="/recordbox">
             <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'bars-chart.png') }}"></img>  레코드박스</span>
           </a>
         </li>

@@ -53,10 +53,6 @@
 
 </aside>
 
-<!--<div id="app"></div>-->
-<!--<script src="{{asset('js/app.js')}}"></script>  -->
-
-
 <div class="container" >
 
     <div class="wrap" style="margin-bottom: 30px;">
