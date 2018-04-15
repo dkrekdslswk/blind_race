@@ -66,7 +66,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">레코드박스
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="/recordbox">레코드박스
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
