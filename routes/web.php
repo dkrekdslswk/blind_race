@@ -101,7 +101,7 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
 
- Route::post('/quizTreeController/folderRaceDataGet','QuizTreeController@folderRaceDataGet');
+ Route::get('/quizTreeController/folderRaceDataGet','QuizTreeController@folderRaceDataGet');
  Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
  Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
  Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
