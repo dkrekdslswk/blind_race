@@ -72,7 +72,7 @@ class BlindDymmyTableSeeder extends Seeder
             ]);
         }
 
-        for ($char = 1; $char <= 5; $char++) {
+        for ($char = 1; $char <= 9; $char++) {
             DB::table('characters')->insert([
                 'character_url' => 'img/character/char' . (string)$char
             ]);
@@ -84,12 +84,6 @@ class BlindDymmyTableSeeder extends Seeder
             'exam_count'=>30,
             'race_num'=>$raceId
         ], 'set_exam_num');
-
-        for($user_num = 2 ; $user_num <= count($users) ; $user_num++){
-            DB::table('race_results')
-                ->insert(['set_exam_num' => $raceSetExamId,
-                    'user_num' => $user_num]);
-        }
 
         $bookId =DB::table('books')->insertGetId([
             'book_name'=>"급소공략 N1",

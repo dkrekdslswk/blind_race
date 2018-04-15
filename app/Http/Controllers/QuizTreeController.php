@@ -15,7 +15,7 @@ class QuizTreeController extends Controller
 //        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
 //        $postData = json_decode($json);
-        $postData = array('folderId' => $folderId);
+        $postData = array('folderId' => $folderId == 0 ? '' : $folderId);
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
@@ -76,8 +76,8 @@ class QuizTreeController extends Controller
             ->select('r.race_num as raceId',
                 'r.race_name as raceName',
                 DB::raw('COUNT(r.race_num) as quizCount'))
-            ->where(['user_t_num' => $userId,
-                'race_folder_num' => $folderId])
+            ->where(['r.user_t_num' => $userId,
+                'r.race_folder_num' => $folderId])
             ->join('race_quizs as rq', 'rq.race_num', '=', 'r.race_num')
             ->groupBy('r.race_num')
             ->get();
