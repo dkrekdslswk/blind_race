@@ -15,7 +15,7 @@ class QuizTreeController extends Controller
 //        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
 //        $postData = json_decode($json);
-        $postData = array('folderId' => $folderId == 'null' ? '' : $folderId);
+        $postData = array('folderId' => $folderId == 0 ? '' : $folderId);
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
