@@ -181,7 +181,7 @@
     <!-- Custom Scroller Js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <Script>
+    <script>
         function side_menu_clicked(data){
             switch(data){
                 case "recordbox":
@@ -192,7 +192,7 @@
                     break;
             }
         }
-    </Script>
+    </script>
 </head>
 <body>
 
