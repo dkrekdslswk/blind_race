@@ -271,6 +271,27 @@
 <script src="js/jquery.backtotop.js"></script>
 <script src="js/jquery.mobilemenu.js"></script>
 
+<script>
+    $(function () {
+        $("body div").fadeIn(500, function () {
+            $(this).animate({
+                "top": "30px"
+            }, 1000);
+        });
+
+        $("a").click(function () {
+            var url = $(this).attr("href");
+            $("body div").animate({
+                "opacity": "0",
+                "top": "10px"
+            }, 500, function () {
+                document.location.href = url;
+            });
+
+            return false;
+        });
+    });
+</script>
 </body>
 
 </html>
