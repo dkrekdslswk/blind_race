@@ -43,14 +43,6 @@ Route::get('/race_result', function(){
     return view('Race/race_result');
 });
 
- Route::get('/re/test', function(){
-     return view('Recordbox/test');
- });
-
-Route::get('/recordbox/feedback', function(){
-    return view('Recordbox/feedback');
-});
-
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
@@ -66,9 +58,11 @@ Route::get('/recordbox', function(){
     return view('Recordbox/recordbox');
 });
 
-Route::get('/recordbox/feedback', function(){
+/* 4-1. Record Box : Feedback */
+Route::get('/feedback', function(){
     return view('Recordbox/feedback');
 });
+
 
 
 /* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
