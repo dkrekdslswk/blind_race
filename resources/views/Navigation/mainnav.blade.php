@@ -22,7 +22,7 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="/race">
+          <a class="nav-link" href="{{ url('/raceController/RaceDataGet/null') }}">
             <span class="nav-link-text"><img class="nav-icon " src="{{ URL::to('/img/'.'race.png') }}"></img>  레이스</span>
           </a>
         </li>

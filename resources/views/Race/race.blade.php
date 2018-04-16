@@ -111,14 +111,16 @@
                     </thead>
                     <tbody id="list">
 
+                    <?php foreach ($response['raceList'] as $raceData): ?>
                     <tr>
-                        <td class="hidden-xs" style="text-align: center">1</td>
-                        <td style="text-align: center">스쿠스쿠 레이스 1</td>
-                        <td style="text-align: center">30</td>
+                        <td class="hidden-xs" style="text-align: center">{{$raceData['raceId']}}</td>
+                        <td style="text-align: center">{{$raceData['raceName']}}</td>
+                        <td style="text-align: center">{{$raceData['quizCount']}}</td>
                         <td align="center">
                             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#Modal">시작하기</button>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
 
                     </tbody>
                 </table>
