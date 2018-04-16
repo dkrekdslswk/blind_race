@@ -8,14 +8,15 @@
     <link href="js/bootstrap.min.js" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 
+    <style type="text/css">
+        .feedback_page {
+            margin-left: 300px;
+            margin-top: 30px;
+        }
+    </style>
+    
 </head>
-<style type="text/css">
-    .feedback_page {
-        margin-left: 300px;
-        margin-top: 30px;
-    }
 
-</style>
 <body >
 <nav>
     @include('Navigation.main_nav')
