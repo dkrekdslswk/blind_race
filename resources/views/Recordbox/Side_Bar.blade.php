@@ -9,7 +9,6 @@
     <style>
         @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-
         body {
             font-family: 'Poppins', sans-serif;
             background: #fafafa;
@@ -24,7 +23,7 @@
         }
 
         .wrapper button {
-            background-color: #657BB8;
+            /*background-color: #657BB8;*/
             width: 220px;
             border: 1px solid #8691B7;
         }
@@ -183,23 +182,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <Script>
-        $(document).ready(function () {
 
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
 
-            $('#sidebarCollapse').on('click', function () {
-                // open or close navbar
-                $('#sidebar').toggleClass('active');
-                // close dropdowns
-                $('.collapse.in').toggleClass('in');
-                // and also adjust aria-expanded attributes we use for the open/closed arrows
-                // in our CSS
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-
-        });
     </Script>
 </head>
 <body>
@@ -208,24 +192,32 @@
 
     <nav id="sidebar">
         <!-- Sidebar Header -->
-        <div class="sidebar-header">
-            <h3>레코드 박스</h3>
+        <div class="sidebar-header" id="sidebar_header">
+            <h3>
+                <a href="/recordbox">
+                    레코드 박스
+                </a>
+            </h3>
         </div>
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled components">
-            <li><!-- Link with dropdown items -->
+{{--            <li id="selectList"><!-- Link with dropdown items -->
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" style="text-align: center;">그룹 선택</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu"style="text-align: center;">
                     <li><a href="#">특강 A반</a></li>
                     <li><a href="#">특강 B반</a></li>
                     <li><a href="#">특강 C반</a></li>
                 </ul>
-            </li>
+            </li>--}}
             <div style="text-align: center;margin-top: 10px;">
-                <button class="btn btn-default" style="margin-bottom: 5px">학습 기록 조회</button>
+                <button class="btn btn-default" style="margin-bottom: 5px">
+                    <a id="record" href="/recordbox">
+                    학습 기록 조회
+                    </a>
+                </button>
                 <button class="btn btn-default">
-                    <a href="/recordbox/feedback">
+                    <a id="feedback" href="/recordbox/feedback">
                     피드백과 질문
                     </a>
                 </button>

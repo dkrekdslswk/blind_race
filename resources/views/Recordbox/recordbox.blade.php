@@ -43,7 +43,6 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-
         var groupID = { groupId : 1 };
 
         window.onload = function(){
@@ -55,7 +54,6 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: groupID,
                 success: function (recordData) {
-                    console.log(recordData);
 
                     for(var i = 0; i < recordData.lastData.length; i++) {
                         var $tbody = $('<tr id/>').appendTo('#student_table_tbody');
@@ -64,6 +62,8 @@
                         $('<td />').text(recordData.lastData[i].userName).appendTo($tbody);
                         $('<td />').text(score.toFixed(1) + "점").appendTo($tbody);
                         $('<td />').text(recordData.lastData[i].rightCount + ' / ' + recordData.lastData[i].quizCount).appendTo($tbody);
+                        $('<td />').append($('<a href="#">').text('미제출')).appendTo($tbody);
+                        $('<td />').text('').appendTo($tbody);
                     }
 
                     //그래프 출력
@@ -76,7 +76,7 @@
                         data.addColumn('number', '현재반 평균 점수');
                         data.addColumn('number', '전체반 평균 점수');
 
-                        for (var i = 0 ; i < recordData.raceData.length ; i++){
+                        for (var i = recordData.raceData.length - 1 ; i >= 0 ; i--){
                             var race_DateTimeSplit = recordData.raceData[i].createDate.split(' ');
                             var race_DateSplit = race_DateTimeSplit[0].split('-');
                             var race_TimeSplit = race_DateTimeSplit[1].split(':');
@@ -88,7 +88,7 @@
                         }
 
                         var options = {
-                            title: '블라인드 레이스 평균 점수',
+                            title: '특강 A반',
                             curveType: 'function',
                             legend: {position: 'bottom'},
                             vAxis: {
@@ -111,9 +111,7 @@
                 }
             });
 
-        }
-
-
+        };
 
     </script>
 
@@ -122,24 +120,27 @@
 <body>
 
     <nav>
-    @include('Navigation.mainnav')
+        @include('Navigation.mainnav')
     </nav>
 
-    <!--aside 자리-->
     <aside style="display:inline-block; vertical-align:top;">
-    @include('Recordbox.Side_Bar')
+        @include('Recordbox.Side_Bar')
     </aside>
-
-    <!--<div id="app"></div>-->
-    <!--<script src="{{asset('js/app.js')}}"></script>  -->
 
     <div class="record_page">
 
         <div class="class_page">
 
             <div id="class_bar" class="ClassBar">
-                <button type="button" class="btn btn-primary" style="display: inline;" >2-특강 A반</button>
-                <div style="margin-left: 370px;margin-right: 370px;display: inline;"></div>
+                <button type="button" class="btn btn-primary" style="display: inline;" >그룹 선택</button>
+                <select id="bookSelect" >
+                    <blank></blank>
+                    <option value="1">특강 A반</option>
+                    <option value="2">특강 B반</option>
+                    <option value="3">특강 C반</option>
+                </select>
+                {{--<div style="margin-left: 370px;margin-right: 370px;display: inline;"></div>--}}
+                <button type="button" class="btn btn-primary" style="display: inline;" >문제 유형</button>
                 <select id="bookSelect" >
                     <blank></blank>
                     <option value="1">레이스</option>
@@ -157,6 +158,8 @@
                             <th>이름</th>
                             <th>시험점수</th>
                             <th>레이스</th>
+                            <th>오답 노트</th>
+                            <th>재시험</th>
                         </tr>
                     </thead>
                     <tbody id="student_table_tbody">
