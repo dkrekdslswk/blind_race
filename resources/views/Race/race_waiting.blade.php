@@ -347,7 +347,7 @@
     </div>
 </div>
 <div id="playing_contents" style="display:none;">
-    @include('Raid.raid')
+    @include('Race.race_content')
 </div>
 
 
