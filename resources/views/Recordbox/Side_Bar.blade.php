@@ -224,7 +224,11 @@
             </li>
             <div style="text-align: center;margin-top: 10px;">
                 <button class="btn btn-default" style="margin-bottom: 5px">학습 기록 조회</button>
-                <button class="btn btn-default">피드백과 질문</button>
+                <button class="btn btn-default">
+                    <a href="/recordbox/feedback">
+                    피드백과 질문
+                    </a>
+                </button>
             </div>
         </ul>
     </nav>
