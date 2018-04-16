@@ -443,6 +443,6 @@ class QuizTreeController extends Controller
             ));
         }
 
-        return array('raceList' => $returnValue);
+        return array('quizList' => $returnValue);
     }
 }
