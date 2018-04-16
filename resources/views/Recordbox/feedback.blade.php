@@ -20,7 +20,7 @@
 
     </style>
 </head>
-<body onload="side_menu_clicked('feedback')" >
+<body onload="side_menu_clicked(2);" >
 <nav>
     @include('Navigation.main_nav')
 </nav>

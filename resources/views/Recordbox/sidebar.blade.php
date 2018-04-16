@@ -184,11 +184,11 @@
     <Script>
         function side_menu_clicked(data){
             switch(data){
-                case "feedback":
-                    document.getElementById('record_box_title').innerText = "피드백과 질문";
-                    break;
                 case "recordbox":
                     document.getElementById('record_box_title').innerText = "학습기록 조회";
+                    break;
+                case 2:
+                    document.getElementById('record_box_title').innerText = "피드백과 질문";
                     break;
             }
         }
@@ -203,7 +203,7 @@
         <div class="sidebar-header" id="sidebar_header">
 
                 <a  href="/recordbox">
-                    <h3 id="record_box_title">레코드 박스 </h3>
+                    <h3 id="record_box_title">피드백과 질문</h3>
                 </a>
         </div>
 
