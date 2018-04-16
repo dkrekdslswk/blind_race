@@ -1,4 +1,4 @@
-﻿ <?php
+﻿<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -11,94 +11,76 @@
 |
 */
 
-Route::post('/store',"UserController@store");
-Route::post('/user_login',"UserController@user_login");
+/* ↓↓↓↓↓ ROUTE VIEW ↓↓↓↓↓ */
 
+/* Homepage : Main */
 Route::get('/', function () {
     return view('homepage');
 });
-//
-//Route::get('/homepage', function() {
-//    return view('homepage');
-//});
 
-Route::get('/nav', function(){
-    return view('nav/mainnav');
-});
-
+/* Login */
 Route::get('/login', function () {
     return view('Login/login');
 });
 
+/* 1. My Group */
 Route::get('/mygroup', function(){
     return view('Mygroup/mygroup');
 });
 
-Route::get('/race', function(){
-    return view('Race/race');
+/* 2. Race Mode : Blind Race */
+Route::get('/race_list', function(){
+    return view('Race/race_list');
 });
 
+/* 2-1. Blind Race : Waiting Room */
 Route::get('/race_waiting', function(){
     return view('Race/race_waiting');
 });
 
-Route::get('/recordbox', function(){
- return view('Recordbox/recordbox');
+/* 2-3. Blind Race : Race Result */
+Route::get('/race_result', function(){
+    return view('Race/race_result');
 });
 
- Route::get('/re/test', function(){
-     return view('Recordbox/test');
- });
-
-Route::get('/recordbox/feedback', function(){
-    return view('Recordbox/Feedback');
-});
-
-Route::get('/Quiz_list', function(){
-    return view('Quiz_tree/Quiz_list');
-});
-
- Route::get('/Quiz_making', function(){
-     return view('Quiz_tree/Quiz_making');
- });
-
-Route::get('/feedback', function(){
-    return view('Recordbox/Feedback');
-});
-
-Route::get('/chat', function(){
-    return view('chat');
-});
-
-Route::get('/playing', function(){
-    return view('playing');
-});
-
-Route::get('/ctest', function(){
-    return view('ctest');
-});
-
+/* 2. Race Mode : Golden Bell */
+/* 2. Race Mode : Raid */
 Route::get('/raid', function(){
     return view('Raid/raid');
 });
 
-// 임시용 민수가
-Route::get('/sidebar', function(){
-    return view('sidebar');
+/* 3. Quiz Tree : Quiz List */
+Route::get('/quiz_list', function(){
+    return view('QuizTree/quiz_list');
 });
 
- Route::get('/Race_result', function(){
-     return view('Race/Result');
- });
-
-// ↓↓↓↓↓↓↓ transfer test _yoolme
-Route::get('/test', function(){
-     return view('test');
+/* 3-1. Quiz Tree : Quiz Making */
+Route::get('/quiz_making', function(){
+    return view('QuizTree/quiz_making');
 });
 
+/* 4. Record Box : Record List */
+Route::get('/recordbox', function(){
+    return view('Recordbox/recordbox');
+});
+
+Route::get('/feedback', function(){
+    return view('Recordbox/feedback');
+});
+
+
+/* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
+
+/* CBC : test */
 Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
+
+
+/* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
+
+Route::post('/store',"UserController@store");
+Route::post('/user_login',"UserController@user_login");
 
 Route::get('/raceController/RaceDataGet/{folderId}','QuizTreeController@RaceDataGet');
 
@@ -111,10 +93,14 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
 
- Route::get('/quizTreeController/folderRaceDataGet/{folderId}','QuizTreeController@folderRaceDataGet');
- Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
- Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
- Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
- Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
+Route::get('/quizTreeController/folderRaceDataGet/{folderId}','QuizTreeController@folderRaceDataGet');
+Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
+Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
+Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
+Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
 
- Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+
+?>
+
+

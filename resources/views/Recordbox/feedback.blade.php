@@ -32,11 +32,11 @@
 <body>
 
     <nav>
-        @include('Navigation.mainnav')
+        @include('Navigation.main_nav')
     </nav>
 
     <aside style="display:inline-block; vertical-align:top;">
-        @include('Recordbox.Side_Bar')
+        @include('Recordbox.sidebar')
     </aside>
 
     <div class="feedback_page">

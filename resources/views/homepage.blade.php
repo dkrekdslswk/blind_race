@@ -42,10 +42,10 @@
                 <nav id="mainav" class="fl_right">
                     <ul class="clear">
                         <li class="active">
-                            <a href="index.html">Home</a>
+                            <a href="/">Home</a>
                         </li>
                         <li>
-                            <a href="/mygroup">나의 그룹</a>
+                            <a href="#">나의 그룹</a>
                         </li>
                         <li>
                             <a href="{{ url('quizTreeController/folderRaceDataGet/null') }}">문제 나무</a>
@@ -113,7 +113,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mt-purple" href="/mygroup">
+                            <a class="mt-purple" href="#">
                                 <i class="fa fa-5x fa-child"></i>
                                 <em>My group</em>
                             </a>

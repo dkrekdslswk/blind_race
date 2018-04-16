@@ -32,7 +32,7 @@
 </script>
 <body>
 <nav>
-    @include('Navigation.mainnav')
+    @include('Navigation.main_nav')
 </nav>
 
 <div style="height: 10px"></div> {{--여백--}}

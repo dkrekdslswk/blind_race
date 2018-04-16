@@ -355,7 +355,7 @@
 
     <div id="app">
     </div>
-    @include('Race.midresult')
+    @include('Race.mid_result')
 </div>
 
 
