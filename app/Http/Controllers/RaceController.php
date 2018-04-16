@@ -31,43 +31,56 @@ class RaceController extends Controller
 
 	    // test 임시로 유저 세션 부여
         $userId = DB::table('users as u')
-            ->select(['u.user_num   as user_num',
-                    's.session_num  as session_num'])
+            ->select(
+                'u.user_num   as user_num',
+                's.session_num  as session_num'
+            )
             ->where('u.user_id', '=', 'tamp1id')
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
         if(!isset($userId->session_num)){
             $_SESSION['sessionId'] = DB::table('sessions')
-                ->insertGetId(['user_num' => $userId->user_num],
-                    'session_num');
+                ->insertGetId([
+                    'user_num' => $userId->user_num
+                ], 'session_num');
         }else{
             $_SESSION['sessionId'] = $userId->session_num;
         }
         // test
 
         $sData = DB::table('sessions')
-            ->select(['user_num'])
+            ->select(
+                'user_num'
+            )
             ->where('session_num', '=', $_SESSION['sessionId'])
             ->first();
         
         $groupData = DB::table('groups')
-		    ->select(['groups.group_num                     as groupId',
-			        'groups.group_name                      as groupName',
-			        DB::raw('COUNT(group_students.user_num) as studentCount')])
+		    ->select(
+		        'groups.group_num                     as groupId',
+			    'groups.group_name                      as groupName',
+                DB::raw('COUNT(group_students.user_num) as studentCount')
+            )
 		    ->join('group_students', 'group_students.group_num', '=', 'groups.group_num')
-		    ->where(['groups.group_num'  => $postData['group']['groupId'],
-                'groups.user_t_num' => $sData->user_num])
+		    ->where([
+		        'groups.group_num'  => $postData['group']['groupId'],
+                'groups.user_t_num' => $sData->user_num
+            ])
             ->groupBy('groups.group_num')
 		    ->first();
 
         $raceCheck = DB::table('races')
-		    ->select(['races.race_name                      as race_name',
-                    'races.race_num                     as race_num',
-                    DB::raw('COUNT(race_quizs.quiz_num) as examCount')])
+		    ->select(
+		        'races.race_name                      as race_name',
+                'races.race_num                     as race_num',
+                DB::raw('COUNT(race_quizs.quiz_num) as examCount')
+            )
 		    ->join('race_quizs', 'race_quizs.race_num', '=', 'races.race_num')
-		    ->where(['races.race_num' => $postData['race']['raceId'],
-                    'races.user_t_num' => $sData->user_num])
+		    ->where([
+		        'races.race_num' => $postData['race']['raceId'],
+                'races.user_t_num' => $sData->user_num
+            ])
             ->groupBy('races.race_num')
 		    ->first();
 
@@ -86,13 +99,14 @@ class RaceController extends Controller
 
             // 임시 데모용 문제 보내기 구문
             $quiz_data = DB::table('race_quizs as rq')
-                ->select([
+                ->select(
                     'qb.quiz_num as quizId',
                     'qb.quiz_question as question',
                     'qb.quiz_right_answer as right',
                     'qb.quiz_example1 as example1',
                     'qb.quiz_example2 as example2',
-                    'qb.quiz_example3 as example3'])
+                    'qb.quiz_example3 as example3'
+                )
                 ->where('rq.race_num', '=', $raceCheck->race_num)
                 ->join('quiz_bank as qb', 'qb.quiz_num', '=', 'rq.quiz_num')
                 ->inRandomOrder()
@@ -111,10 +125,14 @@ class RaceController extends Controller
             }
 
             $returnValue = array(
-                'race'=>array('raceName'          =>$raceCheck->race_name,
-                    'examCount'         =>$postData['race']['examCount']),
-                'group'=>array('groupName'         => $groupData->groupName,
-                    'groupStudentCount' => $groupData->studentCount),
+                'race'=>array(
+                    'raceName'          =>$raceCheck->race_name,
+                    'examCount'         =>$postData['race']['examCount']
+                ),
+                'group'=>array(
+                    'groupName'         => $groupData->groupName,
+                    'groupStudentCount' => $groupData->studentCount
+                ),
                 'sessionId' => $_SESSION['sessionId'],
                 'check' =>  true,
                 'quizData' => $quizList);
@@ -138,10 +156,12 @@ class RaceController extends Controller
 
         // race set exam check
         $setExamTest = DB::table('sessions')
-            ->select(['set.exam_count as setExamCount',
+            ->select(
+                'set.exam_count as setExamCount',
                 DB::raw('COUNT(quiz.sequence) as examCount'),
                 'sessions.set_exam_num as setExamId',
-                'set.group_num as groupId'])
+                'set.group_num as groupId'
+            )
             ->leftJoin('race_set_exam as set', 'set.set_exam_num', '=', 'sessions.set_exam_num')
             ->leftJoin('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'sessions.set_exam_num')
             ->where('sessions.session_num', '=', $postData['sessionId'])
@@ -186,16 +206,19 @@ class RaceController extends Controller
 
         // test
         $userId = DB::table('users as u')
-            ->select(['u.user_num as user_num',
-                's.session_num as session_num'])
+            ->select(
+                'u.user_num as user_num',
+                's.session_num as session_num'
+            )
             ->where('s.user_id', '=', $postData['userId'])
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
         if(!isset($userId->session_num)){
             $_SESSION['sessionId'] = DB::table('sessions')
-                ->insertGetId(['user_num' => $userId->user_num],
-                    'session_num');
+                ->insertGetId(
+                    ['user_num' => $userId->user_num
+                ], 'session_num');
         }else{
             $_SESSION['sessionId'] = $userId->session_num;
         }
@@ -203,9 +226,13 @@ class RaceController extends Controller
 
         // 현재 유저가 그룹에 소속된 유저인지 확인
         $userCheck = DB::table('group_students as gs')
-            ->select('gs.user_num as user_num')
-            ->where(['gs.group_num'  => $postData['groupId'],
-                's.session_num' => $postData['sessionId']])
+            ->select(
+                'gs.user_num as user_num'
+            )
+            ->where([
+                'gs.group_num'  => $postData['groupId'],
+                's.session_num' => $postData['sessionId']
+            ])
             ->join('sessions as s', 's.user_num', '=', 'gs.user_num')
             ->first();
 
@@ -216,8 +243,10 @@ class RaceController extends Controller
             do{
                 // 이미 선택된 캐릭터 목록 획득
                 $characters = DB::table('characters as c')
-                    ->select('c.character_num as characterId')
-                    ->where('rr.set_exam_num', $postData['setExamId'])
+                    ->select(
+                        'c.character_num as characterId'
+                    )
+                    ->where('rr.set_exam_num', '=', $postData['setExamId'])
                     ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
                     ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
                     ->get();
@@ -229,8 +258,10 @@ class RaceController extends Controller
 
                 // 캐릭터 url 획득
                 $character = DB::table('characters')
-                    ->select('character_num as characterId',
-                        'character_url as characterUrl')
+                    ->select(
+                        'character_num as characterId',
+                        'character_url as characterUrl'
+                    )
                     ->whereNotIn('character_num', $charList)
                     ->inRandomOrder()
                     ->first();
@@ -238,9 +269,11 @@ class RaceController extends Controller
                 // 유저 세션에 정보 저장
                 $updateCheck = DB::table('sessions')
                     ->where('session_num', '=', $postData['sessionId'])
-                    ->update(['set_exam_num' => $postData['setExamId'],
-                            'character_num'  => $character->characterId,
-                            'room_pin_number' => $postData['roomId']]);
+                    ->update([
+                        'set_exam_num' => $postData['setExamId'],
+                        'character_num'  => $character->characterId,
+                        'room_pin_number' => $postData['roomId']
+                    ]);
 
                 $countDown--;
             } while ($updateCheck != 1 && $countDown > 0);
@@ -249,8 +282,10 @@ class RaceController extends Controller
             if($updateCheck == 1){
                 // 참가 유저 정보 입력
                 DB::table('race_results')
-                    ->insert(['set_exam_num' => $postData['setExamId'],
-                        'user_num' => $userCheck->user_num]);
+                    ->insert([
+                        'set_exam_num' => $postData['setExamId'],
+                        'user_num' => $userCheck->user_num
+                    ]);
 
                 // 성공 값 반납
                 $returnValue = array('check' => true,
@@ -275,30 +310,42 @@ class RaceController extends Controller
 
         // test
         $userId = DB::table('users as u')
-            ->select(['u.user_num as user_num',
-                's.session_num as session_num'])
+            ->select([
+                'u.user_num as user_num',
+                's.session_num as session_num'
+            ])
             ->where('u.user_id', '=', $postData['userId'])
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
         if(!isset($userId->session_num)){
             $_SESSION['sessionId'] = DB::table('sessions')
-                ->insertGetId(['user_num' => $userId->user_num], 'session_num');
+                ->insertGetId([
+                    'user_num' => $userId->user_num
+                ], 'session_num');
         }else{
             $_SESSION['sessionId'] = $userId->session_num;
         }
         // test
 
         $updateCount = DB::table('sessions')
-            ->where([['session_num', '=', $_SESSION['sessionId']],
-                ['set_exam_num', '<>', null]])
-            ->update(['user_nick' => $postData['userNick']]);
+            ->where([
+                ['session_num', '=', $_SESSION['sessionId']],
+                ['set_exam_num', '<>', null]
+            ])
+            ->update([
+                'user_nick' => $postData['userNick'
+                ]]);
 
         if($updateCount == 1)
-            $returnValue = array('check' => true,
-                                'nick' => $postData['userNick']);
+            $returnValue = array(
+                'check' => true,
+                'nick' => $postData['userNick']
+            );
         else{
-            $returnValue = array('check' => false);
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         return response()->json($returnValue);
@@ -312,10 +359,14 @@ class RaceController extends Controller
         $postData = json_decode($json, true);
 
         $chaeck = DB::table('sessions')
-            ->select('session_num')
-            ->where(['session_num'     => $postData['sessionId'],
+            ->select(
+                'session_num'
+            )
+            ->where([
+                'session_num'     => $postData['sessionId'],
                 'set_exam_num'    => $postData['setExamId'],
-                'room_pin_number' => $postData['roomPin']])
+                'room_pin_number' => $postData['roomPin']
+            ])
             ->first();
 
         if(isset($chaeck->session_num)){
@@ -326,16 +377,21 @@ class RaceController extends Controller
                     'rse.book_page_start          as pageStart',
                     'rse.book_page_end            as pageEnd',
                     'rse.exam_count               as setExamCount',
-                    DB::raw('COUNT(quiz.sequence) as examCount'))
+                    DB::raw('COUNT(quiz.sequence) as examCount')
+                )
                 ->where('rse.set_exam_num', '=', $postData['setExamId'])
                 ->leftJoin('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
                 ->groupBy('rse.set_exam_num')
                 ->first();
 
             $setExams = DB::table('race_quizs as rq')
-                ->select('rq.quiz_num as quiz_num')
-                ->where(['rq.race_num'       => $raceData->raceId,
-                    'rseq.set_exam_num' => $postData['setExamId']])
+                ->select(
+                    'rq.quiz_num as quiz_num'
+                )
+                ->where([
+                    'rq.race_num'       => $raceData->raceId,
+                    'rseq.set_exam_num' => $postData['setExamId']
+                ])
                 ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', '=', 'rq.quiz_num')
                 ->get();
 
@@ -352,15 +408,18 @@ class RaceController extends Controller
                     'qb.quiz_example1     as exam1',
                     'qb.quiz_example2     as exam2',
                     'qb.quiz_example3     as exam3',
-                    'qb.quiz_type         as type')
+                    'qb.quiz_type         as type'
+                )
                 ->whereNotIn('rq.quiz_num', $setExamList)
                 ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
                 ->inRandomOrder()
                 ->first();
 
             $updateCheck = DB::table('race_set_exam_quizs')
-                ->insertGetId(['set_exam_num' => $postData['setExamId'],
-                    'quiz_num' => $quizData->quizId], 'sequence');
+                ->insertGetId([
+                    'set_exam_num' => $postData['setExamId'],
+                    'quiz_num' => $quizData->quizId
+                ], 'sequence');
 
             $returnValue = array(
                 'quiz' => array(
@@ -371,7 +430,8 @@ class RaceController extends Controller
                     'example1'  => $quizData->exam1,
                     'example2'  => $quizData->exam2,
                     'example3'  => $quizData->exam3,
-                    'type'      => $quizData->type),
+                    'type'      => $quizData->type
+                ),
                 'check' => true);
         } else {
             $returnValue = array('check' => false);

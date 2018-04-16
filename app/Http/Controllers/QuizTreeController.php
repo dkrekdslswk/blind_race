@@ -138,25 +138,34 @@ class QuizTreeController extends Controller
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $folderId = DB::table('race_folders')
-            ->insertGetId(['race_folder_name' => $postData['folderName'],
-                    'user_t_num' => $userData['userId']]
-                , 'race_folder_num');
+            ->insertGetId([
+                    'race_folder_name' => $postData['folderName'],
+                    'user_t_num' => $userData['userId']
+                ], 'race_folder_num');
 
         $folderData = DB::table('race_folders as rf')
-            ->select('rf.race_folder_num as raceFolderId', 'rf.race_folder_name as raceFolderName')
+            ->select(
+                'rf.race_folder_num as raceFolderId',
+                'rf.race_folder_name as raceFolderName'
+            )
             ->where('s.session_num', '=', $_SESSION['sessionId'])
             ->join('sessions as s', 's.user_num', '=', 'rf.user_t_num')
             ->get();
 
         $folderList = array();
         foreach ($folderData as $folder){
-            array_push($folderList, array('folderId' => $folder->raceFolderId, 'folderName' => $folder->raceFolderName));
+            array_push($folderList, array(
+                'folderId' => $folder->raceFolderId,
+                'folderName' => $folder->raceFolderName)
+            );
         }
 
         if (isset($folderId)) {
-            $returnValue = array('folderList' => $folderList,
+            $returnValue = array(
+                'folderList' => $folderList,
                 'raceList' => array(),
-                'selectFolder' => $folderId);
+                'selectFolder' => $folderId
+            );
         }else{
             $returnValue = array('check' => false);
         }
@@ -177,16 +186,19 @@ class QuizTreeController extends Controller
 
         // test 임시로 유저 세션 부여
         $userDataUp = DB::table('users as u')
-            ->select(['u.user_num as user_num',
-                's.session_num  as session_num'])
+            ->select([
+                'u.user_num as user_num',
+                's.session_num  as session_num'
+            ])
             ->where('u.user_id', '=', 'tamp1id')
             ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
             ->first();
 
         if(!isset($userDataUp->session_num)){
             $_SESSION['sessionId'] = DB::table('sessions')
-                ->insertGetId(['user_num' => $userDataUp->user_num],
-                    'session_num');
+                ->insertGetId([
+                    'user_num' => $userDataUp->user_num
+                ], 'session_num');
         }else{
             $_SESSION['sessionId'] = $userDataUp->session_num;
         }
@@ -195,10 +207,11 @@ class QuizTreeController extends Controller
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $raceId = DB::table('races')
-            ->insertGetId(['race_name' => $postData['raceName'],
+            ->insertGetId([
+                'race_name' => $postData['raceName'],
                 'race_folder_num' => $postData['folderId'],
-                'user_t_num' => $userData['userId']]
-            , 'race_num');
+                'user_t_num' => $userData['userId']
+            ], 'race_num');
 
         $bookList = $this->getBookGet();
 
@@ -207,7 +220,8 @@ class QuizTreeController extends Controller
                 'raceId' => $raceId,
                 'raceName' => $postData['raceName'],
                 'bookList' => $bookList,
-                'check' => true);
+                'check' => true
+            );
         }else{
             $returnValue = array('check' => false);
         }
@@ -219,7 +233,12 @@ class QuizTreeController extends Controller
     public function getBookGet(){
 
         $bookData = DB::table('books')
-            ->select('book_num', 'book_name','book_page_max', 'book_page_min')
+            ->select(
+                'book_num',
+                'book_name',
+                'book_page_max',
+                'book_page_min'
+            )
             ->orderBy('book_name')
             ->get();
 
@@ -230,7 +249,8 @@ class QuizTreeController extends Controller
                 'bookId' => $book->book_num,
                 'bookName' => $book->book_name,
                 'pageMax' => $book->book_page_max,
-                'pageMin' => $book->book_page_min));
+                'pageMin' => $book->book_page_min
+            ));
         }
 
         return $bookList;
@@ -250,7 +270,8 @@ class QuizTreeController extends Controller
             'pageStart' => $request->input('pageStart'),
             'pageEnd' => $request->input('pageEnd'),
             'type' => $request->input('type'),
-            'level' => $request->input('level'));
+            'level' => $request->input('level')
+        );
 
         $_SESSION['sessionId'] = 1;
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
@@ -259,7 +280,8 @@ class QuizTreeController extends Controller
 
         if($userData['tCheck'] == 't') {
             $quizData = DB::table('quiz_bank')
-                ->select('quiz_num as quizId',
+                ->select(
+                    'quiz_num as quizId',
                     'book_num as bookId',
                     'book_page as page',
                     'quiz_question as question',
@@ -268,7 +290,8 @@ class QuizTreeController extends Controller
                     'quiz_example2 as example2',
                     'quiz_example3 as example3',
                     'quiz_type as type',
-                    'quiz_level as level')
+                    'quiz_level as level'
+                )
                 ->where([
                     'book_num' => $postData['bookId'],
                     'quiz_type' => $postData['type'],
@@ -289,16 +312,20 @@ class QuizTreeController extends Controller
                     'example2' => $quiz->example2,
                     'example3' => $quiz->example3,
                     'type' => $quiz->type,
-                    'level' => $quiz->level));
+                    'level' => $quiz->level
+                ));
             }
         }
 
         if (count($quizList) > 0) {
             $returnValue = array(
                 'raceId' => $quizList,
-                'check' => true);
+                'check' => true
+            );
         }else{
-            $returnValue = array('check' => false);
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         return response()->json($returnValue);
