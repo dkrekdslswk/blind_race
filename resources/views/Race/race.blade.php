@@ -79,6 +79,11 @@
             groupIdObj.value = selectedText;
         });
     });
+
+    function sendId(raceId) {
+        var raceIdObj = document.getElementById("raceId");
+        raceIdObj.value = raceId;
+    }
 </script>
 
 <body>
@@ -117,7 +122,8 @@
                         <td style="text-align: center">{{$raceData['raceName']}}</td>
                         <td style="text-align: center">{{$raceData['quizCount']}}</td>
                         <td align="center">
-                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#Modal">시작하기</button>
+                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#Modal" onclick="sendId({{$raceData['raceId']}})">시작하기</button>
+
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -155,8 +161,8 @@
             {{csrf_field()}}
             <input type="hidden" name="groupId" id="groupId" value="">
             <input type="hidden" name="raceMode" id="raceMode" value="n">
-            <input type="hidden" name="examCount" id="examCount" value="30">
-            <input type="hidden" name="raceId" id="raceId" value="1">
+            <input type="hidden" name="examCount" id="examCount" value="0">
+            <input type="hidden" name="raceId" id="raceId" value="">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
