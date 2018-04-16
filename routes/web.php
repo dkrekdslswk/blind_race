@@ -66,7 +66,7 @@ Route::get('/recordbox', function(){
     return view('Recordbox/recordbox');
 });
 
-Route::get('/feedback', function(){
+Route::get('/recordbox/feedback', function(){
     return view('Recordbox/feedback');
 });
 
