@@ -16,7 +16,8 @@
         }
 
         .record_page {
-            margin-left: 260px;
+            margin-left: 300px;
+            margin-top: 20px;
             display : inline-block;
         }
         .chart {
