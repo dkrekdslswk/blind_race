@@ -412,7 +412,7 @@ class QuizTreeController extends Controller
         return $returnValue;
     }*/
 
-    public function getRaceQuiz(Request $request){
+    public function showQuiz(Request $request){
         $postData = array(
             'raceId' => $request->input('raceId')
         );

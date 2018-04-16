@@ -94,7 +94,7 @@ Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
 Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
 Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
-Route::post('/quizTreeController/getRaceQuiz','QuizTreeController@getRaceQuiz');
+Route::post('/quizTreeController/showQuiz','QuizTreeController@showQuiz');
 
 Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
