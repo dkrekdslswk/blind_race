@@ -58,6 +58,8 @@
                     <tr>
                         <th>날짜</th>
                         <th>제목</th>
+                        <th>수정</th>
+                        <th>삭제</th>
                         <th>답변</th>
                     </tr>
                 </thead>
@@ -66,7 +68,7 @@
                         <td>01/08</td>
                         <td>
                             <a href="#" data-toggle="modal" data-target="#Modal">
-                            시작하기
+                            잘 모르겠습니다.
                             </a>
                         </td>
                         <td>
@@ -109,8 +111,7 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">선택하기</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        답글
                     </div>
                 </div>
             </form>

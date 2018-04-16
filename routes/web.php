@@ -51,7 +51,7 @@ Route::get('/recordbox', function(){
  });
 
 Route::get('/recordbox/feedback', function(){
-    return view('Recordbox/Feedback');
+    return view('Recordbox/feedback');
 });
 
 Route::get('/Quiz_list', function(){
