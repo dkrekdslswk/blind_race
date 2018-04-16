@@ -40,7 +40,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <img src="{{ asset('img/logo.png' )}}" height="50x"/>
+        <img src="{{ asset('img/logo.png') }}" height="50x"/>
       </div>
 
       <div class="collapse navbar-collapse" id="navbar-collapse-2">

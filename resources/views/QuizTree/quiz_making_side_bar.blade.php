@@ -13,11 +13,10 @@
         .sidenav {
             height: 100%;
             width: 25%;
-            position: fixed;
+            position: absolute;
             z-index: 1;
             left: 0;
             background-color: white;
-            border-right : 2px solid midnightblue;
         }
 
         /* Style the sidenav links and the dropdown button */
@@ -266,8 +265,8 @@
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th>번호</th>
-                <th>예문</th>
+                <th style="text-align: center">번호</th>
+                <th style="text-align: center">예문</th>
             </tr>
             </thead>
 
