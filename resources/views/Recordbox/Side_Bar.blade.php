@@ -1,269 +1,235 @@
-<link
-    href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-    rel="stylesheet"
-    id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
+<html !DOCTYPE>
+<head>
+    <title>Bootstrap 3 Collapsible Sidebar</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
-    <body>
-        <!-- <div id="navbar-wrapper"> <header> <nav class="navbar navbar-default
-        navbar-fixed-top" role="navigation"> <div class="container-fluid"> <div
-        class="navbar-header"> <button type="button" class="navbar-toggle"
-        data-toggle="collapse" data-target="#navbar-collapse"> <span
-        class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
-        class="icon-bar"></span> <span class="icon-bar"></span> </button> <a
-        class="navbar-brand" href="#">Sidebar Template</a> </div> <div
-        id="navbar-collapse" class="collapse navbar-collapse"> <form class="navbar-form
-        navbar-left" role="search"> <div class="input-group"> <input type="text"
-        class="form-control" placeholder="Search"> <span class="input-group-btn">
-        <button class="btn btn-default" type="submit"> <span class="glyphicon
-        glyphicon-search" aria-hidden="true"></span> </button> </span> </div> </form>
-        <ul class="nav navbar-nav navbar-right"> <li class="dropdown"> <a id="flag"
-        href="#" class="dropdown-toggle" data-toggle="dropdown"> <img
-        src="http://www.country-dialing-codes.net/img/png-country-4x2-fancy-res-1280x960/gb.png"
-        alt="English" width="28px" height="18px"></a> <ul class="dropdown-menu
-        dropdown-menu-flag" role="menu"> <li> <a href="#"> <img
-        src="http://www.country-dialing-codes.net/img/png-country-4x2-flat-res-640x480/gf.png"
-        alt="Français" width="28px" height="18px"> <span>Français</span> </a> </li>
-        </ul> </li> <li class="dropdown"> <a id="user-profile" href="#"
-        class="dropdown-toggle" data-toggle="dropdown"> <img
-        src="http://lorempixel.com/100/100/people/9/" class="img-responsive
-        img-thumbnail img-circle"> Username</a> <ul class="dropdown-menu dropdown-block"
-        role="menu"> <li> <a href="#">Profil edition</a> </li> <li> <a
-        href="#">Admin</a> </li> <li> <a href="#">Logout</a> </li> </ul> </li> </ul>
-        </div> </div> </nav> </header> </div> -->
-        <div id="wrapper">
-            <div id="sidebar-wrapper">
-                <aside id="sidebar">
-                    <ul id="sidemenu" class="sidebar-nav">
-                        <li>
-                            <a href="#">
-                                <span class="sidebar-icon">
-                                    <i class="fa fa-folder"></i>
-                                </span>
-                                <span class="sidebar-title"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="accordion-toggle  " data-toggle="collapse" href="#submenu-2">
+    <style>
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-                                <span class="sidebar-title">2학년 A반용</span>
-                                <b class="caret"></b>
-                            </a>
-                            <ul id="submenu-2" class="panel-collapse collapse panel-switch" role="menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users"></i>Users</a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users"></i>Roles</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a
-                                class="accordion-toggle collapsed toggle-switch"
-                                data-toggle="collapse"
-                                href="#submenu-3">
-                                <span class="sidebar-icon">
-                                    <i class="fa fa-folder"></i>
-                                </span>
-                                <span class="sidebar-title">특강 B반</span>
-                                <b class="caret"></b>
-                            </a>
 
-                        </li>
-                        <li>
-                            <a
-                                class="accordion-toggle collapsed toggle-switch"
-                                data-toggle="collapse"
-                                href="#submenu-3">
-                                <span class="sidebar-icon">
-                                <i class="fa fa-folder"></i>
-                                </span>
-                                <span class="sidebar-title">특강 C반</span>
-                                <b class="caret"></b>
-                            </a>
-                           
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="sidebar-icon">
-                                <i class="fa fa-folder"></i>
-                                </span>
-                                <span class="sidebar-title">특강 D반</span>
-                            </a>
-                        </li>
-                        
-                      
-                    </aside>
-                </div>
-                <main id="page-content-wrapper" role="main"></main>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fafafa;
+        }
+
+        .wrapper p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 300;
+            line-height: 1.7em;
+            color: #999;
+        }
+
+        .wrapper button {
+            background-color: #657BB8;
+            width: 220px;
+            border: 1px solid #8691B7;
+        }
+
+        .wrapper a,.wrapper a:hover,.wrapper a:focus {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .wrapper navbar {
+            padding: 15px 10px;
+            background: #fff;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 40px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .wrapper navbar-btn {
+            box-shadow: none;
+            outline: none !important;
+            border: none;
+        }
+
+        .wrapper line {
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px dashed #ddd;
+            margin: 40px 0;
+        }
+
+        /* ---------------------------------------------------
+            SIDEBAR STYLE
+        ----------------------------------------------------- */
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            top: 63px;
+            left: 0;
+            height: 100vh;
+            z-index: 999;
+            background: #F0F1F0;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #697FC2;
+            border-bottom: 1px solid #47748b;
+        }
+
+        #sidebar ul.components {
+            padding: 0;
+            color: #fff;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            background: #fff;
+            color: #5860A2;
+        }
+        #sidebar ul li a:hover {
+            color: #F0F1F0;
+            background: #7391C8;
+            border-bottom: 1px solid white;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #000;
+            background: #697FC2;
+            border-bottom: 1px solid white;
+        }
+
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+            content: '\e259';
+            display: block;
+            position: absolute;
+            right: 20px;
+            font-family: 'Glyphicons Halflings';
+            font-size: 0.6em;
+        }
+        .wrapper a[aria-expanded="true"]::before {
+            content: '\e260';
+        }
+
+
+        .wrapper ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #6d7fcc;
+        }
+
+        .wrapper ul.CTAs {
+            padding: 20px;
+        }
+
+        .wrapper ul.CTAs a {
+            text-align: center;
+            font-size: 0.9em !important;
+            display: block;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        .wrapper a.download {
+            background: #fff;
+            color: #7386D5;
+        }
+        .wrapper a.article,.wrapper a.article:hover {
+            background: #6d7fcc !important;
+            color: #fff !important;
+        }
+
+        /* ---------------------------------------------------
+            MEDIAQUERIES
+        ----------------------------------------------------- */
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+            #content {
+                width: 100%;
+            }
+            #content.active {
+                width: calc(100% - 250px);
+            }
+            #sidebarCollapse span {
+                display: none;
+            }
+        }
+
+
+    </style>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Bootstrap Js CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom Scroller Js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <Script>
+        $(document).ready(function () {
+
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                // open or close navbar
+                $('#sidebar').toggleClass('active');
+                // close dropdowns
+                $('.collapse.in').toggleClass('in');
+                // and also adjust aria-expanded attributes we use for the open/closed arrows
+                // in our CSS
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+
+        });
+    </Script>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <nav id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+            <h3>레코드 박스</h3>
+        </div>
+
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            <li><!-- Link with dropdown items -->
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" style="text-align: center;">그룹 선택</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu"style="text-align: center;">
+                    <li><a href="#">특강 A반</a></li>
+                    <li><a href="#">특강 B반</a></li>
+                    <li><a href="#">특강 C반</a></li>
+                </ul>
+            </li>
+            <div style="text-align: center;margin-top: 10px;">
+                <button class="btn btn-default" style="margin-bottom: 5px">학습 기록 조회</button>
+                <button class="btn btn-default">피드백과 질문</button>
             </div>
-        </body>
-        <style>
-            @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
+        </ul>
+    </nav>
+</div>
 
-            .navbar-fixed-top {
-                top: 0;
-                border-width: 0 0 1px;
-            }
 
-            .navbar-default .navbar-nav #user-profile {
-                height: 50px;
-                padding-top: 15px;
-                padding-left: 58px;
-            }
-
-            .navbar-default .navbar-nav #user-profile img {
-                height: 45px;
-                width: 45px;
-                position: absolute;
-                top: 2px;
-                left: 8px;
-                padding: 1px;
-            }
-
-            #wrapper {
-                padding-top: 0;
-                padding-left: 0;
-                -webkit-transition: all 0.5s ease;
-                -moz-transition: all 0.5s ease;
-                -o-transition: all 0.5s ease;
-                transition: all 0.5s ease;
-            }
-
-            @media (min-width: 992px) {
-                #wrapper {
-                    padding-left: 225px;
-                }
-            }
-
-            @media (min-width: 992px) {
-                #wrapper #sidebar-wrapper {
-                    width: 225px;
-                }
-            }
-
-            #sidebar-wrapper {
-                border-right: 1px solid #e7e7e7;
-            }
-
-            #sidebar-wrapper {
-                z-index: 1000;
-                position: fixed;
-                left: 225px;
-                width: 0;
-                height: 100%;
-                margin-left: -225px;
-                overflow-y: auto;
-                background: #f8f8f8;
-                -webkit-transition: all 0.5s ease;
-                -moz-transition: all 0.5s ease;
-                -o-transition: all 0.5s ease;
-                transition: all 0.5s ease;
-            }
-
-            #sidebar-wrapper .sidebar-nav {
-                position: absolute;
-                top: 0;
-                width: 225px;
-                font-size: 14px;
-                margin: 0;
-                padding: 0;
-                list-style: none;
-            }
-
-            #sidebar-wrapper .sidebar-nav li {
-                text-indent: 0;
-                line-height: 45px;
-            }
-
-            #sidebar-wrapper .sidebar-nav li a {
-                display: block;
-                text-decoration: none;
-                color: #428bca;
-            }
-
-            .sidebar-nav li:first-child a {
-                background: #92bce0 !important;
-                color: #fff !important;
-            }
-
-            #sidebar-wrapper .sidebar-nav li a .sidebar-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 14px;
-                padding: 0 2px;
-                display: inline-block;
-                text-indent: 7px;
-                margin-right: 10px;
-                color: #fff;
-                float: left;
-            }
-
-            #sidebar-wrapper .sidebar-nav li a .caret {
-                position: absolute;
-                right: 23px;
-                top: auto;
-                margin-top: 20px;
-            }
-
-            #sidebar-wrapper .sidebar-nav li ul.panel-collapse {
-                list-style: none;
-                -moz-padding-start: 0;
-                -webkit-padding-start: 0;
-                -khtml-padding-start: 0;
-                -o-padding-start: 0;
-                padding: 0;
-            }
-
-            #sidebar-wrapper .sidebar-nav li ul.panel-collapse li i {
-                margin-right: 10px;
-            }
-
-            #sidebar-wrapper .sidebar-nav li ul.panel-collapse li {
-                text-indent: 15px;
-            }
-
-            @media (max-width: 992px) {
-                #wrapper #sidebar-wrapper {
-                    width: 45px;
-                }
-                #wrapper #sidebar-wrapper #sidebar #sidemenu li ul {
-                    position: fixed;
-                    left: 45px;
-                    margin-top: -45px;
-                    z-index: 1000;
-                    width: 200px;
-                    height: 0;
-                }
-            }
-
-            .sidebar-nav li:first-child a {
-                background: #92bce0 !important;
-                color: #fff !important;
-            }
-
-            .sidebar-nav li:nth-child(2) a {
-                background: #6aa3d5 !important;
-                color: #fff !important;
-            }
-
-            .sidebar-nav li:nth-child(3) a {
-                background: #428bca !important;
-                color: #fff !important;
-            }
-
-            .sidebar-nav li:nth-child(4) a {
-                background: #3071a9 !important;
-                color: #fff !important;
-            }
-
-            .sidebar-nav li:nth-child(5) a {
-                background: #245682 !important;
-                color: #fff !important;
-            }
-        </style>
+</body>
+</html>
