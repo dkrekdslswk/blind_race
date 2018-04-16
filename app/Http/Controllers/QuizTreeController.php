@@ -43,7 +43,7 @@ class QuizTreeController extends Controller
             'selectFolder' => $postData['folderId']);
 
 //        return $returnValue;
-        return view('Quiz_tree/Quiz_list')->with('response', $returnValue);
+        return view('QuizTree/quiz_list')->with('response', $returnValue);
     }
 
     public function RaceDataGet($folderId)
@@ -79,7 +79,7 @@ class QuizTreeController extends Controller
             'selectFolder' => $postData['folderId']);
 
 //        return $returnValue;
-        return view('Race/race')->with('response', $returnValue);
+        return view('Race/race_list')->with('response', $returnValue);
     }
 
     public function folderGet(){
@@ -227,7 +227,7 @@ class QuizTreeController extends Controller
         }
 
 //        return $returnValue;
-        return view('Quiz_tree/Quiz_making')->with('response', $returnValue);
+        return view('QuizTree/quiz_making')->with('response', $returnValue);
     }
 
     public function getBookGet(){

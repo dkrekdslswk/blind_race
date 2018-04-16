@@ -181,10 +181,18 @@
     <!-- Custom Scroller Js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <Script>
-
-
-    </Script>
+    <script>
+        function side_menu_clicked(data){
+            switch(data){
+                case "recordbox":
+                    document.getElementById('record_box_title').innerText = "학습기록 조회";
+                    break;
+                case 2:
+                    document.getElementById('record_box_title').innerText = "피드백과 질문";
+                    break;
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -193,11 +201,10 @@
     <nav id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header" id="sidebar_header">
-            <h3>
-                <a href="/recordbox">
-                    레코드 박스
+
+                <a  href="/recordbox">
+                    <h3 id="record_box_title">피드백과 질문</h3>
                 </a>
-            </h3>
         </div>
 
         <!-- Sidebar Links -->

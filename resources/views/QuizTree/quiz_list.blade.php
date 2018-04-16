@@ -2,12 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Race list</title>
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
+    <title>Quiz list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 </head>
@@ -24,14 +20,13 @@
     }
 
     .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
-        text-align: center;
-        width: 100px;
+        text-align:center;
+        width: 150px;
     }
 
     .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
     .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
         border-right: 0px;
-        width: 150px;
     }
 
     .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
@@ -70,27 +65,28 @@
 
 </style>
 
+
+
 <script>
     $(document).ready(function () {
-        $('#groupSelect').change(function () {
-            var selectedText = $("#groupSelect :selected").attr('value');
+        $('#quizName').change(function () {
+            var quizName = $("#quizName").val();
 
-            var groupIdObj = document.getElementById("groupId");
-            groupIdObj.value = selectedText;
+            var quizNameObj = document.getElementById("raceName");
+            quizNameObj.value = quizName;
         });
     });
 
-    function sendId(raceId) {
-        var raceIdObj = document.getElementById("raceId");
-        raceIdObj.value = raceId;
-    }
 </script>
 
 <body>
-
 <nav>
-    @include('Navigation.mainnav')
+    @include('Navigation.main_nav')
 </nav>
+
+<aside style="display:inline-block; vertical-align:top;">
+    {{--@include('QuizTree.Quiz_list_side_bar')--}}
+</aside>
 
 <div class="btn-process" style="margin-top:50px;"></div>
 
@@ -102,29 +98,32 @@
                     <div class="col col-xs-6">
                         <h3 class="panel-title">퀴즈 리스트</h3>
                     </div>
+                    <div class="col col-xs-6 text-right">
+                        <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+                    </div>
                 </div>
             </div>
             <div class="panel-body">
                 <table class="table table-striped table-bordered table-list">
                     <thead>
                     <tr>
-                        <th class="hidden-xs">#</th>
+                        <th><em class="fa fa-cog"></em></th>
+                        <th class="hidden-xs" style="text-align: center">#</th>
                         <th style="text-align: center">퀴즈명</th>
                         <th style="text-align: center">문항수</th>
-                        <th></th>
                     </tr>
                     </thead>
                     <tbody id="list">
 
                     <?php foreach ($response['raceList'] as $raceData): ?>
                     <tr>
+                        <td align="center">
+                            <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+                            <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+                        </td>
                         <td class="hidden-xs" style="text-align: center">{{$raceData['raceId']}}</td>
                         <td style="text-align: center">{{$raceData['raceName']}}</td>
                         <td style="text-align: center">{{$raceData['quizCount']}}</td>
-                        <td align="center">
-                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#Modal" onclick="sendId({{$raceData['raceId']}})">시작하기</button>
-
-                        </td>
                     </tr>
                     <?php endforeach; ?>
 
@@ -154,36 +153,30 @@
     </div>
 </div>
 
-{{--Modal : select group--}}
+{{--Modal : make quiz--}}
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+        <form action="{{url('quizTreeController/createRace')}}"  method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
-            <input type="hidden" name="groupId" id="groupId" value="">
-            <input type="hidden" name="raceMode" id="raceMode" value="n">
-            <input type="hidden" name="examCount" id="examCount" value="0">
-            <input type="hidden" name="raceId" id="raceId" value="">
+            <input type="hidden" name="raceName" id="raceName" value="">
+            <input type="hidden" name="folderId" id="folderId" value="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                    <h5 class="modal-title" id="ModalLabel">퀴즈 만들기</h5>
                 </div>
                 <div class="modal-body" style="text-align: center">
-                    {{--Dropdowns--}}
-                    <select id="groupSelect" class="selectpicker">
-                        <option>그룹명</option>
-                        <option value="1">2-특강 A반</option>
-                        <option value="2">1-특강 B반</option>
-                    </select>
+                    {{--퀴즈명 입력란--}}
+                    퀴즈 이름 <input type="text" id="quizName">
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">선택하기</button>
+                    <button type="submit" class="btn btn-primary">만들기</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-</div>
 
 </body>
+
 </html>

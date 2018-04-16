@@ -26,7 +26,7 @@ class RaceController extends Controller
         $postData = array(
             'group' => array('groupId'   => $request->input('groupId')),
             'race'  => array('raceMode'  => $request->input('raceMode'),
-            'examCount' => $request->input('examCount'),
+            /*'examCount' => $request->input('examCount'),*/
             'raceId'    => $request->input('raceId')));
 
 	    // test 임시로 유저 세션 부여
@@ -84,12 +84,12 @@ class RaceController extends Controller
             ->groupBy('races.race_num')
 		    ->first();
 
-        if(isset($raceCheck->race_num) && ($raceCheck->examCount >= $postData['race']['examCount'])){
+        if(isset($raceCheck->race_num)/* && ($raceCheck->examCount >= $postData['race']['examCount'])*/){
 
             $raceSetExamId = DB::table('race_set_exam')->insertGetId([
                 'group_num'=>$groupData->groupId,
                 'set_exam_state'=>$postData['race']['raceMode'],
-                'exam_count'=>$postData['race']['examCount'],
+                'exam_count'=>$raceCheck->examCount,
                 'race_num'=>$raceCheck->race_num
             ], 'set_exam_num');
 
@@ -126,8 +126,8 @@ class RaceController extends Controller
 
             $returnValue = array(
                 'race'=>array(
-                    'raceName'          =>$raceCheck->race_name,
-                    'examCount'         =>$postData['race']['examCount']
+                    'raceName'          => $raceCheck->race_name,
+                    'examCount'         => $raceCheck->examCount
                 ),
                 'group'=>array(
                     'groupName'         => $groupData->groupName,

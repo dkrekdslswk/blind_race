@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -6,39 +7,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
-
-    <style type="text/css">
-
-        .contents {
-            margin-left: 25%;
-        }
-
-        .table tr{
-            background-color: white;
-        }
-
-        td {
-            text-align: center;
-        }
-        
-        .two_button {
-            margin: 10px 20px 10px 0px;
-            text-align: right;
-        }
-
-    </style>
-
+    <link href="js/bootstrap.min.js" rel="stylesheet">
 </head>
+
+<style type="text/css">
+
+    .contents {
+        margin-left: 25%;
+    }
+
+    .table tr{
+        background-color: white;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    .two_button {
+        margin: 10px 20px 10px 0px;
+        text-align: right;
+    }
+    </style>
 <body onLoad="document.getElementById('add').click();">
 <nav>
-    @include('Navigation.mainnav')
+    @include('Navigation.main_nav')
 </nav>
 
 <aside style="display:inline-block; vertical-align:top;">
-    @include('Quiz_tree.Quiz_making_side_bar')
+    @include('QuizTree.quiz_making_side_bar')
 </aside>
 
 <script>

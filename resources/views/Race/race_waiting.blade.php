@@ -125,7 +125,8 @@
             var quiz_number = 0;
             var timeleft = 20;
 
-            var quiz_JSON = JSON.parse({{(json_encode($json['quizData']))}});
+            var quiz_JSON = JSON.parse('<?php echo json_encode($json['quizData']); ?>');
+
 
             socket.emit('count','1',pub_group_num);
 
@@ -140,6 +141,7 @@
                 $("#quiz_number").text(quiz_num);
 
                 $("#winners").text(correct_count+"명 정답!");
+
                 $("#right").text(correct_count);
                 $("#wrong").text(incorrect_count);
 
@@ -150,7 +152,7 @@
                 --quiz_num;
 
                 $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
-                $("#Mid_A_Right").text(quiz_JSON[quiz_num].answer1);
+                $("#Mid_A_Right").text(correct_percentage+"%정답  "+quiz_JSON[quiz_num].answer1);
 
                 function sliceSize(dataNum, dataTotal) {
                     return (dataNum / dataTotal) * 360;
@@ -220,8 +222,8 @@
                         var size = sliceSize(listData[i], listTotal);
                         iterateSlices(size, pieElement, offset, i, 0, color[i]);
                         $(dataElement + " li:nth-child(" + (
-                            i + 1
-                        ) + ")").css("border-color", color[i]);
+                                i + 1
+                            ) + ")").css("border-color", color[i]);
                         offset += size;
                     }
                 }
@@ -287,7 +289,7 @@
             socket.on('answer-sum', function(data){
                 document.getElementById('answer_c').innerText= data;
 
-                if(data == 3)
+                if(data == 2)
                 {
 
                     socket.emit('count_off','on');
@@ -313,11 +315,8 @@
     </script>
 </head>
 <body>
-<?php print_r($json); ?>
-{{--레이스 네비게이션--}}
-<racenav>
-    @include('Navigation.mainnav')
-</racenav>
+<?php //print_r($json['quizData'][0]['quiz_num']); ?>
+<?php //echo json_encode($json['quizData']); ?>
 
 <div id="wait_room">
     <div class="student">
@@ -348,7 +347,7 @@
     </div>
 </div>
 <div id="playing_contents" style="display:none;">
-    @include('Raid.raid')
+    @include('Race.race_content')
 </div>
 
 
