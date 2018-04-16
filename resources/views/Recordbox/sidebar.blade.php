@@ -182,8 +182,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <Script>
-
-
+        function side_menu_clicked(data){
+            switch(data){
+                case "feedback":
+                    document.getElementById('record_box_title').innerText = "피드백과 질문";
+                    break;
+                case "recordbox":
+                    document.getElementById('record_box_title').innerText = "학습기록 조회";
+                    break;
+            }
+        }
     </Script>
 </head>
 <body>
@@ -193,11 +201,10 @@
     <nav id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header" id="sidebar_header">
-            <h3>
-                <a href="/recordbox">
-                    레코드 박스
+
+                <a  href="/recordbox">
+                    <h3 id="record_box_title">레코드 박스 </h3>
                 </a>
-            </h3>
         </div>
 
         <!-- Sidebar Links -->
@@ -211,16 +218,22 @@
                 </ul>
             </li>--}}
             <div style="text-align: center;margin-top: 10px;">
+
+                <a id="record" href="/recordbox">
                 <button class="btn btn-default" style="margin-bottom: 5px">
-                    <a id="record" href="/recordbox">
                     학습 기록 조회
-                    </a>
                 </button>
+                </a>
+
+
+                <a id="feedback" href="/feedback">
                 <button class="btn btn-default">
-                    <a id="feedback" href="/recordbox/feedback">
+
                     피드백과 질문
-                    </a>
+
                 </button>
+                </a>
+
             </div>
         </ul>
     </nav>

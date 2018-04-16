@@ -118,7 +118,7 @@
 
 </script>
 
-<body>
+<body onload="side_menu_clicked('recordbox');">
     <nav>
         @include('Navigation.main_nav')
     </nav>
