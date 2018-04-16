@@ -26,8 +26,6 @@ class CreateRaceResultsTable extends Migration
 
 	        $table->unsignedInteger('team_num')->nullable();
 	        $table->foreign('team_num')->references('team_num')->on('race_teams');
-
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
