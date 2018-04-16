@@ -21,21 +21,11 @@
 
     </style>
 
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-
-
-
-    </script>
-
 </head>
 <body>
-
-    <nav>
-        @include('Navigation.mainnav')
-    </nav>
+<nav>
+    @include('Navigation.main_nav')
+</nav>
 
     <aside style="display:inline-block; vertical-align:top;">
         @include('Recordbox.Side_Bar')
