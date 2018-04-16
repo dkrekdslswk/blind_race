@@ -6,8 +6,7 @@
     <title>Dashboard with Off-canvas Sidebar</title>
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
-    <link href="js/bootstrap.min.js" rel="stylesheet">
+    <link href="js/bootstrap.min.js" type="text/css" rel="stylesheet">
 
     <style type="text/css">
 
