@@ -116,7 +116,7 @@ class QuizTreeController extends Controller
                 'r.race_folder_num' => $folderId*/])
             ->join('race_quizs as rq', 'rq.race_num', '=', 'r.race_num')
             ->groupBy('r.race_num')
-            ->orderBy('r.race_num')
+            ->orderBy('r.race_num', 'desc')
             ->get();
 
         $raceDatas = array();
