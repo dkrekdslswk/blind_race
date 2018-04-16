@@ -61,7 +61,7 @@
         ----------------------------------------------------- */
         #sidebar {
             width: 250px;
-            position: fixed;
+            position: absolute;
             top: 63px;
             left: 0;
             height: 100vh;
