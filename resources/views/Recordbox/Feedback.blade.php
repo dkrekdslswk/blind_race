@@ -26,6 +26,8 @@
     <script type="text/javascript">
 
 
+
+
     </script>
 
 </head>
@@ -63,8 +65,8 @@
                     <tr>
                         <td>01/08</td>
                         <td>
-                            <a href="/recordbox/feedback/question_id">
-                            궁금하다
+                            <a href="#" data-toggle="modal" data-target="#Modal">
+                            시작하기
                             </a>
                         </td>
                         <td>
@@ -73,7 +75,9 @@
                     </tr>
                     <tr>
                         <td>01/08</td>
-                        <td>질문이다</td>
+                        <td>
+                            질문이다
+                        </td>
                         <td>
                             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">답변완료</button>
                         </td>
@@ -81,8 +85,38 @@
                 </tbody>
             </table>
         </div>
-
     </div>
+
+    {{--Modal : select group--}}
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+                {{csrf_field()}}
+                <input type="hidden" name="groupId" id="groupId" value="">
+                <input type="hidden" name="raceMode" id="raceMode" value="n">
+                <input type="hidden" name="examCount" id="examCount" value="0">
+                <input type="hidden" name="raceId" id="raceId" value="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        {{--Dropdowns--}}
+                        <select id="groupSelect" class="selectpicker">
+                            <option>그룹명</option>
+                            <option value="1">2-특강 A반</option>
+                            <option value="2">1-특강 B반</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">선택하기</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 </body>
 </html>

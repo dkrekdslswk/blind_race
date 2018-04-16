@@ -211,15 +211,11 @@
                 </ul>
             </li>--}}
             <div style="text-align: center;margin-top: 10px;">
-                <button class="btn btn-default" style="margin-bottom: 5px">
-                    <a id="record" href="/recordbox">
+                <button class="btn btn-default" style="margin-bottom: 5px" onclick="location.href='/recordbox'">
                     학습 기록 조회
-                    </a>
                 </button>
-                <button class="btn btn-default">
-                    <a id="feedback" href="/recordbox/feedback">
+                <button class="btn btn-default" onclick="location.href='/recordbox/feedback'">
                     피드백과 질문
-                    </a>
                 </button>
             </div>
         </ul>
