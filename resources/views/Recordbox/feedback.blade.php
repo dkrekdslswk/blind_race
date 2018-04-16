@@ -2,32 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Feedback</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link href="js/bootstrap.min.js" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 
+
     <style type="text/css">
-        .feedback_page {
-            margin-left: 300px;
-            margin-top: 30px;
+        .feedbackBar {
+            margin-right: 130px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .panel-table .panel-body{
+            padding:0;
+        }
+
+        .panel-table .panel-body .table-bordered{
+            border-style: none;
+            margin:0;
+            text-align: center;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+            text-align:center;
+            width: 150px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+            border-right: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+            border-left: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
+            border-bottom: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
+            border-top: 0px;
+        }
+
+        .panel-table .panel-footer .pagination{
+            margin:0;
+        }
+
+        /*
+        used to vertically center elements, may need modification if you're not using default sizes.
+        */
+        .panel-table .panel-footer .col{
+            line-height: 34px;
+            height: 34px;
+        }
+
+        .panel-table .panel-heading .col h3{
+            line-height: 30px;
+            height: 30px;
+        }
+
+        .panel-table .panel-body .table-bordered > tbody > tr > td{
+            line-height: 34px;
         }
     </style>
-    
 </head>
-
 <body >
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
-<aside>
-    @include('Recordbox.sidebar')
-</aside>
-
 <div class="feedback_page">
     <div class="row">
+        <div id="record_bar" class="feedbackBar">
+            <button class="btn btn-default" style="margin-bottom: 5px" onclick="location.href='/recordbox'">
+                학습 기록 조회
+            </button>
+            <button class="btn btn-default" onclick="location.href='/feedback'">
+                피드백과
+            </button>
+        </div>
+
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default panel-table">
                 <div class="panel-heading">
@@ -121,9 +181,6 @@
         </div>
     </div>
 </div>
-
-</div>
-
 
 </body>
 </html>
