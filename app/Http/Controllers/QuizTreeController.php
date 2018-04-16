@@ -15,7 +15,7 @@ class QuizTreeController extends Controller
 //        $json     = $request->input('post');
 //        $json     = json_encode(array('folderId' => null));
 //        $postData = json_decode($json);
-        $postData = array('folderId' => $folderId == 0 ? '' : $folderId);
+        $postData = array('folderId' => $folderId == 'null' ? '' : $folderId);
 
         // test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
@@ -44,6 +44,42 @@ class QuizTreeController extends Controller
 
 //        return $returnValue;
         return view('Quiz_tree/Quiz_list')->with('response', $returnValue);
+    }
+
+    public function RaceDataGet($folderId)
+    {
+//        $json     = $request->input('post');
+//        $json     = json_encode(array('folderId' => null));
+//        $postData = json_decode($json);
+        $postData = array('folderId' => $folderId == 'null' ? '' : $folderId);
+
+        // test 임시로 유저 세션 부여
+        $userData = DB::table('users as u')
+            ->select(['u.user_num   as user_num',
+                's.session_num  as session_num'])
+            ->where('u.user_id', '=', 'tamp1id')
+            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
+            ->first();
+
+        if(!isset($userData->session_num)){
+            $_SESSION['sessionId'] = DB::table('sessions')
+                ->insertGetId(['user_num' => $userData->user_num],
+                    'session_num');
+        }else{
+            $_SESSION['sessionId'] = $userData->session_num;
+        }
+        // test
+
+        $folderList = $this->folderGet();
+
+        $raceList = $this->raceGet($postData['folderId'], $userData->user_num);
+
+        $returnValue = array('folderList' => $folderList,
+            'raceList' => $raceList,
+            'selectFolder' => $postData['folderId']);
+
+//        return $returnValue;
+        return view('Race/race')->with('response', $returnValue);
     }
 
     public function folderGet(){
@@ -80,6 +116,7 @@ class QuizTreeController extends Controller
                 'r.race_folder_num' => $folderId*/])
             ->join('race_quizs as rq', 'rq.race_num', '=', 'r.race_num')
             ->groupBy('r.race_num')
+            ->orderBy('r.race_num', 'desc')
             ->get();
 
         $raceDatas = array();

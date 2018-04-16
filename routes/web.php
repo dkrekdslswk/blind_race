@@ -100,6 +100,8 @@ Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
 
+Route::get('/raceController/RaceDataGet/{folderId}','QuizTreeController@RaceDataGet');
+
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');

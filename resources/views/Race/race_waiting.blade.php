@@ -125,11 +125,7 @@
             var quiz_number = 0;
             var timeleft = 20;
 
-            var quiz_JSON = [
-                {"quiz_num":"1", "name":"苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",　"answer1":"たりとも", "answer2":"ばかりも",	"answer3":"だけさえ","answer4":"とはいえ"},
-                {"quiz_num":"2", "name":"この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。",　"answer1":"とあって", "answer2":"からして",	"answer3":"にあって","answer4":"にしては"},
-                {"quiz_num":"3", "name":"姉は市役所に勤める（　　）、ボランティアで日本語を教えています。","answer1":"かたわら", "answer2":"かたがた",	"answer3":"こととて","answer4":"うちに"},
-            ];
+            var quiz_JSON = JSON.parse({{(json_encode($json['quizData']))}});
 
             socket.emit('count','1',pub_group_num);
 

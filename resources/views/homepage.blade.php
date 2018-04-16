@@ -48,14 +48,14 @@
                             <a href="/mygroup">나의 그룹</a>
                         </li>
                         <li>
-                            <a href="/Quiz_list">문제 나무</a>
+                            <a href="{{ url('quizTreeController/folderRaceDataGet/null') }}">문제 나무</a>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">퀴즈 시작
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/race">블라인드 레이스</a>
+                                    <a href="{{ url('/raceController/RaceDataGet/null') }}">블라인드 레이스</a>
                                 </li>
                                 <li>
                                     <a href="#">도전 골든벨</a>
@@ -101,7 +101,7 @@
                     -->
                     <ul class="nospace group">
                         <li>
-                            <a class="mt-green" href="/race">
+                            <a class="mt-green" href="{{ url('/raceController/RaceDataGet/null') }}">
                                 <i class="fa fa-5x fa-gamepad"></i>
                                 <em>Race</em>
                             </a>
@@ -125,9 +125,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mt-yellow" href="/Quiz_list">
+                            <a class="mt-yellow" href="{{ url('quizTreeController/folderRaceDataGet/null') }}">
                                 <i class="fa fa-5x fa-tree"></i>
-                                <em>문제 나무</em>
+                                <em>Quiz Tree</em>
                             </a>
                         </li>
                     </ul>
