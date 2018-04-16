@@ -49,7 +49,7 @@ class RecordBoxController extends Controller{
                 $join->on('pq.set_exam_num', '=', 'rr.set_exam_num');
             })
             ->groupBy('rse.set_exam_num')
-            ->orderBy('rse.created_at')
+            ->orderBy('rse.created_at', 'desc')
             ->offset(0)
             ->limit(5)
             ->get();
