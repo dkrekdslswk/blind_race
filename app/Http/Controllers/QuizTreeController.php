@@ -380,22 +380,69 @@ class QuizTreeController extends Controller
                     'race_num' => $postData['raceId'],
                     'quiz_num' => $quizId
                 ]);
-
-            if(!is_null($insertCheck)){
+            if(!is_null($insertCheck)) {
                 $insertCount++;
-                $returnValue = array(
-                    'check' => true,
-                    'insertCount' => $insertCount
-                );
             }
-            else{
-                $returnValue = array(
-                    'check' => false
-                );
-            }
+        }
+        if($insertCount > 0){
+            $returnValue = array(
+                'check' => true,
+                'insertCount' => $insertCount
+            );
+        }
+        else{
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         return $returnValue;
 //        return view('race/race_waitingroom')->with('json', response()->json($returnValue));
+    }
+
+    /*public function deleteRace(Request $request){
+        $postData = array(
+            'raceId' => $request->input('raceId')
+        );
+
+        $rowCount = DB::table('races')
+            ->where()
+            ->delete();
+
+        return $returnValue;
+    }*/
+
+    public function getRaceQuiz(Request $request){
+        $postData = array(
+            'raceId' => $request->input('raceId')
+        );
+
+        $quiz_data = DB::table('race_quizs as rq')
+            ->select(
+                'qb.quiz_question as question',
+                'qb.quiz_right_answer as right',
+                'qb.quiz_example1 as example1',
+                'qb.quiz_example2 as example2',
+                'qb.quiz_example3 as example3',
+                'qb.quiz_type as type'
+            )
+            ->where('rq.race_num', '=', $postData{'raceId'})
+            ->join('quiz_bank as qb', 'qb.quiz_num', '=', 'rq.quiz_num')
+            ->orderBy('qb.quiz_num')
+            ->get();
+
+        $returnValue = array();
+        foreach ($quiz_data as $data){
+            array_push($returnValue, array(
+                'name' => $data->question,
+                'answer1' => $data->right,
+                'answer2' => $data->example1,
+                'answer3' => $data->example2,
+                'answer4' => $data->example3,
+                'type' => $data->type
+            ));
+        }
+
+        return array('raceList' => $returnValue);
     }
 }
