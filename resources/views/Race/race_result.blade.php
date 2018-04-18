@@ -54,6 +54,10 @@
 <div id="race_result" >
 
 </div>
+
+<audio autoplay><source src="/bgm/race_result.mp3"></audio>
+
 <script src="{{asset('js/app.js')}}"></script>
+<a href="/"><button class="btn btn-primary" style="margin-left:50%;">돌아가기</button></a>
 </body>
 </html>

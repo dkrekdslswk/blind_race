@@ -17,6 +17,12 @@
     <script type="text/javascript"></script>
 
     <style>
+        .user_in_room{
+            display:inline-block;   
+            
+            margin-right:50px;
+            border-radius: 15px 50px 30px;
+        }
         .student {
             margin-top: 3%;
             display: block;
@@ -59,7 +65,7 @@
             socket.emit('join', pub_group_num);
 
             socket.on('user_in',function(nickname , user_num, character_num){
-                $('<img src="/img/character/char'+character_num+'.png"></img><li id="'+ user_num +'">' + nickname + '</li>').appendTo('body');
+                $('<li class="user_in_room" id="'+ user_num +'"><h4 style="text-align:center; color:white; background-color:black;">' + nickname + '</h4><img src="/img/character/char'+character_num+'.png"></img></li>').appendTo('body');
                 // $('#student_count').html(student_count);
             });
 
@@ -106,14 +112,18 @@
 
 
         function btn_click(){
-
+            
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
             socket.emit('join', pub_group_num);
-
+            
+            $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+            
             socket.emit('android_game_start',pub_group_num);
-
+            
+            $('.user_in_room').remove();
+            
             socket.on('entrance_ranking', function(ranking_j){
                 ranking_process(ranking_j);
             });
@@ -145,14 +155,14 @@
                 $("#right").text(correct_count);
                 $("#wrong").text(incorrect_count);
 
-                var correct_percentage = correct_count / (correct_count + incorrect_count) * 100;
-
+                var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
+                
                 // $('.pie::before').css('content',correct_percentage);
 
                 --quiz_num;
 
                 $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
-                $("#Mid_A_Right").text(correct_percentage+"%정답  "+quiz_JSON[quiz_num].answer1);
+                $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quiz_num].answer1);
 
                 function sliceSize(dataNum, dataTotal) {
                     return (dataNum / dataTotal) * 360;
@@ -238,26 +248,40 @@
                 document.getElementById('answer_c').innerText= "Answers";
 
                 ranking_process(ranking_j);
-
+                
+                $('#play_bgm').remove();
+                
+                $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
+                
                 $("#mid_result").show();
 
                 Mid_result_Timer = setTimeout(function(){
-
+                    $('#mid_result_bgm').remove();
                     socket.emit('count','time on',pub_group_num);
+                    
                     $("#content").show();
+                    $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
                     socket.emit('android_nextkey','미정');
 
-                }, 5000);
+                }, 30000);
             });
 
 
             $("#Mid_skip_btn").click(function(){
+                
                 clearTimeout(Mid_result_Timer);
+                
+                $('#mid_result_bgm').remove();
                 socket.emit('count','time on',pub_group_num);
+                
+                
                 $("#content").show();
+                $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+                
                 $("#mid_result").hide();
                 socket.emit('android_nextkey','미정');
+                
             });
 
 
@@ -267,9 +291,9 @@
                 document.getElementById('counter').innerText= counting;
 
                 document.getElementById("progressBar")
-                    .value = 20 - counting;
+                    .value = 30 - counting;
                 if (timeleft == 0)
-                    timeleft = 20;
+                    timeleft = 30;
 
 
                 if(counting == 0 )
@@ -300,7 +324,7 @@
             socket.on('nextok',function(data){
 
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/Race_result"; }, 3000);
+                    setTimeout(function(){ location.href="/race_result"; }, 3000);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
@@ -317,6 +341,7 @@
 <body>
 <?php //print_r($json['quizData'][0]['quiz_num']); ?>
 <?php //echo json_encode($json['quizData']); ?>
+
 
 <div id="wait_room">
     <div class="student">

@@ -86,7 +86,7 @@ class RecordBoxController extends Controller{
                 'userId' => $data->userId,
                 'userName' => $data->userName,
                 'rightCount' => (int)$data->rightCount,
-                'quizCount' => $data->quizCount
+                'quizCount' => (int)($data->quizCount)-1
             ));
         }
 

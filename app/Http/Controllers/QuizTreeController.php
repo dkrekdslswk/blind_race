@@ -272,8 +272,24 @@ class QuizTreeController extends Controller
             'type' => $request->input('type'),
             'level' => $request->input('level')
         );
+        
+ // test 임시로 유저 세션 부여
+        $userData = DB::table('users as u')
+            ->select(['u.user_num   as user_num',
+                's.session_num  as session_num'])
+            ->where('u.user_id', '=', 'tamp1id')
+            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
+            ->first();
 
-        $_SESSION['sessionId'] = 1;
+        if(!isset($userData->session_num)){
+            $_SESSION['sessionId'] = DB::table('sessions')
+                ->insertGetId(['user_num' => $userData->user_num],
+                    'session_num');
+        }else{
+            $_SESSION['sessionId'] = $userData->session_num;
+        }
+        
+        // test
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $quizList = array();
@@ -359,7 +375,25 @@ class QuizTreeController extends Controller
             'quizList' => $request->input('quizList')
         );
 
-        $_SESSION['sessionId'] = 1;
+        // test 임시로 유저 세션 부여
+        $userDataUp = DB::table('users as u')
+            ->select([
+                'u.user_num as user_num',
+                's.session_num  as session_num'
+            ])
+            ->where('u.user_id', '=', 'tamp1id')
+            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
+            ->first();
+
+        if(!isset($userDataUp->session_num)){
+            $_SESSION['sessionId'] = DB::table('sessions')
+                ->insertGetId([
+                    'user_num' => $userDataUp->user_num
+                ], 'session_num');
+        }else{
+            $_SESSION['sessionId'] = $userDataUp->session_num;
+        }
+        // test
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
         $insertCount = 0;

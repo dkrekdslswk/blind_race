@@ -53,7 +53,7 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 20000;
+    var countdown = 30000;
 
     var group_num ="";
 
@@ -91,18 +91,16 @@ io.on('connection', function (socket){
 
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
-        io.sockets.in(group_num).emit('leaveRoom',user_num);
+        // io.sockets.in(group_num).emit('leaveRoom',user_num);
 
-        var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
-        connection.query(leaveRoom_Query, function(err, rows)
-        {if(err){ console.log('대기방이탈���리에러'); throw err; }
-        else{ console.log('user',user_num+'퇴장'); }   });
+        // var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
+        // connection.query(leaveRoom_Query, function(err, rows)
+        // {if(err){ console.log('대기방이탈���리에러'); throw err; }
+        // else{ console.log('user',user_num+'퇴장'); }   });
 
-        var delete_session_query = "delete from sessions where user_num="+user_num;
-        connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
-
-
-        socket.leave(group_num);
+        // var delete_session_query = "delete from sessions where user_num="+user_num;
+        // connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
+        // socket.leave(group_num);
         console.log('danger', group_num+","+user_num);
 
 
@@ -112,11 +110,11 @@ io.on('connection', function (socket){
     //대기방 인원참가
     socket.on('user_in',function(group_num , nickname , user_num ,character_num){
         //DB 현재 인원수 쿼리해서 추가하기
-        var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num, created_at) VALUES ('1', ' "+user_num+" ', '0', NULL, CURRENT_TIMESTAMP);";
+        var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num) VALUES ('1', ' "+user_num+" ', '0', NULL);";
         connection.query(add_user_query, function(err, rows) {
             if(err){ //throw err;
                 io.sockets.emit('err_msg',"이미 들어와 있는 유저입니다.");
-
+                console.log(user_num+'레이스리절트 안들어갔음 ')
             }
             else{ console.log('user',user_num+'입장'); }  });
         //유저 정보 추가하기
@@ -185,7 +183,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(data){
         console.log('group_num',group_num)
         quiz++;
-        countdown = 20000;
+        countdown = 30000;
         clearInterval(Timer);
         answer_c = 0 ;
 
@@ -205,7 +203,7 @@ io.on('connection', function (socket){
 
         var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
             +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-            +"where p.set_exam_num='1' "
+            +"where p.set_exam_num='1'"
             +"group by user_num "
             +"order by point desc";
 
@@ -247,6 +245,7 @@ io.on('connection', function (socket){
             }
             console.log('문제답안저장쿼리: ', rows);
         });
+        
         if(answer_num != 0 )
             answer_c++;
 
@@ -276,9 +275,10 @@ io.on('connection', function (socket){
         var delete_session_query = "delete from sessions where user_num <> 1;"
         connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
 
-        var delete_quizs_query = "delete from playing_quizs where user_num <> 1;"
-        connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
+        // var delete_quizs_query = "delete from playing_quizs where set_exam_num= 1;"
+        // connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
 
+        
     });
 
 
