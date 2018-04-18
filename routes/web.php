@@ -43,12 +43,6 @@ Route::get('/race_result', function(){
     return view('Race/race_result');
 });
 
-/* 2. Race Mode : Golden Bell */
-/* 2. Race Mode : Raid */
-Route::get('/raid', function(){
-    return view('Raid/raid');
-});
-
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
@@ -64,9 +58,11 @@ Route::get('/recordbox', function(){
     return view('Recordbox/recordbox');
 });
 
+/* 4-1. Record Box : Feedback */
 Route::get('/feedback', function(){
     return view('Recordbox/feedback');
 });
+
 
 
 /* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
@@ -98,6 +94,7 @@ Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
 Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
 Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
+Route::post('/quizTreeController/showQuiz','QuizTreeController@showQuiz');
 
 Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 

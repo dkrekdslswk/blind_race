@@ -133,9 +133,8 @@
                         var options = {
                             title: '특강 A반',
                             curveType: 'function',
-                            width:'50%',
-                            height:400,
-                            chartArea:{left:'11%',top:20},
+                            width: 1300,
+                            height: 400,
                             legend: {position: 'bottom'},
                             vAxis: {
                                 viewWindowMode:'explicit',

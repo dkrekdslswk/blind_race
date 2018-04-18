@@ -12,8 +12,13 @@
 
     <style type="text/css">
         .feedbackBar {
+<<<<<<< HEAD
             margin-right: 11%;
             margin-bottom: 20px;
+=======
+            margin-right: 130px;
+            margin-bottom: 15px;
+>>>>>>> ed805407323f8970c0d77e462f4f908bec51afee
             text-align: right;
         }
 
@@ -79,12 +84,20 @@
 
 <div class="feedback_page">
     <div class="row">
+<<<<<<< HEAD
         <div id="feedback_bar" class="feedbackBar">
+=======
+        <div id="record_bar" class="feedbackBar">
+>>>>>>> ed805407323f8970c0d77e462f4f908bec51afee
             <button class="btn btn-default" style="margin-bottom: 5px" onclick="location.href='/recordbox'">
                 학습 기록 조회
             </button>
             <button class="btn btn-default" onclick="location.href='/feedback'">
+<<<<<<< HEAD
                 피드백과 질문
+=======
+                피드백과
+>>>>>>> ed805407323f8970c0d77e462f4f908bec51afee
             </button>
         </div>
 
