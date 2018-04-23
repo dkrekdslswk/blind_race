@@ -54,31 +54,33 @@
                 "<tr>" +
                     "<td style='background-color: #d9edf7; width: 10%'>문항</td>" +
                     "<td id='quizNum" + idNum +
-                    "' style='width: 20%'>" + idArray.length +"</td>" +
-                    "<td style='background-color: #d9edf7; width: 20%;'>문제유형</td>" +
-                    "<td style='width: 30%'>사지선다</td>" +
+                    "' style='width: 10%'>" + idArray.length +"</td>" +
+                    "<td style='background-color: #d9edf7; width: 10%;'>출제유형</td>" +
+                    "<td style='width: 20%'>객관식</td>" +
+                    "<td style='background-color: #d9edf7; width: 10%;'>문제유형</td>" +
+                    "<td style='width: 20%'>어휘</td>" +
                     "<td style='width: 10%' id='deleteNum"+ idNum +"'><a href='#'>삭제</a></td>" +
                 "</tr>" +
                 "<tr>" +
                     "<td style='background-color: #d9edf7'>문제</td>" +
-                    "<td colspan='4'><textarea id='question" + idNum + "' style='width: 100%; border: 0'>" +
+                    "<td colspan='6'><textarea id='question" + idNum + "' style='width: 100%; border: 0'>" +
                     addArr.question +
                     "</textarea></td>" +
                 "</tr>" +
                 "<tr>" +
                     "<td rowspan='2' style='background-color: #d9edf7'>정답</td>" +
-                    "<td colspan='2' style='background-color: #EAEAEA'>" +
+                    "<td colspan='3' style='background-color: #EAEAEA'>" +
                     "<input id='right" + idNum + "' type='text' style='width: 100%; background-color: #EAEAEA; border: 0' value='" +
                     addArr.right+ "'></td>" +
-                    "<td colspan='2'>" +
+                    "<td colspan='3'>" +
                     "<input id='example1" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
                     addArr.example1 +"'></td>" +
                 "</tr>" +
                 "<tr>" +
-                    "<td colspan='2'>" +
+                    "<td colspan='3'>" +
                     "<input id='example2" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
                     addArr.example2 +"'></td>" +
-                    "<td colspan='2'>" +
+                    "<td colspan='3'>" +
                     "<input id='example3" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
                     addArr.example3 +"'></td>" +
                 "</tr>" +
