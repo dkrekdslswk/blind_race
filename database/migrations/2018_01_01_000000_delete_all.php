@@ -50,6 +50,9 @@ class DeleteAll extends Migration
         Schema::dropIfExists('races');
         Schema::dropIfExists('raceTypes');
 
+        // update 18.04.24
+        Schema::dropIfExists('listQuizs');
+
         // delete 18.04.24
         Schema::dropIfExists('quiz_bank');
         Schema::dropIfExists('quiz_type_keyword');
@@ -66,7 +69,6 @@ class DeleteAll extends Migration
         Schema::dropIfExists('races');
         Schema::dropIfExists('race_folders');
         // update 18.04.24
-        Schema::dropIfExists('listQuizs');
         Schema::dropIfExists('lists');
         Schema::dropIfExists('folders');
 
