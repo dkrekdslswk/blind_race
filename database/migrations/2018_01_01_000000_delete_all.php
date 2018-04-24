@@ -66,7 +66,7 @@ class DeleteAll extends Migration
         Schema::dropIfExists('races');
         Schema::dropIfExists('race_folders');
         // update 18.04.24
-        Schema::dropIfExists('raceTeachers');
+        Schema::dropIfExists('listQuizs');
         Schema::dropIfExists('lists');
         Schema::dropIfExists('folders');
 
