@@ -24,7 +24,7 @@ class CreateUserTable extends Migration
         ]);
 
         Schema::create('users', function (Blueprint $table) {
-            $table->string('number', 10);
+            $table->unsignedInteger('number');
             $table->primary('number');
 
             $table->char('pw', 20);

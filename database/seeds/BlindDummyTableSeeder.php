@@ -13,13 +13,13 @@ class BlindDummyTableSeeder extends Seeder
     public function run()
     {
         $users = [
-            ['123456789','sub','t','teacher'],
-            ['999999999','main','s','root'],
-            ['1300000','1234','김똘똘','student'],
-            ['1300001','1234','최천재','student'],
-            ['1300002','1234','안예민','student'],
-            ['1300003','1234','심샤쵸','student'],
-            ['1300004','1234','사라다','student']
+            [123456789,'sub','t','teacher'],
+            [999999999,'main','s','root'],
+            [1300000,'1234','김똘똘','student'],
+            [1300001,'1234','최천재','student'],
+            [1300002,'1234','안예민','student'],
+            [1300003,'1234','심샤쵸','student'],
+            [1300004,'1234','사라다','student']
         ];
 
         $userFirstId = 1;
