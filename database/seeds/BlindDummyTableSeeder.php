@@ -107,10 +107,10 @@ class BlindDummyTableSeeder extends Seeder
         ], 'number');
 
         $bookId =DB::table('books')->insertGetId([
-            'book_name'=>"급소공략 N1",
-            'book_page_max'=>12,
-            'book_page_min'=>195
-        ], 'book_num');
+            'name'=>"급소공략 N1",
+            'maxPage'=>12,
+            'minPage'=>195
+        ], 'number');
 
         $quizs = [
             [
