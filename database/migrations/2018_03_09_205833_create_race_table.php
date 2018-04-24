@@ -30,10 +30,10 @@ class CreateRaceTable extends Migration
 	        $table->unsignedInteger('groupNumber');
             $table->foreign('groupNumber')->references('number')->on('groups');
 
-            $table->char('listNumber', 1);
+            $table->unsignedInteger('listNumber');
 	        $table->foreign('listNumber')->references('number')->on('lists');
 
-            $table->char('teacherNumber', 1);
+            $table->unsignedInteger('teacherNumber');
             $table->foreign('teacherNumber')->references('number')->on('users');
 
 	        $table->unsignedSmallInteger('questionNumber')->default(0);
