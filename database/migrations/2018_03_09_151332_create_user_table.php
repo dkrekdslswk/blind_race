@@ -13,21 +13,25 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('user_num');
-
-            $table->string('user_id', 16);
-            $table->unique('user_id');
-
-            $table->char('user_password', 16);
-
-	        $table->char('user_name', 20);
+        Schema::create('classifications',function (Blueprint $table) {
+            $table->char('name', 20);
+            $table->primary('name');
         });
+        DB::table('classifications')->insert([
+            ['name' => 'student'],
+            ['name' => 'teacher'],
+            ['name' => 'root']
+        ]);
 
-	Schema::create('user_teachers',function (Blueprint $table) {
-	        $table->unsignedInteger('user_t_num');
-	        $table->foreign('user_t_num')->references('user_num')->on('users');
-	        $table->primary('user_t_num');
+        Schema::create('users', function (Blueprint $table) {
+            $table->unsignedInteger('number');
+            $table->primary('number');
+
+            $table->char('pw', 20);
+            $table->char('name', 20);
+
+            $table->char('classification', 20);
+            $table->foreign('classification')->references('name')->on('classifications');
         });
     }
 
