@@ -38,7 +38,7 @@ class CreateRaceTable extends Migration
 
 	        $table->unsignedSmallInteger('questionNumber')->default(0);
 
-	        $table->unsignedInteger('type')->nullable();
+	        $table->char('type', 20);
 	        $table->foreign('type')->references('name')->on('raceTypes');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
