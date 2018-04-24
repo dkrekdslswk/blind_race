@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBooksTable extends Migration
+class CreateBookTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,12 @@ class CreateBooksTable extends Migration
     public function up()
     {
         Schema::create('books', function (Blueprint $table) {
-            $table->increments('book_num');
+            $table->increments('number');
 
-            $table->string('book_name', 100);
+            $table->string('name', 100);
 
-	        $table->unsignedSmallInteger('book_page_max');
-	        $table->unsignedSmallInteger('book_page_min');
+	        $table->unsignedSmallInteger('maxPage');
+	        $table->unsignedSmallInteger('minPage');
         });
     }
 
