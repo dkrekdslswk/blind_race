@@ -38,7 +38,7 @@ class BlindDummyTableSeeder extends Seeder
 
         $groupId = DB::table('groups')->insertGetId([
             'name'          => 'group1',
-            'userNumber'    => $userFirstId
+            'teacherNumber'    => $userFirstId
         ], 'number');
 
         for($number = 3 ; $number <= count($users) ; $number++){
