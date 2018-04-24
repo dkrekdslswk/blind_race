@@ -86,10 +86,12 @@ class BlindDummyTableSeeder extends Seeder
                 'level' => '5'
             ], 'number');
 
-            array_push($quizList, DB::table('listQuizs')->insertGetId([
+            array_push($quizList,$quizId);
+
+            DB::table('listQuizs')->insert([
                 'listNumber' => $listId,
                 'quizNumber' => $quizId
-            ], 'quizNumber'));
+            ]);
         }
 
         for ($char = 1; $char <= 9; $char++) {
