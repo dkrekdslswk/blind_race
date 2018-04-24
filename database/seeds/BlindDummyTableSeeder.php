@@ -148,7 +148,7 @@ class BlindDummyTableSeeder extends Seeder
                     'bookNumber'        => $bookId,
                     'page'              => $quiz[0],
                     'question'          => $quiz[1],
-                    'right_answer'      => $quiz[2],
+                    'rightAnswer'      => $quiz[2],
                     'example1'          => $quiz[3][0],
                     'example2'          => $quiz[3][1],
                     'example3'          => $quiz[3][2],
