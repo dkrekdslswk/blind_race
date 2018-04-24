@@ -36,7 +36,7 @@ class CreateQuizBankTable extends Migration
 	        $table->unsignedSmallInteger('page')->nullable();
 
             $table->string('question',1000);
-            $table->string('hint',100);
+            $table->string('hint',100)->nullable();
 	        $table->string('rightAnswer',100);
 	        $table->string('example1',100)->nullable();
 	        $table->string('example2',100)->nullable();
