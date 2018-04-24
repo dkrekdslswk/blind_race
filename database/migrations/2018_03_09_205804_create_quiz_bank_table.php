@@ -42,7 +42,7 @@ class CreateQuizBankTable extends Migration
 	        $table->string('example2',100)->nullable();
 	        $table->string('example3',100)->nullable();
 
-            $table->char('type', 1);
+            $table->char('type', 20);
 	        $table->foreign('type')->references('name')->on('quizTypes');
 
             $table->char('level', 1)->nullable();
