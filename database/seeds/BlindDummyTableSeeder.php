@@ -23,12 +23,12 @@ class BlindDummyTableSeeder extends Seeder
         ];
 
         foreach($users as $user){
-            $userId = DB::table('users')->insertGetId([
+            DB::table('users')->insert([
                 'number'            => array_get($user, 0),
                 'pw'                => array_get($user, 1),
                 'name'              => array_get($user, 2),
                 'classification'    => array_get($user, 3)
-            ], 'number');
+            ]);
         }
 
         $groupId = DB::table('groups')->insertGetId([
