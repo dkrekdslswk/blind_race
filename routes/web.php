@@ -88,13 +88,11 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/resultIn','RaceController@resultIn');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
-
-Route::get('/quizTreeController/folderRaceDataGet/{folderId}','QuizTreeController@folderRaceDataGet');
-Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
-Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
-Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
-Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
-Route::post('/quizTreeController/showQuiz','QuizTreeController@showQuiz');
+Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
+Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
+Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList');
+Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
+Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 
 Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 

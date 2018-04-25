@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
     public function user_login(Request $request){
-        $user_id = $request->input('ID');
-        $password = $request->input('PW');
+        $user_id = $request->input('P_ID');
+        $password = $request->input('P_PW');
 
         $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password])->first();
 
@@ -21,43 +21,46 @@ class UserController extends Controller{
     }
 
     public static function sessionDataGet($sessionId){
-        DB::table('sessions')
-            ->where('session_num', '=', $sessionId)
+        DB::table('sessionDatas')
+            ->where('number', '=', $sessionId)
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
         $userData = DB::table('users as u')
-            ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck',
-                's.set_exam_num as setExamId', 's.room_pin_number as roomId', 's.team_num as teamId')
-            ->where('s.session_num', '=', $sessionId)
-            ->join('sessions as s', 's.user_num', '=', 'u.user_num')
-            ->leftJoin('user_teachers as t', 't.user_t_num', '=', 'u.user_num')
+            ->select(
+                'u.number           as userId',
+                'u.name             as userName',
+                'u.classification   as classification',
+                's.raceNumber       as raceId',
+                's.PIN              as roomPin'
+            )
+            ->where('s.number', '=', $sessionId)
+            ->join('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         return array(
-            'userId'    => $userData->userId,
-            'userName'  => $userData->userName,
-            'tCheck'    => (is_null($userData->tCheck) ? 's' : 't'),
-            'setExamId' => $userData->setExamId,
-            'roomId'    => $userData->roomId,
-            'teamId'    => $userData->teamId
+            'userId'            => $userData->userId,
+            'userName'          => $userData->userName,
+            'classification'    => $userData->classification,
+            'raceId'            => $userData->raceId,
+            'roomPin'           => $userData->roomPin
         );
     }
 
     public function sessionIdGet($userId){
         $this->oldLoginCheck();
 
-        $data = DB::table('sessions')
+        $data = DB::table('sessionDatas')
             ->select(['session_num'])
             ->where(['user_num' => $userId])
             ->first();
 
         if(count($data)){
-            DB::table('sessions')
+            DB::table('sessionDatas')
                 ->where('session_num', '=',$data->session_num)
                 ->update('updated_at', '=', 'now()');
             $sessionId = $data->session_num;
         }else{
-            $sessionId = DB::table('sessions')
+            $sessionId = DB::table('sessionDatas')
                 ->insertGetId(['user_num' => $userId], 'session_num');
         }
 
@@ -65,7 +68,7 @@ class UserController extends Controller{
     }
 
     public function oldLoginCheck(){
-        DB::table('sessions')
+        DB::table('sessionDatas')
             ->where(DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'))
             ->where(DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))'))
             ->delete();

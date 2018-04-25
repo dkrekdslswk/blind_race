@@ -5,47 +5,35 @@
     <title>Chatroom</title>
 </head>
 <body>
-<form action="{{url('raceController/create')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('quizTreeController/getfolderLists')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">create</button>
+    <button type="submit">getfolderLists</button>
 </form>
-<form action="{{url('raceController/teacherIn')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('quizTreeController/createFolder')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">teacherIn</button>
+    <button type="submit">createFolder</button>
 </form>
-<form action="{{url('raceController/studentIn')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('quizTreeController/createList')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">studentIn</button>
+    <button type="submit">createList</button>
 </form>
-<form action="{{url('raceController/quizNext')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('quizTreeController/getQuiz')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">quizNext</button>
+    <button type="submit">getQuiz</button>
 </form>
-<form action="{{url('raceController/nickIn')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('quizTreeController/insertList')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">nickIn</button>
-</form>
-<form action="{{url('raceController/resultIn')}}"  method="Post" enctype="multipart/form-data">
-    {{csrf_field()}}
-    <h3 class="form-section">Person Info</h3>
-    <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">resultIn</button>
-</form>
-<form action="{{url('recordBoxController/totalScoreGet')}}"  method="Post" enctype="multipart/form-data">
-    {{csrf_field()}}
-    <h3 class="form-section">Person Info</h3>
-    <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">totalScoreGet</button>
+    <button type="submit">insertList</button>
 </form>
 </body>
 </html>
