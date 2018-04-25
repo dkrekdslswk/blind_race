@@ -41,23 +41,23 @@ class QuizTreeController extends Controller
         // test
 
         // 유저의 폴더 정보 가져오기
-        $folderList = $this->getFolders($request->session()->get('sessionId'));
+        $folders = $this->getFolders($request->session()->get('sessionId'));
 
         // 요구하는 폴더가 없을경우 기본 폴더를 가져옴
         if ($postData['folderId'] == 'base'){
-            $selectFolderId = $folderList[0]['folderId'];
+            $selectFolderId = $folders[0]['folderId'];
         }
         else{
             $selectFolderId = $postData['folderId'];
         }
 
         // 호출된 폴더의 리스트 정보 가져오기
-        $raceList = $this->getLists($selectFolderId, $request->session()->get('sessionId'));
+        $lists = $this->getLists($selectFolderId, $request->session()->get('sessionId'));
 
         // 반납할 데이터 정리
         $returnValue = array(
-            'folderList'    => $folderList,
-            'raceList'      => $raceList,
+            'folders'    => $folders,
+            'lists'      => $lists,
             'selectFolder'  => $selectFolderId,
             'check'         => true
         );
@@ -112,21 +112,21 @@ class QuizTreeController extends Controller
         }
 
         // 가져온 폴더 정보를 정리하기
-        $folderList = array();
+        $folders = array();
         foreach ($folderData as $folder){
-            array_push($folderList, array(
+            array_push($folders, array(
                 'folderId' => $folder->folderId,
                 'folderName' => $folder->folderName)
             );
         }
 
         // 공개된 리스트 정보를 불러올 폴더 설정
-        array_push($folderList, array(
+        array_push($folders, array(
                 'folderId' => $this->openFolderId,
                 'folderName' => '공개 리스트')
         );
 
-        return $folderList;
+        return $folders;
     }
 
     // 리스트 목록 가져오기
@@ -197,13 +197,13 @@ class QuizTreeController extends Controller
                 ], 'number');
 
         // 선체 폴더를 다시 받기
-        $folderList = $this->getFolders($request->session()->get('sessionId'));
+        $folders = $this->getFolders($request->session()->get('sessionId'));
 
         // 반납할 값을 정리
         if (isset($folderId)) {
             $returnValue = array(
-                'folderList'    => $folderList,
-                'raceList'      => array(),
+                'folders'    => $folders,
+                'lists'      => array(),
                 'selectFolder'  => $folderId,
                 'check'         => true
             );
@@ -401,7 +401,7 @@ class QuizTreeController extends Controller
 
         if (count($quizList) > 0) {
             $returnValue = array(
-                'raceId' => $quizList,
+                'listId' => $quizList,
                 'check' => true
             );
         }else{
