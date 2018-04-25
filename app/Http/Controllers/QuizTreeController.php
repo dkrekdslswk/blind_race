@@ -197,7 +197,7 @@ class QuizTreeController extends Controller
                 ], 'number');
 
         // 선체 폴더를 다시 받기
-        $folderList = $this->getFolders();
+        $folderList = $this->getFolders($request->session()->get('sessionId'));
 
         // 반납할 값을 정리
         if (isset($folderId)) {
