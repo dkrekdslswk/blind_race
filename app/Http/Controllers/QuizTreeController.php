@@ -307,7 +307,7 @@ class QuizTreeController extends Controller
     // 문제 검색하기
     public function getQuiz(Request $request){
         $postData     = array(
-            'bookId'        => 1,
+            'bookId'        => 2,
             'pageStart'     => 17,
             'pageEnd'       => 20,
             'makeType'      => 'grammar',
@@ -467,7 +467,7 @@ class QuizTreeController extends Controller
                 'f.teacherNumber'   => $userData['userId'],
                 'l.number'          => $postData['listId']
             ])
-            ->join('folder as f', 'f.number', '=', 'l.folderNumber')
+            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
             ->first();
 
         if(isset($listUserCheck->listId)) {
