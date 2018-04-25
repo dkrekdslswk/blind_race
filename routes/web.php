@@ -75,14 +75,14 @@ Route::get('/cbcSocketTest', function(){
 
 /* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
 
-Route::post('/store',"UserController@store");
-Route::post('/user_login',"UserController@user_login");
+//Route::post('/store',"UserController@store");
+Route::post('/mobileLogin',"UserController@mobileLogin");
 
-Route::post('/raceController/create','RaceController@create');
-Route::post('/raceController/teacherIn','RaceController@teacherIn');
-Route::post('/raceController/studentIn','RaceController@studentIn');
-Route::post('/raceController/nickIn','RaceController@nickIn');
-Route::post('/raceController/quizNext','RaceController@quizNext');
+//Route::post('/raceController/create','RaceController@create');
+//Route::post('/raceController/teacherIn','RaceController@teacherIn');
+//Route::post('/raceController/studentIn','RaceController@studentIn');
+//Route::post('/raceController/nickIn','RaceController@nickIn');
+//Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/resultIn','RaceController@resultIn');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
@@ -92,7 +92,7 @@ Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList'
 Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 
-Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+//Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
 ?>
 
