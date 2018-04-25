@@ -23,16 +23,16 @@ class UserController extends Controller{
 
         // 반납값 정리
         if(is_null($userData)) {
-            $returnValue = array([
+            $returnValue = array(
                 'check'             => false
-            ]);
+            );
         }else{
-            $returnValue = array([
+            $returnValue = array(
                 'userId'            => $userData->number,
                 'classification'    => $userData->classification,
                 'name'              => $userData->name,
                 'check'             => true
-            ]);
+            );
         }
 
         return $returnValue;
@@ -48,19 +48,19 @@ class UserController extends Controller{
             $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
             
             // 반납값 설정
-            $returnVelue = [
+            $returnValue = array(
                 'check'             => true,
                 'sessionId'         => $request->session()->get('sessionId'),
                 'userName'          => $userData->name,
                 'classification'    => $userData->classification
-            ];
+            );
         } else {
-            $returnVelue = [
+            $returnValue = array(
                 'check'     => false
-            ];
+            );
         }
 
-        return $returnVelue;
+        return $returnValue;
     }
 
     // 세션 정보 및 유저정보 읽어오기
@@ -104,20 +104,30 @@ class UserController extends Controller{
 
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
-            ->select(['number'])
-            ->where(['userNumber' => $userId])
+            ->select([
+                'number'
+            ])
+            ->where([
+                'userNumber' => $userId
+            ])
             ->first();
 
         // 새로 세션을 만들기
         if(is_null($data)){
             $sessionId = DB::table('sessionDatas')
-                ->insertGetId(['userNumber' => $userId], 'number');
+                ->insertGetId([
+                    'userNumber' => $userId
+                ], 'number');
         }
         // 이미 있는 세션 사용
         else{
             DB::table('sessionDatas')
-                ->where('number', '=',$data->number)
-                ->update('updated_at', '=', 'now()');
+                ->where([
+                    'number' => $data->number
+                ])
+                ->update([
+                    'updated_at' => 'now()'
+                ]);
             $sessionId = $data->session_num;
         }
 
@@ -127,8 +137,10 @@ class UserController extends Controller{
     // 오래된 세션을 삭제
     public function oldLoginCheck(){
         DB::table('sessionDatas')
-            ->where(DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'))
-            ->where(DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))'))
+            ->where([
+                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
+                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
+            ])
             ->delete();
     }
 

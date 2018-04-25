@@ -159,9 +159,9 @@ class QuizTreeController extends Controller
                     's.number' => $sessionId,
                     'l.folderNumber' => $selectFolderId
                 ])
-                ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
-                ->join('folders as f', 'f.number', '=', 'l.folderNumber')
-                ->join('sessionDatas as s', 's.userNumber', '=', 'f.teacherNumber')
+                ->join('listQuizs as lq',   'lq.listNumber',    '=', 'l.number')
+                ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
+                ->join('sessionDatas as s', 's.userNumber',     '=', 'f.teacherNumber')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();
@@ -322,14 +322,6 @@ class QuizTreeController extends Controller
             'quizType'      => $request->input('quizType'),
             'level'     => $request->input('level')
         );
-        
- // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select(['u.user_num   as user_num',
-                's.session_num  as session_num'])
-            ->where('u.user_id', '=', 'tamp1id')
-            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
-            ->first();
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여

@@ -9,7 +9,7 @@ use \Illuminate\Http\Response;
 class RaceController extends Controller
 {
     // race create first order
-    public function create(Request $request)
+    public function createRace(Request $request)
     {
         //$json     = $request->input('post'); 
         //$json     = json_encode(array('group' => array('groupId'  => 1), 
