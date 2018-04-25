@@ -16,6 +16,7 @@ class DeleteAll extends Migration
 
         // use 18.04.24
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessionDatas');
         Schema::dropIfExists('characters');
 
         // delete 18.04.24

@@ -27,16 +27,16 @@ class QuizTreeController extends Controller
                 's.number  as sessionId'
             ])
             ->where('u.number', '=', 123456789)
-            ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
+            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         if(!isset($userData->sessionId)){
-            $_SESSION['sessionId'] = DB::table('sessions')
+            $request->session()->put('sessionId', DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userData->userId
-                ], 'number');
+                ], 'number'));
         }else{
-            $_SESSION['sessionId'] = $userData->sessionId;
+            $request->session()->put('sessionId', $userData->sessionId);
         }
         // test
 
@@ -52,7 +52,7 @@ class QuizTreeController extends Controller
         }
 
         // 호출된 폴더의 리스트 정보 가져오기
-        $raceList = $this->getLists($selectFolderId);
+        $raceList = $this->getLists($selectFolderId, $request->session()->get('sessionId'));
 
         // 반납할 데이터 정리
         $returnValue = array(
@@ -66,15 +66,15 @@ class QuizTreeController extends Controller
     }
 
     // 폴더목록 가져오기
-    private function getFolders(){
+    private function getFolders($sessionId){
         // 폴더목록 가져오기
         $folderData = DB::table('folders as f')
             ->select(
                 'f.number as folderId',
                 'f.name as folderName'
             )
-            ->where('s.number', '=', $_SESSION['sessionId'])
-            ->join('sessions as s', 's.userNumber', '=', 'f.teacherNumber')
+            ->where('s.number', '=', $sessionId)
+            ->join('sessionDatas as s', 's.userNumber', '=', 'f.teacherNumber')
             ->orderBy('f.number')
             ->get();
 
@@ -87,9 +87,9 @@ class QuizTreeController extends Controller
                 )
                 ->where([
                     'u.classifications' => ['teacher', 'root'],
-                    's.number'          => $_SESSION['sessionId']
+                    's.number'          => $sessionId
                 ])
-                ->join('sessions as s', 's.userNumber', '=', 'u.number')
+                ->join('sessionDatas as s', 's.userNumber', '=', 'u.number')
                 ->first();
 
             // base 폴더 만들기
@@ -105,8 +105,8 @@ class QuizTreeController extends Controller
                     'f.number   as folderId',
                     'f.name     as folderName'
                 )
-                ->where('s.number', '=', $_SESSION['sessionId'])
-                ->join('sessions as s', 's.userNumber', '=', 'f.teacherNumber')
+                ->where('s.number', '=', $sessionId)
+                ->join('sessionDatas as s', 's.userNumber', '=', 'f.teacherNumber')
                 ->orderBy('f.number')
                 ->get();
         }
@@ -130,7 +130,7 @@ class QuizTreeController extends Controller
     }
 
     // 리스트 목록 가져오기
-    private function getLists($selectFolderId){
+    private function getLists($selectFolderId, $sessionId){
         // 공개된 리스트 목록 가져오기
         if ($selectFolderId == $this->openFolderId){
             $data = DB::table('lists as l')
@@ -156,12 +156,12 @@ class QuizTreeController extends Controller
                     DB::raw('COUNT(lq.quizNumber)   as quizCount')
                 )
                 ->where([
-                    's.number' => $_SESSION['sessionId'],
+                    's.number' => $sessionId,
                     'l.folderNumber' => $selectFolderId
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->join('folders as f', 'f.number', '=', 'l.folderNumber')
-                ->join('sessions as s', 's.userNumber', '=', 'f.teacherNumber')
+                ->join('sessionDatas as s', 's.userNumber', '=', 'f.teacherNumber')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();
@@ -187,7 +187,7 @@ class QuizTreeController extends Controller
         $postData = json_decode($json);
 
         // 로그인 되어있는 유저의 정보 가져오기
-        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 폴더를 생성
         $folderId = DB::table('folders')
@@ -235,16 +235,16 @@ class QuizTreeController extends Controller
                 's.number   as sessionId'
             ])
             ->where('u.number', '=', 123456789)
-            ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
+            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         if(!isset($userData->sessionId)){
-            $_SESSION['sessionId'] = DB::table('sessions')
+            $request->session()->put('sessionId', DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userData->userId
-                ], 'number');
+                ], 'number'));
         }else{
-            $_SESSION['sessionId'] = $userData->sessionId;
+            $request->session()->put('sessionId', $userData->sessionId);
         }
         // test
 
@@ -331,20 +331,20 @@ class QuizTreeController extends Controller
                 's.number   as sessionId'
             ])
             ->where('u.number', '=', 123456789)
-            ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
+            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         if(!isset($userData->sessionId)){
-            $_SESSION['sessionId'] = DB::table('sessions')
+            $request->session()->put('sessionId', DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userData->userId
-                ], 'number');
+                ], 'number'));
         }else{
-            $_SESSION['sessionId'] = $userData->sessionId;
+            $request->session()->put('sessionId', $userData->sessionId);
         }
         // test
 
-        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         $quizList = array();
         if($userData['classification'] == 'teacher' || $userData['classification'] == 'root') {
@@ -443,19 +443,19 @@ class QuizTreeController extends Controller
                 's.number   as sessionId'
             ])
             ->where('u.number', '=', 123456789)
-            ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
+            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         if(!isset($userData->sessionId)){
-            $_SESSION['sessionId'] = DB::table('sessions')
+            $request->session()->put('sessionId', DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userData->userId
-                ], 'number');
+                ], 'number'));
         }else{
-            $_SESSION['sessionId'] = $userData->sessionId;
+            $request->session()->put('sessionId', $userData->sessionId);
         }
         // test
-        $userData = UserController::sessionDataGet($_SESSION['sessionId']);
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 입력 실패한 문제의 배열상 위치를 반납
         $errorQuiz = array();

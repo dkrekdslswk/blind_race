@@ -34,7 +34,7 @@ class UserController extends Controller{
                 's.PIN              as roomPin'
             )
             ->where('s.number', '=', $sessionId)
-            ->join('sessions as s', 's.userNumber', '=', 'u.number')
+            ->join('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
         return array(
@@ -55,7 +55,7 @@ class UserController extends Controller{
             ->first();
 
         if(count($data)){
-            DB::table('sessions')
+            DB::table('sessionDatas')
                 ->where('session_num', '=',$data->session_num)
                 ->update('updated_at', '=', 'now()');
             $sessionId = $data->session_num;
@@ -68,7 +68,7 @@ class UserController extends Controller{
     }
 
     public function oldLoginCheck(){
-        DB::table('sessions')
+        DB::table('sessionDatas')
             ->where(DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'))
             ->where(DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))'))
             ->delete();
