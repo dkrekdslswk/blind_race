@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Waiting Room</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
@@ -18,8 +18,8 @@
 
     <style>
         .user_in_room{
-            display:inline-block;   
-            
+            display:inline-block;
+
             margin-right:50px;
             border-radius: 15px 50px 30px;
         }
@@ -55,6 +55,9 @@
 
     </style>
     <script>
+        var quiz_numbar = 0;
+        var quiz_member = 0;
+        var answer_count = 0;
         var pub_group_num = prompt('방 비밀번호를 입력해주세요','');
 
         window.onload = function() {
@@ -65,8 +68,25 @@
             socket.emit('join', pub_group_num);
 
             socket.on('user_in',function(nickname , user_num, character_num){
+
+                //유저정보를 DB세션에 추가함
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/fuck')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data: nickname,user_num,character_num,
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
                 $('<li class="user_in_room" id="'+ user_num +'"><h4 style="text-align:center; color:white; background-color:black;">' + nickname + '</h4><img src="/img/character/char'+character_num+'.png"></img></li>').appendTo('body');
-                // $('#student_count').html(student_count);
+                quiz_member++;
+                $('#student_count').html(quiz_member);
             });
 
             socket.on('leaveRoom', function(user_num){
@@ -112,18 +132,33 @@
 
 
         function btn_click(){
-            
+
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
             socket.emit('join', pub_group_num);
-            
-            $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-            
+            // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
             socket.emit('android_game_start',pub_group_num);
-            
+
+            //대기방에 입장된 캐릭터와 닉네임이 없어짐
             $('.user_in_room').remove();
-            
+
+
+            //입장순위표 만들 ajax구문
+            //  $.ajax({
+            //             type: 'POST',
+            //             url: "{{url('/fuck')}}",
+            //             dataType: 'json',
+            //             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //             data: nickname,user_num,character_num,
+            //             success: function (result) {
+            //                ranking_process(result);
+            //             },
+            //             error: function(request, status, error) {
+            //                 alert("AJAX 에러입니다. ");
+            //             }
+            // });
+
             socket.on('entrance_ranking', function(ranking_j){
                 ranking_process(ranking_j);
             });
@@ -131,8 +166,6 @@
             $('#wait_room').hide();
             $('#playing_contents').show();
             //아아아
-
-            var quiz_number = 0;
             var timeleft = 20;
 
             var quiz_JSON = JSON.parse('<?php echo json_encode($json['quizData']); ?>');
@@ -156,7 +189,7 @@
                 $("#wrong").text(incorrect_count);
 
                 var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
-                
+
                 // $('.pie::before').css('content',correct_percentage);
 
                 --quiz_num;
@@ -232,8 +265,8 @@
                         var size = sliceSize(listData[i], listTotal);
                         iterateSlices(size, pieElement, offset, i, 0, color[i]);
                         $(dataElement + " li:nth-child(" + (
-                                i + 1
-                            ) + ")").css("border-color", color[i]);
+                            i + 1
+                        ) + ")").css("border-color", color[i]);
                         offset += size;
                     }
                 }
@@ -248,40 +281,40 @@
                 document.getElementById('answer_c').innerText= "Answers";
 
                 ranking_process(ranking_j);
-                
+
                 $('#play_bgm').remove();
-                
-                $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
-                
+
+                // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
+
                 $("#mid_result").show();
 
                 Mid_result_Timer = setTimeout(function(){
                     $('#mid_result_bgm').remove();
                     socket.emit('count','time on',pub_group_num);
-                    
+
                     $("#content").show();
-                    $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+                    // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
-                    socket.emit('android_nextkey','미정');
+                    socket.emit('android_nextkey',pub_group_num, quiz_numbar);
 
                 }, 30000);
             });
 
 
             $("#Mid_skip_btn").click(function(){
-                
+
                 clearTimeout(Mid_result_Timer);
-                
+
                 $('#mid_result_bgm').remove();
                 socket.emit('count','time on',pub_group_num);
-                
-                
+
+
                 $("#content").show();
-                $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-                
+                // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+
                 $("#mid_result").hide();
-                socket.emit('android_nextkey','미정');
-                
+                socket.emit('android_nextkey',pub_group_num, quiz_numbar);
+
             });
 
 
@@ -297,7 +330,7 @@
 
 
                 if(counting == 0 )
-                    socket.emit('count_off','on');
+                    socket.emit('count_off',quiz_numbar);
             });
 
             //상탄 타임 게이지 바
@@ -311,20 +344,20 @@
 
 
             socket.on('answer-sum', function(data){
-                document.getElementById('answer_c').innerText= data;
-
-                if(data == 2)
+                answer_count++;
+                document.getElementById('answer_c').innerText= answer_count;
+                if(answer_count == quiz_member)
                 {
-
-                    socket.emit('count_off','on');
+                    socket.emit('count_off',quiz_numbar);
                     document.getElementById('answer_c').innerText="Answers";
                 }
             });
 
             socket.on('nextok',function(data){
-
+                answer_count = 0 ;
+                quiz_numbar++;
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/race_result"; }, 3000);
+                    setTimeout(function(){ location.href="/race_result"; }, 1000);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].name ;
