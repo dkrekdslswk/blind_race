@@ -31,7 +31,7 @@ class CreateListTable extends Migration
             $table->unsignedInteger('folderNumber')->nullable();
             $table->foreign('folderNumber')->references('number')->on('folders');
 
-            $table->unsignedSmallInteger('openState')->default(0);
+            $table->unsignedSmallInteger('openState')->default(1);
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
