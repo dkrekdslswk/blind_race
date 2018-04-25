@@ -160,7 +160,7 @@ class QuizTreeController extends Controller
                     'l.folderNumber' => $selectFolderId
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
-                ->join('folder as f', 'f.number', '=', 'l.folderNumber')
+                ->join('folders as f', 'f.number', '=', 'l.folderNumber')
                 ->join('sessions as s', 's.userNumber', '=', 'f.teacherNumber')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
