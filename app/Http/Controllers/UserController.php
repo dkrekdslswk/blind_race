@@ -51,8 +51,8 @@ class UserController extends Controller{
             $returnValue = array(
                 'check'             => true,
                 'sessionId'         => $request->session()->get('sessionId'),
-                'userName'          => $userData->name,
-                'classification'    => $userData->classification
+                'userName'          => $userData['name'],
+                'classification'    => $userData['classification']
             );
         } else {
             $returnValue = array(
@@ -85,7 +85,7 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리하기
-        $returnVelue = array(
+        $returnValue = array(
             'userId'            => $userData->userId,
             'userName'          => $userData->userName,
             'classification'    => $userData->classification,
@@ -94,7 +94,7 @@ class UserController extends Controller{
             'roomPin'           => $userData->roomPin
         );
 
-        return $returnVelue;
+        return $returnValue;
     }
 
     // 세션 값 입력
@@ -105,7 +105,7 @@ class UserController extends Controller{
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
             ->select([
-                'number'
+                'number as sessionId'
             ])
             ->where([
                 'userNumber' => $userId
@@ -121,14 +121,14 @@ class UserController extends Controller{
         }
         // 이미 있는 세션 사용
         else{
-            DB::table('sessionDatas')
-                ->where([
-                    'number' => $data->number
-                ])
-                ->update([
-                    'updated_at' => 'now()'
-                ]);
-            $sessionId = $data->session_num;
+//            DB::table('sessionDatas')
+//                ->where([
+//                    'number' => $data->sessionId
+//                ])
+//                ->update([
+//                    'updated_at' => 'now()'
+//                ]);
+            $sessionId = $data->sessionId;
         }
 
         return $sessionId;
