@@ -21,7 +21,7 @@ class UserController extends Controller{
     }
 
     public static function sessionDataGet($sessionId){
-        DB::table('sessions')
+        DB::table('sessionDatas')
             ->where('number', '=', $sessionId)
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
@@ -49,7 +49,7 @@ class UserController extends Controller{
     public function sessionIdGet($userId){
         $this->oldLoginCheck();
 
-        $data = DB::table('sessions')
+        $data = DB::table('sessionDatas')
             ->select(['session_num'])
             ->where(['user_num' => $userId])
             ->first();
@@ -60,7 +60,7 @@ class UserController extends Controller{
                 ->update('updated_at', '=', 'now()');
             $sessionId = $data->session_num;
         }else{
-            $sessionId = DB::table('sessions')
+            $sessionId = DB::table('sessionDatas')
                 ->insertGetId(['user_num' => $userId], 'session_num');
         }
 
