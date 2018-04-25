@@ -249,7 +249,7 @@ class QuizTreeController extends Controller
         // test
 
         // 리스트 만들기
-        $listId = DB::table('list')
+        $listId = DB::table('lists')
             ->insertGetId([
                 'name'          => $postData['listName'],
                 'folderNumber'  => $postData['folderId']
