@@ -16,8 +16,8 @@ class QuizTreeController extends Controller
     public function getfolderLists(Request $request)
     {
         // 들어올 정보
-        $postData = array('folderId' => 'base');
-//        $postData = array('folderId' => $request->post('folderId'));
+//        $postData = array('folderId' => 'base');
+        $postData = array('folderId' => $request->post('folderId'));
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
@@ -182,8 +182,8 @@ class QuizTreeController extends Controller
     // 리스트 폴더 만들기
     public function createFolder(Request $request){
         // 보내진 값 받기
-        $json     = $request->input('post');
-//        $json     = json_encode(array('folderName' => '교통사고칠조'));
+//        $json     = $request->input('post');
+        $json     = json_encode(array('folderName' => '교통사고칠조'));
         $postData = json_decode($json);
 
         // 로그인 되어있는 유저의 정보 가져오기
@@ -218,14 +218,14 @@ class QuizTreeController extends Controller
 
     // 리스트 만들기
     public function createList(Request $request){
-        $postData = array(
-            'listName' => '테스트 리스트명2',
-            'folderId' => 1
-        );
 //        $postData = array(
-//            'listName' => $request->input('listName'),
-//            'folderId' => $request->input('folderId')
+//            'listName' => '테스트 리스트명2',
+//            'folderId' => 1
 //        );
+        $postData = array(
+            'listName' => $request->input('listName'),
+            'folderId' => $request->input('folderId')
+        );
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
@@ -306,22 +306,22 @@ class QuizTreeController extends Controller
 
     // 문제 검색하기
     public function getQuiz(Request $request){
-        $postData     = array(
-            'bookId'        => 2,
-            'pageStart'     => 17,
-            'pageEnd'       => 20,
-            'makeType'      => 'grammar',
-            'quizType'      => 'obj',
-            'level'         => 1
-        );
-//        $postData = array(
-//            'bookId'    => $request->input('bookId'),
-//            'pageStart' => $request->input('pageStart'),
-//            'pageEnd'   => $request->input('pageEnd'),
-//            'makeType'      => $request->input('makeType'),
-//            'quizType'      => $request->input('quizType'),
-//            'level'     => $request->input('level')
+//        $postData     = array(
+//            'bookId'        => 2,
+//            'pageStart'     => 17,
+//            'pageEnd'       => 20,
+//            'makeType'      => 'grammar',
+//            'quizType'      => 'obj',
+//            'level'         => 1
 //        );
+        $postData = array(
+            'bookId'    => $request->input('bookId'),
+            'pageStart' => $request->input('pageStart'),
+            'pageEnd'   => $request->input('pageEnd'),
+            'makeType'      => $request->input('makeType'),
+            'quizType'      => $request->input('quizType'),
+            'level'     => $request->input('level')
+        );
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
@@ -407,36 +407,36 @@ class QuizTreeController extends Controller
 
     // 만든 리스트 저장하기
     public function insertList(Request $request){
-        $postData     = array(
-            'listId' => 9,
-            'quizs' => array(
-                [
-                    'question' => '1',
-                    'right' => '1',
-                    'hint' => '1',
-                    'example1' => '2',
-                    'example2' => '3',
-                    'example3' => '4',
-                    'type' => 'vocabulary obj'
-                ],
-                [
-                    'question' => '1',
-                    'right' => '1',
-                    'hint' => '1',
-                    'example1' => '2',
-                    'example2' => '3',
-                    'example3' => '4',
-                    'type' => 'vocabulary obj'
-                ]
-            )
-        );
-//        $postData = array(
-//            'listId' => $request->input('listId'),
-//            'quizs' => $request->input('quizs')
+//        $postData     = array(
+//            'listId' => 9,
+//            'quizs' => array(
+//                [
+//                    'question' => '1',
+//                    'right' => '1',
+//                    'hint' => '1',
+//                    'example1' => '2',
+//                    'example2' => '3',
+//                    'example3' => '4',
+//                    'type' => 'vocabulary obj'
+//                ],
+//                [
+//                    'question' => '1',
+//                    'right' => '1',
+//                    'hint' => '1',
+//                    'example1' => '2',
+//                    'example2' => '3',
+//                    'example3' => '4',
+//                    'type' => 'vocabulary obj'
+//                ]
+//            )
 //        );
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
+        $postData = array(
+            'listId' => $request->input('listId'),
+            'quizs' => $request->input('quizs')
+        );
+//
+//         유저가 선생인지 확인하고 선생이 아니면 강퇴
+//         test 임시로 유저 세션 부여
         $userData = DB::table('users as u')
             ->select([
                 'u.number   as userId',
