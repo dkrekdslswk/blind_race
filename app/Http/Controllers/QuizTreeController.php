@@ -30,7 +30,7 @@ class QuizTreeController extends Controller
             ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
             ->first();
 
-        if(!isset($userData->session_num)){
+        if(!isset($userData->sessionId)){
             $_SESSION['sessionId'] = DB::table('sessions')
                 ->insertGetId([
                     'userNumber' => $userData->userId
@@ -237,7 +237,7 @@ class QuizTreeController extends Controller
             ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
             ->first();
 
-        if(!isset($userData->session_num)){
+        if(!isset($userData->sessionId)){
             $_SESSION['sessionId'] = DB::table('sessions')
                 ->insertGetId([
                     'userNumber' => $userData->userId
@@ -333,7 +333,7 @@ class QuizTreeController extends Controller
             ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
             ->first();
 
-        if(!isset($userData->session_num)){
+        if(!isset($userData->sessionId)){
             $_SESSION['sessionId'] = DB::table('sessions')
                 ->insertGetId([
                     'userNumber' => $userData->userId
@@ -445,7 +445,7 @@ class QuizTreeController extends Controller
             ->leftJoin('sessions as s', 's.userNumber', '=', 'u.number')
             ->first();
 
-        if(!isset($userData->session_num)){
+        if(!isset($userData->sessionId)){
             $_SESSION['sessionId'] = DB::table('sessions')
                 ->insertGetId([
                     'userNumber' => $userData->userId
