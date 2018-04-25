@@ -78,8 +78,6 @@ Route::get('/cbcSocketTest', function(){
 Route::post('/store',"UserController@store");
 Route::post('/user_login',"UserController@user_login");
 
-Route::get('/raceController/RaceDataGet/{folderId}','QuizTreeController@RaceDataGet');
-
 Route::post('/raceController/create','RaceController@create');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
 Route::post('/raceController/studentIn','RaceController@studentIn');

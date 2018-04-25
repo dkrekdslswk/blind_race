@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
     public function user_login(Request $request){
-        $user_id = $request->input('P_ID');
-        $password = $request->input('P_PW');
+        $user_id = $request->input('p_ID');
+        $password = $request->input('p_PW');
 
         $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password])->first();
 
