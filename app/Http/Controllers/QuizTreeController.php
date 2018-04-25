@@ -41,7 +41,7 @@ class QuizTreeController extends Controller
         // test
 
         // 유저의 폴더 정보 가져오기
-        $folderList = $this->getFolders();
+        $folderList = $this->getFolders($request->session()->get('sessionId'));
 
         // 요구하는 폴더가 없을경우 기본 폴더를 가져옴
         if ($postData['folderId'] == 'base'){
