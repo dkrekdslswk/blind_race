@@ -456,8 +456,8 @@ class QuizTreeController extends Controller
         // test
         $userData = UserController::sessionDataGet($_SESSION['sessionId']);
 
-        // 입력 성공 여부 확인
-        $insertCount = 0;
+        // 입력 실패한 문제의 배열상 위치를 반납
+        $errorQuiz = array();
 
         // 해당유저의 리스트인지 확인
         $listUserCheck = DB::table('lists as l')
@@ -471,43 +471,54 @@ class QuizTreeController extends Controller
 
         if(isset($listUserCheck->listId)) {
             foreach ($postData['quizs'] as $quiz) {
-                // 문제를 저장
-                $quizId = DB::table('quizBanks')
-                    ->insertGetId([
-                        'question' => $quiz['question'],
-                        'hint' => $quiz['hint'],
-                        'rightAnswer' => $quiz['right'],
-                        'example1' => $quiz['example1'],
-                        'example2' => $quiz['example2'],
-                        'example3' => $quiz['example3'],
-                        'type' => $quiz['makeType'] . ' ' . $quiz['quizType'],
-                        'teacherNumber' => $userData['userId']
-                    ], 'number');
+                // 정규표현식으로 확인
+                if (preg_match('[@#]', $quiz['right']) ||
+                    preg_match('[@#]', $quiz['example1']) ||
+                    preg_match('[@#]', $quiz['example2']) ||
+                    preg_match('[@#]', $quiz['example3'])){
 
-                // 리스트에 문제를 연결
-                $insertCheck = DB::table('listQuizs')
-                    ->insert([
-                        'listNumber' => $postData['listId'],
-                        'quizNumber' => $quizId
-                    ]);
-                if (!is_null($insertCheck)) {
-                    $insertCount++;
+                    $insertCheck = null;
+                } else {
+                        // 문제를 저장
+                        $quizId = DB::table('quizBanks')
+                            ->insertGetId([
+                                'question' => $quiz['question'],
+                                'hint' => $quiz['hint'],
+                                'rightAnswer' => $quiz['right'],
+                                'example1' => $quiz['example1'],
+                                'example2' => $quiz['example2'],
+                                'example3' => $quiz['example3'],
+                                'type' => $quiz['makeType'] . ' ' . $quiz['quizType'],
+                                'teacherNumber' => $userData['userId']
+                            ], 'number');
+
+                        // 리스트에 문제를 연결
+                        $insertCheck = DB::table('listQuizs')
+                            ->insert([
+                                'listNumber' => $postData['listId'],
+                                'quizNumber' => $quizId
+                            ]);
+                    }
+
+                // 입력 실패한 문제를 반납
+                if (is_null($insertCheck)) {
+                    array_push($errorQuiz, $quiz);
                 }
             }
         }
 
         // 반납 값 정리
         // 1문제 이상이 입력 성공시
-        if($insertCount > 0){
+        if(count($errorQuiz) == 0){
             $returnValue = array(
-                'check' => true,
-                'insertCount' => $insertCount
+                'check' => true
             );
         }
         // 1문제도 입력 안되었을 경우
         else{
             $returnValue = array(
-                'check' => false
+                'check' => false,
+                'errorQuiz' => $errorQuiz
             );
         }
 
