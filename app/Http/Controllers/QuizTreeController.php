@@ -157,7 +157,7 @@ class QuizTreeController extends Controller
                 )
                 ->where([
                     's.number' => $_SESSION['sessionId'],
-                    'l.folder' => $selectFolderId
+                    'l.folderNumber' => $selectFolderId
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->join('sessions as s', 's.userNumber', '=', 'f.teacherNumber')
