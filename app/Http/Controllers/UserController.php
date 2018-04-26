@@ -11,7 +11,7 @@ class UserController extends Controller{
         // 유저 조회
         $userData = DB::table('users')
             ->select([
-                'number',
+                'number as userId',
                 'name',
                 'classification'
             ])
@@ -28,7 +28,7 @@ class UserController extends Controller{
             );
         }else{
             $returnValue = array(
-                'userId'            => $userData->number,
+                'userId'            => $userData->userId,
                 'classification'    => $userData->classification,
                 'name'              => $userData->name,
                 'check'             => true
@@ -51,6 +51,7 @@ class UserController extends Controller{
             $returnValue = array(
                 'check'             => true,
                 'sessionId'         => $request->session()->get('sessionId'),
+                'userId'            => $userData['userId'],
                 'userName'          => $userData['name'],
                 'classification'    => $userData['classification']
             );
@@ -144,15 +145,23 @@ class UserController extends Controller{
             ->delete();
     }
 
-    public function store(Request $request){
+    /*public function store(Request $request){
 
-        /* 회원가입 */
-        $result = DB::insert("insert into users(user_id,user_password,user_name) values(?,?,?)"
-            ,[$request->input('ID'),$request->input('PW'),$request->input('user_name')]);
+        // 회원가입
+        $result = DB::table('users')
+            ->select([
+                'number as userId'
+            ])
+            ->where([
+                'userNumber' => $userId
+            ])
+            ->first();
+        DB::insert("insert into users(user_id,user_password,user_name) values(?,?,?)"
+            ,[$request->input('p_ID'),$request->input('p_PW'),$request->input('user_name')]);
 
         if($result == 1 )
             return view('Login/login');
-    }
+    }*/
 }
 
 ?>

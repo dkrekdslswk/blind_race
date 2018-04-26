@@ -5,12 +5,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
-use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
     // 공개된 레이스의 숫자 및 가상 폴더의 번호
-    private $openFolderId = 0;
+    const OPEN_STATE = 0;
 
     // 폴더목록과 선택된 폴더의 리스트 목록을 반납
     public function getfolderLists(Request $request)
@@ -122,7 +121,7 @@ class QuizTreeController extends Controller
 
         // 공개된 리스트 정보를 불러올 폴더 설정
         array_push($folders, array(
-                'folderId' => $this->openFolderId,
+                'folderId' => self::OPEN_STATE,
                 'folderName' => '공개 리스트')
         );
 
@@ -132,7 +131,7 @@ class QuizTreeController extends Controller
     // 리스트 목록 가져오기
     private function getLists($selectFolderId, $sessionId){
         // 공개된 리스트 목록 가져오기
-        if ($selectFolderId == $this->openFolderId){
+        if ($selectFolderId == self::OPEN_STATE){
             $data = DB::table('lists as l')
                 ->select(
                     'l.number                       as listId',
@@ -140,7 +139,7 @@ class QuizTreeController extends Controller
                     DB::raw('COUNT(lq.quizNumber)   as quizCount')
                 )
                 ->where([
-                    'l.openState' => $this->openFolderId
+                    'l.openState' => self::OPEN_STATE
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->groupBy('l.number')
@@ -318,8 +317,8 @@ class QuizTreeController extends Controller
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),
             'pageEnd'   => $request->input('pageEnd'),
-            'makeType'      => $request->input('makeType'),
-            'quizType'      => $request->input('quizType'),
+            'makeType'  => $request->input('makeType'),
+            'quizType'  => $request->input('quizType'),
             'level'     => $request->input('level')
         );
 
