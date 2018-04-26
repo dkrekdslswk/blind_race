@@ -78,7 +78,7 @@ class RaceController extends Controller{
             ->where(function ($query){
                 global $userData;
                 $query->where('f.teacherNumber'. '=', $userData->userId)
-                    ->orWhere('l.openState', '=', QuizTreeController::$openFolderId);
+                    ->orWhere('l.openState', '=', QuizTreeController::OPEN_STATE);
             })
             ->groupBy('l.number')
 		    ->first();
