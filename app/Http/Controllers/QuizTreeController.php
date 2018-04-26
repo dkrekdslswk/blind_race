@@ -5,12 +5,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
-use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
     // 공개된 레이스의 숫자 및 가상 폴더의 번호
-    private $openFolderId = 0;
+    public static $openFolderId = 0;
 
     // 폴더목록과 선택된 폴더의 리스트 목록을 반납
     public function getfolderLists(Request $request)
@@ -318,8 +317,8 @@ class QuizTreeController extends Controller
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),
             'pageEnd'   => $request->input('pageEnd'),
-            'makeType'      => $request->input('makeType'),
-            'quizType'      => $request->input('quizType'),
+            'makeType'  => $request->input('makeType'),
+            'quizType'  => $request->input('quizType'),
             'level'     => $request->input('level')
         );
 
