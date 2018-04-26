@@ -57,7 +57,7 @@ class RaceController extends Controller{
 		    ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
 		    ->where([
 		        'g.number'          => $postData['groupId'],
-                'g.teacherNumber'   => $userData->userId,
+                'g.teacherNumber'   => $userData['userId'],
                 'qs.accessionState' => 'enrollment'
             ])
             ->groupBy('g.number')
@@ -77,7 +77,7 @@ class RaceController extends Controller{
             ])
             ->where(function ($query){
                 global $userData;
-                $query->where('f.teacherNumber'. '=', $userData->userId)
+                $query->where('f.teacherNumber'. '=', $userData['userId'])
                     ->orWhere('l.openState', '=', QuizTreeController::OPEN_STATE);
             })
             ->groupBy('l.number')
@@ -89,7 +89,7 @@ class RaceController extends Controller{
             // 레이스 정보를 저장
             $raceId = DB::table('races')->insertGetId([
                 'groupNumber' => $groupData->groupId,
-                'teacherNumber' => $userData->userId,
+                'teacherNumber' => $userData['userId'],
                 'listNumber' => $listData->listId,
                 'type' => $postData['raceType']
             ], 'number');
