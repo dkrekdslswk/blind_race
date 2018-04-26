@@ -14,17 +14,17 @@ class RaceController extends Controller{
         global $userData;
 
         // 받을 값 설정.
-//        $postData     = array(
-//            'groupId'   => 1,
-//            'raceType'  => 'race',
-//            'listId'    => 1
-//        );
-
-        $postData = array(
-            'groupId'   => $request->input('groupId'),
-            'raceType'  => $request->input('raceType'),
-            'listId'    => $request->input('listId')
+        $postData     = array(
+            'groupId'   => 1,
+            'raceType'  => 'race',
+            'listId'    => 1
         );
+
+//        $postData = array(
+//            'groupId'   => $request->input('groupId'),
+//            'raceType'  => $request->input('raceType'),
+//            'listId'    => $request->input('listId')
+//        );
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
