@@ -103,7 +103,7 @@ class RaceController extends Controller{
             ], 'number');
 
             // 교사 세션에 데이터 저장
-            DB::table('sessions')
+            DB::table('sessionDatas')
                 ->where('number', '=', $request->session()->get('sessionId'))
                 ->update(['raceNumber' => $raceId]);
 
@@ -143,7 +143,7 @@ class RaceController extends Controller{
 //        );
 
         // 레이스 존재여부 확인
-        $raceData = DB::table('sessions as s')
+        $raceData = DB::table('sessionDatas as s')
             ->select(
                 'r.questionNumber   as quizCount',
                 'r.number           as raceId',
@@ -156,7 +156,7 @@ class RaceController extends Controller{
 
         if(!is_null($raceData)){
             // 올바르게 방번호가 입력되었는지 확인
-            $updateCheck = DB::table('sessions')
+            $updateCheck = DB::table('sessionDatas')
                 ->where('number', '=', $postData['sessionId'])
                 ->update([
                     'PIN' => $postData['roomPin']
@@ -199,9 +199,9 @@ class RaceController extends Controller{
                 's2.PIN' => $postData['roomPin'],
                 's2.nick' => null
             ])
-            ->join('sessions as s1', 's1.userNumber', '=', 'gs.userNumber')
+            ->join('sessionDatas as s1', 's1.userNumber', '=', 'gs.userNumber')
             ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber.')
-            ->join('sessions as s2', 's2.raceNumber', '=', 'r.number')
+            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
         if(!is_null($userCheck))
@@ -213,7 +213,7 @@ class RaceController extends Controller{
                         'c.character_num as characterId'
                     )
                     ->where('rr.set_exam_num', '=', $postData['setExamId'])
-                    ->leftJoin('sessions as s', 's.character_num', '=', 'c.character_num')
+                    ->leftJoin('sessionDatas as s', 's.character_num', '=', 'c.character_num')
                     ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
                     ->get();
 
@@ -233,7 +233,7 @@ class RaceController extends Controller{
                     ->first();
 
                 // 유저 세션에 정보 저장
-                $updateCheck = DB::table('sessions')
+                $updateCheck = DB::table('sessionDatas')
                     ->where('session_num', '=', $postData['sessionId'])
                     ->update([
                         'set_exam_num' => $postData['setExamId'],
