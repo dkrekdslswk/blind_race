@@ -50,9 +50,9 @@ class RaceController extends Controller{
         // 그룹의 정보 가져오기
         $groupData = DB::table('groups as g')
 		    ->select(
-		        'g.number                   as groupId',
-			    'g.name                     as groupName',
-                DB::raw('COUNT(gs.user_num) as studentCount')
+		        'g.number                       as groupId',
+			    'g.name                         as groupName',
+                DB::raw('COUNT(gs.userNumber)   as studentCount')
             )
 		    ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
 		    ->where([
