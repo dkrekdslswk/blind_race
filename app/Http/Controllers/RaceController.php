@@ -96,10 +96,10 @@ class RaceController extends Controller{
 
             // 레이스 정보를 저장
             $raceId = DB::table('races')->insertGetId([
-                'groupNumber' => $groupData->groupId,
+                'groupNumber'   => $groupData->groupId,
                 'teacherNumber' => $userData['userId'],
-                'listNumber' => $listData->listId,
-                'type' => $postData['raceType']
+                'listNumber'    => $listData->listId,
+                'type'          => $postData['raceType']
             ], 'number');
 
             // 교사 세션에 데이터 저장
@@ -129,7 +129,8 @@ class RaceController extends Controller{
         }
 
         // 값을 반납
-        return view('Race/race_waiting')->with('response', $returnValue);
+        return $returnValue;
+//        return view('Race/race_waiting')->with('response', $returnValue);
     }
 
     // 소켓방에 교사가 입장했을 때 실행
