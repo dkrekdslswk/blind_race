@@ -28,8 +28,9 @@
         margin: 10px 20px 10px 0px;
         text-align: right;
     }
-    </style>
-<body onLoad="document.getElementById('add').click();">
+</style>
+
+<body onload="document.getElementById('add').click();">
 <nav>
     @include('Navigation.main_nav')
 </nav>
@@ -49,16 +50,25 @@
         idNum++;
         idArray.push(idNum);
 
-        $(".quizBox").append("<div class='quiz' style='margin: 20px'>" +
+        $(".quizBox").append(
+            "<div class='quiz' style='margin: 20px'>" +
             "<table class='table table-bordered' id='tableNum"+ idNum +"'>" +
                 "<tr>" +
                     "<td style='background-color: #d9edf7; width: 10%'>문항</td>" +
-                    "<td id='quizNum" + idNum +
-                    "' style='width: 10%'>" + idArray.length +"</td>" +
+                    "<td id='quizNum" + idNum + "' style='width: 10%'>" + idArray.length +"</td>" +
                     "<td style='background-color: #d9edf7; width: 10%;'>출제유형</td>" +
-                    "<td style='width: 20%'>객관식</td>" +
+                    "<td style='width: 25%'>" +
+                        "<div><form>" +
+                        "<label class='radio-inline'><input type='radio' name='makeType'>객관식</label>" +
+                        "<label class='radio-inline'><input type='radio' name='makeType'>주관식</label>" +
+                        "</form></div>" +
+                    "</td>" +
                     "<td style='background-color: #d9edf7; width: 10%;'>문제유형</td>" +
-                    "<td style='width: 20%'>어휘</td>" +
+                    "<td style='width: 25%'>" +
+                        "<label class='radio-inline'><input type='radio' name='quizType'>어휘</label>" +
+                        "<label class='radio-inline'><input type='radio' name='quizType'>단어</label>" +
+                        "<label class='radio-inline'><input type='radio' name='quizType'>문법</label>" +
+                    "</td>" +
                     "<td style='width: 10%' id='deleteNum"+ idNum +"'><a href='#'>삭제</a></td>" +
                 "</tr>" +
                 "<tr>" +
@@ -108,6 +118,10 @@
             }
         });
     }
+    
+    function tableChange() {
+
+    }
 
     // 문항 추가
     $(document).on('click', '#add', function (e) {
@@ -148,8 +162,8 @@
     $(document).on('click', '#save', function (e) {
         e.preventDefault();
 
-        // 레이스 아이디
-        var raceId = "{{$response['raceId']}}";
+        // list 아이디
+        var listId = "{{$response['listId']}}";
 
         // 문제
         //question + idNum
@@ -159,14 +173,14 @@
         //example3 + idNum
         //type : o
 
-        var quizList = new Array();
+        var quizs = new Array();
 
         for (var i in idArray) {
-            quizList.push({
+            quizs.push({
                 question: $('#question' + idArray[i]).val(),
                 right: $('#right' + idArray[i]).val(),
                 example1: $('#example1' + idArray[i]).val(),
-                example2: $('#example2' + idArray[i]).val(),
+                example2: $('#example 2' + idArray[i]).val(),
                 example3: $('#example3' + idArray[i]).val(),
                 type: 'o'
             });
@@ -174,14 +188,14 @@
         }
 
         var params = {
-            raceId: raceId,
-            quizList: quizList
+            listId: listId,
+            quizs: quizs
         };
 
         // controller로 data send
         $.ajax({
             type: 'POST',
-            url: "{{url('quizTreeController/insertRace')}}",
+            url: "{{url('quizTreeController/insertList')}}",
             //processData: false,
             //contentType: false,
             dataType: 'json',
@@ -191,7 +205,7 @@
             success: function (data) {
                 if(data.check == true) {
                     alert("저장 완료");
-                    window.location.href = "{{url('quizTreeController/folderRaceDataGet/null')}}";
+                    window.location.href = "{{url('quizTreeController/getfolderLists')}}";
                 }
             },
             error: function (data) {
