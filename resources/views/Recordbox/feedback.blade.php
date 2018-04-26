@@ -12,8 +12,8 @@
 
     <style type="text/css">
         .feedbackBar {
-            margin-right: 130px;
-            margin-bottom: 15px;
+            margin-right: 13%;
+            margin-bottom: 20px;
             text-align: right;
         }
 
@@ -79,12 +79,12 @@
 
 <div class="feedback_page">
     <div class="row">
-        <div id="record_bar" class="feedbackBar">
+        <div id="feedback_bar" class="feedbackBar">
             <button class="btn btn-default" style="margin-bottom: 5px" onclick="location.href='/recordbox'">
                 학습 기록 조회
             </button>
             <button class="btn btn-default" onclick="location.href='/feedback'">
-                피드백과
+                피드백과 질문
             </button>
         </div>
 

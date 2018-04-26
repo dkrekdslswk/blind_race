@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Quiz list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
@@ -67,18 +68,71 @@
 
 
 <script>
+
+    // folder, list 정보 저장용 배열
+    var quizlistData = new Array();
+
+    // 모달로 넘기는 퀴즈이름 입력 파트
     $(document).ready(function () {
         $('#quizName').change(function () {
             var quizName = $("#quizName").val();
 
-            var quizNameObj = document.getElementById("raceName");
-            quizNameObj.value = quizName;
+            var listNameObj = document.getElementById("listName");
+            listNameObj.value = quizName;
+
+            var folderIdObj = document.getElementById("folderId");
+            folderIdObj.value = quizlistData["selectFolder"];
         });
     });
 
+    function getValue() {
+
+        var params = {
+            folderId: 1
+        };
+
+        // list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/getfolderLists')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+                quizlistData = data;
+                //alert(JSON.stringify(quizlistData["lists"][0]["listName"]));
+
+                listValue();
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+
+    }
+
+    function listValue() {
+
+        for(var i = 0; i < quizlistData['lists'].length; i++) {
+            $("#list").append(
+                "<tr>" +
+                "<td align='center'>" +
+                "<a class='btn btn-default'><em class='fa fa-pencil'></em></a>" +
+                "<a class='btn btn-danger'><em class='fa fa-trash'></em></a>" +
+                "</td>" +
+                "<td class='hidden-xs' style='text-align: center'>"+ quizlistData['lists'][i]['listId'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['listName'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
+                "</tr>");
+        }
+    }
+
 </script>
 
-<body>
+<body onload="getValue()">
 <nav>
     @include('Navigation.main_nav')
 </nav>
@@ -114,17 +168,7 @@
                     </thead>
                     <tbody id="list">
 
-                    <?php foreach ($response['raceList'] as $raceData): ?>
-                    <tr>
-                        <td align="center">
-                            <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
-                            <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
-                        </td>
-                        <td class="hidden-xs" style="text-align: center">{{$raceData['raceId']}}</td>
-                        <td style="text-align: center">{{$raceData['raceName']}}</td>
-                        <td style="text-align: center">{{$raceData['quizCount']}}</td>
-                    </tr>
-                    <?php endforeach; ?>
+                    {{--list 공간--}}
 
                     </tbody>
                 </table>
@@ -155,9 +199,9 @@
 {{--Modal : make quiz--}}
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url('quizTreeController/createRace')}}"  method="Post" enctype="multipart/form-data">
+        <form action="{{url('quizTreeController/createList')}}"  method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
-            <input type="hidden" name="raceName" id="raceName" value="">
+            <input type="hidden" name="listName" id="listName" value="">
             <input type="hidden" name="folderId" id="folderId" value="">
             <div class="modal-content">
                 <div class="modal-header">

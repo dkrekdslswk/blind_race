@@ -41,11 +41,9 @@ import playing from './components/playing';
 const routes = [
   {  path: '/ctest',  component: chat },
   {  path: '/login', component: Login   },
-  // {  path: '/',      component :Footer },
-  // {  path: '/',      component :Modal  },
   {  path: '/AJH',      component :AJH },
   {  path: '/playing',      component :playing },
-  {  path: '/Race_result',      component :Result }
+  {  path: '/race_result',      component :Result }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

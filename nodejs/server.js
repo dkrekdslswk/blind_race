@@ -23,12 +23,6 @@ app.post('/persons', function(req, res){
     });
 });
 
-
-
-app.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
-});
-
 //소켓아이오 -------------------------------------------------------------------
 server.listen(8890);
 
@@ -53,15 +47,8 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 20000;
-
+    var countdown = 10000;
     var group_num ="";
-
-
-    var name = "user" + count++;
-    var roomName = '';
-    var userData = '';
-    var race_allUser = 0;
 
     socket.on('checkedLogin',function(user_num){
         console.log('로그인시도');
@@ -86,23 +73,21 @@ io.on('connection', function (socket){
     socket.on('join',function (room) {
         socket.join(room);
         console.log('join',room);
-        group_num= room;
+        // group_num = room;
     });
 
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
-        io.sockets.in(group_num).emit('leaveRoom',user_num);
+        // io.sockets.in(group_num).emit('leaveRoom',user_num);
 
-        var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
-        connection.query(leaveRoom_Query, function(err, rows)
-        {if(err){ console.log('대기방이탈���리에러'); throw err; }
-        else{ console.log('user',user_num+'퇴장'); }   });
+        // var leaveRoom_Query = "DELETE FROM race_results WHERE set_exam_num = 1 AND user_num = "+user_num;
+        // connection.query(leaveRoom_Query, function(err, rows)
+        // {if(err){ console.log('대기방이탈���리에러'); throw err; }
+        // else{ console.log('user',user_num+'퇴장'); }   });
 
-        var delete_session_query = "delete from sessions where user_num="+user_num;
-        connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
-
-
-        socket.leave(group_num);
+        // var delete_session_query = "delete from sessions where user_num="+user_num;
+        // connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
+        // socket.leave(group_num);
         console.log('danger', group_num+","+user_num);
 
 
@@ -112,11 +97,11 @@ io.on('connection', function (socket){
     //대기방 인원참가
     socket.on('user_in',function(group_num , nickname , user_num ,character_num){
         //DB 현재 인원수 쿼리해서 추가하기
-        var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num, created_at) VALUES ('1', ' "+user_num+" ', '0', NULL, CURRENT_TIMESTAMP);";
+        var add_user_query = "INSERT INTO race_results (set_exam_num, user_num, race_score, team_num) VALUES ('1', ' "+user_num+" ', '0', NULL);";
         connection.query(add_user_query, function(err, rows) {
             if(err){ //throw err;
                 io.sockets.emit('err_msg',"이미 들어와 있는 유저입니다.");
-
+                console.log(user_num+'레이스리절트 안들어갔음 ')
             }
             else{ console.log('user',user_num+'입장'); }  });
         //유저 정보 추가하기
@@ -142,11 +127,11 @@ io.on('connection', function (socket){
     });
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_nextkey',function(data){
-        io.sockets.in(group_num).emit('android_nextquiz','미정');
+    socket.on('android_nextkey',function(group_key, quiz ){
+        io.sockets.in(group_num).emit('android_nextquiz',quiz);
     });
     socket.on('android_game_start',function(group_key){
-        io.sockets.in(group_key).emit('android_game_start','입장');
+        io.sockets.in(group_key).emit('android_game_start',1);
     });
 
     // 타이머 시작함수
@@ -158,8 +143,8 @@ io.on('connection', function (socket){
         }, 1000);
         console.log('타임온',group_num);
         if( data == '1'){
-            quiz = 0 ;
-            io.sockets.in(group_num).emit('nextok',quiz);
+            // quiz = 0 ;
+            io.sockets.in(group_num).emit('nextok',0);
 
             var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
                 +"from playing_quizs p join sessions s on p.user_num = s.user_num "
@@ -182,10 +167,11 @@ io.on('connection', function (socket){
 
 
     //다음문제로 넘어가기전 Timer를 취소하는 함수
-    socket.on('count_off', function(data){
+    socket.on('count_off', function(quiz){
         console.log('group_num',group_num)
-        quiz++;
-        countdown = 20000;
+        // quiz++;
+
+        countdown = 10000;
         clearInterval(Timer);
         answer_c = 0 ;
 
@@ -205,7 +191,7 @@ io.on('connection', function (socket){
 
         var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
             +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-            +"where p.set_exam_num='1' "
+            +"where p.set_exam_num='1'"
             +"group by user_num "
             +"order by point desc";
 
@@ -223,34 +209,33 @@ io.on('connection', function (socket){
 
 
 //퀴즈 답받는 소켓 함수
-    socket.on('answer', function(answer_num , student_num , nickname){
+    socket.on('answer', function(answer_num , student_num , nickname ,quiz){
         console.log('Client Send Data:', answer_num);
         console.log('stu',student_num);
         console.log('nickname',nickname);
-        var quizin = quiz+1;
-        console.log('답찍을때 퀴즈',quizin)
-
+        // var quizin = quiz+1;
+        console.log('답찍을때 퀴즈',quiz)
 
         // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
         if(answer_num == 0)
-            quizin = 0;
+            quiz = 0;
 
 
-        var answer_query = "insert into playing_quizs values (1,"+student_num+","+quizin+",0,'"+answer_num+ "','0')" ;
+        var answer_query = "insert into playing_quizs values (1,"+student_num+","+quiz+",0,'"+answer_num+ "','0')" ;
 
         console.log('user',count);
 
         connection.query(answer_query, function(err, rows) {
             if(err) {
-                console.log('문제저장쿼리오류 ',"학생번호"+student_num+",퀴즈번호"+quizin+",정답번호"+answer_num);
+                console.log('문제저장쿼리오류 ',"학생번호"+student_num+",퀴즈번호"+quiz+",정답번호"+answer_num);
                 // throw err;
             }
             console.log('문제답안저장쿼리: ', rows);
         });
-        if(answer_num != 0 )
-            answer_c++;
 
-        io.sockets.in(group_num).emit('answer-sum',answer_c);
+        if(answer_num != 0 )
+            io.sockets.in(group_num).emit('answer-sum',answer_c);
+
         console.log('answer counting: ', answer_c);
     });
 
@@ -276,13 +261,42 @@ io.on('connection', function (socket){
         var delete_session_query = "delete from sessions where user_num <> 1;"
         connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
 
-        var delete_quizs_query = "delete from playing_quizs where user_num <> 1;"
-        connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
+        // var delete_quizs_query = "delete from playing_quizs where set_exam_num= 1;"
+        // connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
+
 
     });
 
 
 });
+
+// 서버끊김 확인용코드
+var connection;
+
+function handleDisconnect() {
+    connection = mysql.createConnection(dbconfig); // Recreate the connection, since
+    // the old one cannot be reused.
+
+    connection.connect(function(err) {              // The server is either down
+        if(err) {                                     // or restarting (takes a while sometimes).
+            console.log('error when connecting to db:', err);
+            setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+        }                                     // to avoid a hot loop, and to allow our node script to
+    });                                     // process asynchronous requests in the meantime.
+                                            // If you're also serving http, display a 503 error.
+    connection.on('error', function(err) {
+        console.log('db error', err);
+        if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+            handleDisconnect();                         // lost due to either server restart, or a
+        } else {                                      // connnection idle timeout (the wait_timeout
+            throw err;                                  // server variable configures this)
+        }
+    });
+}
+
+handleDisconnect();
+
+// 서버끊김 확인용코드
 
 server.listen(8890, function(){ //4
     console.log('server on!');

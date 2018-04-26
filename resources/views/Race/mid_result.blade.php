@@ -17,6 +17,13 @@
     #curve_chart {
         margin-top: 1em;
     }
+    #Mid_Q_Name{
+        font-size:40px;
+    }
+    #Mid_A_Right{
+        font-size:40px;
+        color:red;
+    }
 </style>
 <div id="mid_content" style="margin-left:15%">
     <div class="jumbotron" >

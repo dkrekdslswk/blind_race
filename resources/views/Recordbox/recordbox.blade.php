@@ -13,16 +13,14 @@
     <style type="text/css">
 
         .RecordBar {
-            text-align: center;
-        }
-
-        .chart {
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 20px;
+            margin-left: 10%;
         }
 
         .RecordBar blank {
-            margin-left: 250px;
-            margin-right: 250PX;
+            margin-left: 28%;
+            margin-right: 28%;
             display: inline;
         }
 

@@ -54,7 +54,7 @@
         float: left;
         width: 25%;
         padding: 20px;
-        height: 300px;
+        height: 250px;
         border-radius: 20px;
     }
 
@@ -74,7 +74,7 @@
         color:black;
         width:150px;
         height:150px;
-        font-size:50px;
+        font-size:40px;
         font-weight:bold;
         line-height:100px;
         border: 20px solid purple;
@@ -86,7 +86,7 @@
         margin-left:150px;
         box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
         background-color: rgba(255,255,255,.84);
-        width: 700px;
+        width: 600px;
         height:250px;
         border-radius: 20px;
         font-weight:bold;
@@ -105,15 +105,13 @@
         line-height: 100px;
     }
     #answer_c{
-
         margin-left:20px;
         box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
         background-color: rgba(255,255,255,.84);
-        width:250px;
-        height:100%;
+        width:150px;
+        height:150px;
         border-radius: 20px;
-        line-height:300px;
-        font-size:40px;
+        font-size:30px;
     }
     progress {
         text-align:left;
@@ -133,6 +131,11 @@
         border-radius: 12px;
         background: #4CAF50;
         box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
+    }
+    .answer_font{
+        font-size:45px;
+        text-align:center;
+        line-height:100px;
     }
 </style>
 
@@ -316,7 +319,7 @@
     <div id='content'>
 
         <center>
-            <progress style="width:100%;  height:30px;"  value="0" max="20" id="progressBar"></progress>
+            <progress style="width:100%;  height:30px;"  value="0" max="30" id="progressBar"></progress>
             <div id="questions" style="height:250px;">
 
                 <div class="inline-class" id="counter"></div>
@@ -331,16 +334,16 @@
         <!--문제 번호-->
         <div class="row">
             <div class="column" style="background-color:#1bbc9b; ">
-                <p id="answer1">1번</p>
+                <p class="answer_font" id="answer1">1번</p>
             </div>
             <div class="column" style="background-color:#3598db;">
-                <p id="answer2">2번</p>
+                <p class="answer_font" id="answer2">2번</p>
             </div>
             <div class="column" style="background-color:#f1c40f;">
-                <p id="answer3">3번</p>
+                <p class="answer_font" id="answer3">3번</p>
             </div>
             <div class="column" style="background-color:#e84c3d;">
-                <p id="answer4">4번</p>
+                <p class="answer_font" id="answer4">4번</p>
             </div>
         </div>
     </div>
@@ -359,7 +362,7 @@
 <script src="{{asset('js/app.js')}}"></script>
 <script>
     $("#progress").progressTimer({
-        timeLimit: 20,
+        timeLimit: 30,
         warningThreshold: 10,
         baseStyle: 'progress-bar-warning',
         warningStyle: 'progress-bar-danger',

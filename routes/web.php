@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -75,28 +75,24 @@ Route::get('/cbcSocketTest', function(){
 
 /* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
 
-Route::post('/store',"UserController@store");
-Route::post('/user_login',"UserController@user_login");
+//Route::post('/store',"UserController@store");
+Route::post('/mobileLogin',"UserController@mobileLogin");
 
-Route::get('/raceController/RaceDataGet/{folderId}','QuizTreeController@RaceDataGet');
-
-Route::post('/raceController/create','RaceController@create');
+Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/teacherIn','RaceController@teacherIn');
-Route::post('/raceController/studentIn','RaceController@studentIn');
-Route::post('/raceController/nickIn','RaceController@nickIn');
-Route::post('/raceController/quizNext','RaceController@quizNext');
+//Route::post('/raceController/studentIn','RaceController@studentIn');
+//Route::post('/raceController/nickIn','RaceController@nickIn');
+//Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/resultIn','RaceController@resultIn');
 //Route::post('/raceController/destroy','RaceController@destroy');
 
+Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
+Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
+Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList');
+Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
+Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 
-Route::get('/quizTreeController/folderRaceDataGet/{folderId}','QuizTreeController@folderRaceDataGet');
-Route::post('/quizTreeController/createRace','QuizTreeController@createRace');
-Route::post('/quizTreeController/getQuiz','QuizTreeController@getQuiz');
-Route::post('/quizTreeController/insertRace','QuizTreeController@insertRace');
-Route::post('/quizTreeController/postRaceGet','QuizTreeController@postRaceGet');
-Route::post('/quizTreeController/showQuiz','QuizTreeController@showQuiz');
-
-Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+//Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
 ?>
 
