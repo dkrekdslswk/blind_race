@@ -66,9 +66,9 @@ class RaceController extends Controller{
         // 해당 리스트의 존재확인
         $listData = DB::table('lists as l')
 		    ->select(
-		        'l.name                     as listName',
-                'l.number                   as listId',
-                DB::raw('COUNT(lq.quiz_num) as quizCount')
+		        'l.name                         as listName',
+                'l.number                       as listId',
+                DB::raw('COUNT(lq.quizNumber)   as quizCount')
             )
             ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
