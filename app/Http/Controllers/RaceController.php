@@ -58,7 +58,7 @@ class RaceController extends Controller{
 		    ->where([
 		        'g.number'          => $postData['groupId'],
                 'g.teacherNumber'   => $userData['userId'],
-                'qs.accessionState' => 'enrollment'
+                'gs.accessionState' => 'enrollment'
             ])
             ->groupBy('g.number')
 		    ->first();
