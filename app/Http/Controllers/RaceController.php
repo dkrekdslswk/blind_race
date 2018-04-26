@@ -123,11 +123,13 @@ class RaceController extends Controller{
             );
         }
         else {
-            $returnValue = array('check' => false);
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         // 값을 반납
-        return $returnValue;
+        return view('Race/race_waiting')->with('response', $returnValue);
     }
 
     // 소켓방에 교사가 입장했을 때 실행
@@ -169,7 +171,9 @@ class RaceController extends Controller{
         }
         // 레이스 정보를 찾을 수 없을 때
         else {
-            $returnValue = array('check' => false);
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         return $returnValue;
@@ -177,6 +181,7 @@ class RaceController extends Controller{
 
     // 학생이 소켓에 들어올 때
     public function studentIn(Request $request){
+        // 받아야하는 값
         $postData = array(
             'roomPin'       => '123456',
             'sessionId'     => 2,
@@ -184,129 +189,12 @@ class RaceController extends Controller{
             'characterId'   => 2
         );
 
-        // 현재 유저가 그룹에 소속된 유저인지 확인
-        $userCheck = DB::table('groupStudents as gs')
-            ->select(
-                's2.raceNumber as raceId'
-            )
-            ->where([
-                's.number' => $postData['sessionId'],
-                's2.PIN' => $postData['roomPin'],
-                's2.nick' => null
-            ])
-            ->join('sessionDatas as s1', 's1.userNumber', '=', 'gs.userNumber')
-            ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber.')
-            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
-            ->first();
-
-        if(!is_null($userCheck))
-        {
-            do{
-                // 이미 선택된 캐릭터 목록 획득
-                $characters = DB::table('characters as c')
-                    ->select(
-                        'c.character_num as characterId'
-                    )
-                    ->where('rr.set_exam_num', '=', $postData['setExamId'])
-                    ->leftJoin('sessionDatas as s', 's.character_num', '=', 'c.character_num')
-                    ->leftJoin('race_results as rr', 'rr.user_num', '=', 's.user_num')
-                    ->get();
-
-                $charList = array();
-                foreach($characters as $charNumber){
-                    array_push($charList, $charNumber->characterId);
-                }
-
-                // 캐릭터 url 획득
-                $character = DB::table('characters')
-                    ->select(
-                        'character_num as characterId',
-                        'character_url as characterUrl'
-                    )
-                    ->whereNotIn('character_num', $charList)
-                    ->inRandomOrder()
-                    ->first();
-
-                // 유저 세션에 정보 저장
-                $updateCheck = DB::table('sessionDatas')
-                    ->where('session_num', '=', $postData['sessionId'])
-                    ->update([
-                        'set_exam_num' => $postData['setExamId'],
-                        'character_num'  => $character->characterId,
-                        'room_pin_number' => $postData['roomId']
-                    ]);
-
-            } while ($updateCheck != 1);
-
-            // 캐릭터 획득 성공 여부 확인
-            if($updateCheck == 1){
-                // 참가 유저 정보 입력
-                DB::table('race_results')
-                    ->insert([
-                        'set_exam_num' => $postData['setExamId'],
-                        'user_num' => $userCheck->user_num
-                    ]);
-
-                // 성공 값 반납
-                $returnValue = array('check' => true,
-                    'characterUrl' => $character->characterUrl);
-            } else {
-                $returnValue = array('check' => false);
-            }
-        } else {
-            $returnValue = array('check' => false);
-        }
-
-        return response()->json($returnValue);
-    }
-
-    public function nickIn(Request $request){
-        $json     = $request->input('post');
-        //학생의 세션 아이디 필요
-        //$json     = json_encode(array('roomPin' => '123456', 'sessionId' => 2, 'setExamId' => 2, 'groupId' => 1));
-        // 데모버전용 학생 아이디로 학생을 검색
-        $json     = json_encode(array('userId' => 'tamp2id', 'userNick' => 'baka'));
-        $postData = json_decode($json, true);
-
-        // test
-        $userId = DB::table('users as u')
-            ->select([
-                'u.user_num as user_num',
-                's.session_num as session_num'
-            ])
-            ->where('u.user_id', '=', $postData['userId'])
-            ->leftJoin('sessions as s', 's.user_num', '=', 'u.user_num')
-            ->first();
-
-        if(!isset($userId->session_num)){
-            $_SESSION['sessionId'] = DB::table('sessions')
-                ->insertGetId([
-                    'user_num' => $userId->user_num
-                ], 'session_num');
-        }else{
-            $_SESSION['sessionId'] = $userId->session_num;
-        }
-        // test
-
-        $updateCount = DB::table('sessions')
-            ->where([
-                ['session_num', '=', $_SESSION['sessionId']],
-                ['set_exam_num', '<>', null]
-            ])
-            ->update([
-                'user_nick' => $postData['userNick'
-                ]]);
-
-        if($updateCount == 1)
-            $returnValue = array(
-                'check' => true,
-                'nick' => $postData['userNick']
-            );
-        else{
-            $returnValue = array(
-                'check' => false
-            );
-        }
+        //
+        $returnValue = array(
+            'nickCheck',
+            'characterCheck',
+            'characterId'
+        );
 
         return response()->json($returnValue);
     }
