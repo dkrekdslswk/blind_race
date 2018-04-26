@@ -63,6 +63,26 @@ Route::get('/feedback', function(){
     return view('Recordbox/feedback');
 });
 
+/* 4-2. Record Box : test */
+Route::get('/test', function(){
+    return view('Recordbox/test');
+});
+
+/* 4-2. Record Box : test */
+Route::get('/test_sidebar', function(){
+    return view('Recordbox/test_sidebar');
+});
+
+/* 4-2. Record Box : test */
+Route::get('/test_record', function(){
+    return view('Recordbox/test_record');
+});
+
+/* 4-2. Record Box : test */
+Route::get('/recordbox_main', function(){
+    return view('Recordbox/recordbox_main');
+});
+
 
 
 /* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
