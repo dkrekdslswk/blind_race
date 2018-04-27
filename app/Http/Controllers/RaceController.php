@@ -156,12 +156,14 @@ class RaceController extends Controller{
         $postData = array(
             'roomPin'       => '123456',
             'sessionId'     => 2,
-            'nick'          => 'temp3',
+            'nick'          => 'temp2',
             'characterId'   => 1
         );
         // 반납값 디폴트
         $nickCheck      = false;
         $characterCheck = false;
+        $nickUpdate = null;
+        $characterData = null;
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('sessionDatas as s1')
