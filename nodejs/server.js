@@ -65,8 +65,8 @@ io.on('connection', function (socket){
 
     //대기방 인원 추가
     socket.on('user_in',function(pin,nickname,session_id,character_num){
-        console.log('유저참가', '핀번호:'+group_num+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
-        io.sockets.in(group_num).emit('user_in',pin,nickname,session_id,character_num);
+        console.log('유저참가', '핀번호:'+pin+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
+        io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
 
 

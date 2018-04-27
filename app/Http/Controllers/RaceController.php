@@ -14,17 +14,17 @@ class RaceController extends Controller{
         global $userData;
 
         // 받을 값 설정.
-//        $postData     = array(
-//            'groupId'   => 1,
-//            'raceType'  => 'race',
-//            'listId'    => 1
-//        );
-
-        $postData = array(
-            'groupId'   => $request->input('groupId'),
-            'raceType'  => $request->input('raceType'),
-            'listId'    => $request->input('listId')
+        $postData     = array(
+            'groupId'   => 1,
+            'raceType'  => 'race',
+            'listId'    => 1
         );
+
+//        $postData = array(
+//            'groupId'   => $request->input('groupId'),
+//            'raceType'  => $request->input('raceType'),
+//            'listId'    => $request->input('listId')
+//        );
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
@@ -53,43 +53,43 @@ class RaceController extends Controller{
         // 레이스를 시작하려는 그룹이 해당 유저의 그룹이 맞는지 확인
         // 그룹의 정보 가져오기
         $groupData = DB::table('groups as g')
-		    ->select(
-		        'g.number                       as groupId',
-			    'g.name                         as groupName',
+            ->select(
+                'g.number                       as groupId',
+                'g.name                         as groupName',
                 DB::raw('COUNT(gs.userNumber)   as studentCount')
             )
-		    ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
-		    ->where([
-		        'g.number'          => $postData['groupId'],
+            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
+            ->where([
+                'g.number'          => $postData['groupId'],
                 'g.teacherNumber'   => $userData['userId'],
                 'gs.accessionState' => 'enrollment'
             ])
             ->groupBy('g.number')
-		    ->first();
+            ->first();
 
         // 해당 리스트의 존재확인
         $listData = DB::table('lists as l')
-		    ->select(
-		        'l.name                         as listName',
+            ->select(
+                'l.name                         as listName',
                 'l.number                       as listId',
                 DB::raw('COUNT(lq.quizNumber)   as quizCount')
             )
             ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
-		    ->where([
-		        'l.number' => $postData['listId'],
+            ->where([
+                'l.number' => $postData['listId'],
             ])
             ->where(function ($query){
                 global $userData;
                 $query->where([
-                        'f.teacherNumber' => $userData['userId']
-                    ])
+                    'f.teacherNumber' => $userData['userId']
+                ])
                     ->orWhere([
                         'l.openState' => QuizTreeController::OPEN_STATE
                     ]);
             })
             ->groupBy('l.number')
-		    ->first();
+            ->first();
 
         // 레이스와 그룹이 존재하면 시작
         if((!is_null($listData)) && (!is_null($groupData))) {
@@ -106,6 +106,7 @@ class RaceController extends Controller{
             do{
                 // 랜덤 값 지정
                 $roomPin = rand(100000, 999999);
+//                $roomPin = 123456;
 
                 // 교사 세션에 데이터 저장
                 DB::table('sessionDatas')
@@ -113,7 +114,7 @@ class RaceController extends Controller{
                     ->update([
                         'raceNumber'    => $raceId,
                         'PIN'           => $roomPin,
-                        'nick'          => ''
+                        'nick'          => null
                     ]);
 
                 // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
@@ -153,28 +154,36 @@ class RaceController extends Controller{
     // 학생이 소켓에 들어올 때
     public function studentIn(Request $request){
         // 받아야하는 값
+//        $postData = array(
+//            'roomPin'       => 123456,
+//            'sessionId'     => 2,
+//            'nick'          => 'temp3',
+//            'characterId'   => 1
+//        );
         $postData = array(
-            'roomPin'       => '123456',
-            'sessionId'     => 2,
-            'nick'          => 'temp1',
-            'characterId'   => 2
+            'roomPin'       => $request->input('roomPin'),
+            'sessionId'     => $request->input('sessionId'),
+            'nick'          => $request->input('nick'),
+            'characterId'   => $request->input('characterId')
         );
         // 반납값 디폴트
         $nickCheck      = false;
         $characterCheck = false;
 
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $data = DB::table('sessionDatas as s1')
+        $data = DB::table('races as r')
             ->select([
-                'r.raceNumber as raceId'
+                'r.number as raceId'
             ])
             ->where([
-                's1.number' => $postData['sessionId'],
-                's2.roomPin' => $postData['roomPin']
+                'gs.accessionState'     => 'enrollment',
+                'gs.userNumber'         => $userData['userId'],
+                's2.PIN'                => $postData['roomPin']
             ])
             ->whereNull('s2.nick')
-            ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
-            ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
+            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
@@ -201,7 +210,6 @@ class RaceController extends Controller{
                 ]);
             $characterCheck = ($characterData == 1);
         }
-        // 세션에 값 저장
 
         // 반납값 정리
         $returnValue = array(

@@ -18,6 +18,16 @@
     <script type="text/javascript"></script>
 
     <style>
+        #wait_room_nav{
+            box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+            background-color: rgba(255,255,255,.84);
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            font-weight:bold;
+            font-size:50px;
+        }
+
         .user_in_room{
             display:inline-block;
 
@@ -90,21 +100,30 @@
 
             socket.on('user_in',function(roomPin,nick,sessionId,characterId){
                 //유저정보를 DB세션에 추가함
-                // $.ajax({
-                //     type: 'POST',
-                //     url: "{{url('/fuck')}}",
-                //     dataType: 'json',
-                //     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                //     data: pin,nickname,session_id,character_num,
-                //     success: function (result) {
-                //         console.log(result);
-                //     },
-                //     error: function(request, status, error) {
-                //         alert("AJAX 에러입니다. ");
-                //     }
-                // });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentIn')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin="+roomPin+"&nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
+                    success: function (result) {
+                        console.log(result['nickCheck']);
+                        // if( result['nickCheck'] && result['characterCheck'] )
+                        // {
+                        //     //정상작동
+                        //     //유저한테 다시보내줌 result['characterId'];
+                        // }
+                        // else{
+                        //     //닉네임이나 캐릭터가 문제있음
+                        // }
 
-                $('<li class="user_in_room" id="'+ user_num +'"><h4 style="text-align:center; color:white; background-color:black;">' + nickname + '</h4><img src="/img/character/char'+character_num+'.png"></img></li>').appendTo('body');
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+                $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
                 quiz_member++;
                 $('#student_count').html(quiz_member);
             });
@@ -403,6 +422,14 @@
 <body>
 <?php //print_r($json['quizData'][0]['quiz_num']); ?>
 <?php //echo json_encode($json['quizData']); ?>
+
+
+<div id="wait_room_nav">
+    레이스 대기방
+</div>
+<!--<div>-->
+<!--    @include('Navigation.race_nav')-->
+<!--</div>-->
 
 
 <div id="wait_room">
