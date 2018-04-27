@@ -45,12 +45,12 @@ class UserController extends Controller{
         // 로그인 성공
         if ($userData['check']){
             // 세션 아이디 저장
-            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
-            
+            // $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+
             // 반납값 설정
             $returnValue = array(
                 'check'             => true,
-                'sessionId'         => $request->session()->get('sessionId'),
+                // 'sessionId'         => $request->session()->get('sessionId'),
                 'userName'          => $userData['name'],
                 'classification'    => $userData['classification']
             );
@@ -60,7 +60,7 @@ class UserController extends Controller{
             );
         }
 
-        return $returnValue;
+        return json_encode($returnValue);
     }
 
     // 세션 정보 및 유저정보 읽어오기
