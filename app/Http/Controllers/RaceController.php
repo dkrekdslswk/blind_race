@@ -112,7 +112,8 @@ class RaceController extends Controller{
                     ->where('number', '=', $request->session()->get('sessionId'))
                     ->update([
                         'raceNumber'    => $raceId,
-                        'PIN'           => $roomPin
+                        'PIN'           => $roomPin,
+                        'nick'          => ''
                     ]);
 
                 // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
@@ -166,8 +167,10 @@ class RaceController extends Controller{
                 's1.number' => $postData['sessionId'],
                 's2.roomPin' => $postData['roomPin']
             ])
-            ->isNollWhere
-            ->join('')
+            ->whereNull('s2.nick')
+            ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
+            ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
+            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
         
         // 닉네임 중복확인
