@@ -215,7 +215,7 @@ class RaceController extends Controller{
             'characterId'       => $postData['characterId']
         );
 
-        return $returnValue;
+        return $data;
     }
 
     // get quiz
