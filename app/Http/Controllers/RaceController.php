@@ -159,10 +159,15 @@ class RaceController extends Controller{
             'nick'          => 'temp1',
             'characterId'   => 2
         );
+        // 반납값 디폴트
+        $nickCheck      = false;
+        $characterCheck = false;
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('sessionDatas as s1')
-            ->select()
+            ->select([
+                'r.raceNumber as raceId'
+            ])
             ->where([
                 's1.number' => $postData['sessionId'],
                 's2.roomPin' => $postData['roomPin']
@@ -172,21 +177,40 @@ class RaceController extends Controller{
             ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
-        
-        // 닉네임 중복확인
 
-        // 캐릭터 중복확인
+        if (!is_null($data)) {
+            // 닉네임 중복확인
+            $nickUpdate = DB::table('sessionDatas')
+                ->where([
+                    'number' => $postData['sessionId']
+                ])
+                ->update([
+                    'nick'  => $postData['nick'],
+                    'PIN'   => $postData['roomPin']
+                ]);
+            $nickCheck = ($nickUpdate == 1);
 
+            // 캐릭터 중복확인
+            $characterData = DB::table('sessionDatas')
+                ->where([
+                    'number' => $postData['sessionId']
+                ])
+                ->update([
+                    'characterNumber'   => $postData['characterId'],
+                    'raceNumber'        => $data->raceId
+                ]);
+            $characterCheck = ($characterData == 1);
+        }
         // 세션에 값 저장
 
         // 반납값 정리
         $returnValue = array(
-            'nickCheck',
-            'characterCheck',
-            'characterId'
+            'nickCheck'         => $nickCheck,
+            'characterCheck'    => $characterCheck,
+            'characterId'       => $postData['characterId']
         );
 
-        return response()->json($returnValue);
+        return $returnValue;
     }
 
     // get quiz
