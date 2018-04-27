@@ -154,11 +154,17 @@ class RaceController extends Controller{
     // 학생이 소켓에 들어올 때
     public function studentIn(Request $request){
         // 받아야하는 값
+//        $postData = array(
+//            'roomPin'       => 123456,
+//            'sessionId'     => 2,
+//            'nick'          => 'temp3',
+//            'characterId'   => 1
+//        );
         $postData = array(
-            'roomPin'       => 123456,
-            'sessionId'     => 2,
-            'nick'          => 'temp3',
-            'characterId'   => 1
+            'roomPin'       => $request->input('roomPin'),
+            'sessionId'     => $request->input('sessionId'),
+            'nick'          => $request->input('nick'),
+            'characterId'   => $request->input('characterId')
         );
         // 반납값 디폴트
         $nickCheck      = false;
@@ -204,7 +210,6 @@ class RaceController extends Controller{
                 ]);
             $characterCheck = ($characterData == 1);
         }
-        // 세션에 값 저장
 
         // 반납값 정리
         $returnValue = array(
