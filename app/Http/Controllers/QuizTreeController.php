@@ -317,8 +317,6 @@ class QuizTreeController extends Controller
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),
             'pageEnd'   => $request->input('pageEnd'),
-            'makeType'  => $request->input('makeType'),
-            'quizType'  => $request->input('quizType'),
             'level'     => $request->input('level')
         );
 
@@ -363,7 +361,6 @@ class QuizTreeController extends Controller
                 )
                 ->where([
                     'bookNumber'    => $postData['bookId'],
-                    'type'          => $postData['quizType'].' '.$postData['makeType'],
                     'level'         => $postData['level']
                 ])
                 ->where('page', '>=', $postData['pageStart'])
