@@ -159,7 +159,24 @@ class RaceController extends Controller{
             'characterId'   => 2
         );
 
-        //
+        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
+        $data = DB::table('sessionDatas as s1')
+            ->select()
+            ->where([
+                's1.number' => $postData['sessionId'],
+                's2.roomPin' => $postData['roomPin']
+            ])
+            ->isNollWhere
+            ->join('')
+            ->first();
+        
+        // 닉네임 중복확인
+
+        // 캐릭터 중복확인
+
+        // 세션에 값 저장
+
+        // 반납값 정리
         $returnValue = array(
             'nickCheck',
             'characterCheck',
