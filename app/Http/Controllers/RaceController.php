@@ -166,7 +166,7 @@ class RaceController extends Controller{
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('sessionDatas as s1')
             ->select([
-                'r.raceNumber as raceId'
+                'r.number as raceId'
             ])
             ->where([
                 's1.number' => $postData['sessionId'],
