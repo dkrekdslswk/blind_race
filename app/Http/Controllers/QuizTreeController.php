@@ -309,15 +309,13 @@ class QuizTreeController extends Controller
 //            'bookId'        => 2,
 //            'pageStart'     => 17,
 //            'pageEnd'       => 20,
-//            'makeType'      => 'grammar',
-//            'quizType'      => 'obj',
 //            'level'         => 1
 //        );
         $postData = array(
-            'bookId'    => $request->input('bookId'),
-            'pageStart' => $request->input('pageStart'),
-            'pageEnd'   => $request->input('pageEnd'),
-            'level'     => $request->input('level')
+            'bookId'    => (int)$request->input('bookId'),
+            'pageStart' => (int)$request->input('pageStart'),
+            'pageEnd'   => (int)$request->input('pageEnd'),
+            'level'     => (int)$request->input('level')
         );
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴

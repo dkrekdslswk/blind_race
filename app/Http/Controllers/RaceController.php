@@ -112,7 +112,8 @@ class RaceController extends Controller{
                     ->where('number', '=', $request->session()->get('sessionId'))
                     ->update([
                         'raceNumber'    => $raceId,
-                        'PIN'           => $roomPin
+                        'PIN'           => $roomPin,
+                        'nick'          => ''
                     ]);
 
                 // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
@@ -159,7 +160,26 @@ class RaceController extends Controller{
             'characterId'   => 2
         );
 
-        //
+        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
+        $data = DB::table('sessionDatas as s1')
+            ->select()
+            ->where([
+                's1.number' => $postData['sessionId'],
+                's2.roomPin' => $postData['roomPin']
+            ])
+            ->whereNull('s2.nick')
+            ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
+            ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
+            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
+            ->first();
+        
+        // 닉네임 중복확인
+
+        // 캐릭터 중복확인
+
+        // 세션에 값 저장
+
+        // 반납값 정리
         $returnValue = array(
             'nickCheck',
             'characterCheck',
