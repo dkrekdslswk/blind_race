@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -58,31 +59,50 @@
         var quiz_numbar = 0;
         var quiz_member = 0;
         var answer_count = 0;
-        var pub_group_num = prompt('방 비밀번호를 입력해주세요','');
+        var roomPin =0;
 
         window.onload = function() {
-            $('#room_name').html(pub_group_num);
             var socket = io(':8890');
 
+            var groupId  = 1;
+            var raceType = 'race';
+            var listId = 1;
 
-            socket.emit('join', pub_group_num);
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/raceController/createRace')}}",
+                async:false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "groupId="+groupId+"&raceType="+raceType+"&listId="+listId,
+                success: function (result) {
+                    console.log(result['roomPin']);
+                    roomPin = result['roomPin'];
+                },
+                error: function(request, status, error) {
+                    alert("AJAX 밖에것 에러입니다. ");
+                }
+            });
 
-            socket.on('user_in',function(nickname , user_num, character_num){
 
+            $('#room_name').html(roomPin);
+            socket.emit('join', roomPin);
+
+            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
                 //유저정보를 DB세션에 추가함
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('/fuck')}}",
-                    dataType: 'json',
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data: nickname,user_num,character_num,
-                    success: function (result) {
-                        console.log(result);
-                    },
-                    error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
-                    }
-                });
+                // $.ajax({
+                //     type: 'POST',
+                //     url: "{{url('/fuck')}}",
+                //     dataType: 'json',
+                //     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //     data: pin,nickname,session_id,character_num,
+                //     success: function (result) {
+                //         console.log(result);
+                //     },
+                //     error: function(request, status, error) {
+                //         alert("AJAX 에러입니다. ");
+                //     }
+                // });
 
                 $('<li class="user_in_room" id="'+ user_num +'"><h4 style="text-align:center; color:white; background-color:black;">' + nickname + '</h4><img src="/img/character/char'+character_num+'.png"></img></li>').appendTo('body');
                 quiz_member++;
@@ -136,9 +156,9 @@
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
-            socket.emit('join', pub_group_num);
+            socket.emit('join', roomPin);
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-            socket.emit('android_game_start',pub_group_num);
+            socket.emit('android_game_start',roomPin);
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
             $('.user_in_room').remove();
@@ -168,10 +188,19 @@
             //아아아
             var timeleft = 20;
 
-            var quiz_JSON = JSON.parse('<?php echo json_encode($json['quizData']); ?>');
+
+            //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
+            var quiz_JSON = [
+                {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
+                {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
+                {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
+                {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
+                {"quiz_num":"5", "name":"5い","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"}
+            ];
 
 
-            socket.emit('count','1',pub_group_num);
+
+            socket.emit('count','1',roomPin);
 
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
@@ -290,12 +319,12 @@
 
                 Mid_result_Timer = setTimeout(function(){
                     $('#mid_result_bgm').remove();
-                    socket.emit('count','time on',pub_group_num);
+                    socket.emit('count','time on',roomPin);
 
                     $("#content").show();
                     // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
-                    socket.emit('android_nextkey',pub_group_num, quiz_numbar);
+                    socket.emit('android_nextkey',roomPin, quiz_numbar);
 
                 }, 30000);
             });
@@ -306,14 +335,14 @@
                 clearTimeout(Mid_result_Timer);
 
                 $('#mid_result_bgm').remove();
-                socket.emit('count','time on',pub_group_num);
+                socket.emit('count','time on',roomPin);
 
 
                 $("#content").show();
                 // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
-                socket.emit('android_nextkey',pub_group_num, quiz_numbar);
+                socket.emit('android_nextkey',roomPin, quiz_numbar);
 
             });
 
@@ -407,7 +436,6 @@
 <div id="playing_contents" style="display:none;">
     @include('Race.race_content')
 </div>
-
 
 </body>
 </html>
