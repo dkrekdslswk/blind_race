@@ -170,7 +170,7 @@ class RaceController extends Controller{
             ])
             ->where([
                 's1.number' => $postData['sessionId'],
-                's2.roomPin' => $postData['roomPin']
+                's2.PIN' => $postData['roomPin']
             ])
             ->whereNull('s2.nick')
             ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
