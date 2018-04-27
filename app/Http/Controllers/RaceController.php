@@ -155,7 +155,7 @@ class RaceController extends Controller{
     public function studentIn(Request $request){
         // 받아야하는 값
         $postData = array(
-            'roomPin'       => '123456',
+            'roomPin'       => 123456,
             'sessionId'     => 2,
             'nick'          => 'temp2',
             'characterId'   => 1
@@ -214,7 +214,7 @@ class RaceController extends Controller{
             'characterId'       => $postData['characterId']
         );
 
-        return $data;
+        return is_null($data);
     }
 
     // get quiz
