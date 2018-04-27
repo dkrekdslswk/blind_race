@@ -169,7 +169,7 @@ class RaceController extends Controller{
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $data = DB::table('groupStudents as gs')
+        $data = DB::table('races as r')
             ->select([
                 'r.number as raceId'
             ])
@@ -179,7 +179,7 @@ class RaceController extends Controller{
                 's2.PIN'                => $postData['roomPin']
             ])
             ->whereNull('s2.nick')
-            ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
+            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
@@ -215,7 +215,7 @@ class RaceController extends Controller{
             'characterId'       => $postData['characterId']
         );
 
-        return $userData;
+        return $returnValue;
     }
 
     // get quiz
