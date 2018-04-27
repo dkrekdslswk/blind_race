@@ -157,14 +157,12 @@ class RaceController extends Controller{
         $postData = array(
             'roomPin'       => 123456,
             'sessionId'     => 2,
-            'nick'          => 'temp2',
+            'nick'          => 'temp3',
             'characterId'   => 1
         );
         // 반납값 디폴트
         $nickCheck      = false;
         $characterCheck = false;
-        $nickUpdate     = null;
-        $characterData  = null;
 
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
@@ -193,7 +191,7 @@ class RaceController extends Controller{
                     'nick'  => $postData['nick'],
                     'PIN'   => $postData['roomPin']
                 ]);
-//            $nickCheck = ($nickUpdate == 1);
+            $nickCheck = ($nickUpdate == 1);
 
             // 캐릭터 중복확인
             $characterData = DB::table('sessionDatas')
@@ -204,14 +202,14 @@ class RaceController extends Controller{
                     'characterNumber'   => $postData['characterId'],
                     'raceNumber'        => $data->raceId
                 ]);
-//            $characterCheck = ($characterData == 1);
+            $characterCheck = ($characterData == 1);
         }
         // 세션에 값 저장
 
         // 반납값 정리
         $returnValue = array(
-            'nickCheck'         => $nickUpdate,
-            'characterCheck'    => $characterData,
+            'nickCheck'         => $nickCheck,
+            'characterCheck'    => $characterCheck,
             'characterId'       => $postData['characterId']
         );
 
