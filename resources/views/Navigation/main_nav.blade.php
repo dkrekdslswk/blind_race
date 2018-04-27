@@ -47,8 +47,8 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/">Home</a></li>
           <li><a href="#">MyGroup</a></li>
-          <li><a href="{{ url('/raceController/RaceDataGet/null') }}">Race</a></li>
-          <li><a href="{{ url('quizTreeController/folderRaceDataGet/null') }}">QuizTree</a></li>
+          <li><a href="{{ url('race_list') }}">Race</a></li>
+          <li><a href="{{ url('quiz_list') }}">QuizTree</a></li>
           <li><a href="/recordbox">RecordBox</a></li>
           <li>
             <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2">Sign in</a>

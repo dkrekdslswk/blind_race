@@ -6,80 +6,161 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
-    public function user_login(Request $request){
-        $user_id = $request->input('ID');
-        $password = $request->input('PW');
+    // 유저 로그인 확인
+    private function userLogin($userId, $password){
+        // 유저 조회
+        $userData = DB::table('users')
+            ->select([
+                'number as userId',
+                'name',
+                'classification'
+            ])
+            ->where([
+                'number'    => $userId,
+                'pw'        => $password
+            ])
+            ->first();
 
-        $data = DB::select('select user_num from users where user_id=? and user_password=?', [$user_id,$password])->first();
-
-        if(count($data)){
-            $_SESSION['sessionId'] = $this->sessionIdGet($data->user_num);
-            return view('homepage');
+        // 반납값 정리
+        if(is_null($userData)) {
+            $returnValue = array(
+                'check'             => false
+            );
         }else{
-            echo "login failed";
+            $returnValue = array(
+                'userId'            => $userData->userId,
+                'classification'    => $userData->classification,
+                'name'              => $userData->name,
+                'check'             => true
+            );
         }
+
+        return $returnValue;
     }
 
+    // 모바일 로그인
+    public function mobileLogin(Request $request){
+        $userData = $this->userLogin($request->input('p_ID'), $request->input('p_PW'));
+
+        // 로그인 성공
+        if ($userData['check']){
+            // 세션 아이디 저장
+            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+            
+            // 반납값 설정
+            $returnValue = array(
+                'check'             => true,
+                'sessionId'         => $request->session()->get('sessionId'),
+                'userName'          => $userData['name'],
+                'classification'    => $userData['classification']
+            );
+        } else {
+            $returnValue = array(
+                'check'     => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 세션 정보 및 유저정보 읽어오기
     public static function sessionDataGet($sessionId){
-        DB::table('sessions')
-            ->where('session_num', '=', $sessionId)
+        // 세션 시간 갱신
+        DB::table('sessionDatas')
+            ->where('number', '=', $sessionId)
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
+        // 유저 정보 읽어오기
         $userData = DB::table('users as u')
-            ->select('u.user_num as userId', 'u.user_name as userName', 't.user_t_num as tCheck',
-                's.set_exam_num as setExamId', 's.room_pin_number as roomId', 's.team_num as teamId')
-            ->where('s.session_num', '=', $sessionId)
-            ->join('sessions as s', 's.user_num', '=', 'u.user_num')
-            ->leftJoin('user_teachers as t', 't.user_t_num', '=', 'u.user_num')
+            ->select(
+                'u.number           as userId',
+                'u.name             as userName',
+                'u.classification   as classification',
+                's.raceNumber       as raceId',
+                's.nick             as nick',
+                's.PIN              as roomPin'
+            )
+            ->where('s.number', '=', $sessionId)
+            ->join('sessionDatas as s', 's.userNumber', '=', 'u.number')
             ->first();
 
-        return array(
-            'userId'    => $userData->userId,
-            'userName'  => $userData->userName,
-            'tCheck'    => (is_null($userData->tCheck) ? 's' : 't'),
-            'setExamId' => $userData->setExamId,
-            'roomId'    => $userData->roomId,
-            'teamId'    => $userData->teamId
+        // 반납값 정리하기
+        $returnValue = array(
+            'userId'            => $userData->userId,
+            'userName'          => $userData->userName,
+            'classification'    => $userData->classification,
+            'raceId'            => $userData->raceId,
+            'nick'              => $userData->nick,
+            'roomPin'           => $userData->roomPin
         );
+
+        return $returnValue;
     }
 
+    // 세션 값 입력
     public function sessionIdGet($userId){
+        // 오래된 세션 확인
         $this->oldLoginCheck();
 
-        $data = DB::table('sessions')
-            ->select(['session_num'])
-            ->where(['user_num' => $userId])
+        // 이미 있는 세션 확인하기
+        $data = DB::table('sessionDatas')
+            ->select([
+                'number as sessionId'
+            ])
+            ->where([
+                'userNumber' => $userId
+            ])
             ->first();
 
-        if(count($data)){
-            DB::table('sessions')
-                ->where('session_num', '=',$data->session_num)
-                ->update('updated_at', '=', 'now()');
-            $sessionId = $data->session_num;
-        }else{
-            $sessionId = DB::table('sessions')
-                ->insertGetId(['user_num' => $userId], 'session_num');
+        // 새로 세션을 만들기
+        if(is_null($data)){
+            $sessionId = DB::table('sessionDatas')
+                ->insertGetId([
+                    'userNumber' => $userId
+                ], 'number');
+        }
+        // 이미 있는 세션 사용
+        else{
+//            DB::table('sessionDatas')
+//                ->where([
+//                    'number' => $data->sessionId
+//                ])
+//                ->update([
+//                    'updated_at' => 'now()'
+//                ]);
+            $sessionId = $data->sessionId;
         }
 
         return $sessionId;
     }
 
+    // 오래된 세션을 삭제
     public function oldLoginCheck(){
-        DB::table('sessions')
-            ->where(DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'))
-            ->where(DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))'))
+        DB::table('sessionDatas')
+            ->where([
+                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
+                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
+            ])
             ->delete();
     }
 
-    public function store(Request $request){
+    /*public function store(Request $request){
 
-        /* 회원가입 */
-        $result = DB::insert("insert into users(user_id,user_password,user_name) values(?,?,?)"
-            ,[$request->input('ID'),$request->input('PW'),$request->input('user_name')]);
+        // 회원가입
+        $result = DB::table('users')
+            ->select([
+                'number as userId'
+            ])
+            ->where([
+                'userNumber' => $userId
+            ])
+            ->first();
+        DB::insert("insert into users(user_id,user_password,user_name) values(?,?,?)"
+            ,[$request->input('p_ID'),$request->input('p_PW'),$request->input('user_name')]);
 
         if($result == 1 )
             return view('Login/login');
-    }
+    }*/
 }
 
 ?>

@@ -130,10 +130,11 @@
 
         var params = {
             bookId: $('#bookId').val(),
-            level: $('#level').val(),
             pageStart: $('#pageStart').val(),
             pageEnd: $('#pageEnd').val(),
-            type: $('#type').val()
+            makeType: $('#type').val(),
+            quizType: $('#type').val(),
+            level: $('#level').val()
         };
 
         //alert(JSON.stringify(params));

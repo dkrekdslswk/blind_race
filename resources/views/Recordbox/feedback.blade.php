@@ -159,19 +159,19 @@
                 <input type="hidden" name="raceMode" id="raceMode" value="n">
                 <input type="hidden" name="examCount" id="examCount" value="0">
                 <input type="hidden" name="raceId" id="raceId" value="">
-                <div class="modal-content">
+                <div class="modal-content" >
                     <div class="modal-header">
                         <h5 class="modal-title" id="ModalLabel">피드백</h5>
                     </div>
 
-                    <div>
+                    <div style="margin-left: 10px;">
                         오늘 푼 스쿠스쿠 퀴즈 3번 문제 답이<br>
                         왜 1번인지 이해가 안갑니다.<br>
                         4번이 해석에 더 맞지 않을까요? <br>
                     </div>
                     <hr>
-                    <div>답변</div>
-                    <textarea rows="5" cols="80" name="contents" style="resize: none;"></textarea>
+                    <div style="margin-left: 10px;">답변</div>
+                    <textarea rows="5" cols="80" name="contents" style="resize: none;margin-left: 10px;"></textarea>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>

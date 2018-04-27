@@ -98,6 +98,8 @@
                 data: groupID,
                 success: function (recordData) {
 
+                    console.log(recordData);
+
                     for(var i = 0; i < recordData.lastData.length; i++) {
                         var $tbody = $('<tr id/>').appendTo('#list');
                         var score  = recordData.lastData[i].quizCount / recordData.lastData[i].rightCount;
@@ -135,6 +137,7 @@
                             curveType: 'function',
                             width: 1300,
                             height: 400,
+                            chartArea:{left:0,top:0,width:"50%",height:0},
                             legend: {position: 'bottom'},
                             vAxis: {
                                 viewWindowMode:'explicit',
