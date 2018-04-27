@@ -51,19 +51,9 @@
                             <a href="{{ url('quizTreeController/folderRaceDataGet/null') }}">문제 나무</a>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">퀴즈 시작
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ url('/raceController/RaceDataGet/null') }}">블라인드 레이스</a>
-                                </li>
-                                <li>
-                                    <a href="#">도전 골든벨</a>
-                                </li>
-                                <li>
-                                    <a href="/raid">레이드</a>
-                                </li>
-                            </ul>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('/raceController/RaceDataGet/null') }}">퀴즈 시작
+                               
+                         
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="/recordbox">레코드박스
@@ -81,7 +71,12 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="/login">Login</a>
+
+                        <button  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Login</button> 
+                        </li>
+                        <li>
+                       
+                        <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>  
                         </li>
                         <ul></ul>
                     </nav>
@@ -125,7 +120,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mt-yellow" href="{{ url('quizTreeController/folderRaceDataGet/null') }}">
+                            <a
+                                class="mt-yellow"
+                                href="{{ url('quizTreeController/folderRaceDataGet/null') }}">
                                 <i class="fa fa-5x fa-tree"></i>
                                 <em>Quiz Tree</em>
                             </a>
@@ -190,11 +187,9 @@
                 </div>
             </div>
 
-  
             <!--
             ################################################################################################
             -->
- 
 
         </div>
     </div>
@@ -265,11 +260,107 @@
 <a id="backtotop" href="#top">
     <i class="fa fa-chevron-up"></i>
 </a>
+
+
+
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" action="/action_page.php">
+        <div class="imgcontainer">
+            <span
+                onclick="document.getElementById('id01').style.display='none'"
+                class="close"
+                title="Close Modal">&times;</span>
+            <!-- <img src="https://i.imgur.com/pDvUuvf.png" alt="Avatar2" class="avatar" width ="200px"> -->
+        </div>
+
+        <div class="container">
+            <label for="uname">
+                <b>학번</b>
+            </label>
+            <input
+                type="text"
+                placeholder="학번 입력"
+                name="uname"
+                required="required">
+
+            <label for="psw">
+                <b>Password</b>
+            </label>
+            <input
+                type="password"
+                placeholder="Enter Password"
+                name="psw"
+                required="required">
+           
+            <button type="submit" style ="color : black">Login</button>
+           
+
+
+        </div>
+
+   
+    
+    </form>
+</div>
+
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Sign Up</h1>
+      
+      <hr>
+      <label for="text"><b>Student ID</b></label>
+      <input type="text" placeholder="Student ID" name="ID" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+
+      <label for="psw-repeat"><b>Repeat Password</b></label>
+      <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+      
+
+
+
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signupbtn">Sign Up</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
 <!-- JAVASCRIPTS -->
 <script src="js/jquery.min.js"></script>
 <script src="js/mi.js"></script>
 <script src="js/jquery.backtotop.js"></script>
 <script src="js/jquery.mobilemenu.js"></script>
+
+<script>
+  
+    var modal = document.getElementById('id01');
+
+    
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    var modal = document.getElementById('id02');
+
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script
+</script>
+
 </body>
 
 </html>
