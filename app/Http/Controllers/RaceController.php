@@ -105,7 +105,8 @@ class RaceController extends Controller{
             // 중복 없는 방 번호 입력
             do{
                 // 랜덤 값 지정
-                $roomPin = rand(100000, 999999);
+//                $roomPin = rand(100000, 999999);
+                $roomPin = 123456;
 
                 // 교사 세션에 데이터 저장
                 DB::table('sessionDatas')
@@ -162,8 +163,8 @@ class RaceController extends Controller{
         // 반납값 디폴트
         $nickCheck      = false;
         $characterCheck = false;
-        $nickUpdate = null;
-        $characterData = null;
+        $nickUpdate     = null;
+        $characterData  = null;
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('sessionDatas as s1')
