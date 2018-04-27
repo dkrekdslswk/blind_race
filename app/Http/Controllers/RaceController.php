@@ -114,7 +114,7 @@ class RaceController extends Controller{
                     ->update([
                         'raceNumber'    => $raceId,
                         'PIN'           => $roomPin,
-                        'nick'          => ''
+                        'nick'          => null
                     ]);
 
                 // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
