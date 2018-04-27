@@ -166,18 +166,19 @@ class RaceController extends Controller{
         $nickUpdate     = null;
         $characterData  = null;
 
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $data = DB::table('sessionDatas as s1')
+        $data = DB::table('groupStudents as gs')
             ->select([
                 'r.number as raceId'
             ])
             ->where([
                 'gs.accessionState'     => 'enrollment',
-                's1.number'             => $postData['sessionId'],
+                'gs.userNumber'         => $userData['userId'],
                 's2.PIN'                => $postData['roomPin']
             ])
             ->whereNull('s2.nick')
-            ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
             ->join('races as r', 'r.groupNumber', '=', 'gs.groupNumber')
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
@@ -214,7 +215,7 @@ class RaceController extends Controller{
             'characterId'       => $postData['characterId']
         );
 
-        return is_null($data);
+        return ;
     }
 
     // get quiz
