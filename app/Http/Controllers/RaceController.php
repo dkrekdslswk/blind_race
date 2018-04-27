@@ -172,8 +172,9 @@ class RaceController extends Controller{
                 'r.number as raceId'
             ])
             ->where([
-                's1.number' => $postData['sessionId'],
-                's2.PIN' => $postData['roomPin']
+                'gs.accessionState'     => 'enrollment',
+                's1.number'             => $postData['sessionId'],
+                's2.PIN'                => $postData['roomPin']
             ])
             ->whereNull('s2.nick')
             ->join('groupStudents as gs', 'gs.userNumber', '=', 's1.userNumber')
@@ -213,7 +214,7 @@ class RaceController extends Controller{
             'characterId'       => $postData['characterId']
         );
 
-        return $returnValue;
+        return $data;
     }
 
     // get quiz
