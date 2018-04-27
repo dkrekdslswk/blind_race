@@ -17,6 +17,7 @@ class RaceController extends Controller{
 //        $postData     = array(
 //            'groupId'   => 1,
 //            'raceType'  => 'race',
+//            'listId'    => 1
 //        );
 
         $postData = array(
@@ -101,10 +102,26 @@ class RaceController extends Controller{
                 'type'          => $postData['raceType']
             ], 'number');
 
-            // 교사 세션에 데이터 저장
-            DB::table('sessionDatas')
-                ->where('number', '=', $request->session()->get('sessionId'))
-                ->update(['raceNumber' => $raceId]);
+            // 중복 없는 방 번호 입력
+            do{
+                // 랜덤 값 지정
+                $roomPin = rand(100000, 999999);
+
+                // 교사 세션에 데이터 저장
+                DB::table('sessionDatas')
+                    ->where('number', '=', $request->session()->get('sessionId'))
+                    ->update([
+                        'raceNumber'    => $raceId,
+                        'PIN'           => $roomPin
+                    ]);
+
+                // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
+                $roomCheck = DB::table('sessionDatas')
+                    ->select('PIN')
+                    ->where(['PIN' => $roomPin])
+                    ->where('number', '<>', $request->session()->get('sessionId'))
+                    ->first();
+            }while(!is_null($roomCheck));
 
             // 반납할 값 정리
             $returnValue = array(
@@ -118,7 +135,7 @@ class RaceController extends Controller{
                 ),
                 'sessionId' => $request->session()->get('sessionId'),
                 'check'     => true,
-                'quizData'  => isset($quizList) ? $quizList : null
+                'roomPin'   => $roomPin
             );
         }
         else {
@@ -130,53 +147,6 @@ class RaceController extends Controller{
         // 값을 반납
         return $returnValue;
 //        return view('Race/race_waiting')->with('response', $returnValue);
-    }
-
-    // 소켓방에 교사가 입장했을 때 실행
-    public function teacherIn(Request $request){
-        // 반는 값
-//        $postData = array(
-//            'roomPin'   => '123465',
-//            'sessionId' => 1
-//        );
-        $postData = array(
-            'roomPin'   => $request->input('roomPin'),
-            'sessionId' => $request->input('sessionId')
-        );
-
-        // 레이스 존재여부 확인
-        $raceData = DB::table('sessionDatas as s')
-            ->select(
-                'r.questionNumber   as quizCount',
-                'r.number           as raceId',
-                'r.groupNumber      as groupId'
-            )
-            ->leftJoin('races as r', 'r.number', '=', 's.raceNumber')
-            ->where('s.number', '=', $postData['sessionId'])
-            ->groupBy('s.number')
-            ->first();
-
-        if(!is_null($raceData)){
-            // 올바르게 방번호가 입력되었는지 확인
-            $updateCheck = DB::table('sessionDatas')
-                ->where('number', '=', $postData['sessionId'])
-                ->update([
-                    'PIN' => $postData['roomPin']
-                ]);
-
-            // 반납할 값 정리
-            $returnValue = array(
-                'check' => true
-            );
-        }
-        // 레이스 정보를 찾을 수 없을 때
-        else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
-
-        return $returnValue;
     }
 
     // 학생이 소켓에 들어올 때
