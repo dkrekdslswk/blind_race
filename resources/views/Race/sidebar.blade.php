@@ -228,10 +228,6 @@ ZZ
             display: block;
         }
     }
-    body {
-        margin: 0;
-        padding: 0;
-    }
 
     .maginv {
         margin-left: 30px;

@@ -78,6 +78,11 @@ io.on('connection', function (socket){
         io.sockets.in(group_key).emit('android_game_start',1);
     });
 
+    socket.on('android_enter_room',function(roomPin , check , session_id){
+        io.sockets.in(roomPin).emit('android_enter_room',roomPin,check,session_id);
+    });
+
+
     // 타이머 시작함수
     socket.on('count',function(data,group_num){
 
@@ -95,45 +100,45 @@ io.on('connection', function (socket){
 
 
     //다음문제로 넘어가기전 Timer를 취소하는 함수
-    // socket.on('count_off', function(quiz){
-    //     console.log('group_num',group_num)
-    //     // quiz++;
+    socket.on('count_off', function(quiz , roomPin){
+        console.log('group_num',roomPin)
+        // quiz++;
 
-    //     countdown = 10000;
-    //     clearInterval(Timer);
-    //     answer_c = 0 ;
+        countdown = 10000;
+        clearInterval(Timer);
+        answer_c = 0 ;
 
 
-    //     var answer_checking_query = "select count(case when result='1' then 1 end) o, count(case when result!='1' then 1 end) x from playing_quizs where set_exam_num=1 and sequence="+quiz;
-    //     connection.query(answer_checking_query, function(err, rows) {
+        // var answer_checking_query = "select count(case when result='1' then 1 end) o, count(case when result!='1' then 1 end) x from playing_quizs where set_exam_num=1 and sequence="+quiz;
+        // connection.query(answer_checking_query, function(err, rows) {
 
-    //         if(err) throw err;
+        //     if(err) throw err;
 
-    //         console.log('순위결정쿼리: ', rows);
-    //         var query_result = JSON.stringify(rows);
+        //     console.log('순위결정쿼리: ', rows);
+        //     var query_result = JSON.stringify(rows);
 
-    //         io.sockets.in(group_num).emit('right_checked' ,query_result , quiz);
-    //         console.log('퀴즈몇번??', quiz);
+        //     io.sockets.in(group_num).emit('right_checked' ,query_result , quiz);
+        //     console.log('퀴즈몇번??', quiz);
 
-    //     });
+        // });
 
-    //     var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
-    //         +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-    //         +"where p.set_exam_num='1'"
-    //         +"group by user_num "
-    //         +"order by point desc";
+        // var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
+        //     +"from playing_quizs p join sessions s on p.user_num = s.user_num "
+        //     +"where p.set_exam_num='1'"
+        //     +"group by user_num "
+        //     +"order by point desc";
 
-    //     connection.query(ranking_query, function(err, rows) {
+        // connection.query(ranking_query, function(err, rows) {
 
-    //         if(err) throw err;
-    //         console.log('The solution is: ', rows);
-    //         var query_result = JSON.stringify(rows);
+        //     if(err) throw err;
+        //     console.log('The solution is: ', rows);
+        //     var query_result = JSON.stringify(rows);
 
-    //         io.sockets.in(group_num).emit('mid_ranking' ,query_result);
+        io.sockets.in(roomPin).emit('mid_ranking' ,"이런");
 
-    //     });
-    //     io.sockets.in(group_num).emit('nextok',quiz);
-    // });
+        // });
+        io.sockets.in(roomPin).emit('nextok',quiz);
+    });
 
 
 //퀴즈 답받는 소켓 함수

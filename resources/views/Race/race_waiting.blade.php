@@ -18,6 +18,10 @@
     <script type="text/javascript"></script>
 
     <style>
+        body{
+            background-color: skyblue;
+        }
+
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             background-color: rgba(255,255,255,.84);
@@ -108,32 +112,31 @@
                     data:"roomPin="+roomPin+"&nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
                     success: function (result) {
                         console.log(result['nickCheck']);
-                        // if( result['nickCheck'] && result['characterCheck'] )
-                        // {
-                        //     //정상작동
-                        //     //유저한테 다시보내줌 result['characterId'];
-                        // }
-                        // else{
-                        //     //닉네임이나 캐릭터가 문제있음
-                        // }
+                        if( result['nickCheck'] && result['characterCheck'] )
+                        {
+                            //정상작동
+                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
+
+                            quiz_member++;
+                            $('#student_count').html(quiz_member);
+                            //유저한테 다시보내줌 result['characterId'];
+                            socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
+                        }
+                        else{
+                            //닉네임이나 캐릭터가 문제있음
+                            socket.emit('android_enter_room',roomPin, false, sessionId);
+                        }
 
                     },
                     error: function(request, status, error) {
                         alert("AJAX 에러입니다. ");
                     }
                 });
-
-                $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
-                quiz_member++;
-                $('#student_count').html(quiz_member);
             });
 
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
             })
-            //  document.getElementById('start_btn').onclick = function() {
-
-            //  };
         };
 
         //순위 변동 함수 정의
@@ -210,7 +213,7 @@
 
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quiz_num":"1", "name":"아",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
+                {"quiz_num":"1", "name":"ㅂ쟈겨ㅑㅔㅈ배ㅓ샤ㅐㅔㄷ접해ㅔㅓ게ㅐㅂ허ㅐㄱ해'ㅈ개'햊'ㅂ해거'잽'ㅓ'ㄱ접해'ㄱㅈ뱆ㅂㅂ젛'ㅂ쟇 ",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
                 {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
                 {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
                 {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
@@ -328,7 +331,7 @@
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
 
-                ranking_process(ranking_j);
+                // ranking_process(ranking_j);
 
                 $('#play_bgm').remove();
 
@@ -378,7 +381,7 @@
 
 
                 if(counting == 0 )
-                    socket.emit('count_off',quiz_numbar);
+                    socket.emit('count_off',quiz_numbar , roomPin);
             });
 
             //상탄 타임 게이지 바
@@ -424,8 +427,14 @@
 <?php //echo json_encode($json['quizData']); ?>
 
 
-<div id="wait_room_nav">
-    레이스 대기방
+<div id="wait_room_nav" class="inline-class">
+    <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
+
+    <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
+    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:30px" > 문제수 </span>
+    <span  id="group_name" style="font-size:30px;"> 그룹이름 </span>
+    <span id="group_student_count" style="font-size:30px; position: absolute;  right: 0; top:4%;">학생 총 수<span>
+
 </div>
 <!--<div>-->
 <!--    @include('Navigation.race_nav')-->
