@@ -378,8 +378,8 @@ class QuizTreeController extends Controller
                     'example1'  => $quiz->example1,
                     'example2'  => $quiz->example2,
                     'example3'  => $quiz->example3,
-                    'makeType'  => $type[0],
-                    'quizType'  => $type[1],
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1],
                     'level'     => $quiz->level
                 ));
             }

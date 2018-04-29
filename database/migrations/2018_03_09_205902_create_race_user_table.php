@@ -33,7 +33,7 @@ class CreateRaceUserTable extends Migration
 	        $table->foreign('userNumber')->references('number')->on('users');
 	        $table->primary(['raceNumber', 'userNumber']);
 
-            $table->char('retestState')->default(0);
+            $table->char('retestState')->default('not');
             $table->foreign('retestState')->references('name')->on('retestStates');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
