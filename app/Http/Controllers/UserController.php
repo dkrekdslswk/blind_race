@@ -100,7 +100,7 @@ class UserController extends Controller{
     // 세션 값 입력
     public function sessionIdGet($userId){
         // 오래된 세션 확인
-        $this->oldLoginCheck();
+//        $this->oldLoginCheck();
 
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
@@ -135,14 +135,14 @@ class UserController extends Controller{
     }
 
     // 오래된 세션을 삭제
-    public function oldLoginCheck(){
-        DB::table('sessionDatas')
-            ->where([
-                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
-                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
-            ])
-            ->delete();
-    }
+//    public function oldLoginCheck(){
+//        DB::table('sessionDatas')
+//            ->where([
+//                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
+//                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
+//            ])
+//            ->delete();
+//    }
 
     /*public function store(Request $request){
 

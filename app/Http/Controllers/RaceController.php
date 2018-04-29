@@ -209,6 +209,15 @@ class RaceController extends Controller{
                     'raceNumber'        => $data->raceId
                 ]);
             $characterCheck = ($characterData == 1);
+
+            // 닉과 캐릭터 중복없이 입력성공 시 유저 정보 등록
+            if ($characterCheck && $nickCheck){
+                DB::table('raceUsers')
+                    ->insert([
+                        'raceNumber' => $data->raceId,
+                        'userNumber' => $userData->userId
+                    ]);
+            }
         }
 
         // 반납값 정리
@@ -223,86 +232,78 @@ class RaceController extends Controller{
 
     // get quiz
     public function quizNext(Request $request){
-        $json     = $request->input('post');
-        //선생의 세션 아이디 필요
-        //$json     = json_encode(array('roomPin' => '123456', 'setExamId' => 2, 'sessionId' => 1));
-        $postData = json_decode($json, true);
+        // 선생의 세션 번호 필요
+        $postData = array(
+            'sessionId' => 1,
+        );
 
-        $chaeck = DB::table('sessions')
-            ->select(
-                'session_num'
-            )
-            ->where([
-                'session_num'     => $postData['sessionId'],
-                'set_exam_num'    => $postData['setExamId'],
-                'room_pin_number' => $postData['roomPin']
-            ])
-            ->first();
+        // 선생의 정보를 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        if(isset($chaeck->session_num)){
-            $raceData = DB::table('race_set_exam as rse')
+        // 레이스 번호가 존재하는지 확인
+        if(!is_null($userData->raceId)){
+
+            // 현재 진행중의 번호 가져오기
+            $quizCount = DB::table('races')
                 ->select(
-                    'rse.race_num                 as raceId',
-                    'rse.book_num                 as bookId',
-                    'rse.book_page_start          as pageStart',
-                    'rse.book_page_end            as pageEnd',
-                    'rse.exam_count               as setExamCount',
-                    DB::raw('COUNT(quiz.sequence) as examCount')
-                )
-                ->where('rse.set_exam_num', '=', $postData['setExamId'])
-                ->leftJoin('race_set_exam_quizs as quiz', 'quiz.set_exam_num', '=', 'rse.set_exam_num')
-                ->groupBy('rse.set_exam_num')
-                ->first();
-
-            $setExams = DB::table('race_quizs as rq')
-                ->select(
-                    'rq.quiz_num as quiz_num'
+                    'questionNumber as count'
                 )
                 ->where([
-                    'rq.race_num'       => $raceData->raceId,
-                    'rseq.set_exam_num' => $postData['setExamId']
+                    'number' => $userData->raceId
                 ])
-                ->leftJoin('race_set_exam_quizs as rseq', 'rseq.quiz_num', '=', 'rq.quiz_num')
-                ->get();
-
-            $setExamList = array(0);
-            foreach($setExams as $exam){
-                array_push($setExamList, $exam->quiz_num);
-            }
-
-            $quizData = DB::table('race_quizs as rq')
-                ->select(
-                    'qb.quiz_num          as quizId',
-                    'qb.quiz_question     as question',
-                    'qb.quiz_right_answer as right',
-                    'qb.quiz_example1     as exam1',
-                    'qb.quiz_example2     as exam2',
-                    'qb.quiz_example3     as exam3',
-                    'qb.quiz_type         as type'
-                )
-                ->whereNotIn('rq.quiz_num', $setExamList)
-                ->join('quiz_bank as qb', 'qb.quiz_num', 'rq.quiz_num')
-                ->inRandomOrder()
                 ->first();
 
-            $updateCheck = DB::table('race_set_exam_quizs')
-                ->insertGetId([
-                    'set_exam_num' => $postData['setExamId'],
-                    'quiz_num' => $quizData->quizId
-                ], 'sequence');
+            // 문제 가져오기
+            $quizData = DB::table('quizBanks as qb')
+                ->select([
+                    'qb.number          as number',
+                    'qb.question        as question',
+                    'qb.hint            as hint',
+                    'qb.rightAnswer     as rightAnswer',
+                    'qb.example1        as example1',
+                    'qb.example2        as example2',
+                    'qb.example3        as example3',
+                    'qb.type            as type',
+                    'qb.level           as level'
+                ])
+                ->where([
+                    'lq.raceNumber' => $postData['radceId']
+                ])
+                ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+                ->orderBy('qb.number', 'desc')
+                ->offset($quizCount->count)
+                ->limit(1)
+                ->first();
 
-            $returnValue = array(
-                'quiz' => array(
-                    'examCount' => $raceData->examCount + 1,
-                    'sequence'  => $updateCheck,
-                    'question'  => $quizData->question,
-                    'right'     => $quizData->right,
-                    'example1'  => $quizData->exam1,
-                    'example2'  => $quizData->exam2,
-                    'example3'  => $quizData->exam3,
-                    'type'      => $quizData->type
-                ),
-                'check' => true);
+            // 다음 문제가 있을 때
+            if(!is_null($quizData)) {
+                // 현재 진행중의 번호 갱신
+                DB::table('races')
+                    ->where([
+                        'number' => $userData->raceId
+                    ])
+                    ->insert([
+                        'questionNumber' => $quizCount->count + 1
+                    ]);
+
+                // 반납값 정리
+                $returnValue = array(
+                    'quiz' => array(
+                        'quizCount' => $quizCount->count + 1,
+                        'quizId'    => $quizData->number,
+                        'question'  => $quizData->question,
+                        'hint'      => $quizData->hint,
+                        'right'     => $quizData->rightAnswer,
+                        'example1'  => $quizData->example1,
+                        'example2'  => $quizData->example2,
+                        'example3'  => $quizData->example3,
+                        'type'      => $quizData->type,
+                        'level'     => $quizData->level
+                    ),
+                    'check' => true);
+            } else {
+                $returnValue = array('check' => false);
+            }
         } else {
             $returnValue = array('check' => false);
         }
@@ -310,49 +311,105 @@ class RaceController extends Controller{
         return response()->json($returnValue);
     }
 
-    /*
-    public function resultIn(Request $request){
+    // 학생들의 정답들을 DB에 입력
+    public function answerIn(Request $request){
         //$json     = $request->input('post');
         // 학생의 세션 아이디 필요
-        $json     = json_encode(array(
-            'roomPin' => '123456',
-            'sessionId' => 1,
-            'exam_data' => array(
-                'setExamId' => 2,
-                'sequence' => 1,
-                'exam_result'=>'1')
-        ));
-        $postData = json_decode($json, true);
+        $postData     = array(
+            'sessionId' => 2,
+            'roomPin'   => 123456,
+            'quizId'    => 1,
+            'answer'    => 1
+        );
 
-        UserController::sessionDataGet($postData['sessionId']);
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        $data = DB::table('race_result')
-            ->select('user_num as userId', 'set_exam_num as setExamId')
+        // 리스트 정보 가져오기
+        $listData = DB::table('races as r')
+            ->select(
+                'r.number as raceId',
+                'r.listId as listId'
+            )
             ->where([
-                'set_exam_num' => $postData['setExamId']])
+                's.PIN' => $postData['roomPin']
+            ])
+            ->whereNull('s.nick')
+            ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
             ->first();
 
-        if(isset($data->userId)){
-            DB::table('playing_quizs')
-                ->insert(['set_exam_num' => $data->setExamId,
-                    'user_num' => $data->userId,
-                    'sequence' => $postData['sequence'],
-                    'result' => $postData['exam_result']
+        // 레이스가 존재할 경우 값을 입력
+        if(!is_null($listData)){
+            // 정답을 입력
+            $quizInsert = DB::table('records')
+                ->insert([
+                    'raceNo' => $listData->raceId,
+                    'userNo' => $userData['userId'],
+                    'listNo' => $listData->listId,
+                    'quizNo' => $postData['quizId'],
+                    'answer' => $postData['answer']
                 ]);
+
+            // true 값 입력 성공
+            // false 재 시간 이내에 정답 입력실패, 중복입력, 레이스가 없음, 리스트가 없음.
+            if ($quizInsert == 1){
+                $returnValue = array(
+                    'check' => true
+                );
+            } else{
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
         }
 
-        $returnValue = array();
-        return response()->json($returnValue);
+        return $returnValue;
     }
-    */
 
-    public function destroy(Request $request)
+    public function result(Request $request)
     {
-        /*
-          $item = Item::find($id);
-          $item->delete();
+        // 선생 세션아이디 필요
+        $postData = array(
+            'sessionId' => 1,
+            'quizId' => 1
+        );
 
-          return response()->json('Successfully Deleted');
-        */
+        // 세션정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        if (!is_null($userData['raceId'])){
+            // 참가 학생목록
+            $students = DB::table('raceUsers as ru')
+                ->select(
+                    'ru.userNumber as userId',
+                    DB::raw('MAX(r.raceNo) as lastQuizId'),
+                    DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
+                )
+                ->where([
+                    'ru.raceNumber' => $userData['raceId']
+                ])
+                ->leftJoin('records as r', function ($join){
+                    $join->on('r.raceNo', '=', 'ru.raceNumber');
+                    $join->on('r.userNo', '=', 'ru.userNumber');
+                })
+                ->orderBy('rightCount', 'userId')
+                ->groupBy('userId')
+                ->get();
+
+            // 반납값 정리
+
+            // 미입력자 처리
+        }
+
+        $returnValue = array(
+            'studentResults',
+            'quizResult'
+        );
+
+        return $returnValue;
     }
 }
