@@ -411,7 +411,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ],
 //                [
 //                    'question' => '1',
@@ -420,7 +421,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ]
 //            )
 //        );

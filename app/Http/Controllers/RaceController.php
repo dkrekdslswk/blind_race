@@ -263,8 +263,7 @@ class RaceController extends Controller{
                     'qb.example1        as example1',
                     'qb.example2        as example2',
                     'qb.example3        as example3',
-                    'qb.type            as type',
-                    'qb.level           as level'
+                    'qb.type            as type'
                 ])
                 ->where([
                     'lq.raceNumber' => $postData['radceId']
@@ -287,6 +286,7 @@ class RaceController extends Controller{
                     ]);
 
                 // 반납값 정리
+                $type = explode(' ', $quizData->type);
                 $returnValue = array(
                     'quiz' => array(
                         'quizCount' => $quizCount->count + 1,
@@ -297,10 +297,11 @@ class RaceController extends Controller{
                         'example1'  => $quizData->example1,
                         'example2'  => $quizData->example2,
                         'example3'  => $quizData->example3,
-                        'type'      => $quizData->type,
-                        'level'     => $quizData->level
+                        'quizType'  => $type[0],
+                        'makeType'  => $type[1]
                     ),
-                    'check' => true);
+                    'check' => true
+                );
             } else {
                 $returnValue = array('check' => false);
             }
@@ -381,16 +382,38 @@ class RaceController extends Controller{
         // 세션정보 가져오기
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        if (!is_null($userData['raceId'])){
+        // 레이스 정보 가져오기
+        $raceData = DB::table('races')
+            ->select(
+                'number as raceId',
+                'listNumber as listId'
+            )
+            ->where([
+                'number' => $userData['raceId']
+            ])
+            ->first();
+
+        if (!is_null($raceData)){
+            // 현재 문제정보
+            $quizData = DB::table('quizBanks')
+                ->select(
+                    'rightAnswer as right',
+                    'type'
+                )
+                ->where([
+                    'number' => $postData['quizId']
+                ])
+                ->first();
+
             // 참가 학생목록
             $students = DB::table('raceUsers as ru')
                 ->select(
                     'ru.userNumber as userId',
-                    DB::raw('MAX(r.raceNo) as lastQuizId'),
+                    DB::raw('MAX(r.quizNo) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
                 ->where([
-                    'ru.raceNumber' => $userData['raceId']
+                    'ru.raceNumber' => $raceData['raceId']
                 ])
                 ->leftJoin('records as r', function ($join){
                     $join->on('r.raceNo', '=', 'ru.raceNumber');
@@ -401,14 +424,75 @@ class RaceController extends Controller{
                 ->get();
 
             // 반납값 정리
+            $studentResults = array();
+            $rightAnswer = 0;
+            $wrongAnswer = 0;
+            foreach($students as $student){
+                // 미입력자 처리
+                if ($student->lastQuizId != $postData['quizId']){
+                    DB::table('records')
+                        ->insert([
+                            'raceNo' => $raceData->raceId,
+                            'userNo' => $student->userId,
+                            'listNo' => $raceData->listId,
+                            'quizNo' => $postData['quizId'],
+                            'answer' => 'X'
+                        ]);
 
-            // 미입력자 처리
+                    array_push($studentResults, array(
+                        'userId'        => $student->userId,
+                        'rightCount'    => $student->rightCount,
+                        'answer'        => 'X'
+                    ));
+                    $wrongAnswer++;
+                } else {
+                    $answer = '';
+                    switch ($student->type){
+                        case 'vocabulary obj':
+                        case 'word obj':
+                        case 'grammar obj':
+                            $answer = $student->answer == 1 ? 'O' : 'X';
+                            break;
+                        case 'vocabulary sub':
+                        case 'word sub':
+                        case 'grammar sub':
+                            $rights = explode(',', $quizData->right);
+                            $answer = 'X';
+                            foreach ($rights as $right){
+                                if($answer == $right){
+                                    $answer = 'O';
+                                    break;
+                                }
+                            }
+                            break;
+                        default:
+                    }
+                    if ($answer == 'O'){
+                        $rightAnswer++;
+                    }else{
+                        $wrongAnswer++;
+                    }
+                    array_push($studentResults, array(
+                        'userId'        => $student->userId,
+                        'rightCount'    => $student->rightCount,
+                        'answer'        => $answer
+                    ));
+                }
+            }
+
+            // 반납값 정리
+            $returnValue = array(
+                'studentResults'    => $studentResults,
+                'rightAnswer'       => $rightAnswer,
+                'wrongAnswer'       => $wrongAnswer,
+                'check'             => true
+            );
         }
-
-        $returnValue = array(
-            'studentResults',
-            'quizResult'
-        );
+        else{
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
