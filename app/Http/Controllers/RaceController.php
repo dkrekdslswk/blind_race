@@ -233,8 +233,11 @@ class RaceController extends Controller{
     // get quiz
     public function quizNext(Request $request){
         // 선생의 세션 번호 필요
+//        $postData = array(
+//            'sessionId' => 1,
+//        );
         $postData = array(
-            'sessionId' => 1,
+            'sessionId' => $request->input('sessionId'),
         );
 
         // 선생의 정보를 가져오기
@@ -314,13 +317,18 @@ class RaceController extends Controller{
 
     // 학생들의 정답들을 DB에 입력
     public function answerIn(Request $request){
-        //$json     = $request->input('post');
         // 학생의 세션 아이디 필요
+//        $postData     = array(
+//            'sessionId' => 2,
+//            'roomPin'   => 123456,
+//            'quizId'    => 1,
+//            'answer'    => 1
+//        );
         $postData     = array(
-            'sessionId' => 2,
-            'roomPin'   => 123456,
-            'quizId'    => 1,
-            'answer'    => 1
+            'sessionId' => $request->input('sessionId'),
+            'roomPin'   => $request->input('roomPin'),
+            'quizId'    => $request->input('quizId'),
+            'answer'    => $request->input('answer')
         );
 
         // 유저 정보 가져오기
@@ -374,9 +382,13 @@ class RaceController extends Controller{
     public function result(Request $request)
     {
         // 선생 세션아이디 필요
+//        $postData = array(
+//            'sessionId' => 1,
+//            'quizId' => 1
+//        );
         $postData = array(
-            'sessionId' => 1,
-            'quizId' => 1
+            'sessionId' => $request->input('sessionId'),
+            'quizId'    => $request->input('quizId')
         );
 
         // 세션정보 가져오기
