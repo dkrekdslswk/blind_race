@@ -186,13 +186,21 @@
 
 
         function btn_click(){
+            //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
+            var quiz_JSON = [
+                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"obj","hint":""},
+                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"sub","hint":""},
+                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
+                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
+                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
+            ];
 
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-            socket.emit('android_game_start',roomPin);
+            socket.emit('android_game_start',roomPin,quiz_JSON[0].makeType);
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
             $('.user_in_room').remove();
@@ -223,18 +231,11 @@
             var timeleft = 20;
 
 
-            //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
-            var quiz_JSON = [
-                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"obj","hint":""},
-                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"sub","hint":""},
-                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
-                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
-                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
-            ];
 
 
 
-            socket.emit('count','1',roomPin);
+
+            socket.emit('count','1',roomPin , quiz_JSON[0].makeType);
 
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
@@ -376,7 +377,7 @@
                 // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
-                socket.emit('android_nextkey',roomPin, quiz_numbar);
+                socket.emit('android_nextkey',roomPin, quiz_numbar , quiz_JSON[quiz_numbar-1].makeType);
 
             });
 
@@ -393,7 +394,7 @@
 
 
                 if(counting == 0 )
-                    socket.emit('count_off',quiz_numbar , roomPin);
+                    socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
             });
 
             //상탄 타임 게이지 바
@@ -416,7 +417,7 @@
                 }
             });
 
-            socket.on('nextok',function(data){
+            socket.on('nextok',function(data, makeType){
                 answer_count = 0 ;
                 quiz_numbar++;
                 if(quiz_JSON.length == data){
@@ -424,10 +425,18 @@
                 }
                 else{
                     x.innerText  = quiz_JSON[data].question ;
-                    A1.innerText = quiz_JSON[data].right;
-                    A2.innerText = quiz_JSON[data].example1;
-                    A3.innerText = quiz_JSON[data].example2;
-                    A4.innerText = quiz_JSON[data].example3;
+                    switch(makeType){
+                        case "obj" :
+                            A1.innerText = quiz_JSON[data].right;
+                            A2.innerText = quiz_JSON[data].example1;
+                            A3.innerText = quiz_JSON[data].example2;
+                            A4.innerText = quiz_JSON[data].example3;
+                            $(".row").show();
+                            break;
+                        case "sub" :
+                            $(".row").hide();
+                            break;
+                    }
                 }
 
             });

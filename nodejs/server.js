@@ -71,11 +71,11 @@ io.on('connection', function (socket){
 
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_nextkey',function(group_key, quiz ){
-        io.sockets.in(group_num).emit('android_nextquiz',quiz);
+    socket.on('android_nextkey',function(group_key, quiz ,makeType ){
+        io.sockets.in(group_num).emit('android_nextquiz',quiz, makeType);
     });
-    socket.on('android_game_start',function(group_key){
-        io.sockets.in(group_key).emit('android_game_start',1);
+    socket.on('android_game_start',function(group_key,makeType){
+        io.sockets.in(group_key).emit('android_game_start',1 , makeType);
     });
 
     socket.on('android_enter_room',function(roomPin , check , session_id){
@@ -84,7 +84,7 @@ io.on('connection', function (socket){
 
 
     // 타이머 시작함수
-    socket.on('count',function(data,group_num){
+    socket.on('count',function(data,group_num,makeType){
 
         Timer = setInterval(function () {
             countdown -= 1000;
@@ -93,84 +93,37 @@ io.on('connection', function (socket){
         console.log('타임온',group_num);
         if( data == '1'){
             // quiz = 0 ;
-            io.sockets.in(group_num).emit('nextok',0);
+            io.sockets.in(group_num).emit('nextok',0,makeType);
             // io.sockets.in(group_num).emit('entrance_ranking' ,query_result);
         }
     });
 
 
     //다음문제로 넘어가기전 Timer를 취소하는 함수
-    socket.on('count_off', function(quiz , roomPin){
+    socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
-        // quiz++;
 
         countdown = 10000;
         clearInterval(Timer);
-        answer_c = 0 ;
-
-
-        // var answer_checking_query = "select count(case when result='1' then 1 end) o, count(case when result!='1' then 1 end) x from playing_quizs where set_exam_num=1 and sequence="+quiz;
-        // connection.query(answer_checking_query, function(err, rows) {
-
-        //     if(err) throw err;
-
-        //     console.log('순위결정쿼리: ', rows);
-        //     var query_result = JSON.stringify(rows);
-
-        //     io.sockets.in(group_num).emit('right_checked' ,query_result , quiz);
-        //     console.log('퀴즈몇번??', quiz);
-
-        // });
-
-        // var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
-        //     +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-        //     +"where p.set_exam_num='1'"
-        //     +"group by user_num "
-        //     +"order by point desc";
-
-        // connection.query(ranking_query, function(err, rows) {
-
-        //     if(err) throw err;
-        //     console.log('The solution is: ', rows);
-        //     var query_result = JSON.stringify(rows);
 
         io.sockets.in(roomPin).emit('mid_ranking' ,"이런");
-
-        // });
-        io.sockets.in(roomPin).emit('nextok',quiz);
+        console.log("퀴즈타입",makeType+","+quiz);
+        io.sockets.in(roomPin).emit('nextok',quiz ,makeType);
     });
 
 
 //퀴즈 답받는 소켓 함수
-    // socket.on('answer', function(answer_num , student_num , nickname ,quiz){
-    //     console.log('Client Send Data:', answer_num);
-    //     console.log('stu',student_num);
-    //     console.log('nickname',nickname);
-    //     // var quizin = quiz+1;
-    //     console.log('답찍을때 퀴즈',quiz)
-
-    //     // 문제리스트번호, 학생등록번호, 퀴즈 몇번문제, 재시험여부(0,1) , 몇번골랐는지 , '오답노트'
-    //     if(answer_num == 0)
-    //         quiz = 0;
+    socket.on('answer', function(answer_num , student_num , nickname ,quiz){
+        console.log('Client Send Data:', answer_num);
+        console.log('stu',student_num);
+        console.log('nickname',nickname);
+        console.log('답찍을때 퀴즈',quiz)
 
 
-    //     var answer_query = "insert into playing_quizs values (1,"+student_num+","+quiz+",0,'"+answer_num+ "','0')" ;
+            io.sockets.in(group_num).emit('answer-sum',answer_c);
 
-    //     console.log('user',count);
-
-    //     connection.query(answer_query, function(err, rows) {
-    //         if(err) {
-    //             console.log('문제저장쿼리오류 ',"학생번호"+student_num+",퀴즈번호"+quiz+",정답번호"+answer_num);
-    //             // throw err;
-    //         }
-    //         console.log('문제답안저장쿼리: ', rows);
-    //     });
-
-    //     if(answer_num != 0 )
-    //         io.sockets.in(group_num).emit('answer-sum',answer_c);
-
-    //     console.log('answer counting: ', answer_c);
-    // });
+        console.log('answer counting: ', answer_c);
+    });
 
 
     // socket.on('race_ending',function(data){
