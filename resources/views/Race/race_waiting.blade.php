@@ -411,7 +411,7 @@
 
                   $.ajax({
                              type: 'POST',
-                             url: "{{url('/fuck')}}",
+                             url: "{{url('/raceController/answerIn')}}",
                              dataType: 'json',
                              headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                              data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quiz_JSON[quiz_numbar-1].quizId,

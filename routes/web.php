@@ -100,6 +100,7 @@ Route::post('/mobileLogin',"UserController@mobileLogin");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/answerIn','RaceController@answerIn');
 //Route::post('/raceController/nickIn','RaceController@nickIn');
 //Route::post('/raceController/quizNext','RaceController@quizNext');
 //Route::post('/raceController/resultIn','RaceController@resultIn');
