@@ -225,11 +225,11 @@
 
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お"},
-                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け"},
-                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ"},
-                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て"},
-                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる"}
+                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"obj","hint":""},
+                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"sub","hint":""},
+                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
+                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
+                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
             ];
 
 
