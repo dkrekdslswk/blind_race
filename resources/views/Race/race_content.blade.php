@@ -41,10 +41,14 @@
 
     .column {
         float: left;
-        width: 25%;
+        width: 45%;
         padding: 20px;
-        height: 250px;
-        border-radius: 20px;
+        height: 40%;
+        margin-left:20px;
+        margin-top:10px;
+        border-radius: 10px;
+        border-right:5px solid #DCDCDC;
+        border-bottom:5px solid #DCDCDC;
     }
 
     @media screen and (max-height: 450px) {
@@ -80,7 +84,7 @@
         height:250px;
         border-radius: 20px;
         font-weight:bold;
-        font-size:40;
+        font-size:40px;
     }
     .row{
         margin-top:50px;
@@ -89,7 +93,7 @@
         display:inline-block;
     }
     #mondai-content{
-        line-height: 50px;
+
     }
     #answer_c{
 
@@ -309,7 +313,7 @@
 
                     <div class="inline-class" id="counter"></div>
 
-                    <div class="inline-class" id="mondai"><span id="mondai-content"></span></div>
+                    <div class="inline-class" id="mondai"><br><span id="mondai-content"></span></div>
 
                     <div class="inline-class" id="answer_c">Answers</div>
 
@@ -317,7 +321,8 @@
             </center>
 
             <!--문제 번호-->
-            <div class="row">
+            <div class="row" style="margin-left:4%;">
+               <!-- style="margin-left:10%;" -->
                 <div class="column" style="background-color:#1bbc9b; ">
                     <p class="answer_font" id="answer1">1번</p>
                 </div>

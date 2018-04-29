@@ -14,7 +14,7 @@
 <style type="text/css">
 
     body{
-        background-color:skyblue;
+        background-color:whitesmoke;
     }
 
     #curve_chart {
@@ -30,7 +30,7 @@
 </style>
 <div id="mid_content" style="margin-left:15%">
     <div class="jumbotron" >
-        <h1 id="quiz_number" class="display-3">1번</h1>
+        <h1 id="quiz_number">1번</h1>
         <a id="Mid_skip_btn" class="btn btn-primary btn-lg nextbutton" href="#" role="button">다음문제 넘어가기</a>
     </div>
     <section>

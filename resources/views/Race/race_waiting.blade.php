@@ -18,13 +18,10 @@
     <script type="text/javascript"></script>
 
     <style>
-        body{
-            background-color: skyblue;
-        }
-
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-            background-color: rgba(255,255,255,.84);
+            /*background-color: rgba(255,255,255,.84);*/
+            background-color:white;
             width: 100%;
             height: 100px;
             border-radius: 10px;
@@ -49,6 +46,12 @@
             background-color: white;
             margin-right: 1%;
         }
+        #counting_student{
+            text-align:center;
+            font-size:30px;
+            position:absolute;
+            left:5%;
+        }
 
         .counting{
             text-align: center;
@@ -57,12 +60,21 @@
         .counting span {
             padding: 10px 20px 10px 20px;
             background-color: white;
+            position:absolute;
+            left: 10%;
         }
 
         .waitingTable {
             margin-top: 20px;
             margin-left: 2%;
             margin-right: 2%;
+        }
+        #room_Pin{
+            background-color:white;
+            width: 35%;
+            height: 100px;
+            font-size:70px;
+            margin:auto;
         }
 
         #messages { list-style-type: none; }
@@ -99,7 +111,7 @@
             });
 
 
-            $('#room_name').html(roomPin);
+            $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
 
             socket.on('user_in',function(roomPin,nick,sessionId,characterId){
@@ -213,11 +225,11 @@
 
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quiz_num":"1", "name":"ㅂ쟈겨ㅑㅔㅈ배ㅓ샤ㅐㅔㄷ접해ㅔㅓ게ㅐㅂ허ㅐㄱ해'ㅈ개'햊'ㅂ해거'잽'ㅓ'ㄱ접해'ㄱㅈ뱆ㅂㅂ젛'ㅂ쟇 ",　"answer1":"あ", "answer2":"い",	"answer3":"い","answer4":"お"},
-                {"quiz_num":"2", "name":"카",　"answer1":"か", "answer2":"き",	"answer3":"く","answer4":"け"},
-                {"quiz_num":"3", "name":"사","answer1":"さ", "answer2":"し",	"answer3":"す","answer4":"せ"},
-                {"quiz_num":"4", "name":"타","answer1":"た", "answer2":"ち",	"answer3":"つ","answer4":"て"},
-                {"quiz_num":"5", "name":"5い","answer1":"はい", "answer2":"いいえ",	"answer3":"分からない","answer4":"分かる"}
+                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お"},
+                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け"},
+                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ"},
+                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て"},
+                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる"}
             ];
 
 
@@ -411,13 +423,13 @@
                     setTimeout(function(){ location.href="/race_result"; }, 1000);
                 }
                 else{
-                    x.innerText  = quiz_JSON[data].name ;
-                    A1.innerText = quiz_JSON[data].answer1;
-                    A2.innerText = quiz_JSON[data].answer2;
-                    A3.innerText = quiz_JSON[data].answer3;
-                    A4.innerText = quiz_JSON[data].answer4;
-
+                    x.innerText  = quiz_JSON[data].question ;
+                    A1.innerText = quiz_JSON[data].right;
+                    A2.innerText = quiz_JSON[data].example1;
+                    A3.innerText = quiz_JSON[data].example2;
+                    A4.innerText = quiz_JSON[data].example3;
                 }
+
             });
         };
     </script>
@@ -433,12 +445,9 @@
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
     <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:30px" > 문제수 </span>
     <span  id="group_name" style="font-size:30px;"> 그룹이름 </span>
-    <span id="group_student_count" style="font-size:30px; position: absolute;  right: 0; top:4%;">학생 총 수<span>
+    <span id="group_student_count" style="font-size:30px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
 
 </div>
-<!--<div>-->
-<!--    @include('Navigation.race_nav')-->
-<!--</div>-->
 
 
 <div id="wait_room">
@@ -448,12 +457,11 @@
         <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
         <!--</form>-->
-        <div id="room_name" class="counting">
 
-        </div>
-        <br><br>
+            <div id="room_Pin" class="counting">
+            </div>
 
-        <div class="counting">
+        <div id="counting_student">
             <span id="student_count" > 학생 수</span>
         </div>
 
@@ -468,10 +476,15 @@
 
         </table>
     </div>
+
+    <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
+        <img src="/img/info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
+    </div>
 </div>
 <div id="playing_contents" style="display:none;">
     @include('Race.race_content')
 </div>
+
 
 </body>
 </html>
