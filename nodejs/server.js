@@ -57,6 +57,15 @@ io.on('connection', function (socket){
         console.log('join',room);
         // group_num = room;
     });
+
+    socket.on('android_join',function(roomPin , sessionId){
+        io.sockets.emit('android_join',roomPin,sessionId);
+    });
+
+    socket.on('android_join_check',function(join_boolean , sessionId){
+        io.sockets.emit('android_join_result',join_boolean,sessionId);
+    });
+
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
         // io.sockets.in(group_num).emit('leaveRoom',user_num);
@@ -71,11 +80,12 @@ io.on('connection', function (socket){
 
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_nextkey',function(group_key, quiz ,makeType ){
-        io.sockets.in(group_num).emit('android_nextquiz',quiz, makeType);
+    socket.on('android_nextkey',function(roomPin, quiz ,makeType ){
+        io.sockets.in(roomPin).emit('android_nextquiz',quiz, makeType);
     });
-    socket.on('android_game_start',function(group_key,makeType){
-        io.sockets.in(group_key).emit('android_game_start',1 , makeType);
+    socket.on('android_game_start',function(roomPin,makeType){
+        io.sockets.in(roomPin).emit('android_game_start',1 , makeType);
+        console.log("안드스타트",roomPin+","+makeType);
     });
 
     socket.on('android_enter_room',function(roomPin , check , session_id){
@@ -114,13 +124,14 @@ io.on('connection', function (socket){
 
 //퀴즈 답받는 소켓 함수
     socket.on('answer', function(roomPin , answer_num , student_num , nickname){
+        console.log('roomPin',roomPin);
         console.log('Client Send Data:', answer_num);
         console.log('stu',student_num);
         console.log('nickname',nickname);
         console.log('답찍을때 퀴즈',quiz)
 
 
-            io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num);
+        io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num);
 
         console.log('answer counting: ', answer_num);
     });

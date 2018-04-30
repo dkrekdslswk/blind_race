@@ -114,14 +114,37 @@
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
 
-            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
-                //유저정보를 DB세션에 추가함
+            socket.on('android_join',function(roomPin,sessionId){
+
                 $.ajax({
                     type: 'POST',
                     url: "{{url('/raceController/studentIn')}}",
                     dataType: 'json',
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"roomPin="+roomPin+"&nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
+                    data:"roomPin="+roomPin+"&sessionId="+sessionId,
+                    success: function (result) {
+                        if(result['check'] == true)
+                            socket.emit('android_join_check',true , sessionId);
+                        else
+                            socket.emit('android_join_check',false, sessionId);
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+            });
+
+
+
+            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
+                //유저정보를 DB세션에 추가함
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentSet')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
                     success: function (result) {
                         console.log(result['nickCheck']);
                         if( result['nickCheck'] && result['characterCheck'] )
@@ -409,20 +432,20 @@
 
             socket.on('answer-sum', function(answer ,sessionId){
 
-                  $.ajax({
-                             type: 'POST',
-                             url: "{{url('/raceController/answerIn')}}",
-                             dataType: 'json',
-                             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                             data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quiz_JSON[quiz_numbar-1].quizId,
-                             success: function (result) {
-                                 answer_count++;
-                                 document.getElementById('answer_c').innerText= answer_count;
-                             },
-                             error: function(request, status, error) {
-                                 alert("AJAX 에러입니다. ");
-                             }
-                 });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/answerIn')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quiz_JSON[quiz_numbar-1].quizId,
+                    success: function (result) {
+                        answer_count++;
+                        document.getElementById('answer_c').innerText= answer_count;
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
 
                 if(answer_count == quiz_member)
                 {
@@ -481,8 +504,8 @@
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
         <!--</form>-->
 
-            <div id="room_Pin" class="counting">
-            </div>
+        <div id="room_Pin" class="counting">
+        </div>
 
         <div id="counting_student">
             <span id="student_count" > 학생 수</span>
