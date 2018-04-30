@@ -75,17 +75,20 @@ class GroupController extends Controller{
                     ));
                 }
                 $returnValue = array(
-                    'groups' => $groups,
-                    'check' => true
+                    'groups'    => $groups,
+                    'get'       => $request->input('test'),
+                    'check'     => true
                 );
             } else {
                 $returnValue = array(
-                    'check' => false
+                    'get'       => $request->input('test'),
+                    'check'     => false
                 );
             }
         } else {
             $returnValue = array(
-                'check' => false
+                'get'       => $request->input('test'),
+                'check'     => false
             );
         }
 
