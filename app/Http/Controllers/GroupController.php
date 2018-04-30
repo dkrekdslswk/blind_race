@@ -16,37 +16,66 @@ class GroupController extends Controller{
             switch ($userData['classification']) {
             case 'root':
                 $classificationWhere = array();
+                $check = true;
                 break;
             case 'teacher':
                 $classificationWhere = array(
                     'g.number' => $userData['userId']
                 );
+                $check = true;
                 break;
             case 'student':
-                $classificationWhere = array(
-                    'g.number' => 0
-                );
-                break;
             default:
                 $classificationWhere = array(
                     'g.number' => 0
                 );
+                $check = false;
                 break;
             }
 
+            // 올바른 권한을 가진 사람만 접근가능
+            if ($check){
+                // 그룹 정보 가져오기
+                $groupDatas = DB::table('groups')
+                    ->select(
+                        'number as groupId',
+                        'name   as groupName'
+                    )
+                    ->where($classificationWhere)
+                    ->orderBy('number', 'desc')
+                    ->get();
 
+                // 반납할 값 정리
+                $groups = array();
+                foreach ($groupDatas as $groupData){
+                    array_push($groups, array(
+                        'groupId' => $groupData->groupId,
+                        'groupName' => $groupData->groupName
+                    ));
+                }
+                $returnValue = array(
+                    'groups' => $groups,
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
         }
 
-        // 반납값 정리
-        $returnValue = array(
-            'check'             => true,
-            'sessionId'         => $request->session()->get('sessionId'),
-            'userName'          => $userData['name'],
-            'classification'    => $userData['classification']
-        );
-
-        return json_encode($returnValue);
+        return $returnValue;
     }
+
+    // 유저목록 가져오기
+
+    // 유저이동
+
+    //ㅇ
 }
 
 ?>
