@@ -100,10 +100,9 @@ Route::post('/mobileLogin',"UserController@mobileLogin");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
-//Route::post('/raceController/nickIn','RaceController@nickIn');
-//Route::post('/raceController/quizNext','RaceController@quizNext');
-//Route::post('/raceController/resultIn','RaceController@resultIn');
-//Route::post('/raceController/destroy','RaceController@destroy');
+Route::post('/raceController/quizNext','RaceController@quizNext');
+Route::post('/raceController/answerIn','RaceController@answerIn');
+Route::post('/raceController/result','RaceController@result');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');

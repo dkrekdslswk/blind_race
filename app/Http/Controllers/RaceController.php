@@ -215,7 +215,7 @@ class RaceController extends Controller{
                 DB::table('raceUsers')
                     ->insert([
                         'raceNumber' => $data->raceId,
-                        'userNumber' => $userData->userId
+                        'userNumber' => $userData['userId']
                     ]);
             }
         }
@@ -244,7 +244,7 @@ class RaceController extends Controller{
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 레이스 번호가 존재하는지 확인
-        if(!is_null($userData->raceId)){
+        if(!is_null($userData['raceId'])){
 
             // 현재 진행중의 번호 가져오기
             $quizCount = DB::table('races')
@@ -252,7 +252,7 @@ class RaceController extends Controller{
                     'questionNumber as count'
                 )
                 ->where([
-                    'number' => $userData->raceId
+                    'number' => $userData['raceId']
                 ])
                 ->first();
 
@@ -282,7 +282,7 @@ class RaceController extends Controller{
                 // 현재 진행중의 번호 갱신
                 DB::table('races')
                     ->where([
-                        'number' => $userData->raceId
+                        'number' => $userData['raceId']
                     ])
                     ->insert([
                         'questionNumber' => $quizCount->count + 1
@@ -379,6 +379,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
+    // 중간 및 최종 결과용
     public function result(Request $request)
     {
         // 선생 세션아이디 필요

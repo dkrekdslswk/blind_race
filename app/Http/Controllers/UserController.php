@@ -45,12 +45,12 @@ class UserController extends Controller{
         // 로그인 성공
         if ($userData['check']){
             // 세션 아이디 저장
-            // $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
 
             // 반납값 설정
             $returnValue = array(
                 'check'             => true,
-                // 'sessionId'         => $request->session()->get('sessionId'),
+                'sessionId'         => $request->session()->get('sessionId'),
                 'userName'          => $userData['name'],
                 'classification'    => $userData['classification']
             );
@@ -61,6 +61,30 @@ class UserController extends Controller{
         }
 
         return json_encode($returnValue);
+    }
+
+    // 웹 로그인
+    public function webLogin(Request $request){
+        $userData = $this->userLogin($request->input('p_ID'), $request->input('p_PW'));
+
+        // 로그인 성공
+        if ($userData['check']){
+            // 세션 아이디 저장
+            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+
+            // 반납값 설정
+            $returnValue = array(
+                'check'             => true,
+                'userName'          => $userData['name'],
+                'classification'    => $userData['classification']
+            );
+        } else {
+            $returnValue = array(
+                'check'     => false
+            );
+        }
+
+        return $returnValue;
     }
 
     // 세션 정보 및 유저정보 읽어오기
@@ -121,6 +145,7 @@ class UserController extends Controller{
         }
         // 이미 있는 세션 사용
         else{
+            // 업데이트 날자 갱신
 //            DB::table('sessionDatas')
 //                ->where([
 //                    'number' => $data->sessionId
@@ -131,6 +156,7 @@ class UserController extends Controller{
             $sessionId = $data->sessionId;
         }
 
+        // 아이디 반납
         return $sessionId;
     }
 
