@@ -22,7 +22,7 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리
-        if(is_null($userData)) {
+        if(!$userData) {
             $returnValue = array(
                 'check'             => false
             );
@@ -109,7 +109,7 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리하기
-        if(!is_null($userData)) {
+        if($userData) {
             $returnValue = array(
                 'userId' => $userData->userId,
                 'userName' => $userData->userName,
@@ -144,7 +144,7 @@ class UserController extends Controller{
             ->first();
 
         // 새로 세션을 만들기
-        if(is_null($data)){
+        if(!$data){
             $sessionId = DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userId

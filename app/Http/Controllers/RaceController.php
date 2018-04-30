@@ -92,7 +92,7 @@ class RaceController extends Controller{
             ->first();
 
         // 레이스와 그룹이 존재하면 시작
-        if((!is_null($listData)) && (!is_null($groupData))) {
+        if(!((!$listData) || (!$groupData))) {
 
             // 레이스 정보를 저장
             $raceId = DB::table('races')->insertGetId([
@@ -123,7 +123,7 @@ class RaceController extends Controller{
                     ->where(['PIN' => $roomPin])
                     ->where('number', '<>', $request->session()->get('sessionId'))
                     ->first();
-            }while(!is_null($roomCheck));
+            }while($roomCheck);
 
             // 반납할 값 정리
             $returnValue = array(
@@ -139,8 +139,7 @@ class RaceController extends Controller{
                 'check'     => true,
                 'roomPin'   => $roomPin
             );
-        }
-        else {
+        } else {
             $returnValue = array(
                 'check' => false
             );
@@ -187,7 +186,7 @@ class RaceController extends Controller{
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
-        if (!is_null($data)) {
+        if ($data) {
             // 닉네임 중복확인
             $nickUpdate = DB::table('sessionDatas')
                 ->where([
@@ -279,7 +278,7 @@ class RaceController extends Controller{
                 ->first();
 
             // 다음 문제가 있을 때
-            if(!is_null($quizData)) {
+            if($quizData) {
                 // 현재 진행중의 번호 갱신
                 DB::table('races')
                     ->where([
@@ -349,7 +348,7 @@ class RaceController extends Controller{
             ->first();
 
         // 레이스가 존재할 경우 값을 입력
-        if(!is_null($listData)){
+        if($listData){
             // 정답을 입력
             $quizInsert = DB::table('records')
                 ->insert([
@@ -407,7 +406,7 @@ class RaceController extends Controller{
             ])
             ->first();
 
-        if (!is_null($raceData)){
+        if ($raceData){
             // 현재 문제정보
             $quizData = DB::table('quizBanks')
                 ->select(

@@ -498,7 +498,7 @@ class QuizTreeController extends Controller
                     }
 
                 // 입력 실패한 문제를 반납
-                if (is_null($insertCheck)) {
+                if (!$insertCheck) {
                     array_push($errorQuiz, $quiz);
                 }
             }

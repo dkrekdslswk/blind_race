@@ -13,14 +13,22 @@ class GroupController extends Controller{
         // 유저 로그인 확인
         if ($userData['check']){
             // 권한확인, 권한별로 목록 보여주기
-            $classificationWhere = '';
             switch ($userData['classification']) {
                 case 'root':
-                    $classificationWhere = array();
+                    $classificationWhere = array(
+
+                    );
                     break;
                 case 'teacher':
+                    $classificationWhere = array();
                     break;
                 case 'student':
+                    $classificationWhere = array();
+                    break;
+                default:
+                    $classificationWhere = array(
+                        'number' => 0
+                    );
                     break;
             }
         }
