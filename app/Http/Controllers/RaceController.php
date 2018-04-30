@@ -214,8 +214,9 @@ class RaceController extends Controller{
             if ($characterCheck && $nickCheck){
                 DB::table('raceUsers')
                     ->insert([
-                        'raceNumber' => $data->raceId,
-                        'userNumber' => $userData['userId']
+                        'raceNumber'    => $data->raceId,
+                        'userNumber'    => $userData['userId'],
+                        'retestState'   => 'not'
                     ]);
             }
         }

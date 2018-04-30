@@ -10,14 +10,19 @@ class GroupController extends Controller{
     public function groupsGet(Request $request){
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 권한확인, 권한별로 목록 보여주기
-        switch ($userData['classification']){
-            case 'root':
-                break;
-            case 'teacher':
-                break;
-            case 'student':
-                break;
+        // 유저 로그인 확인
+        if ($userData['check']){
+            // 권한확인, 권한별로 목록 보여주기
+            $classificationWhere = '';
+            switch ($userData['classification']) {
+                case 'root':
+                    $classificationWhere = array();
+                    break;
+                case 'teacher':
+                    break;
+                case 'student':
+                    break;
+            }
         }
 
         // 반납값 정리

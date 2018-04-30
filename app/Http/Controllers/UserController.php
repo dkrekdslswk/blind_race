@@ -109,14 +109,21 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리하기
-        $returnValue = array(
-            'userId'            => $userData->userId,
-            'userName'          => $userData->userName,
-            'classification'    => $userData->classification,
-            'raceId'            => $userData->raceId,
-            'nick'              => $userData->nick,
-            'roomPin'           => $userData->roomPin
-        );
+        if(!is_null($userData)) {
+            $returnValue = array(
+                'userId' => $userData->userId,
+                'userName' => $userData->userName,
+                'classification' => $userData->classification,
+                'raceId' => $userData->raceId,
+                'nick' => $userData->nick,
+                'roomPin' => $userData->roomPin,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
