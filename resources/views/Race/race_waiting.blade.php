@@ -407,9 +407,23 @@
             var A4 = document.getElementById("answer4");
 
 
-            socket.on('answer-sum', function(data){
-                answer_count++;
-                document.getElementById('answer_c').innerText= answer_count;
+            socket.on('answer-sum', function(answer ,sessionId){
+
+                  $.ajax({
+                             type: 'POST',
+                             url: "{{url('/raceController/answerIn')}}",
+                             dataType: 'json',
+                             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                             data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quiz_JSON[quiz_numbar-1].quizId,
+                             success: function (result) {
+                                 answer_count++;
+                                 document.getElementById('answer_c').innerText= answer_count;
+                             },
+                             error: function(request, status, error) {
+                                 alert("AJAX 에러입니다. ");
+                             }
+                 });
+
                 if(answer_count == quiz_member)
                 {
                     socket.emit('count_off',quiz_numbar);
