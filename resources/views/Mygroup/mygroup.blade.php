@@ -10,11 +10,9 @@
         integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
         crossorigin="anonymous"></script>
     <body>
-        <nav>
-            @include('Navigation.main_nav')
-        </nav>
+     
         <!-- Sidebar -->
-        <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:20%">
+        <!-- <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:20%">
             <form>
                 <input type="text" name="search" placeholder="학생 찿기" class="input">
             </form>
@@ -40,10 +38,10 @@
 
             </div>
 
-        </div>
+        </div> -->
 
         <!-- Page Content -->
-        <div style="margin-left:22%">
+    
 
             <div class="container">
                 <div class="jumbotron">
@@ -90,10 +88,14 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">create class</button>
+                                    <button type="submit" class="btn btn-primary">create class</button>
                                 </div>
                             </div>
+
+                            
                         </div>
+
+                        
                     </div>
 
                     <!-- Modal -->
@@ -106,18 +108,14 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     김민수
-                  
+                  <p class="badge badge-primary badge-pill"></p>
                     <button
                         type="button"
                         class="badge badge-primary badge-pill"
                         data-toggle="modal"
                         data-target="#studnetsetting">학생 정보 수정</button>
 
-                         <button
-                        type="button"
-                        class="badge badge-primary badge-pill"
-                        data-toggle="modal"
-                        data-target="#studnetsetting">레코드 박스 이동</button>
+                    <button class ="badge badge-primary badge-pill" type="button" onclick="location.href='/recordbox' ">레코드 박스</button>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     징징이
@@ -181,7 +179,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -274,7 +272,7 @@
                         </form>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
