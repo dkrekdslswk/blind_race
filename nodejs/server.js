@@ -113,14 +113,14 @@ io.on('connection', function (socket){
 
 
 //퀴즈 답받는 소켓 함수
-    socket.on('answer', function(answer_num , student_num , nickname){
+    socket.on('answer', function(roomPin , answer_num , student_num , nickname){
         console.log('Client Send Data:', answer_num);
         console.log('stu',student_num);
         console.log('nickname',nickname);
         console.log('답찍을때 퀴즈',quiz)
 
 
-            io.sockets.in(group_num).emit('answer-sum',answer_num);
+            io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num);
 
         console.log('answer counting: ', answer_num);
     });
