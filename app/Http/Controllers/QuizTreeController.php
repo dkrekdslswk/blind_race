@@ -309,8 +309,6 @@ class QuizTreeController extends Controller
 //            'bookId'        => 2,
 //            'pageStart'     => 17,
 //            'pageEnd'       => 20,
-//            'makeType'      => 'grammar',
-//            'quizType'      => 'obj',
 //            'level'         => 1
 //        );
         $postData = array(
@@ -380,8 +378,8 @@ class QuizTreeController extends Controller
                     'example1'  => $quiz->example1,
                     'example2'  => $quiz->example2,
                     'example3'  => $quiz->example3,
-                    'makeType'  => $type[0],
-                    'quizType'  => $type[1],
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1],
                     'level'     => $quiz->level
                 ));
             }
@@ -413,7 +411,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ],
 //                [
 //                    'question' => '1',
@@ -422,7 +421,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ]
 //            )
 //        );
@@ -468,37 +468,28 @@ class QuizTreeController extends Controller
 
         if(isset($listUserCheck->listId)) {
             foreach ($postData['quizs'] as $quiz) {
-                // 정규표현식으로 확인
-                if (preg_match('[@#]', $quiz['right']) ||
-                    preg_match('[@#]', $quiz['example1']) ||
-                    preg_match('[@#]', $quiz['example2']) ||
-                    preg_match('[@#]', $quiz['example3'])){
+                // 문제를 저장
+                $quizId = DB::table('quizBanks')
+                    ->insertGetId([
+                        'question'      => $quiz['question'],
+                        'hint'          => $quiz['hint'],
+                        'rightAnswer'   => $quiz['right'],
+                        'example1'      => $quiz['example1'],
+                        'example2'      => $quiz['example2'],
+                        'example3'      => $quiz['example3'],
+                        'type'          => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                        'teacherNumber' => $userData['userId']
+                    ], 'number');
 
-                    $insertCheck = null;
-                } else {
-                        // 문제를 저장
-                        $quizId = DB::table('quizBanks')
-                            ->insertGetId([
-                                'question' => $quiz['question'],
-                                'hint' => $quiz['hint'],
-                                'rightAnswer' => $quiz['right'],
-                                'example1' => $quiz['example1'],
-                                'example2' => $quiz['example2'],
-                                'example3' => $quiz['example3'],
-                                'type' => $quiz['makeType'] . ' ' . $quiz['quizType'],
-                                'teacherNumber' => $userData['userId']
-                            ], 'number');
-
-                        // 리스트에 문제를 연결
-                        $insertCheck = DB::table('listQuizs')
-                            ->insert([
-                                'listNumber' => $postData['listId'],
-                                'quizNumber' => $quizId
-                            ]);
-                    }
+                // 리스트에 문제를 연결
+                $insertCheck = DB::table('listQuizs')
+                    ->insert([
+                        'listNumber' => $postData['listId'],
+                        'quizNumber' => $quizId
+                    ]);
 
                 // 입력 실패한 문제를 반납
-                if (is_null($insertCheck)) {
+                if (!$insertCheck) {
                     array_push($errorQuiz, $quiz);
                 }
             }

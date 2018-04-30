@@ -42,11 +42,11 @@
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
     <button type="submit">createRace</button>
 </form>
-<form action="{{url('raceController/teacherIn')}}"  method="Post" enctype="multipart/form-data">
+<form action="{{url('raceController/studentIn')}}"  method="Post" enctype="multipart/form-data">
     {{csrf_field()}}
     <h3 class="form-section">Person Info</h3>
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
-    <button type="submit">teacherIn</button>
+    <button type="submit">studentIn</button>
 </form>
 </body>
 </html>
