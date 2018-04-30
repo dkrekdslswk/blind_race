@@ -112,10 +112,10 @@ class RaceController extends Controller{
                 DB::table('sessionDatas')
                     ->where('number', '=', $request->session()->get('sessionId'))
                     ->update([
-                        'raceNumber'    => $raceId,
-                        'PIN'           => $roomPin,
-                        'nick'          => '',
-                        'characterNumber'          => null
+                        'raceNumber'        => $raceId,
+                        'PIN'               => $roomPin,
+                        'nick'              => '',
+                        'characterNumber'   => null
                     ]);
 
                 // 해당 유저 이외의 같은 방번호를 가진 사람이 있는가?
@@ -156,17 +156,14 @@ class RaceController extends Controller{
         // 받아야하는 값
 //        $postData = array(
 //            'roomPin'       => 123456,
-//            'sessionId'     => 2,
-//            'nick'          => 'temp3',
-//            'characterId'   => 1
+//            'sessionId'     => 2
 //        );
         $postData = array(
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId')
         );
         // 반납값 디폴트
-        $nickCheck      = false;
-        $characterCheck = false;
+        $sessionCheck   = false;
 
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
@@ -178,38 +175,29 @@ class RaceController extends Controller{
             ->where([
                 'gs.accessionState'     => 'enrollment',
                 'gs.userNumber'         => $userData['userId'],
-                's2.PIN'                => $postData['roomPin']
+                's2.PIN'                => $postData['roomPin'],
+                's2.nick'               => ''
             ])
-            ->whereNull('s2.nick')
             ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
         if ($data) {
-            // 닉네임 중복확인
-            $nickUpdate = DB::table('sessionDatas')
+            // 유저 세션 갱신
+            $sessionUpdate = DB::table('sessionDatas')
                 ->where([
                     'number' => $postData['sessionId']
                 ])
                 ->update([
-                    'nick'  => $postData['nick'],
-                    'PIN'   => $postData['roomPin']
+                    'PIN'               => $postData['roomPin'],
+                    'raceNumber'        => $data->raceId,
+                    'characterNumber'   => null,
+                    'nick'              => null,
                 ]);
-            $nickCheck = ($nickUpdate == 1);
+            $sessionCheck = ($sessionUpdate == 1);
 
-            // 캐릭터 중복확인
-            $characterData = DB::table('sessionDatas')
-                ->where([
-                    'number' => $postData['sessionId']
-                ])
-                ->update([
-                    'characterNumber'   => $postData['characterId'],
-                    'raceNumber'        => $data->raceId
-                ]);
-            $characterCheck = ($characterData == 1);
-
-            // 닉과 캐릭터 중복없이 입력성공 시 유저 정보 등록
-            if ($characterCheck && $nickCheck){
+            // 갱신 성공시 유저정보 입력
+            if ($sessionCheck){
                 DB::table('raceUsers')
                     ->insert([
                         'raceNumber'    => $data->raceId,
@@ -221,9 +209,7 @@ class RaceController extends Controller{
 
         // 반납값 정리
         $returnValue = array(
-            'nickCheck'         => $nickCheck,
-            'characterCheck'    => $characterCheck,
-            'characterId'       => $postData['characterId']
+            'Check'         => $sessionCheck,
         );
 
         return $returnValue;
@@ -233,47 +219,41 @@ class RaceController extends Controller{
     public function studentSet(Request $request){
         // 받아야하는 값
 //        $postData = array(
-//            'roomPin'       => 123456,
 //            'sessionId'     => 2,
 //            'nick'          => 'temp3',
 //            'characterId'   => 1
 //        );
         $postData = array(
-            'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId'),
             'nick'          => $request->input('nick'),
             'characterId'   => $request->input('characterId')
         );
-        // 반납값 디폴트
-        $nickCheck      = false;
-        $characterCheck = false;
 
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $data = DB::table('races as r')
-            ->select([
-                'r.number as raceId'
-            ])
+        // 해당 학생이 레이스에 참가중인지 확인
+        $Data = DB::table('sessionDatas as s1')
+            ->select(
+                's2.raceNumber as raceId'
+            )
             ->where([
-                'gs.accessionState'     => 'enrollment',
-                'gs.userNumber'         => $userData['userId'],
-                's2.PIN'                => $postData['roomPin']
+                's1.number'   => $postData['sessionId'],
+                's2.nick'   => '',
             ])
-            ->whereNull('s2.nick')
-            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
-            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
+            ->join('sessionDatas as s2', function ($join){
+                $join->on('s2.PIN', '=', 's1.PIN');
+                $join->on('s2.raceNumber', '=', 's1.raceNumber');
+            })
             ->first();
 
-        if ($data) {
+        if ($Data) {
             // 닉네임 중복확인
             $nickUpdate = DB::table('sessionDatas')
                 ->where([
                     'number' => $postData['sessionId']
                 ])
                 ->update([
-                    'nick'  => $postData['nick'],
-                    'PIN'   => $postData['roomPin']
+                    'nick'  => $postData['nick']
                 ]);
             $nickCheck = ($nickUpdate == 1);
 
@@ -283,28 +263,22 @@ class RaceController extends Controller{
                     'number' => $postData['sessionId']
                 ])
                 ->update([
-                    'characterNumber'   => $postData['characterId'],
-                    'raceNumber'        => $data->raceId
+                    'characterNumber'   => $postData['characterId']
                 ]);
             $characterCheck = ($characterData == 1);
 
-            // 닉과 캐릭터 중복없이 입력성공 시 유저 정보 등록
-            if ($characterCheck && $nickCheck){
-                DB::table('raceUsers')
-                    ->insert([
-                        'raceNumber'    => $data->raceId,
-                        'userNumber'    => $userData['userId'],
-                        'retestState'   => 'not'
-                    ]);
-            }
+            // 반납값 정리
+            $returnValue = array(
+                'nickCheck'         => $nickCheck,
+                'characterCheck'    => $characterCheck,
+                'characterId'       => $postData['characterId'],
+                'check'             => true
+            );
+        } else {
+            $returnValue = array(
+                'check'             => false
+            );
         }
-
-        // 반납값 정리
-        $returnValue = array(
-            'nickCheck'         => $nickCheck,
-            'characterCheck'    => $characterCheck,
-            'characterId'       => $postData['characterId']
-        );
 
         return $returnValue;
     }
@@ -420,9 +394,9 @@ class RaceController extends Controller{
                 'r.listNumber as listId'
             )
             ->where([
-                's.PIN' => $postData['roomPin']
+                's.PIN'     => $postData['roomPin'],
+                's.nick'    => ''
             ])
-            ->whereNull('s.nick')
             ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
             ->first();
 
