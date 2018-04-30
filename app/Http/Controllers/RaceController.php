@@ -338,7 +338,7 @@ class RaceController extends Controller{
         $listData = DB::table('races as r')
             ->select(
                 'r.number as raceId',
-                'r.listId as listId'
+                'r.listNumber as listId'
             )
             ->where([
                 's.PIN' => $postData['roomPin']
