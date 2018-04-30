@@ -24,8 +24,16 @@ Route::get('/login', function () {
 });
 
 /* 1. My Group */
-Route::get('/mygroup', function(){
+Route::get('/mygroup2', function(){
     return view('Mygroup/mygroup');
+});
+
+Route::get('/myside', function(){
+    return view('Mygroup/mygroup_sidebar');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup_main');
 });
 
 /* 2. Race Mode : Blind Race */
@@ -82,6 +90,7 @@ Route::get('/test_record', function(){
 Route::get('/recordbox_main', function(){
     return view('Recordbox/recordbox_main');
 });
+
 
 
 
