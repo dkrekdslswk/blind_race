@@ -209,7 +209,7 @@ class RaceController extends Controller{
 
         // 반납값 정리
         $returnValue = array(
-            'Check'         => $sessionCheck,
+            'check'         => $sessionCheck,
         );
 
         return $returnValue;

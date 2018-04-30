@@ -95,11 +95,21 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 유저목록 가져오기
+    // 그룹 정보 가져오기 root, teacher
 
-    // 유저이동
+    // 그룹 만들기 root
 
-    //ㅇ
+    // 학생 초대하기 root, teacher
+
+    // 학생 초대받기 root, teacher
+
+    // 교사 임명 root
+
+    // 유저 검색 root(교사, 학생), teacher(학생)
+
+    // 학생 정보수정 root, teacher
+
+    // 학생 그룹이동 root
 }
 
 ?>
