@@ -100,6 +100,7 @@ Route::post('/mobileLogin',"UserController@mobileLogin");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/studentSet','RaceController@studentSet');
 Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
@@ -111,6 +112,8 @@ Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+
+Route::post('/GroupController/groupsGet','GroupController@groupsGet');
 
 ?>
 
