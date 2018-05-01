@@ -211,11 +211,11 @@
         function btn_click(){
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
-                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
-                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
-                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
-                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
+                {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
+                {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
+                {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
+                {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
+                {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
             ];
 
             var Mid_result_Timer;
@@ -396,9 +396,13 @@
                 if (timeleft == 0)
                     timeleft = 30;
 
+                if(counting == 0 ){
+                    if( quiz_numbar == quiz_JSON.length )
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+                    else
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
 
-                if(counting == 0 )
-                    socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+                }
             });
 
             //상탄 타임 게이지 바
@@ -438,8 +442,12 @@
             socket.on('nextok',function(data, makeType){
                 answer_count = 0 ;
                 quiz_numbar++;
+
+                console.log("넥스트"+data);
+
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/race_result"; }, 1000);
+                    $("#content").remove();
+                    $('#Mid_skip_btn').attr("href", "/race_result");
                 }
                 else{
                     x.innerText  = quiz_JSON[data].question ;
@@ -449,10 +457,12 @@
                             A2.innerText = quiz_JSON[data].example1;
                             A3.innerText = quiz_JSON[data].example2;
                             A4.innerText = quiz_JSON[data].example3;
-                            $(".row").show();
+                            $("#sub").hide();
+                            $(".obj").show();
                             break;
                         case "sub" :
-                            $(".row").hide();
+                            $(".obj").hide();
+                            $("#sub").show();
                             break;
                     }
                 }
@@ -470,9 +480,9 @@
     <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
 
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:30px" > 문제수 </span>
-    <span  id="group_name" style="font-size:30px;"> 그룹이름 </span>
-    <span id="group_student_count" style="font-size:30px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
+    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:20px" > 문제수 </span>
+    <span  id="group_name" style="font-size:20px;"> 그룹이름 </span>
+    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
 
 </div>
 
