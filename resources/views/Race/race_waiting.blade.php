@@ -129,7 +129,7 @@
                             socket.emit('android_join_check',false, sessionId);
                     },
                     error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
+                        console.log("안드로이드 join 실패"+roomPin);
                     }
                 });
 
@@ -211,8 +211,8 @@
         function btn_click(){
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"obj","hint":""},
-                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"sub","hint":""},
+                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
+                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
                 {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
                 {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
                 {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
@@ -223,30 +223,10 @@
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-            socket.emit('android_game_start',roomPin,quiz_JSON[0].makeType);
+            socket.emit('android_game_start',roomPin, quiz_JSON[0].quizId , quiz_JSON[0].makeType);
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
             $('.user_in_room').remove();
-
-
-            //입장순위표 만들 ajax구문
-            //  $.ajax({
-            //             type: 'POST',
-            //             url: "{{url('/fuck')}}",
-            //             dataType: 'json',
-            //             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            //             data: nickname,user_num,character_num,
-            //             success: function (result) {
-            //                ranking_process(result);
-            //             },
-            //             error: function(request, status, error) {
-            //                 alert("AJAX 에러입니다. ");
-            //             }
-            // });
-
-            socket.on('entrance_ranking', function(ranking_j){
-                ranking_process(ranking_j);
-            });
 
             $('#wait_room').hide();
             $('#playing_contents').show();
@@ -363,6 +343,7 @@
 
             socket.on('mid_ranking',function(ranking_j){
 
+
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
@@ -382,7 +363,7 @@
                     $("#content").show();
                     // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
-                    socket.emit('android_nextkey',roomPin, quiz_numbar);
+                    socket.emit('android_nextkey',roomPin,quiz_JSON[quiz_numbar-1].quizId );
 
                 }, 30000);
             });
