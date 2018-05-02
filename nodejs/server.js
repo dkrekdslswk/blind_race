@@ -116,7 +116,7 @@ io.on('connection', function (socket){
         countdown = 3000;
         clearInterval(Timer);
 
-        io.sockets.in(roomPin).emit('mid_ranking' ,"이런");
+        io.sockets.in(roomPin).emit('mid_ranking' ,quiz);
         console.log("퀴즈타입",makeType+","+quiz);
         io.sockets.in(roomPin).emit('nextok',quiz ,makeType);
     });

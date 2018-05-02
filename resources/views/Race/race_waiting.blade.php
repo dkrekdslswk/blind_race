@@ -86,13 +86,18 @@
         var quiz_member = 0;
         var answer_count = 0;
         var roomPin =0;
+        var t_sessionId ;
 
         window.onload = function() {
             var socket = io(':8890');
 
+
+
+
             var groupId  = 1;
             var raceType = 'race';
             var listId = 1;
+
 
             $.ajax({
                 type: 'POST',
@@ -102,8 +107,9 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: "groupId="+groupId+"&raceType="+raceType+"&listId="+listId,
                 success: function (result) {
-                    console.log(result['roomPin']);
+                    console.log(result['sessionId']);
                     roomPin = result['roomPin'];
+                    t_sessionId = result['sessionId'];
                 },
                 error: function(request, status, error) {
                     alert("AJAX 밖에것 에러입니다. ");
@@ -341,17 +347,29 @@
             });
 
 
-            socket.on('mid_ranking',function(ranking_j){
+            socket.on('mid_ranking',function(quizId){
 
 
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
-
-                // ranking_process(ranking_j);
-
                 $('#play_bgm').remove();
 
+                // ranking_process(ranking_j);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/result')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"quizId="+quizId+"&sessionId="+t_sessionId,
+                    success: function (result) {
+                        if(result['check'] == true)
+                            alert("ajax성공");
+                    },
+                    error: function(request, status, error) {
+                        console.log("ajax실패"+t_sessionId+","+quizId);
+                    }
+                });
                 // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").show();
