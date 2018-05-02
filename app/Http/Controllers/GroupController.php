@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller{
-    // 클레스 목록 획득
+    // 그룹 목록 가져오기 root(all teachers), teacher(mine)
     public function groupsGet(Request $request){
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여

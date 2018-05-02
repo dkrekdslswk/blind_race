@@ -479,7 +479,7 @@ class RaceController extends Controller{
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
                 ->where([
-                    'ru.raceNumber' => $raceData['raceId']
+                    'ru.raceNumber' => $raceData->raceId
                 ])
                 ->leftJoin('records as r', function ($join){
                     $join->on('r.raceNo', '=', 'ru.raceNumber');
