@@ -474,7 +474,10 @@ class RaceController extends Controller{
             // 참가 학생목록
             $students = DB::table('raceUsers as ru')
                 ->select(
-                    'ru.userNumber as userId',
+                    'ru.userNumber      as userId',
+                    's.number           as sessionId',
+                    's.nick             as nick',
+                    's.characterNumber  as characterId',
                     DB::raw('MAX(r.quizNo) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
@@ -485,11 +488,12 @@ class RaceController extends Controller{
                     $join->on('r.raceNo', '=', 'ru.raceNumber');
                     $join->on('r.userNo', '=', 'ru.userNumber');
                 })
+                ->join('sessionDatas as s', 's.userNumber', '=', 'ru.userNumber')
                 ->orderBy('rightCount', 'userId')
                 ->groupBy('userId')
                 ->get();
 
-            // 반납값 정리
+            // 값 정리 시작
             $studentResults = array();
             $rightAnswer = 0;
             $wrongAnswer = 0;
@@ -506,12 +510,15 @@ class RaceController extends Controller{
                         ]);
 
                     array_push($studentResults, array(
-                        'userId'        => $student->userId,
+                        'sessionId'     => $student->sessionId,
+                        'nick'          => $student->nick,
+                        'characterId'   => $student->characterId,
                         'rightCount'    => $student->rightCount,
                         'answer'        => 'X'
                     ));
                     $wrongAnswer++;
                 } else {
+                    // 입력한 사람 정답여부 처리하기
                     $answer = '';
                     switch ($student->type){
                         case 'vocabulary obj':
@@ -539,7 +546,9 @@ class RaceController extends Controller{
                         $wrongAnswer++;
                     }
                     array_push($studentResults, array(
-                        'userId'        => $student->userId,
+                        'sessionId'     => $student->sessionId,
+                        'nick'          => $student->nick,
+                        'characterId'   => $student->characterId,
                         'rightCount'    => $student->rightCount,
                         'answer'        => $answer
                     ));
