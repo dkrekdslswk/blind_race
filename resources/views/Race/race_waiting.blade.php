@@ -182,7 +182,8 @@
 
         //순위 변동 함수 정의
         function ranking_process(ranking_j){
-            var ranking_JSON = JSON.parse(ranking_j);
+            var ranking_JSON = ranking_j;
+            // JSON.parse(ranking_j)
 
             var changehtml = "";
 
@@ -200,13 +201,13 @@
                 changehtml+=
                     +rank
                     +" 등"
-                    + ranking_JSON[i].nickname
+                    + ranking_JSON[i].nick
                     +'<i class="magin fas fa-trophy"></i><span >'
-                    + ranking_JSON[i].point*100
+                    + ranking_JSON[i].rightCount*100
                     +" point"
                     +'</span><i class="margin"><img src="/img/character/char'
-                    +ranking_JSON[i].character_num
-                    +'.png" width="60px">'
+                    +ranking_JSON[i].characterId
+                    +'.png" style="width:40px; height:40px;">'
                     +'</i></a>'
                     +'</li>' ;
             }
@@ -248,102 +249,102 @@
 
             socket.on('right_checked' ,function(data , quiz_num){
                 var right_checking_JSON = JSON.parse(data);
-                var correct_count = right_checking_JSON[0].o;
-                var incorrect_count = right_checking_JSON[0].x;
-
-                if(correct_count == 0)
-                    incorrect_count = 1 ;
-
-                $("#quiz_number").text(quiz_num);
-
-                $("#winners").text(correct_count+"명 정답!");
-
-                $("#right").text(correct_count);
-                $("#wrong").text(incorrect_count);
-
-                var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
-
-                // $('.pie::before').css('content',correct_percentage);
-
-                --quiz_num;
-
-                $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
-                $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quiz_num].answer1);
-
-                function sliceSize(dataNum, dataTotal) {
-                    return (dataNum / dataTotal) * 360;
-                }
-                function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-                    $(pieElement).append(
-                        "<div class='slice " + sliceID + "'><span></span></div>"
-                    );
-                    var offset = offset - 1;
-                    var sizeRotation = -179 + sliceSize;
-                    $("." + sliceID).css({
-                        "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-                    });
-                    $("." + sliceID + " span").css({
-                        "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-                        "background-color": color
-                    });
-
-                }
-                function iterateSlices(
-                    sliceSize,
-                    pieElement,
-                    offset,
-                    dataCount,
-                    sliceCount,
-                    color
-                ) {
-                    var sliceID = "s" + dataCount + "-" + sliceCount;
-                    var maxSize = 179;
-                    if (sliceSize <= maxSize) {
-                        addSlice(sliceSize, pieElement, offset, sliceID, color);
-                    } else {
-                        addSlice(maxSize, pieElement, offset, sliceID, color);
-                        iterateSlices(
-                            sliceSize - maxSize,
-                            pieElement,
-                            offset + maxSize,
-                            dataCount,
-                            sliceCount + 1,
-                            color
-                        );
-                    }
-                }
-                function createPie(dataElement, pieElement) {
-                    var listData = [];
-                    $(dataElement + " span").each(function () {
-                        listData.push(Number($(this).html()));
-                    });
-                    var listTotal = 0;
-                    for (var i = 0; i < listData.length; i++) {
-                        listTotal += listData[i];
-                    }
-                    var offset = 0;
-                    var color = [
-                        "green",
-                        "silver",
-                        "orange",
-                        "tomato",
-                        "crimson",
-                        "purple",
-                        "turquoise",
-                        "forestgreen",
-                        "navy",
-                        "gray"
-                    ];
-                    for (var i = 0; i < listData.length; i++) {
-                        var size = sliceSize(listData[i], listTotal);
-                        iterateSlices(size, pieElement, offset, i, 0, color[i]);
-                        $(dataElement + " li:nth-child(" + (
-                            i + 1
-                        ) + ")").css("border-color", color[i]);
-                        offset += size;
-                    }
-                }
-                createPie(".pieID.legend", ".pieID.pie");
+                // var correct_count = right_checking_JSON[0].o;
+                // var incorrect_count = right_checking_JSON[0].x;
+                //
+                // if(correct_count == 0)
+                //     incorrect_count = 1 ;
+                //
+                // $("#quiz_number").text(quiz_num);
+                //
+                // $("#winners").text(correct_count+"명 정답!");
+                //
+                // $("#right").text(correct_count);
+                // $("#wrong").text(incorrect_count);
+                //
+                // var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
+                //
+                // // $('.pie::before').css('content',correct_percentage);
+                //
+                // --quiz_num;
+                //
+                // $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
+                // $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quiz_num].answer1);
+                //
+                // function sliceSize(dataNum, dataTotal) {
+                //     return (dataNum / dataTotal) * 360;
+                // }
+                // function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+                //     $(pieElement).append(
+                //         "<div class='slice " + sliceID + "'><span></span></div>"
+                //     );
+                //     var offset = offset - 1;
+                //     var sizeRotation = -179 + sliceSize;
+                //     $("." + sliceID).css({
+                //         "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+                //     });
+                //     $("." + sliceID + " span").css({
+                //         "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+                //         "background-color": color
+                //     });
+                //
+                // }
+                // function iterateSlices(
+                //     sliceSize,
+                //     pieElement,
+                //     offset,
+                //     dataCount,
+                //     sliceCount,
+                //     color
+                // ) {
+                //     var sliceID = "s" + dataCount + "-" + sliceCount;
+                //     var maxSize = 179;
+                //     if (sliceSize <= maxSize) {
+                //         addSlice(sliceSize, pieElement, offset, sliceID, color);
+                //     } else {
+                //         addSlice(maxSize, pieElement, offset, sliceID, color);
+                //         iterateSlices(
+                //             sliceSize - maxSize,
+                //             pieElement,
+                //             offset + maxSize,
+                //             dataCount,
+                //             sliceCount + 1,
+                //             color
+                //         );
+                //     }
+                // }
+                // function createPie(dataElement, pieElement) {
+                //     var listData = [];
+                //     $(dataElement + " span").each(function () {
+                //         listData.push(Number($(this).html()));
+                //     });
+                //     var listTotal = 0;
+                //     for (var i = 0; i < listData.length; i++) {
+                //         listTotal += listData[i];
+                //     }
+                //     var offset = 0;
+                //     var color = [
+                //         "green",
+                //         "silver",
+                //         "orange",
+                //         "tomato",
+                //         "crimson",
+                //         "purple",
+                //         "turquoise",
+                //         "forestgreen",
+                //         "navy",
+                //         "gray"
+                //     ];
+                //     for (var i = 0; i < listData.length; i++) {
+                //         var size = sliceSize(listData[i], listTotal);
+                //         iterateSlices(size, pieElement, offset, i, 0, color[i]);
+                //         $(dataElement + " li:nth-child(" + (
+                //             i + 1
+                //         ) + ")").css("border-color", color[i]);
+                //         offset += size;
+                //     }
+                // }
+                // createPie(".pieID.legend", ".pieID.pie");
             });
 
 
@@ -361,13 +362,115 @@
                     url: "{{url('/raceController/result')}}",
                     dataType: 'json',
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"quizId="+quizId+"&sessionId="+t_sessionId,
+                    data:"quizId="+quiz_JSON[quizId-1].quizId+"&sessionId="+t_sessionId,
                     success: function (result) {
-                        if(result['check'] == true)
-                            alert("ajax성공");
+                        if(result['check'] == true) {
+                            console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
+
+                            var correct_count = result['rightAnswer'];
+                            var incorrect_count =result['wrongAnswer'];
+
+                            if(correct_count == 0)
+                                incorrect_count = 1 ;
+
+                            $("#quiz_number").text(quizId);
+
+                            $("#winners").text(correct_count+"명 정답!");
+
+                            $("#right").text(correct_count);
+                            $("#wrong").text(incorrect_count);
+
+                            var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
+
+                            // $('.pie::before').css('content',correct_percentage);
+
+
+
+                            $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
+                            $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quizId-1].right);
+
+                            function sliceSize(dataNum, dataTotal) {
+                                return (dataNum / dataTotal) * 360;
+                            }
+                            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+                                $(pieElement).append(
+                                    "<div class='slice " + sliceID + "'><span></span></div>"
+                                );
+                                var offset = offset - 1;
+                                var sizeRotation = -179 + sliceSize;
+                                $("." + sliceID).css({
+                                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+                                });
+                                $("." + sliceID + " span").css({
+                                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+                                    "background-color": color
+                                });
+
+                            }
+                            function iterateSlices(
+                                sliceSize,
+                                pieElement,
+                                offset,
+                                dataCount,
+                                sliceCount,
+                                color
+                            ) {
+                                var sliceID = "s" + dataCount + "-" + sliceCount;
+                                var maxSize = 179;
+                                if (sliceSize <= maxSize) {
+                                    addSlice(sliceSize, pieElement, offset, sliceID, color);
+                                } else {
+                                    addSlice(maxSize, pieElement, offset, sliceID, color);
+                                    iterateSlices(
+                                        sliceSize - maxSize,
+                                        pieElement,
+                                        offset + maxSize,
+                                        dataCount,
+                                        sliceCount + 1,
+                                        color
+                                    );
+                                }
+                            }
+                            function createPie(dataElement, pieElement) {
+                                var listData = [];
+                                $(dataElement + " span").each(function () {
+                                    listData.push(Number($(this).html()));
+                                });
+                                var listTotal = 0;
+                                for (var i = 0; i < listData.length; i++) {
+                                    listTotal += listData[i];
+                                }
+                                var offset = 0;
+                                var color = [
+                                    "green",
+                                    "silver",
+                                    "orange",
+                                    "tomato",
+                                    "crimson",
+                                    "purple",
+                                    "turquoise",
+                                    "forestgreen",
+                                    "navy",
+                                    "gray"
+                                ];
+                                for (var i = 0; i < listData.length; i++) {
+                                    var size = sliceSize(listData[i], listTotal);
+                                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
+                                    $(dataElement + " li:nth-child(" + (
+                                        i + 1
+                                    ) + ")").css("border-color", color[i]);
+                                    offset += size;
+                                }
+                            }
+                            createPie(".pieID.legend", ".pieID.pie");
+
+                            ranking_process(result['studentResults']);
+
+                            socket.emit('android_nextkey',roomPin,quiz_JSON[quiz_numbar-1].quizId );
+                        }
                     },
                     error: function(request, status, error) {
-                        console.log("ajax실패"+t_sessionId+","+quizId);
+                        console.log("ajax실패"+t_sessionId+","+quiz_JSON[quizId-1].quizId);
                     }
                 });
                 // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
@@ -381,7 +484,6 @@
                     $("#content").show();
                     // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
-                    socket.emit('android_nextkey',roomPin,quiz_JSON[quiz_numbar-1].quizId );
 
                 }, 30000);
             });
@@ -399,8 +501,6 @@
                 // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
-                socket.emit('android_nextkey',roomPin, quiz_numbar , quiz_JSON[quiz_numbar-1].makeType);
-
             });
 
 
