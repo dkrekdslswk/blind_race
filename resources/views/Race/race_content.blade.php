@@ -75,19 +75,32 @@
         left:5%;
         top:25%;
     }
-    #mondai{
-        position:absolute;
-        left:25%;
-        box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+    #mondai {
+        top: 20%;
+        position: absolute;
+        left: 25%;
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
         background-color: rgba(255,255,255,.84);
         width: 55%;
-        height:250px;
+        height: 35%;
         border-radius: 20px;
-        font-weight:bold;
-        font-size:40px;
+        font-weight: bold;
+        font-size: 40px;
     }
-    .row{
-        margin-top:50px;
+    .obj{
+        margin-top:12%;
+    }
+    #sub{
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        background-color: rgba(255,255,255,.84);
+        width: 55%;
+        height: 35%;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 30px;
+        position: absolute;
+        left: 25%;
+        top: 60%;
     }
     .inline-class{
         display:inline-block;
@@ -95,21 +108,20 @@
     #mondai-content{
 
     }
-    #answer_c{
-
-        box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+    #answer_c {
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
         background-color: rgba(255,255,255,.84);
-        width:150px;
-        height:150px;
+        width: 150px;
+        height: 150px;
         border-radius: 20px;
-        font-size:30px;
-        position:absolute;
-        right:5%;
+        font-size: 30px;
+        position: absolute;
+        right: 5%;
+        top: 30%;
     }
     progress {
         text-align:left;
         width: 300px;
-        margin: 2em auto;
         padding: 4px;
         border: 0 none;
 
@@ -321,8 +333,8 @@
             </center>
 
             <!--문제 번호-->
-            <div class="row" style="margin-left:4%;">
-               <!-- style="margin-left:10%;" -->
+            <div class="obj" style="margin-left:4%; display:none;">
+                <!-- style="margin-left:10%;" -->
                 <div class="column" style="background-color:#1bbc9b; ">
                     <p class="answer_font" id="answer1">1번</p>
                 </div>
@@ -336,6 +348,11 @@
                     <p class="answer_font" id="answer4">4번</p>
                 </div>
             </div>
+
+            <div id="sub" style="display:none;">
+                <p class="answer_font" id="hint">주관식문제입니다.<br> 작성해서보내주세요 </p>
+            </div>
+
         </div>
     </div>
 
@@ -349,20 +366,6 @@
         </div>
     </div>
 
-
-</div>
-<script>
-    $("#progress").progressTimer({
-        timeLimit: 30,
-        warningThreshold: 10,
-        baseStyle: 'progress-bar-warning',
-        warningStyle: 'progress-bar-danger',
-        completeStyle: 'progress-bar-info',
-        onFinish: function() {
-            console.log("I'm done");
-        }
-    });
-</script>
 </div>
 
 

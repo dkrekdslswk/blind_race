@@ -48,7 +48,7 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 10000;
+    var countdown = 3000;
     var group_num ="";
 
     //대기방 참가 (인수 room : 참가하려는 방의 이름 )
@@ -60,9 +60,11 @@ io.on('connection', function (socket){
 
     socket.on('android_join',function(roomPin , sessionId){
         io.sockets.emit('android_join',roomPin,sessionId);
+        console.log('안드조인',roomPin+","+sessionId);
     });
 
     socket.on('android_join_check',function(join_boolean , sessionId){
+        console.log(join_boolean+","+sessionId);
         io.sockets.emit('android_join_result',join_boolean,sessionId);
     });
 
@@ -80,11 +82,11 @@ io.on('connection', function (socket){
 
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_nextkey',function(roomPin, quiz ,makeType ){
-        io.sockets.in(roomPin).emit('android_nextquiz',quiz, makeType);
+    socket.on('android_nextkey',function(roomPin, quizId ,makeType ){
+        io.sockets.in(roomPin).emit('android_nextX_quiz',quizId, makeType);
     });
-    socket.on('android_game_start',function(roomPin,makeType){
-        io.sockets.in(roomPin).emit('android_game_start',1 , makeType);
+    socket.on('android_game_start',function(roomPin, quizId ,makeType){
+        io.sockets.in(roomPin).emit('android_game_start', quizId , makeType);
         console.log("안드스타트",roomPin+","+makeType);
     });
 
@@ -102,9 +104,7 @@ io.on('connection', function (socket){
         }, 1000);
         console.log('타임온',group_num);
         if( data == '1'){
-            // quiz = 0 ;
             io.sockets.in(group_num).emit('nextok',0,makeType);
-            // io.sockets.in(group_num).emit('entrance_ranking' ,query_result);
         }
     });
 
@@ -113,7 +113,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
 
-        countdown = 10000;
+        countdown = 3000;
         clearInterval(Timer);
 
         io.sockets.in(roomPin).emit('mid_ranking' ,"이런");
