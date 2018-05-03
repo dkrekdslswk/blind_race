@@ -300,7 +300,8 @@ class RaceController extends Controller{
             // 현재 진행중의 번호 가져오기
             $quizCount = DB::table('races')
                 ->select(
-                    'questionNumber as count'
+                    'questionNumber as count',
+                    'listNumber as listId'
                 )
                 ->where([
                     'number' => $userData['raceId']
@@ -320,7 +321,7 @@ class RaceController extends Controller{
                     'qb.type            as type'
                 ])
                 ->where([
-                    'lq.raceNumber' => $userData['raceId']
+                    'lq.listNumber' => $quizCount->listId
                 ])
                 ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
                 ->orderBy('qb.number', 'desc')
