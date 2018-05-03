@@ -11,11 +11,7 @@
         crossorigin="anonymous"></script>
     <body>
 
-        <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">create class</button>
-                                </div>
-                            </div>
+
             <table id="tblData">
                 <tr>
                     <th>
@@ -113,35 +109,6 @@
             background-color: #ddeedd;
         }
     </style>
-    <script>
-        $(document).ready(function () {
-            $('#chkParent').click(function () {
-                var isChecked = $(this).prop("checked");
-                $('#tblData tr:has(td)')
-                    .find('input[type="checkbox"]')
-                    .prop('checked', isChecked);
-            });
-
-            $('#tblData tr:has(td)')
-                .find('input[type="checkbox"]')
-                .click(function () {
-                    var isChecked = $(this).prop("checked");
-                    var isHeaderChecked = $("#chkParent").prop("checked");
-                    if (isChecked == false && isHeaderChecked) 
-                        $("#chkParent").prop('checked', isChecked);
-                    else {
-                        $('#tblData tr:has(td)')
-                            .find('input[type="checkbox"]')
-                            .each(function () {
-                                if ($(this).prop("checked") == false) 
-                                    isChecked = false;
-                                }
-                            );
-                        console.log(isChecked);
-                        $("#chkParent").prop('checked', isChecked);
-                    }
-                });
-        });
-    </script>
+  
 </body>
 </html>
