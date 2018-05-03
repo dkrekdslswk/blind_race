@@ -479,6 +479,7 @@ class RaceController extends Controller{
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
+                    'r.answer           as answer',
                     DB::raw('MAX(r.quizNo) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
@@ -500,7 +501,7 @@ class RaceController extends Controller{
             $wrongAnswer = 0;
             foreach($students as $student){
                 // 미입력자 처리
-                if ($student->lastQuizId != $postData['quizId']){
+                if ((int)$student->lastQuizId != (int)$postData['quizId']){
                     DB::table('records')
                         ->insert([
                             'raceNo' => $raceData->raceId,
