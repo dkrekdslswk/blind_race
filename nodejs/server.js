@@ -48,7 +48,7 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 3000;
+    var countdown = 5000;
     var group_num ="";
 
     //대기방 참가 (인수 room : 참가하려는 방의 이름 )
@@ -87,12 +87,14 @@ io.on('connection', function (socket){
     });
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_mid_result',function(roomPin, quizId ,makeType ,ranking ){
-        io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType, ranking);
+    socket.on('android_mid_result',function(roomPin, quizId ,makeType ){
+        io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType);
+        console.log("안드 중간결과 ", quizId +","+ makeType);
     });
 
     socket.on('android_next_quiz',function(roomPin){
         io.sockets.in(roomPin).emit('android_next_quiz',roomPin);
+        console.log("안드로이드 다음문제 " );
     });
 
     socket.on('android_enter_room',function(roomPin , check , session_id){
@@ -118,7 +120,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
 
-        countdown = 3000;
+        countdown = 5000;
         clearInterval(Timer);
 
         io.sockets.in(roomPin).emit('mid_ranking' ,quiz);
@@ -135,39 +137,36 @@ io.on('connection', function (socket){
         console.log('nickname',nickname);
         console.log('답찍을때 퀴즈',quiz)
 
-        io.sockets.in(roomPin).emit('answer-sum',answer_num , student_num ,quizId);
+        io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num ,quizId);
         console.log("quizId =",quizId);
     });
 
-    socket.on('ending' , function(data){
-       console.log(data);
-    });
 
     // socket.on('race_ending',function(data){
     //     clearInterval(Timer);
 
-        // var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
-        //     +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-        //     +"where p.set_exam_num='1' "
-        //     +"group by user_num "
-        //     +"order by point desc";
+    //     var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
+    //         +"from playing_quizs p join sessions s on p.user_num = s.user_num "
+    //         +"where p.set_exam_num='1' "
+    //         +"group by user_num "
+    //         +"order by point desc";
 
-        // connection.query(ranking_query, function(err, rows) {
-        //
-        //     if(err) throw err;
-        //     console.log('엔딩쿼리: ', rows);
-        //     var query_result = JSON.stringify(rows);
-        //     io.sockets.emit('race_ending',query_result);
-        //     // io.sockets.in(group_num).emit('race_ending', query_result);
-        // });
-        //
-        // var delete_session_query = "delete from sessions where user_num <> 1;"
-        // connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
-        //
-        // // var delete_quizs_query = "delete from playing_quizs where set_exam_num= 1;"
-        // // connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
-        //
-    //
+    //     connection.query(ranking_query, function(err, rows) {
+
+    //         if(err) throw err;
+    //         console.log('엔딩쿼리: ', rows);
+    //         var query_result = JSON.stringify(rows);
+    //         io.sockets.emit('race_ending',query_result);
+    //         // io.sockets.in(group_num).emit('race_ending', query_result);
+    //     });
+
+    //     var delete_session_query = "delete from sessions where user_num <> 1;"
+    //     connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
+
+    //     // var delete_quizs_query = "delete from playing_quizs where set_exam_num= 1;"
+    //     // connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
+
+
     // });
 
 
