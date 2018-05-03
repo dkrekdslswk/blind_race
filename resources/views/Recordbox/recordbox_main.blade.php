@@ -34,13 +34,18 @@
         }
 
         #wrapper {
-            margin: 0;
+            margin: 0 0 0 220px;
             padding: 0;
             transition: all 0.4s ease 0s;
             position: relative;
             /*     min-height: 100% */
             min-height: 705px;
             min-width: 1000px;
+        }
+
+        #main-navbar {
+            width: 100%;
+            height: ;
         }
 
         #menu-main {
@@ -163,27 +168,24 @@
 </head>
 <body>
 
-<div class="main-body">
+{{--메인 네비바 불러오기--}}
+<div id="main-navbar" >
+    @include('Navigation.main_nav')
+</div>
 
-    {{--메인 네비바 불러오기--}}
-    <div id="main-navbar">
-        @include('Navigation.main_nav')
+{{--사이드바 불러오기--}}
+<aside id="menu-main" class="">
+    @include('Recordbox.test_sidebar')
+</aside>
+
+{{--첫 화면 레이스 목록--}}
+<div id="wrapper" class="" style="min-height: 1024px;">
+
+    {{--나의그룹 목록 불러오기--}}
+    <div id="mygroup" class="">
+        @include('Recordbox.test_record2')
     </div>
 
-    {{--첫 화면 레이스 목록--}}
-    <div id="wrapper" class="" style="min-height: 1024px;">
-
-        {{--레이스 목록 불러오기--}}
-        <div id="myrace">
-            @include('Recordbox.test_record')
-        </div>
-
-        {{--나의그룹 목록 불러오기--}}
-        <div id="mygroup" class="hidden">
-            @include('Recordbox.test_record2')
-        </div>
-
-    </div>
 </div>
 
 </body>

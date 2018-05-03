@@ -1,32 +1,11 @@
 <head>
 
     <style>
-        .page-small .set-small, .page-small .learn-small, .page-small .main-small {
+        .page-small {
             display: none !important;
         }
-        .page-small .board-small-show {
+        .page-small {
             width: 100% !important;
-        }
-
-        .set-small-show, .set-small-show-table, .learn-small-show, .set-small-show-init {
-            display: none !important;
-        }
-        .page-small .set-small-show, .page-small .learn-small-show {
-            display: block !important;
-        }
-        .page-small .set-small-show-init { display: initial !important; }
-        .page-small .set-small-show-table {
-            display: table-cell !important;
-        }
-
-
-        .profile-picture {
-            padding: 10px 10px 25px 16px;
-            position: relative;
-        }
-
-        .profile-picture table {
-            width: 100%;
         }
 
         .m-t-lg {
@@ -43,7 +22,6 @@
         .main-left-menu > li.active.class-toggle > a:hover { color: #8ebd4d; }
         .main-left-menu > li.active > a > .icon:before { content: "▲"; }
         .main-left-menu > li.active .toggle-class > a, .main-left-menu > li:hover .toggle-class > a { color: #8ebd4d; }
-
 
         .sidebar_main {
             -webkit-box-sizing: border-box;

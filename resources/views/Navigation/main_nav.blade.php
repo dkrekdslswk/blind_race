@@ -9,6 +9,7 @@
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     </head>
+
     <style>
         .navbar-brand {
             position: relative;
@@ -43,6 +44,7 @@
         }
         .navbar.navbar-default .nav-collapse {
             background-color: #f8f8f8;
+            margin: 0;
         }
         .navbar.navbar-inverse .nav-collapse {
             background-color: #222;
@@ -82,7 +84,7 @@
     </style>
     <body>
         <div class="">
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default" style="margin: 0;">
                 <div class="">
                     <div class="navbar-header">
                         <button
@@ -115,7 +117,7 @@
                             <li>
                                 <a href="{{ url('quiz_list') }}">QuizTree</a>
                             </li>
-                          
+
                             <li>
                                 <a
                                     class="btn btn-default btn-outline btn-circle"
