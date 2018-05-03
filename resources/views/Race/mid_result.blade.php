@@ -1,4 +1,4 @@
-<!-- Made by Minsu -->
+
 <link href="js/bootstrap.min.js" rel="stylesheet">
 <link
         rel="stylesheet"
@@ -9,10 +9,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link
-        rel="stylesheet"
+<link   rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <style type="text/css">
+
+    body{
+        background-color:whitesmoke;
+    }
 
     #curve_chart {
         margin-top: 1em;
@@ -27,7 +30,7 @@
 </style>
 <div id="mid_content" style="margin-left:15%">
     <div class="jumbotron" >
-        <h1 id="quiz_number" class="display-3">1번</h1>
+        <h1 id="quiz_number">1번</h1>
         <a id="Mid_skip_btn" class="btn btn-primary btn-lg nextbutton" href="#" role="button">다음문제 넘어가기</a>
     </div>
     <section>
@@ -64,11 +67,6 @@
         from {
             transform: rotate(0deg) translate3d(0,0,0);
         }
-    }
-
-    body {
-        font-family: "Open Sans", Arial;
-        background: #EEE;
     }
     main {
         width: 400px;
@@ -333,7 +331,7 @@
     }
 </style>
 
-// <script>
+<script>
 
     // function sliceSize(dataNum, dataTotal) {
     //     return (dataNum / dataTotal) * 360;

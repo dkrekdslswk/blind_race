@@ -22,7 +22,7 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리
-        if(is_null($userData)) {
+        if(!$userData) {
             $returnValue = array(
                 'check'             => false
             );
@@ -46,11 +46,35 @@ class UserController extends Controller{
         if ($userData['check']){
             // 세션 아이디 저장
             $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
-            
+
             // 반납값 설정
             $returnValue = array(
                 'check'             => true,
                 'sessionId'         => $request->session()->get('sessionId'),
+                'userName'          => $userData['name'],
+                'classification'    => $userData['classification']
+            );
+        } else {
+            $returnValue = array(
+                'check'     => false
+            );
+        }
+
+        return json_encode($returnValue);
+    }
+
+    // 웹 로그인
+    public function webLogin(Request $request){
+        $userData = $this->userLogin($request->input('p_ID'), $request->input('p_PW'));
+
+        // 로그인 성공
+        if ($userData['check']){
+            // 세션 아이디 저장
+            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+
+            // 반납값 설정
+            $returnValue = array(
+                'check'             => true,
                 'userName'          => $userData['name'],
                 'classification'    => $userData['classification']
             );
@@ -85,14 +109,21 @@ class UserController extends Controller{
             ->first();
 
         // 반납값 정리하기
-        $returnValue = array(
-            'userId'            => $userData->userId,
-            'userName'          => $userData->userName,
-            'classification'    => $userData->classification,
-            'raceId'            => $userData->raceId,
-            'nick'              => $userData->nick,
-            'roomPin'           => $userData->roomPin
-        );
+        if($userData) {
+            $returnValue = array(
+                'userId' => $userData->userId,
+                'userName' => $userData->userName,
+                'classification' => $userData->classification,
+                'raceId' => $userData->raceId,
+                'nick' => $userData->nick,
+                'roomPin' => $userData->roomPin,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
@@ -100,7 +131,7 @@ class UserController extends Controller{
     // 세션 값 입력
     public function sessionIdGet($userId){
         // 오래된 세션 확인
-        $this->oldLoginCheck();
+//        $this->oldLoginCheck();
 
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
@@ -113,7 +144,7 @@ class UserController extends Controller{
             ->first();
 
         // 새로 세션을 만들기
-        if(is_null($data)){
+        if(!$data){
             $sessionId = DB::table('sessionDatas')
                 ->insertGetId([
                     'userNumber' => $userId
@@ -121,6 +152,7 @@ class UserController extends Controller{
         }
         // 이미 있는 세션 사용
         else{
+            // 업데이트 날자 갱신
 //            DB::table('sessionDatas')
 //                ->where([
 //                    'number' => $data->sessionId
@@ -131,18 +163,19 @@ class UserController extends Controller{
             $sessionId = $data->sessionId;
         }
 
+        // 아이디 반납
         return $sessionId;
     }
 
     // 오래된 세션을 삭제
-    public function oldLoginCheck(){
-        DB::table('sessionDatas')
-            ->where([
-                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
-                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
-            ])
-            ->delete();
-    }
+//    public function oldLoginCheck(){
+//        DB::table('sessionDatas')
+//            ->where([
+//                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
+//                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
+//            ])
+//            ->delete();
+//    }
 
     /*public function store(Request $request){
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
@@ -309,16 +310,12 @@ class QuizTreeController extends Controller
 //            'bookId'        => 2,
 //            'pageStart'     => 17,
 //            'pageEnd'       => 20,
-//            'makeType'      => 'grammar',
-//            'quizType'      => 'obj',
 //            'level'         => 1
 //        );
         $postData = array(
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),
             'pageEnd'   => $request->input('pageEnd'),
-            'makeType'  => $request->input('makeType'),
-            'quizType'  => $request->input('quizType'),
             'level'     => $request->input('level')
         );
 
@@ -363,7 +360,6 @@ class QuizTreeController extends Controller
                 )
                 ->where([
                     'bookNumber'    => $postData['bookId'],
-                    'type'          => $postData['quizType'].' '.$postData['makeType'],
                     'level'         => $postData['level']
                 ])
                 ->where('page', '>=', $postData['pageStart'])
@@ -383,8 +379,8 @@ class QuizTreeController extends Controller
                     'example1'  => $quiz->example1,
                     'example2'  => $quiz->example2,
                     'example3'  => $quiz->example3,
-                    'makeType'  => $type[0],
-                    'quizType'  => $type[1],
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1],
                     'level'     => $quiz->level
                 ));
             }
@@ -416,7 +412,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ],
 //                [
 //                    'question' => '1',
@@ -425,7 +422,8 @@ class QuizTreeController extends Controller
 //                    'example1' => '2',
 //                    'example2' => '3',
 //                    'example3' => '4',
-//                    'type' => 'vocabulary obj'
+//                    'quizType'  => '',
+//                    'makeType'  => ''
 //                ]
 //            )
 //        );
@@ -471,37 +469,45 @@ class QuizTreeController extends Controller
 
         if(isset($listUserCheck->listId)) {
             foreach ($postData['quizs'] as $quiz) {
-                // 정규표현식으로 확인
-                if (preg_match('[@#]', $quiz['right']) ||
-                    preg_match('[@#]', $quiz['example1']) ||
-                    preg_match('[@#]', $quiz['example2']) ||
-                    preg_match('[@#]', $quiz['example3'])){
-
-                    $insertCheck = null;
+                // 문제를 저장
+                // 주관식 객관식 구분
+                if($quiz['makeType'] == 'obj') {
+                    $quizId = DB::table('quizBanks')
+                        ->insertGetId([
+                            'question' => $quiz['question'],
+                            'rightAnswer' => $quiz['right'],
+                            'example1' => $quiz['example1'],
+                            'example2' => $quiz['example2'],
+                            'example3' => $quiz['example3'],
+                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                            'teacherNumber' => $userData['userId']
+                        ], 'number');
+                } else if($quiz['makeType'] == 'sub'){
+                    $quizId = DB::table('quizBanks')
+                        ->insertGetId([
+                            'question' => $quiz['question'],
+                            'hint' => $quiz['hint'],
+                            'rightAnswer' => $quiz['right'],
+                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                            'teacherNumber' => $userData['userId']
+                        ], 'number');
                 } else {
-                        // 문제를 저장
-                        $quizId = DB::table('quizBanks')
-                            ->insertGetId([
-                                'question' => $quiz['question'],
-                                'hint' => $quiz['hint'],
-                                'rightAnswer' => $quiz['right'],
-                                'example1' => $quiz['example1'],
-                                'example2' => $quiz['example2'],
-                                'example3' => $quiz['example3'],
-                                'type' => $quiz['makeType'] . ' ' . $quiz['quizType'],
-                                'teacherNumber' => $userData['userId']
-                            ], 'number');
+                    $quizId = false;
+                }
 
-                        // 리스트에 문제를 연결
-                        $insertCheck = DB::table('listQuizs')
-                            ->insert([
-                                'listNumber' => $postData['listId'],
-                                'quizNumber' => $quizId
-                            ]);
-                    }
+                // 리스트에 문제를 연결
+                if($quizId) {
+                    $insertCheck = DB::table('listQuizs')
+                        ->insert([
+                            'listNumber' => $postData['listId'],
+                            'quizNumber' => $quizId
+                        ]);
+                } else {
+                    $insertCheck = false;
+                }
 
                 // 입력 실패한 문제를 반납
-                if (is_null($insertCheck)) {
+                if (!$insertCheck) {
                     array_push($errorQuiz, $quiz);
                 }
             }

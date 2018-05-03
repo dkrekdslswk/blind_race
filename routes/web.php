@@ -24,9 +24,26 @@ Route::get('/login', function () {
 });
 
 /* 1. My Group */
-Route::get('/mygroup', function(){
+Route::get('/mygroup2', function(){
     return view('Mygroup/mygroup');
 });
+
+Route::get('/myside', function(){
+    return view('Mygroup/mygroup_sidebar');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup_main');
+});
+
+Route::get('/Unregistered_group', function(){
+    return view('Mygroup/Unregistered_group');
+});
+
+Route::get('/mygroup_Unregistered_group', function(){
+    return view('Mygroup/mygroup_Unregistered_group');
+});
+
 
 /* 2. Race Mode : Blind Race */
 Route::get('/race_list', function(){
@@ -85,6 +102,7 @@ Route::get('/recordbox_main', function(){
 
 
 
+
 /* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
 
 /* CBC : test */
@@ -99,12 +117,11 @@ Route::get('/cbcSocketTest', function(){
 Route::post('/mobileLogin',"UserController@mobileLogin");
 
 Route::post('/raceController/createRace','RaceController@createRace');
-Route::post('/raceController/teacherIn','RaceController@teacherIn');
-//Route::post('/raceController/studentIn','RaceController@studentIn');
-//Route::post('/raceController/nickIn','RaceController@nickIn');
-//Route::post('/raceController/quizNext','RaceController@quizNext');
-//Route::post('/raceController/resultIn','RaceController@resultIn');
-//Route::post('/raceController/destroy','RaceController@destroy');
+Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/studentSet','RaceController@studentSet');
+Route::post('/raceController/quizNext','RaceController@quizNext');
+Route::post('/raceController/answerIn','RaceController@answerIn');
+Route::post('/raceController/result','RaceController@result');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
@@ -113,6 +130,8 @@ Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+
+Route::post('/GroupController/groupsGet','GroupController@groupsGet');
 
 ?>
 
