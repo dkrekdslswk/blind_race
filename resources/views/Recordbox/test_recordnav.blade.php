@@ -30,17 +30,13 @@
             <span class="ns-swoosh"></span>
         </a>
 
-        <ul class="header-menu_onedepth" data-module-gnb="{type:type1}">
+        <ul class="header-menu_onedepth">
 
-                <a href="/kr/ko_kr/l/men" data-click-area="GNB" data-click-name="MEN" class="">MEN</a>
+                <a href="" data-click-area="GNB" data-click-name="MEN" class="">반 이름</a>
+                <a href="" data-click-area="GNB" data-click-name="MEN" class="">학생 관리</a>
+                <a href="" data-click-area="GNB" data-click-name="MEN" class="">오답 노트</a>
+                <a href="" data-click-area="GNB" data-click-name="MEN" class="">피드백</a>
 
-                <a href="/kr/ko_kr/l/women" data-click-area="GNB" data-click-name="WOMEN" class="">WOMEN</a>
-
-
-                <a href="/kr/ko_kr/l/boys" data-click-area="GNB" data-click-name="BOYS" class="">BOYS</a>
-
-                <a href="/kr/ko_kr/l/girls" data-click-area="GNB" data-click-name="GIRLS" class="">GIRLS</a>
-            </li>
         </ul>
 
     </nav>

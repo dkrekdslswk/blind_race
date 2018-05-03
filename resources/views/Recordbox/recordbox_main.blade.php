@@ -45,7 +45,6 @@
 
         #main-navbar {
             width: 100%;
-            height: ;
         }
 
         #menu-main {
@@ -54,7 +53,7 @@
             left: 0;
             bottom: 0;
             float: left;
-            position: absolute;
+            position: relative;
             /*     min-height: 1000px; */
             top: 0px;
             transition: all 0.4s ease 0s;
@@ -77,11 +76,11 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2004',  1000,      400],
-                ['2005',  1170,      460],
-                ['2006',  660,       1120],
-                ['2007',  1030,      540]
+                ['Year', '평균점수', '어휘' , '독해' , '문법'],
+                ['04월/28일',  90,      20,       35,        40],
+                ['04월/27일',  87,      55,       10,        33],
+                ['04월/26일',  95,       25,      30,        30],
+                ['04월/25일',  75,      30,       20,        10]
             ]);
 
             var options = {
@@ -150,7 +149,6 @@
                             }
                         };
 
-
                         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
                         chart.draw(data, options);
@@ -171,6 +169,11 @@
 {{--메인 네비바 불러오기--}}
 <div id="main-navbar" >
     @include('Navigation.main_nav')
+</div>
+
+{{--메인 네비바 불러오기--}}
+<div id="main-recordnav" >
+    @include('Recordbox.test_recordnav')
 </div>
 
 {{--사이드바 불러오기--}}
