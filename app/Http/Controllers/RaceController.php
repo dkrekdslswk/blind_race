@@ -130,7 +130,7 @@ class RaceController extends Controller{
             $returnValue = array(
                 'list'=>array(
                     'listName'  => $listData->listName,
-                    'quiCount'  => $listData->quizCount
+                    'quizCount'  => $listData->quizCount
                 ),
                 'group'=>array(
                     'groupName'         => $groupData->groupName,

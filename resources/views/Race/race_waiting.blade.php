@@ -85,11 +85,16 @@
         var quiz_numbar = 0;
         var quiz_member = 0;
         var answer_count = 0;
-        var roomPin ='<?php echo $response['roomPin'] ?>';
-        var t_sessionId = '<?php echo $response['sessionId'] ?>';
+        var roomPin ='<?php echo $response['roomPin']; ?>';
+        var t_sessionId = '<?php echo $response['sessionId']; ?>';
 
         window.onload = function() {
             var socket = io(':8890');
+
+            $('#race_name').html('<?php echo $response['list']['listName']; ?>');
+            $('#race_count').html('<?php echo $response['list']['quizCount']; echo "문제"; ?>');
+            $('#group_name').html('<?php echo $response['group']['groupName']; ?>');
+            $('#group_student_count').html('<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>');
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
