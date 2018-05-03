@@ -479,7 +479,6 @@ class RaceController extends Controller{
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
-                    'r.answer           as answer',
                     DB::raw('MAX(r.quizNo) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
@@ -521,12 +520,20 @@ class RaceController extends Controller{
                     $wrongAnswer++;
                 } else {
                     // 입력한 사람 정답여부 처리하기
-                    $answer = '';
+                    $studentAnswer = DB::table('records')
+                        ->select('answer')
+                        ->where([
+                            'raceNo' => $raceData->raceId,
+                            'userNo' => $student->userId,
+                            'listNo' => $raceData->listId,
+                            'quizNo' => $postData['quizId']
+                        ])
+                        ->first();
                     switch ($quizData->type){
                         case 'vocabulary obj':
                         case 'word obj':
                         case 'grammar obj':
-                            $answer = $student->answer == 1 ? 'O' : 'X';
+                            $answer = $studentAnswer->answer == 1 ? 'O' : 'X';
                             break;
                         case 'vocabulary sub':
                         case 'word sub':
@@ -534,13 +541,14 @@ class RaceController extends Controller{
                             $rights = explode(',', $quizData->right);
                             $answer = 'X';
                             foreach ($rights as $right){
-                                if($answer == $right){
+                                if($studentAnswer->answer == $right){
                                     $answer = 'O';
                                     break;
                                 }
                             }
                             break;
                         default:
+                            $answer = 'X';
                     }
                     if ($answer == 'O'){
                         $rightAnswer++;
