@@ -137,7 +137,8 @@ class RaceController extends Controller{
                 ),
                 'sessionId' => $request->session()->get('sessionId'),
                 'check'     => true,
-                'roomPin'   => $roomPin
+                'roomPin'   => $roomPin,
+                'quizs'     => $this->quizNext($listData->listId)
             );
         } else {
             $returnValue = array(
@@ -282,30 +283,31 @@ class RaceController extends Controller{
     }
 
     // get quiz
-    public function quizNext(Request $request){
+    private function quizNext($listId){
         // 선생의 세션 번호 필요
 //        $postData = array(
 //            'sessionId' => 1,
 //        );
-        $postData = array(
-            'sessionId' => $request->input('sessionId'),
-        );
+//        $postData = array(
+//            'sessionId' => $request->input('sessionId'),
+//        );
 
-        // 선생의 정보를 가져오기
-        $userData = UserController::sessionDataGet($postData['sessionId']);
+//        // 선생의 정보를 가져오기
+//        $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        // 레이스 번호가 존재하는지 확인
-        if(!is_null($userData['raceId'])){
-
-            // 현재 진행중의 번호 가져오기
-            $quizCount = DB::table('races')
-                ->select(
-                    'questionNumber as count'
-                )
-                ->where([
-                    'number' => $userData['raceId']
-                ])
-                ->first();
+//        // 레이스 번호가 존재하는지 확인
+//        if(!is_null($userData['raceId'])){
+//
+//            // 현재 진행중의 번호 가져오기
+//            $quizCount = DB::table('races')
+//                ->select(
+//                    'questionNumber as count',
+//                    'listNumber as listId'
+//                )
+//                ->where([
+//                    'number' => $userData['raceId']
+//                ])
+//                ->first();
 
             // 문제 가져오기
             $quizData = DB::table('quizBanks as qb')
@@ -320,50 +322,51 @@ class RaceController extends Controller{
                     'qb.type            as type'
                 ])
                 ->where([
-                    'lq.raceNumber' => $postData['radceId']
+                    'lq.listNumber' => $listId
                 ])
                 ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
                 ->orderBy('qb.number', 'desc')
-                ->offset($quizCount->count)
-                ->limit(1)
-                ->first();
+                ->get();
 
             // 다음 문제가 있을 때
             if($quizData) {
-                // 현재 진행중의 번호 갱신
-                DB::table('races')
-                    ->where([
-                        'number' => $userData['raceId']
-                    ])
-                    ->insert([
-                        'questionNumber' => $quizCount->count + 1
-                    ]);
+//                // 현재 진행중의 번호 갱신
+//                DB::table('races')
+//                    ->where([
+//                        'number' => $userData['raceId']
+//                    ])
+//                    ->update([
+//                        'questionNumber' => $quizCount->count + 1
+//                    ]);
 
                 // 반납값 정리
-                $type = explode(' ', $quizData->type);
+                $quizs = array();
+                foreach ($quizData as $quiz) {
+                    $type = explode(' ', $quiz->type);
+                    array_push($quizs, array(
+                        'quizId' => $quiz->number,
+                        'question' => $quiz->question,
+                        'hint' => $quiz->hint,
+                        'right' => $quiz->rightAnswer,
+                        'example1' => $quiz->example1,
+                        'example2' => $quiz->example2,
+                        'example3' => $quiz->example3,
+                        'quizType' => $type[0],
+                        'makeType' => $type[1]
+                    ));
+                }
                 $returnValue = array(
-                    'quiz' => array(
-                        'quizCount' => $quizCount->count + 1,
-                        'quizId'    => $quizData->number,
-                        'question'  => $quizData->question,
-                        'hint'      => $quizData->hint,
-                        'right'     => $quizData->rightAnswer,
-                        'example1'  => $quizData->example1,
-                        'example2'  => $quizData->example2,
-                        'example3'  => $quizData->example3,
-                        'quizType'  => $type[0],
-                        'makeType'  => $type[1]
-                    ),
+                    'quiz' => $quizs,
                     'check' => true
                 );
             } else {
                 $returnValue = array('check' => false);
             }
-        } else {
-            $returnValue = array('check' => false);
-        }
+//        } else {
+//            $returnValue = array('check' => false);
+//        }
 
-        return response()->json($returnValue);
+        return $returnValue;
     }
 
     // 학생들의 정답들을 DB에 입력
@@ -518,7 +521,7 @@ class RaceController extends Controller{
                 } else {
                     // 입력한 사람 정답여부 처리하기
                     $answer = '';
-                    switch ($student->type){
+                    switch ($quizData->type){
                         case 'vocabulary obj':
                         case 'word obj':
                         case 'grammar obj':
