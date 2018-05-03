@@ -147,8 +147,8 @@ class RaceController extends Controller{
         }
 
         // 값을 반납
-        return $returnValue;
-//        return view('Race/race_waiting')->with('response', $returnValue);
+//        return $returnValue;
+        return view('Race/race_waiting')->with('response', $returnValue);
     }
 
     // 학생이 소켓에 들어올 때

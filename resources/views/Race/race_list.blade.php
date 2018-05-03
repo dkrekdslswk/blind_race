@@ -82,9 +82,9 @@
         });
     });
 
-    function sendId(raceId) {
-        var raceIdObj = document.getElementById("listId");
-        raceIdObj.value = raceId;
+    function sendId(listId) {
+        var listIdObj = document.getElementById("listId");
+        listIdObj.value = listId;
     }
 
     function getValue() {
