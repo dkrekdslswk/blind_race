@@ -85,37 +85,11 @@
         var quiz_numbar = 0;
         var quiz_member = 0;
         var answer_count = 0;
-        var roomPin =0;
-        var t_sessionId ;
+        var roomPin ='<?php echo $response['roomPin'] ?>';
+        var t_sessionId = '<?php echo $response['sessionId'] ?>';
 
         window.onload = function() {
             var socket = io(':8890');
-
-
-
-
-            var groupId  = 1;
-            var raceType = 'race';
-            var listId = 1;
-
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/raceController/createRace')}}",
-                async:false,
-                dataType: 'json',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: "groupId="+groupId+"&raceType="+raceType+"&listId="+listId,
-                success: function (result) {
-                    console.log(result['sessionId']);
-                    roomPin = result['roomPin'];
-                    t_sessionId = result['sessionId'];
-                },
-                error: function(request, status, error) {
-                    alert("AJAX 밖에것 에러입니다. ");
-                }
-            });
-
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
@@ -271,8 +245,6 @@
 
             socket.on('mid_ranking',function(quizId){
 
-                socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType);
-
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
@@ -391,7 +363,7 @@
                             if( quiz_numbar >quiz_JSON.length)
                                 quiz_numbar--;
 
-
+                            socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType , JSON.stringify(result['studentResults']) );
                         }
                     },
                     error: function(request, status, error) {
