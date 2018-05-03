@@ -365,7 +365,6 @@
             @include('Race.mid_result')
         </div>
     </div>
-
 </div>
 
 
