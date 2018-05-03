@@ -2,6 +2,7 @@
 
 <html>
     <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
         <script
             defer="defer"
             src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
@@ -13,7 +14,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link href="css/homemain.css" rel="stylesheet" type="text/css" media="all">
-
+      
     </head>
     <body
         id="top"
@@ -207,7 +208,7 @@
             <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
                 <a href="#">캡스톤 디자인</a>
             </p>
-            <p class="fl_right">Template by
+            <p class="fl_right">Template By
                 <a
                     target="_blank"
                     href="http://www.os-templates.com/"
@@ -235,9 +236,10 @@
 
 
 <div id="id01" class="modal">
-
-    <form class="modal-content animate" action="/action_page.php">
+   <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
+  
         <div class="imgcontainer">
+        
             <span
                 onclick="document.getElementById('id01').style.display='none'"
                 class="close"
@@ -246,22 +248,23 @@
         </div>
 
         <div class="container">
-            <label for="uname">
-                <b>학번</b>
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <label for="p_ID">
+                <b>학 번</b>
             </label>
             <input
                 type="text"
-                placeholder="학번 입력"
-                name="uname"
+                placeholder="학번을  입력"
+                name="p_ID"
                 required="required">
 
-            <label for="psw">
+            <label for="p_PW">
                 <b>Password</b>
             </label>
             <input
                 type="password"
                 placeholder="Enter Password"
-                name="psw"
+                name="p_PW"
                 required="required">
            
             <button type="submit" style ="color : black">Login</button>
@@ -277,7 +280,10 @@
 
 <div id="id02" class="modal">
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-  <form class="modal-content" action="/action_page.php">
+
+
+  
+  <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
     <div class="container">
       <h1>Sign Up</h1>
       
