@@ -40,7 +40,10 @@ class UserController extends Controller{
 
     // 모바일 로그인
     public function mobileLogin(Request $request){
-        $userData = $this->userLogin($request->input('p_ID'), $request->input('p_PW'));
+        $userData = $this->userLogin(
+            $request->input('p_ID'),
+            $request->input('p_PW')
+        );
 
         // 로그인 성공
         if ($userData['check']){
@@ -65,7 +68,10 @@ class UserController extends Controller{
 
     // 웹 로그인
     public function webLogin(Request $request){
-        $userData = $this->userLogin($request->input('p_ID'), $request->input('p_PW'));
+        $userData = $this->userLogin(
+            $request->input('p_ID'),
+            $request->input('p_PW')
+        );
 
         // 로그인 성공
         if ($userData['check']){
@@ -129,7 +135,7 @@ class UserController extends Controller{
     }
 
     // 세션 값 입력
-    public function sessionIdGet($userId){
+    private function sessionIdGet($userId){
         // 오래된 세션 확인
 //        $this->oldLoginCheck();
 

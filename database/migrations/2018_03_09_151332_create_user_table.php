@@ -19,6 +19,7 @@ class CreateUserTable extends Migration
         });
         DB::table('classifications')->insert([
             ['name' => 'student'],
+            ['name' => 'sleepStudent'],
             ['name' => 'teacher'],
             ['name' => 'root']
         ]);

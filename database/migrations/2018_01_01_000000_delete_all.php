@@ -13,7 +13,6 @@ class DeleteAll extends Migration
      */
     public function up()
     {
-
         // use 18.04.24
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('sessionDatas');

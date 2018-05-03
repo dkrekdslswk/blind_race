@@ -106,6 +106,7 @@ Route::get('/cbcSocketTest', function(){
 
 //Route::post('/store',"UserController@store");
 Route::post('/mobileLogin',"UserController@mobileLogin");
+Route::post('/userController/webLogin',"UserController@webLogin");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
@@ -123,6 +124,7 @@ Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList'
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
 Route::post('/GroupController/groupsGet','GroupController@groupsGet');
+Route::post('/GroupController/selectUser','GroupController@selectUser');
 
 ?>
 
