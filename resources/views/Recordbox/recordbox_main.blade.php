@@ -34,7 +34,7 @@
         }
 
         #wrapper {
-            margin: 0;
+            margin: 0 0 0 220px;
             padding: 0;
             transition: all 0.4s ease 0s;
             position: relative;
@@ -43,13 +43,17 @@
             min-width: 1000px;
         }
 
+        #main-navbar {
+            width: 100%;
+        }
+
         #menu-main {
             width: 220px;
             hegight:100%;
             left: 0;
             bottom: 0;
             float: left;
-            position: absolute;
+            position: relative;
             /*     min-height: 1000px; */
             top: 0px;
             transition: all 0.4s ease 0s;
@@ -72,11 +76,11 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2004',  1000,      400],
-                ['2005',  1170,      460],
-                ['2006',  660,       1120],
-                ['2007',  1030,      540]
+                ['Year', '평균점수', '어휘' , '독해' , '문법'],
+                ['04월/28일',  90,      20,       35,        40],
+                ['04월/27일',  87,      55,       10,        33],
+                ['04월/26일',  95,       25,      30,        30],
+                ['04월/25일',  75,      30,       20,        10]
             ]);
 
             var options = {
@@ -145,7 +149,6 @@
                             }
                         };
 
-
                         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
                         chart.draw(data, options);
@@ -163,27 +166,29 @@
 </head>
 <body>
 
-<div class="main-body">
+{{--메인 네비바 불러오기--}}
+<div id="main-navbar" >
+    @include('Navigation.main_nav')
+</div>
 
-    {{--메인 네비바 불러오기--}}
-    <div id="main-navbar">
-        @include('Navigation.main_nav')
+{{--메인 네비바 불러오기--}}
+<div id="main-recordnav" >
+    @include('Recordbox.test_recordnav')
+</div>
+
+{{--사이드바 불러오기--}}
+<aside id="menu-main" class="">
+    @include('Recordbox.test_sidebar')
+</aside>
+
+{{--첫 화면 레이스 목록--}}
+<div id="wrapper" class="" style="min-height: 1024px;">
+
+    {{--나의그룹 목록 불러오기--}}
+    <div id="mygroup" class="">
+        @include('Recordbox.test_record2')
     </div>
 
-    {{--첫 화면 레이스 목록--}}
-    <div id="wrapper" class="" style="min-height: 1024px;">
-
-        {{--레이스 목록 불러오기--}}
-        <div id="myrace">
-            @include('Recordbox.test_record')
-        </div>
-
-        {{--나의그룹 목록 불러오기--}}
-        <div id="mygroup" class="hidden">
-            @include('Recordbox.test_record2')
-        </div>
-
-    </div>
 </div>
 
 </body>

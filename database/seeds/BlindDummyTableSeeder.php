@@ -41,7 +41,7 @@ class BlindDummyTableSeeder extends Seeder
                 'groupNumber'           => $groupId,
                 'userNumber'            => $users[$number][0],
                 'userName'              => $users[$number][2],
-                'accessionState'        => 'enrollment'
+//                'accessionState'        => 'enrollment'
             ]);
         }
 

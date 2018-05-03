@@ -97,6 +97,7 @@ class GroupController extends Controller{
     }
 
     // 그룹 정보 가져오기 root, teacher
+    // 구현 중
     public function groupDataGet(Request $request){
         // 요구하는 값
         $postData = array(
@@ -106,19 +107,58 @@ class GroupController extends Controller{
         // 유저정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 유저 로그인 확인
-        if($userData['check']) {
-            // 유저 권한 확인
-            $userCheck = DB::table()
-                ->select(
+        // 권한 확인
+        switch ($userData['classification']) {
+            // 검색방식 설정
+            // 1. 자기 그룹 조회
+            case 'teacher':
+                // 그룹과 선생정보 가져오기
+                $group = DB::table('groups as g')
+                    ->select(
+                        'g.number   as groupId',
+                        'g.name     as groupName',
+                        'u.number   as teacherId',
+                        'u.name     as teacherName'
+                    )
+                    ->where([
+                        'g.number'          => $postData['groupId'] ,
+                        'g.teacherNumber'   => $userData['userId']
+                    ])
+                    ->join('users as u', 'u.number', '=', 'g.teacherNumber')
+                    ->first();
 
-                )
-                ->where([
+                // 학생들 가져오기
+                $students = DB::table('groupStudents as gs')
+                    ->select(
+                        'gs.userNumber  as userId',
+                        'u.name         as userName'
+                    )
+                    ->where([
+                        'gs.groupNumber' => $postData['groupId']
+                    ])
+                    ->join('u.users as u', 'u.number', '=', 'gs.userNumber')
+                    ->get();
+                break;
 
-                ])
-                ->first();
+            // 2. 루트의 그룹조회
+            // 존재하는 모든 그룹 조회가능
+            // 미구현
+//            case 'root':
+//                break;
+
+            // 3. 권한 외
+            default:
+                $group = false;
+                break;
         }
+
         // 반납하는 값
+        if($group){
+            $groupArr = array(
+                'id' => $group->groupId,
+                'name' => $group->groupName
+            );
+        }
         $returnValue = array(
             'group' => array(
                 'id',
@@ -142,6 +182,7 @@ class GroupController extends Controller{
     }
 
     // 그룹 만들기 root, teacher
+    // 미구현
     public function createGroup(Request $request){
         // 요구하는 값
         $postData = array(
@@ -167,6 +208,7 @@ class GroupController extends Controller{
     }
 
     // 학생 초대하기 root, teacher
+    // 미구현
     public function PushInvitation(Request $request){
         // 요구하는 값
         $postData = array(
@@ -182,8 +224,7 @@ class GroupController extends Controller{
         $returnValue = array(
             'students' => array(
                 0 => array(
-                    'id',
-                    'accessionState'
+                    'id'
                 )
             ),
             'check'
@@ -193,6 +234,7 @@ class GroupController extends Controller{
     }
 
     // 학생 초대받기 root, teacher
+    // 미구현
     public function GetInvitation(Request $request){
         // 요구하는 값
         $postData = array(
@@ -202,7 +244,6 @@ class GroupController extends Controller{
         // 반납하는 값
         $returnValue = array(
             'groupId',
-            'accessionState',
             'check'
         );
 
@@ -289,6 +330,7 @@ class GroupController extends Controller{
     }
 
     // 학생 정보수정 root, teacher
+    // 미구현
     public function studentModify(Request $request){
         // 요구하는 값
         $postData = array(
@@ -308,6 +350,7 @@ class GroupController extends Controller{
     }
 
     // 학생 그룹에서 제외 root, teacher
+    // 미구현
     public function studentGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
@@ -328,6 +371,7 @@ class GroupController extends Controller{
     }
 
     // 교사 임명 root
+    // 미구현
     public function teacherEmpowerment(Request $request){
         // 요구하는 값
         $postData = array(
@@ -346,6 +390,7 @@ class GroupController extends Controller{
     }
 
     // 그룹 담당 교사 변경 root
+    // 미구현
     public function teacherGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
