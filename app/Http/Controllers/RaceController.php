@@ -320,7 +320,7 @@ class RaceController extends Controller{
                     'qb.type            as type'
                 ])
                 ->where([
-                    'lq.raceNumber' => $postData['radceId']
+                    'lq.raceNumber' => $postData['raceId']
                 ])
                 ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
                 ->orderBy('qb.number', 'desc')
