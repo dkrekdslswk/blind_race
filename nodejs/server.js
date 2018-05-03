@@ -83,13 +83,13 @@ io.on('connection', function (socket){
 
     socket.on('android_game_start',function(roomPin, quizId ,makeType){
         io.sockets.in(roomPin).emit('android_game_start', quizId , makeType);
-        console.log("안드스타트",roomPin+","+makeType);
+        console.log("안드스타트",quizId+","+makeType);
     });
 
     //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_mid_result',function(roomPin, quizId ,makeType ){
-        io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType);
-        console.log("안드 중간결과 ", quizId +","+ makeType);
+    socket.on('android_mid_result',function(roomPin, quizId ,makeType ,ranking ){
+        io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType, ranking);
+        console.log("안드 중간결과 ", quizId +","+ makeType+","+ranking);
     });
 
     socket.on('android_next_quiz',function(roomPin){
@@ -131,11 +131,6 @@ io.on('connection', function (socket){
 
 //퀴즈 답받는 소켓 함수
     socket.on('answer', function(roomPin , answer_num , student_num , nickname , quizId){
-        console.log('roomPin',roomPin);
-        console.log('Client Send Data:', answer_num);
-        console.log('stu',student_num);
-        console.log('nickname',nickname);
-        console.log('답찍을때 퀴즈',quiz)
 
         io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num ,quizId);
         console.log("quizId =",quizId);
