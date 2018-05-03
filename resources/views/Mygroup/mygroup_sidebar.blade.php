@@ -132,7 +132,36 @@
             }
         }
     </style>
+  <script>
+        $(document).ready(function () {
+            $('#chkParent').click(function () {
+                var isChecked = $(this).prop("checked");
+                $('#tblData tr:has(td)')
+                    .find('input[type="checkbox"]')
+                    .prop('checked', isChecked);
+            });
 
+            $('#tblData tr:has(td)')
+                .find('input[type="checkbox"]')
+                .click(function () {
+                    var isChecked = $(this).prop("checked");
+                    var isHeaderChecked = $("#chkParent").prop("checked");
+                    if (isChecked == false && isHeaderChecked) 
+                        $("#chkParent").prop('checked', isChecked);
+                    else {
+                        $('#tblData tr:has(td)')
+                            .find('input[type="checkbox"]')
+                            .each(function () {
+                                if ($(this).prop("checked") == false) 
+                                    isChecked = false;
+                                }
+                            );
+                        console.log(isChecked);
+                        $("#chkParent").prop('checked', isChecked);
+                    }
+                });
+        });
+    </script>
 </head>
 
 <div id="navigation" style="min-height: 600px;">
@@ -146,6 +175,8 @@
         <form>
             <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
 
+            <button class="w3-bar-item w3-button"><a href="#" class="class="w3-bar-item w3-button"">미등록 학생</a></button>
+            <button class="w3-bar-item w3-button"><a href="#" class="class="w3-bar-item w3-button"">엑셀로 불러오기</a></button>
             <button
                 type="button"
                 class="w3-bar-item w3-button"
@@ -153,16 +184,13 @@
                 data-target="#create">
                 클래스 생성
             </button>
-
-            <p></p>
+            
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
-                <button class="w3-button">클래스
-                    <i class="fa fa-caret-down"></i>
-                </button>
+              
 
                 <a href="#" class="w3-bar-item w3-button fa-folder-open">A반</a>
-                <a href="#" class="w3-bar-item w3-button">B반</a>
+                
 
             </div>
 
