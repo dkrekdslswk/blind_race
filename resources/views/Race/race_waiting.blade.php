@@ -271,6 +271,8 @@
 
             socket.on('mid_ranking',function(quizId){
 
+                socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType);
+
                 document.getElementById('counter').innerText= " ";
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
@@ -389,7 +391,7 @@
                             if( quiz_numbar >quiz_JSON.length)
                                 quiz_numbar--;
 
-                            socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId , result['studentResults']);
+
                         }
                     },
                     error: function(request, status, error) {
