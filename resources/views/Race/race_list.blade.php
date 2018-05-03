@@ -83,7 +83,7 @@
     });
 
     function sendId(raceId) {
-        var raceIdObj = document.getElementById("raceId");
+        var raceIdObj = document.getElementById("listId");
         raceIdObj.value = raceId;
     }
 
@@ -194,12 +194,11 @@
 {{--Modal : select group--}}
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{url('raceController/createList')}}"  method="Post" enctype="multipart/form-data">
+        <form action="{{url('raceController/createRace')}}"  method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
             <input type="hidden" name="groupId" id="groupId" value="">
-            <input type="hidden" name="raceMode" id="raceMode" value="n">
-            <input type="hidden" name="examCount" id="examCount" value="0">
-            <input type="hidden" name="raceId" id="raceId" value="">
+            <input type="hidden" name="raceType" id="raceType" value="race">
+            <input type="hidden" name="listId" id="listId" value="">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
@@ -208,8 +207,8 @@
                     {{--Dropdowns--}}
                     <select id="groupSelect" class="form-control">
                         <option>그룹명</option>
-                        <option value="1">2-특강 A반</option>
-                        <option value="2">1-특강 B반</option>
+                        <option value="1">특강 A반</option>
+                        <option value="2">특강 B반</option>
                     </select>
                 </div>
                 <div class="modal-footer">
