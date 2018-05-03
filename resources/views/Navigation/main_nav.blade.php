@@ -81,7 +81,7 @@
         }
     </style>
     <body>
-        <div class="container-fluid">
+        <div class="">
             <nav class="navbar navbar-default">
                 <div class="">
                     <div class="navbar-header">

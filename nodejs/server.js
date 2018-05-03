@@ -48,7 +48,7 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 3000;
+    var countdown = 5000;
     var group_num ="";
 
     //대기방 참가 (인수 room : 참가하려는 방의 이름 )
@@ -81,13 +81,20 @@ io.on('connection', function (socket){
     });
 
 
-    //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
-    socket.on('android_nextkey',function(roomPin, quizId ,makeType ){
-        io.sockets.in(roomPin).emit('android_nextX_quiz',quizId, makeType);
-    });
     socket.on('android_game_start',function(roomPin, quizId ,makeType){
         io.sockets.in(roomPin).emit('android_game_start', quizId , makeType);
         console.log("안드스타트",roomPin+","+makeType);
+    });
+
+    //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
+    socket.on('android_mid_result',function(roomPin, quizId ,makeType ){
+        io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType);
+        console.log("안드 중간결과 ", quizId +","+ makeType);
+    });
+
+    socket.on('android_next_quiz',function(roomPin){
+        io.sockets.in(roomPin).emit('android_next_quiz',roomPin);
+        console.log("안드로이드 다음문제 " );
     });
 
     socket.on('android_enter_room',function(roomPin , check , session_id){
@@ -113,7 +120,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
 
-        countdown = 3000;
+        countdown = 5000;
         clearInterval(Timer);
 
         io.sockets.in(roomPin).emit('mid_ranking' ,quiz);
@@ -123,17 +130,15 @@ io.on('connection', function (socket){
 
 
 //퀴즈 답받는 소켓 함수
-    socket.on('answer', function(roomPin , answer_num , student_num , nickname){
+    socket.on('answer', function(roomPin , answer_num , student_num , nickname , quizId){
         console.log('roomPin',roomPin);
         console.log('Client Send Data:', answer_num);
         console.log('stu',student_num);
         console.log('nickname',nickname);
         console.log('답찍을때 퀴즈',quiz)
 
-
-        io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num);
-
-        console.log('answer counting: ', answer_num);
+        io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num ,quizId);
+        console.log("quizId =",quizId);
     });
 
 

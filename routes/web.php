@@ -36,6 +36,15 @@ Route::get('/mygroup', function(){
     return view('Mygroup/mygroup_main');
 });
 
+Route::get('/Unregistered_group', function(){
+    return view('Mygroup/Unregistered_group');
+});
+
+Route::get('/mygroup_Unregistered_group', function(){
+    return view('Mygroup/mygroup_Unregistered_group');
+});
+
+
 /* 2. Race Mode : Blind Race */
 Route::get('/race_list', function(){
     return view('Race/race_list');

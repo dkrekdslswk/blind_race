@@ -70,7 +70,7 @@
             background-color: #F2F2F2;
         }
 
-        .table thead, .table thead tr th{
+        #theadStyle {
             font-size : 10px;
             padding: 1px 1px 1px 1px;
         }
@@ -115,7 +115,7 @@
     });*/
 
     // example quiz data 저장용
-    var raceData;
+    var quizData;
 
     $(document).on('click', '#btn', function (e) {
 
@@ -127,13 +127,10 @@
 
         //var params = jQuery("#form_data").serialize();
 
-
         var params = {
             bookId: $('#bookId').val(),
             pageStart: $('#pageStart').val(),
             pageEnd: $('#pageEnd').val(),
-            makeType: $('#type').val(),
-            quizType: $('#type').val(),
             level: $('#level').val()
         };
 
@@ -161,30 +158,32 @@
                 //$('#example').empty();
                 $('#example *').remove();
 
-                raceData = data.raceId;
+                quizData = data.listId;
 
-                for(var i = 0; i < raceData.length; i++) {
+                for(var i = 0; i < quizData.length; i++) {
                     var $tr = $('<tr />').appendTo('#example');
                     $tr.attr({id : i+1});
                     $('<td />').text(i+1).appendTo($tr);
-                    $('<td />').text(raceData[i].question).appendTo($tr);
+                    $('<td />').text(quizData[i].question).appendTo($tr);
 
                     // tr에 onclick method 추가
-                    $(document).on('click', '#'+(i+1) , function (e) {
-                        e.preventDefault();
+                    $('#'+(i+1)).unbind('click').bind('click', function () {
 
-                        /*alert(raceData[this.id-1].question +
-                            raceData[this.id-1].right +
-                            raceData[this.id-1].example1 +
-                            raceData[this.id-1].example2 +
-                            raceData[this.id-1].example3);*/
+                        /*alert(quizData[this.id-1].question +
+                            quizData[this.id-1].right +
+                            quizData[this.id-1].example1 +
+                            quizData[this.id-1].example2 +
+                            quizData[this.id-1].example3 +
+                            quizData[this.id-1].makeType +
+                            quizData[this.id-1].quizType
+                        )*/
 
-                        quizAdd(raceData[this.id-1]);
+                        quizAdd(quizData[this.id-1]);
                     });
                 }
             },
             error: function (data) {
-                alert("모든 항목에 입력 필요!");
+                alert("모든 항목에 입력이 필요합니다.");
             }
         });
     });
@@ -231,9 +230,10 @@
 
 
         <div class="select">
-            <select id="bookSelect" class="form-control" >
+            <select id="bookSelect" class="form-control">
                 <option>교재 선택</option>
-                <option value="1">급소공략</option>
+                <option value="1">test</option>
+                <option value="2">급소공략</option>
             </select>
         </div>
 
@@ -243,6 +243,8 @@
                 <option value="1">N1</option>
                 <option value="2">N2</option>
                 <option value="3">N3</option>
+                <option value="4">N4</option>
+                <option value="5">N5</option>
             </select>
         </div>
 
@@ -257,14 +259,13 @@
         <input type="hidden" name="level" id="level" value="">
         <input type="hidden" name="pageStart" id="pageStart" value="">
         <input type="hidden" name="pageEnd" id="pageEnd" value="">
-        <input type="hidden" name="type" id="type" value="o">
 
     </form>
 
     {{--예문--}}
     <div class="sample_quiz">
         <table class="table table-bordered table-striped">
-            <thead>
+            <thead id="theadStyle">
             <tr>
                 <th style="text-align: center">번호</th>
                 <th style="text-align: center">예문</th>

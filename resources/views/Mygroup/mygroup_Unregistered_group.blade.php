@@ -14,15 +14,12 @@
 
         <style>
             body {
-                font-family: arial, sans-serif;
+                font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
                 background-color: #f7f8fa;
                 font-size: 13px;
                 color: #5f5f5f;
                 margin: 0;
                 padding: 0;
-                border-collapse: collapse;
-                width: 100%;
-        
             }
             body.disabled {
                 overflow: hidden;
@@ -68,15 +65,7 @@
             }
         </style>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
-        <script type="text/javascript">
-
-            $('#mygroup').html("asdasda");
-        </script>
+    
 
     </head>
     <body>
@@ -95,8 +84,7 @@
 
                 {{--나의 그룹 불러오기--}}
                 <div id="myrace">
-                    @include('mygroup.mygroup')
-                    @include('mygroup.mygroup_modal')
+                    @include('mygroup.Unregistered_group')
                 </div>
 
             
