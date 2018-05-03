@@ -531,6 +531,7 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
+    // 미구현
     /*public function deleteRace(Request $request){
         $postData = array(
             'raceId' => $request->input('raceId')
@@ -543,6 +544,7 @@ class QuizTreeController extends Controller
         return $returnValue;
     }*/
 
+    // 미구현
     /*public function getRaceQuiz(Request $request){
         $postData = array(
             'raceId' => $request->input('raceId')

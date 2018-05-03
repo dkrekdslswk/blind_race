@@ -61,8 +61,7 @@ class RaceController extends Controller{
             ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
             ->where([
                 'g.number'          => $postData['groupId'],
-                'g.teacherNumber'   => $userData['userId'],
-                'gs.accessionState' => 'enrollment'
+                'g.teacherNumber'   => $userData['userId']
             ])
             ->groupBy('g.number')
             ->first();
@@ -173,7 +172,6 @@ class RaceController extends Controller{
                 'r.number as raceId'
             ])
             ->where([
-                'gs.accessionState'     => 'enrollment',
                 'gs.userNumber'         => $userData['userId'],
                 's2.PIN'                => $postData['roomPin'],
                 's2.nick'               => ''
@@ -571,4 +569,7 @@ class RaceController extends Controller{
 
         return $returnValue;
     }
+
+    // 레이스 종료 후 세션 정리
+    // 미구현
 }
