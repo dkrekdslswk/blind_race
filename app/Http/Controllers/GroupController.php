@@ -1,6 +1,7 @@
 <?php
 namespace app\Http\Controllers;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
@@ -96,20 +97,272 @@ class GroupController extends Controller{
     }
 
     // 그룹 정보 가져오기 root, teacher
+    public function groupDataGet(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'groupId'
+        );
 
-    // 그룹 만들기 root
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 유저 로그인 확인
+        if($userData['check']) {
+            // 유저 권한 확인
+            $userCheck = DB::table()
+                ->select(
+
+                )
+                ->where([
+
+                ])
+                ->first();
+        }
+        // 반납하는 값
+        $returnValue = array(
+            'group' => array(
+                'id',
+                'name',
+                'studentCount'
+            ),
+            'teacher' => array(
+                'id',
+                'name'
+            ),
+            'students' => array(
+                0 => array(
+                    'id',
+                    'name'
+                )
+            ),
+            'check'
+        );
+
+        return $returnValue;
+    }
+
+    // 그룹 만들기 root, teacher
+    public function createGroup(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'groupName'
+        );
+
+        // 반납하는 값
+        $returnValue = array(
+            'group' => array(
+                'id',
+                'name',
+                'studentCount'
+            ),
+            'teacher' => array(
+                'id',
+                'name'
+            ),
+            'students' => array(), // 호환용 비어있는 변수
+            'check'
+        );
+
+        return $returnValue;
+    }
 
     // 학생 초대하기 root, teacher
+    public function PushInvitation(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'groupId',
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            )
+        );
+
+        // 반납하는 값
+        $returnValue = array(
+            'students' => array(
+                0 => array(
+                    'id',
+                    'accessionState'
+                )
+            ),
+            'check'
+        );
+
+        return $returnValue;
+    }
 
     // 학생 초대받기 root, teacher
+    public function GetInvitation(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'groupId'
+        );
 
-    // 교사 임명 root
+        // 반납하는 값
+        $returnValue = array(
+            'groupId',
+            'accessionState',
+            'check'
+        );
 
-    // 유저 검색 root(교사, 학생), teacher(학생)
+        return $returnValue;
+    }
+
+    // 유저 검색 root, teacher
+    public function selectUser(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'search' => '김', // 123
+//            'groupId' => 1
+//        );
+        $postData = array(
+            'search'    => $request->input('search'),
+            'groupId'   => $request->input('groupId')
+        );
+
+        // 세션정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한 확인
+        switch ($userData['classification']) {
+            // 검색방식 설정
+            // 1. 미등록 학생
+            // 해당 그룹에 미등록된 학생만 검색
+            // 이름, 학번에 해당 문자가 포감되는지 확인
+            // 학생만 검색
+            case 'teacher':
+                $users = DB::table('users as u')
+                    ->select(
+                        'u.number           as id',
+                        'u.name             as name',
+                        'u.classification   as classification'
+                    )
+                    ->where([
+                        ['gs.groupNumber', '<>', $postData['groupId']],
+                        ['u.classification', 'LIKE', '%' . 'student']
+                    ])
+                    ->where(function ($query) use ($postData){
+                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
+                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+                    })
+                    ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
+                    ->orderBy('u.number', 'desc')
+                    ->get();
+                break;
+
+            // 2. 루트의 검색
+            // 이름, 학번에 해당 문자가 포감되는지 확인
+            // 교사등 모든학생 검색
+            // 미구현
+//            case 'root':
+//                break;
+
+            // 3. 권한 외
+            default:
+                $users = false;
+                break;
+        }
+
+        // 반납하는 값
+        if ($users) {
+            $userArr = array();
+            foreach ($users as $user){
+                array_push($userArr, array(
+                    'id'                => $user->id,
+                    'name'              => $user->name,
+                    'classification'    => $user->classification
+                ));
+            }
+
+            $returnValue = array(
+                'users' => $userArr,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
 
     // 학생 정보수정 root, teacher
+    public function studentModify(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'userId',
+            'userName',
+            'password',
+            'passwordState'
+        );
 
-    // 학생 그룹이동 root
+        // 반납하는 값
+        $returnValue = array(
+            'userName',
+            'check'
+        );
+
+        return $returnValue;
+    }
+
+    // 학생 그룹에서 제외 root, teacher
+    public function studentGroupExchange(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'userId',
+            'groupIdBefore',
+            'groupIdAfter'
+        );
+
+        // 반납하는 값
+        $returnValue = array(
+            'userId',
+            'groupIdBefore',
+            'groupIdAfter',
+            'check'
+        );
+
+        return $returnValue;
+    }
+
+    // 교사 임명 root
+    public function teacherEmpowerment(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'userId',
+            'classification'
+        );
+
+        // 반납하는 값
+        $returnValue = array(
+            'userId',
+            'classification',
+            'check'
+        );
+
+        return $returnValue;
+    }
+
+    // 그룹 담당 교사 변경 root
+    public function teacherGroupExchange(Request $request){
+        // 요구하는 값
+        $postData = array(
+            'groupId',
+            'userId'
+        );
+
+        // 반납하는 값
+        $returnValue = array(
+            'groupId',
+            'userIdBefore',
+            'userIdAfter',
+            'check'
+        );
+
+        return $returnValue;
+    }
 }
 
 ?>
