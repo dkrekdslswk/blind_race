@@ -521,7 +521,7 @@ class RaceController extends Controller{
                 } else {
                     // 입력한 사람 정답여부 처리하기
                     $answer = '';
-                    switch ($student->type){
+                    switch ($quizData->type){
                         case 'vocabulary obj':
                         case 'word obj':
                         case 'grammar obj':
