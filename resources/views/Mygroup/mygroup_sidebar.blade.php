@@ -132,7 +132,7 @@
             }
         }
     </style>
-  <script>
+    <script>
         $(document).ready(function () {
             $('#chkParent').click(function () {
                 var isChecked = $(this).prop("checked");
@@ -161,6 +161,31 @@
                     }
                 });
         });
+
+        function myFunction() {
+            var input,
+                filter,
+                table,
+                tr,
+                td,
+                i;
+            input = document.getElementById("myInput");
+            filter = input
+                .value
+                .toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
     </script>
 </head>
 
@@ -173,10 +198,14 @@
 
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card">
         <form>
-            <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
+            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form> -->
 
-            <button class="w3-bar-item w3-button"><a href="#" class="class="w3-bar-item w3-button"">미등록 학생</a></button>
-            <button class="w3-bar-item w3-button"><a href="#" class="class="w3-bar-item w3-button"">엑셀로 불러오기</a></button>
+            <button class="w3-bar-item w3-button">
+                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">미등록 학생</a> -->
+            </button>
+            <button class="w3-bar-item w3-button">
+                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">엑셀로 불러오기</a>
+            </button>
             <button
                 type="button"
                 class="w3-bar-item w3-button"
@@ -184,22 +213,52 @@
                 data-target="#create">
                 클래스 생성
             </button>
-            
+
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
-              
 
                 <a href="#" class="w3-bar-item w3-button fa-folder-open">A반</a>
-                
+         
+    
+            </div>
+            <input 
+                class ="margins"
+                type="text"
+                id="myInput"
+                onkeyup="myFunction()"
+                placeholder="학생 찾기"
+                title="Type in a name"
+                value = " ">
 
+                <table id="myTable">
+                    <tr class="header">
+                        <th style="width:30%;">이름</th>
+                        <th style="width:20%;">학번</th>
+                        <th style="width:20%;">추가</th>
+                    </tr>
+                    <tr>
+                        <td>김민수</td>
+                        <td>1301036</td>
+                        <td><button>+</button></td>
+                    </tr>
+                    <tr>
+                        <td>안준휘</td>
+                        <td>1401036</td>
+                        <td><button>+</button></td>
+                    </tr>
+                    
+                </table>
+
+                
             </div>
 
-        </div>
+            <style>
+                .w3-card,
+                .w3-card-2 {
 
-        <style>
-            .w3-card,
-            .w3-card-2 {
-
-                position: absolute !important;
-            }
-        </style>
+                    position: absolute !important;
+                }
+                .margins {
+                    margin-top : 300px;
+                }
+            </style>

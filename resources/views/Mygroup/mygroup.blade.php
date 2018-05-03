@@ -37,11 +37,11 @@
                     <h1>현재 클래스 이름</h1>
 
                 
-                    <button
+                    <!-- <button
                         type="submit"
                         class="btn btn-default"
                         data-toggle="modal"
-                        data-target="#exampleModal">초대하기</button>
+                        data-target="#exampleModal">초대하기</button> -->
 
                  
                 </div>

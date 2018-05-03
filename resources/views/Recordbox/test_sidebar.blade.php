@@ -37,8 +37,8 @@
         .main-left-menu > li > a.noaction:hover { background: transparent; color: #a2a2a1; cursor: default; }
         .main-left-menu > li > a { position: relative; display: block; padding: 8px 15px; color: #5f5f5f; font-weight: normal; border-left: 3px solid transparent; font-size: 14px; }
         .main-left-menu > li > a > .icon:before { content: "▼"; }
-        .main-left-menu > li > a:hover { /* background: rgba(0, 0, 0, 0.06); */ color: #8ebd4d; }
-        .main-left-menu > li.active > a { background: #D4FF93; margin: 0px 10px; padding: 4px 0px 4px 5px; }
+        .main-left-menu > li > a:hover { /* background: rgba(0, 0, 0, 0.06); */ color: #7DA0B1; }
+        .main-left-menu > li.active > a { background: #d9edf7; margin: 0px 10px; padding: 4px 0px 4px 5px; }
         .main-left-menu > li.active.class-toggle > a { background: transparent; color: #5f5f5f; pointer-events: auto; cursor: pointer; }
         .main-left-menu > li.active.class-toggle > a:hover { color: #8ebd4d; }
         .main-left-menu > li.active > a > .icon:before { content: "▲"; }
@@ -71,7 +71,17 @@
             margin-top: 10px;
         }
 
-        #navigation {
+        #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
+            padding: 8px 10px 8px 20px;
+            color: #5f5f5f;
+            text-transform: none;
+            font-weight: normal;
+            position: relative;
+            display: block;
+            font-size: 14px;
+        }
+        .class_list a:hover{
+            background-color:#d9edf7;
         }
 
         @media (max-width: 768px) {
@@ -82,6 +92,10 @@
         }
     </style>
 
+    <script src="text/javascript">
+
+    </script>
+
 </head>
 
 <div id="navigation" style="min-height: 600px;">
@@ -90,102 +104,36 @@
     <div class="page-small" style="text-align: center; margin-top: 10px; margin-bottom:10px;">
     </div>
 
-    <!--프로필 테이블-->
-    <div class="profile-picture main-small">
-        <table width="100%">
-            <tbody><tr>
-                <td width="50" align="center">
-                    <a class="btn-profile-img">
-                        <img src="/img/teacher.png?width=200&amp;height=200" class="img-circle" alt="logo" width="48" height="48" onerror="imageError(this)">
-                    </a>
-                </td>
-                <td style="padding-left: 10px;">
-                    <style>
-                        .dropdown-menu.hdropdown.notification li { padding: 5px 10px; border:none; }
-                        .dropdown-menu.hdropdown>li>a { padding: 3px 0;}
-                    </style>
-                    <div class="dropdown" style="font-size: 13px; margin-top:5px;">
-                        <a class="dropdown-toggle btn-user-more" href="#" data-toggle="dropdown" aria-expanded="false">
-                            누구누구 <small>선생님</small>
-                            ▼
-                        </a>
-                        <ul class="dropdown-menu hdropdown notification animated bounceIn">
-                            <li>
-                                <a href="/Main/user">내 정보</a>
-                            </li>
-                            <li>
-                                <a data-toggle="modal" data-target="#profileCrop">프로필 사진 설정</a>
-                            </li>
-                            <li style="border-bottom: 1px solid #e4e5e7;">
-                                <a href="/" target="_new">홈페이지</a>
-                            </li>
-                            <li>
-                                <a href="javascript:logout();">로그아웃</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                    <script type="text/javascript">
-                        jQuery(function($){
-                            $('.btn-profile-img').click(function(e) {
-                                $('.btn-user-more').click();
-                                e.preventDefault();
-                                return false;
-                            });
-                        });
-                    </script>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
     <div class="m-t-lg">
-        <style>
-            .main-left-menu > li > a svg rect { fill: #5f5f5f; }
-            .main-left-menu > li > a:hover svg rect { fill: #8ebd4d; }
-            .main-left-menu > li.active > a svg rect { fill: #fff; }
-            .main-left-menu > li.active > a svg text { fill: #8ebd4d; }
-        </style>
         <ul class="main-left-menu" id="side-menu2">
-            <li class="active">
-                <a href="/Main">
-                    나의 세트
+
+            {{--그룹 파트--}}
+            <li class="" id="side-menu3_li" style=" margin-top: 20px;">
+                <a href="#">
+                    나의 그룹
                 </a>
             </li>
-            <li>
-                <a class="btn-new-set-left" href="/quiz_list">
-                    <i class="fa fa-plus" style="font-size: 16px; position: relative; top: 1px; margin-right: 6px; margin-left: 3px;"></i>
-                    +세트 만들기
-                </a>
-            </li>
-
-
-            <!-- 				<li > -->
             <li class="class-toggle">
-                <a class="noaction">
-                    나의 클래스 <!-- ()-->
-                </a>
-
                 <div class="nav-second-level class_list">
-                    <a class="" href="/ClassMain/17075">
-                        <!-- 							<img src="/images/icon_class01.png" width="20" height="20" data-toggle="image_color" data-color="0x5f5f5f"> -->
-                        <div style="display:inline-block; width:21px; vertical-align: top;"><i class="material-icons" style="font-size: 120%;">people</i></div>
-                        <div style="display:inline-block; width: 160px;">ㅁㄴㅇ</div>
+                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 A반');$('#side-menu3_li').attr('class','active');">
+                        <div style="display:inline-block; width: 160px;">특강 A반</div>
+                    </a>
+                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 B반');$('#side-menu3_li').attr('class','active');">
+                        <div style="display:inline-block; width: 160px;">특강 B반</div>
+                    </a>
+                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 C반');$('#side-menu3_li').attr('class','active');">
+                        <div style="display:inline-block; width: 160px;">특강 C반</div>
                     </a>
                 </div>
 
                 <div class="nav-second-level class-config" style="padding-left: 15px;">
                     <div style="display: inline-block; width: 12%; text-align: center;">
-                        <a class="btn-new-class" style="display: block; padding: 10px 0px;" onclick="if ( typeof ga != 'undefined' ) { ga('send', 'event', 'mypage', 'click', 'new_class'); }">
+                        <a class="btn-new-class" style="display: block; padding: 10px 0px;" onclick="">
                             <i class="fa fa-plus" style="font-size: 16px; position: relative; top: 1px;"></i>
                         </a>
                     </div>
 
                 </div>
-            </li>
-            <li class="hidden ">
-                <a class="btn-left-menu-search" href="/Search">세트 검색</a>
             </li>
         </ul>
     </div>
