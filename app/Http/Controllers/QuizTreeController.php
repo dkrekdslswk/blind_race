@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
@@ -469,24 +470,41 @@ class QuizTreeController extends Controller
         if(isset($listUserCheck->listId)) {
             foreach ($postData['quizs'] as $quiz) {
                 // 문제를 저장
-                $quizId = DB::table('quizBanks')
-                    ->insertGetId([
-                        'question'      => $quiz['question'],
-                        'hint'          => $quiz['hint'],
-                        'rightAnswer'   => $quiz['right'],
-                        'example1'      => $quiz['example1'],
-                        'example2'      => $quiz['example2'],
-                        'example3'      => $quiz['example3'],
-                        'type'          => $quiz['quizType'] . ' ' . $quiz['makeType'],
-                        'teacherNumber' => $userData['userId']
-                    ], 'number');
+                // 주관식 객관식 구분
+                if($quiz['makeType'] == 'obj') {
+                    $quizId = DB::table('quizBanks')
+                        ->insertGetId([
+                            'question' => $quiz['question'],
+                            'rightAnswer' => $quiz['right'],
+                            'example1' => $quiz['example1'],
+                            'example2' => $quiz['example2'],
+                            'example3' => $quiz['example3'],
+                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                            'teacherNumber' => $userData['userId']
+                        ], 'number');
+                } else if($quiz['makeType'] == 'sub'){
+                    $quizId = DB::table('quizBanks')
+                        ->insertGetId([
+                            'question' => $quiz['question'],
+                            'hint' => $quiz['hint'],
+                            'rightAnswer' => $quiz['right'],
+                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                            'teacherNumber' => $userData['userId']
+                        ], 'number');
+                } else {
+                    $quizId = false;
+                }
 
                 // 리스트에 문제를 연결
-                $insertCheck = DB::table('listQuizs')
-                    ->insert([
-                        'listNumber' => $postData['listId'],
-                        'quizNumber' => $quizId
-                    ]);
+                if($quizId) {
+                    $insertCheck = DB::table('listQuizs')
+                        ->insert([
+                            'listNumber' => $postData['listId'],
+                            'quizNumber' => $quizId
+                        ]);
+                } else {
+                    $insertCheck = false;
+                }
 
                 // 입력 실패한 문제를 반납
                 if (!$insertCheck) {

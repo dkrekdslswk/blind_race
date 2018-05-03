@@ -86,13 +86,18 @@
         var quiz_member = 0;
         var answer_count = 0;
         var roomPin =0;
+        var t_sessionId ;
 
         window.onload = function() {
             var socket = io(':8890');
 
+
+
+
             var groupId  = 1;
             var raceType = 'race';
             var listId = 1;
+
 
             $.ajax({
                 type: 'POST',
@@ -102,8 +107,9 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: "groupId="+groupId+"&raceType="+raceType+"&listId="+listId,
                 success: function (result) {
-                    console.log(result['roomPin']);
+                    console.log(result['sessionId']);
                     roomPin = result['roomPin'];
+                    t_sessionId = result['sessionId'];
                 },
                 error: function(request, status, error) {
                     alert("AJAX 밖에것 에러입니다. ");
@@ -129,7 +135,7 @@
                             socket.emit('android_join_check',false, sessionId);
                     },
                     error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
+                        console.log("안드로이드 join 실패"+roomPin);
                     }
                 });
 
@@ -176,7 +182,8 @@
 
         //순위 변동 함수 정의
         function ranking_process(ranking_j){
-            var ranking_JSON = JSON.parse(ranking_j);
+            var ranking_JSON = ranking_j;
+            // JSON.parse(ranking_j)
 
             var changehtml = "";
 
@@ -194,13 +201,13 @@
                 changehtml+=
                     +rank
                     +" 등"
-                    + ranking_JSON[i].nickname
+                    + ranking_JSON[i].nick
                     +'<i class="magin fas fa-trophy"></i><span >'
-                    + ranking_JSON[i].point*100
+                    + ranking_JSON[i].rightCount*100
                     +" point"
                     +'</span><i class="margin"><img src="/img/character/char'
-                    +ranking_JSON[i].character_num
-                    +'.png" width="60px">'
+                    +ranking_JSON[i].characterId
+                    +'.png" style="width:40px; height:40px;">'
                     +'</i></a>'
                     +'</li>' ;
             }
@@ -211,11 +218,11 @@
         function btn_click(){
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             var quiz_JSON = [
-                {"quizCount":"1", "question":"아",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"obj","hint":""},
-                {"quizCount":"2", "question":"카",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"sub","hint":""},
-                {"quizCount":"3", "question":"사","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"obj","hint":""},
-                {"quizCount":"4", "question":"타","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"sub","hint":""},
-                {"quizCount":"5", "question":"5い","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
+                {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
+                {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
+                {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
+                {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
+                {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
             ];
 
             var Mid_result_Timer;
@@ -223,221 +230,28 @@
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-            socket.emit('android_game_start',roomPin,quiz_JSON[0].makeType);
+            socket.emit('android_game_start',roomPin, quiz_JSON[0].quizId , quiz_JSON[0].makeType);
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
             $('.user_in_room').remove();
-
-
-            //입장순위표 만들 ajax구문
-            //  $.ajax({
-            //             type: 'POST',
-            //             url: "{{url('/fuck')}}",
-            //             dataType: 'json',
-            //             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            //             data: nickname,user_num,character_num,
-            //             success: function (result) {
-            //                ranking_process(result);
-            //             },
-            //             error: function(request, status, error) {
-            //                 alert("AJAX 에러입니다. ");
-            //             }
-            // });
-
-            socket.on('entrance_ranking', function(ranking_j){
-                ranking_process(ranking_j);
-            });
 
             $('#wait_room').hide();
             $('#playing_contents').show();
             //아아아
             var timeleft = 20;
 
-
-
-
-
-
             socket.emit('count','1',roomPin , quiz_JSON[0].makeType);
 
-            socket.on('right_checked' ,function(data , quiz_num){
-                var right_checking_JSON = JSON.parse(data);
-                var correct_count = right_checking_JSON[0].o;
-                var incorrect_count = right_checking_JSON[0].x;
 
-                if(correct_count == 0)
-                    incorrect_count = 1 ;
-
-                $("#quiz_number").text(quiz_num);
-
-                $("#winners").text(correct_count+"명 정답!");
-
-                $("#right").text(correct_count);
-                $("#wrong").text(incorrect_count);
-
-                var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
-
-                // $('.pie::before').css('content',correct_percentage);
-
-                --quiz_num;
-
-                $("#Mid_Q_Name").text(quiz_JSON[quiz_num].name);
-                $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quiz_num].answer1);
-
-                function sliceSize(dataNum, dataTotal) {
-                    return (dataNum / dataTotal) * 360;
-                }
-                function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-                    $(pieElement).append(
-                        "<div class='slice " + sliceID + "'><span></span></div>"
-                    );
-                    var offset = offset - 1;
-                    var sizeRotation = -179 + sliceSize;
-                    $("." + sliceID).css({
-                        "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-                    });
-                    $("." + sliceID + " span").css({
-                        "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-                        "background-color": color
-                    });
-
-                }
-                function iterateSlices(
-                    sliceSize,
-                    pieElement,
-                    offset,
-                    dataCount,
-                    sliceCount,
-                    color
-                ) {
-                    var sliceID = "s" + dataCount + "-" + sliceCount;
-                    var maxSize = 179;
-                    if (sliceSize <= maxSize) {
-                        addSlice(sliceSize, pieElement, offset, sliceID, color);
-                    } else {
-                        addSlice(maxSize, pieElement, offset, sliceID, color);
-                        iterateSlices(
-                            sliceSize - maxSize,
-                            pieElement,
-                            offset + maxSize,
-                            dataCount,
-                            sliceCount + 1,
-                            color
-                        );
-                    }
-                }
-                function createPie(dataElement, pieElement) {
-                    var listData = [];
-                    $(dataElement + " span").each(function () {
-                        listData.push(Number($(this).html()));
-                    });
-                    var listTotal = 0;
-                    for (var i = 0; i < listData.length; i++) {
-                        listTotal += listData[i];
-                    }
-                    var offset = 0;
-                    var color = [
-                        "green",
-                        "silver",
-                        "orange",
-                        "tomato",
-                        "crimson",
-                        "purple",
-                        "turquoise",
-                        "forestgreen",
-                        "navy",
-                        "gray"
-                    ];
-                    for (var i = 0; i < listData.length; i++) {
-                        var size = sliceSize(listData[i], listTotal);
-                        iterateSlices(size, pieElement, offset, i, 0, color[i]);
-                        $(dataElement + " li:nth-child(" + (
-                            i + 1
-                        ) + ")").css("border-color", color[i]);
-                        offset += size;
-                    }
-                }
-                createPie(".pieID.legend", ".pieID.pie");
-            });
-
-
-            socket.on('mid_ranking',function(ranking_j){
-
-                document.getElementById('counter').innerText= " ";
-                $("#content").hide();
-                document.getElementById('answer_c').innerText= "Answers";
-
-                // ranking_process(ranking_j);
-
-                $('#play_bgm').remove();
-
-                // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
-
-                $("#mid_result").show();
-
-                Mid_result_Timer = setTimeout(function(){
-                    $('#mid_result_bgm').remove();
-                    socket.emit('count','time on',roomPin);
-
-                    $("#content").show();
-                    // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-                    $("#mid_result").hide();
-                    socket.emit('android_nextkey',roomPin, quiz_numbar);
-
-                }, 30000);
-            });
-
-
-            $("#Mid_skip_btn").click(function(){
-
-                clearTimeout(Mid_result_Timer);
-
-                $('#mid_result_bgm').remove();
-                socket.emit('count','time on',roomPin);
-
-
-                $("#content").show();
-                // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-
-                $("#mid_result").hide();
-                socket.emit('android_nextkey',roomPin, quiz_numbar , quiz_JSON[quiz_numbar-1].makeType);
-
-            });
-
-
-            socket.on('timer', function (data) {
-
-                var counting = data/1000;
-                document.getElementById('counter').innerText= counting;
-
-                document.getElementById("progressBar")
-                    .value = 30 - counting;
-                if (timeleft == 0)
-                    timeleft = 30;
-
-
-                if(counting == 0 )
-                    socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
-            });
-
-            //상탄 타임 게이지 바
-
-
-            var x = document.getElementById("mondai-content");
-            var A1 = document.getElementById("answer1");
-            var A2 = document.getElementById("answer2");
-            var A3 = document.getElementById("answer3");
-            var A4 = document.getElementById("answer4");
-
-
-            socket.on('answer-sum', function(answer ,sessionId){
+            socket.on('answer-sum', function(answer ,sessionId , quizId){
 
                 $.ajax({
                     type: 'POST',
                     url: "{{url('/raceController/answerIn')}}",
                     dataType: 'json',
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quiz_JSON[quiz_numbar-1].quizId,
+                    data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quizId,
+                    //+quiz_JSON[quiz_numbar-1].quizId
                     success: function (result) {
                         answer_count++;
                         document.getElementById('answer_c').innerText= answer_count;
@@ -454,11 +268,204 @@
                 }
             });
 
+
+            socket.on('mid_ranking',function(quizId){
+
+                document.getElementById('counter').innerText= " ";
+                $("#content").hide();
+                document.getElementById('answer_c').innerText= "Answers";
+                $('#play_bgm').remove();
+
+                // ranking_process(ranking_j);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/result')}}",
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"quizId="+quiz_JSON[quizId-1].quizId+"&sessionId="+t_sessionId,
+                    success: function (result) {
+                        if(result['check'] == true) {
+                            console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
+
+                            var correct_count = result['rightAnswer'];
+                            var incorrect_count =result['wrongAnswer'];
+
+                            if(correct_count == 0)
+                                incorrect_count = 1 ;
+
+                            $("#quiz_number").text(quizId);
+
+                            $("#winners").text(correct_count+"명 정답!");
+
+                            $("#right").text(correct_count);
+                            $("#wrong").text(incorrect_count);
+
+                            var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
+
+                            // $('.pie::before').css('content',correct_percentage);
+
+
+
+                            $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
+                            $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quizId-1].right);
+
+                            function sliceSize(dataNum, dataTotal) {
+                                return (dataNum / dataTotal) * 360;
+                            }
+                            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
+                                $(pieElement).append(
+                                    "<div class='slice " + sliceID + "'><span></span></div>"
+                                );
+                                var offset = offset - 1;
+                                var sizeRotation = -179 + sliceSize;
+                                $("." + sliceID).css({
+                                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
+                                });
+                                $("." + sliceID + " span").css({
+                                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
+                                    "background-color": color
+                                });
+
+                            }
+                            function iterateSlices(
+                                sliceSize,
+                                pieElement,
+                                offset,
+                                dataCount,
+                                sliceCount,
+                                color
+                            ) {
+                                var sliceID = "s" + dataCount + "-" + sliceCount;
+                                var maxSize = 179;
+                                if (sliceSize <= maxSize) {
+                                    addSlice(sliceSize, pieElement, offset, sliceID, color);
+                                } else {
+                                    addSlice(maxSize, pieElement, offset, sliceID, color);
+                                    iterateSlices(
+                                        sliceSize - maxSize,
+                                        pieElement,
+                                        offset + maxSize,
+                                        dataCount,
+                                        sliceCount + 1,
+                                        color
+                                    );
+                                }
+                            }
+                            function createPie(dataElement, pieElement) {
+                                var listData = [];
+                                $(dataElement + " span").each(function () {
+                                    listData.push(Number($(this).html()));
+                                });
+                                var listTotal = 0;
+                                for (var i = 0; i < listData.length; i++) {
+                                    listTotal += listData[i];
+                                }
+                                var offset = 0;
+                                var color = [
+                                    "green",
+                                    "silver",
+                                    "orange",
+                                    "tomato",
+                                    "crimson",
+                                    "purple",
+                                    "turquoise",
+                                    "forestgreen",
+                                    "navy",
+                                    "gray"
+                                ];
+                                for (var i = 0; i < listData.length; i++) {
+                                    var size = sliceSize(listData[i], listTotal);
+                                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
+                                    $(dataElement + " li:nth-child(" + (
+                                        i + 1
+                                    ) + ")").css("border-color", color[i]);
+                                    offset += size;
+                                }
+                            }
+                            createPie(".pieID.legend", ".pieID.pie");
+
+                            ranking_process(result['studentResults']);
+
+                            if( quiz_numbar >quiz_JSON.length)
+                                quiz_numbar--;
+
+                            socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId , result['studentResults']);
+                        }
+                    },
+                    error: function(request, status, error) {
+                        console.log("ajax실패"+t_sessionId+","+quiz_JSON[quizId-1].quizId);
+                    }
+                });
+                // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
+
+                $("#mid_result").show();
+
+                Mid_result_Timer = setTimeout(function(){
+                    $('#mid_result_bgm').remove();
+                    socket.emit('count','time on',roomPin);
+
+                    $("#content").show();
+                    // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+                    $("#mid_result").hide();
+
+                    socket.emit('android_next_quiz',roomPin);
+                }, 30000);
+            });
+
+
+            $("#Mid_skip_btn").click(function(){
+
+                clearTimeout(Mid_result_Timer);
+
+                $('#mid_result_bgm').remove();
+                socket.emit('count','time on',roomPin);
+
+
+                $("#content").show();
+                // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+
+                $("#mid_result").hide();
+                socket.emit('android_next_quiz',roomPin);
+            });
+
+
+            socket.on('timer', function (data) {
+
+                var counting = data/1000;
+                document.getElementById('counter').innerText= counting;
+
+                document.getElementById("progressBar")
+                    .value = 30 - counting;
+                if (timeleft == 0)
+                    timeleft = 30;
+
+                if(counting == 0 ){
+                    if( quiz_numbar == quiz_JSON.length )
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+                    else
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
+
+                }
+            });
+
+            //상탄 타임 게이지 바
+
+
+            var x = document.getElementById("mondai-content");
+            var A1 = document.getElementById("answer1");
+            var A2 = document.getElementById("answer2");
+            var A3 = document.getElementById("answer3");
+            var A4 = document.getElementById("answer4");
+
             socket.on('nextok',function(data, makeType){
                 answer_count = 0 ;
                 quiz_numbar++;
+
+                console.log("넥스트"+data);
+
                 if(quiz_JSON.length == data){
-                    setTimeout(function(){ location.href="/race_result"; }, 1000);
+                    $("#content").remove();
+                    $('#Mid_skip_btn').attr("href", "/race_result?roomPin="+roomPin);
                 }
                 else{
                     x.innerText  = quiz_JSON[data].question ;
@@ -468,10 +475,13 @@
                             A2.innerText = quiz_JSON[data].example1;
                             A3.innerText = quiz_JSON[data].example2;
                             A4.innerText = quiz_JSON[data].example3;
-                            $(".row").show();
+                            $("#sub").hide();
+                            $(".obj").show();
                             break;
+
                         case "sub" :
-                            $(".row").hide();
+                            $(".obj").hide();
+                            $("#sub").show();
                             break;
                     }
                 }
@@ -489,9 +499,9 @@
     <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
 
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:30px" > 문제수 </span>
-    <span  id="group_name" style="font-size:30px;"> 그룹이름 </span>
-    <span id="group_student_count" style="font-size:30px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
+    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:20px" > 문제수 </span>
+    <span  id="group_name" style="font-size:20px;"> 그룹이름 </span>
+    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
 
 </div>
 
