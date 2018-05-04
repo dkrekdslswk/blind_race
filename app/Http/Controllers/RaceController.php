@@ -479,7 +479,7 @@ class RaceController extends Controller{
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
-                    DB::raw('MAX(r.quizNo) as lastQuizId'),
+                    DB::raw('MIN(r.quizNo) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answer="@" THEN 1 END) as rightCount')
                 )
                 ->where([
