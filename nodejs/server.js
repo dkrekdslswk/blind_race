@@ -136,32 +136,10 @@ io.on('connection', function (socket){
         console.log("quizId =",quizId);
     });
 
-
+    //
     // socket.on('race_ending',function(data){
     //     clearInterval(Timer);
-
-    //     var ranking_query = "select p.user_num user_num , user_nick nickname, IFNULL(count(case when result ='1' then 1 end), 0) point, s.character_num character_num "
-    //         +"from playing_quizs p join sessions s on p.user_num = s.user_num "
-    //         +"where p.set_exam_num='1' "
-    //         +"group by user_num "
-    //         +"order by point desc";
-
-    //     connection.query(ranking_query, function(err, rows) {
-
-    //         if(err) throw err;
-    //         console.log('엔딩쿼리: ', rows);
-    //         var query_result = JSON.stringify(rows);
-    //         io.sockets.emit('race_ending',query_result);
-    //         // io.sockets.in(group_num).emit('race_ending', query_result);
-    //     });
-
-    //     var delete_session_query = "delete from sessions where user_num <> 1;"
-    //     connection.query(delete_session_query, function(err, rows) {if(!err) console.log('삭제','세션'); });
-
-    //     // var delete_quizs_query = "delete from playing_quizs where set_exam_num= 1;"
-    //     // connection.query(delete_quizs_query, function(err, rows) {if(!err) console.log('삭제','퀴즈'); });
-
-
+    //     io.sockets.emit('race_ending',query_result);
     // });
 
 
