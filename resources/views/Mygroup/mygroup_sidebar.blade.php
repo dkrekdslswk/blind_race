@@ -131,6 +131,14 @@
                 min-width: 320px;
             }
         }
+
+        .w3-card,
+        .w3-card-2 {
+             position: absolute !important;
+        }
+        .margins {
+            margin-top : 300px;
+                }
     </style>
     <script>
         $(document).ready(function () {
@@ -252,13 +260,4 @@
                 
             </div>
 
-            <style>
-                .w3-card,
-                .w3-card-2 {
-
-                    position: absolute !important;
-                }
-                .margins {
-                    margin-top : 300px;
-                }
-            </style>
+        

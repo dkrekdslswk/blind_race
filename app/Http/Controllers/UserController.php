@@ -84,6 +84,7 @@ class UserController extends Controller{
         } else {
             $returnValue = array(
                 'check'     => false
+                
             );
         }
 
