@@ -27,6 +27,8 @@ class CreateRecordTable extends Migration
 
             $table->string('answer', 100);
 
+            $table->string('answerCheck', 1);
+
             $table->text('wrongAnswerNote')->nullable();
         });
     }

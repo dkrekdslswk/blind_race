@@ -56,8 +56,8 @@ class QuizTreeController extends Controller
 
         // 반납할 데이터 정리
         $returnValue = array(
-            'folders'    => $folders,
-            'lists'      => $lists,
+            'folders'       => $folders,
+            'lists'         => $lists,
             'selectFolder'  => $selectFolderId,
             'check'         => true
         );
@@ -531,51 +531,80 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 미구현
-    /*public function deleteRace(Request $request){
+    // 삭제
+    public function deleteList(){
+        // 요구하는 값
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'groupId',
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            )
         );
 
-        $rowCount = DB::table('races')
-            ->where()
-            ->delete();
+
+
+        // 반납하는 값
+        $returnValue = array(
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            ),
+            'check'
+        );
 
         return $returnValue;
-    }*/
+    }
 
-    // 미구현
-    /*public function getRaceQuiz(Request $request){
+    // 수정
+    public function updateList(){
+        // 요구하는 값
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'groupId',
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            )
         );
 
-        $quiz_data = DB::table('race_quizs as rq')
-            ->select(
-                'qb.quiz_question as question',
-                'qb.quiz_right_answer as right',
-                'qb.quiz_example1 as example1',
-                'qb.quiz_example2 as example2',
-                'qb.quiz_example3 as example3',
-                'qb.quiz_type as type'
+        // 반납하는 값
+        $returnValue = array(
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            ),
+            'check'
+        );
+
+        return view('QuizTree/quiz_making')->with('response', $returnValue);
+    }
+
+    // 미리보기
+    public function showList(){
+        // 요구하는 값
+        $postData = array(
+            'groupId',
+            'students' => array(
+                0 => array(
+                    'id'
+                )
             )
-            ->where('rq.race_num', '=', $postData{'raceId'})
-            ->join('quiz_bank as qb', 'qb.quiz_num', '=', 'rq.quiz_num')
-            ->orderBy('qb.quiz_num')
-            ->get();
+        );
 
-        $returnValue = array();
-        foreach ($quiz_data as $data){
-            array_push($returnValue, array(
-                'name' => $data->question,
-                'answer1' => $data->right,
-                'answer2' => $data->example1,
-                'answer3' => $data->example2,
-                'answer4' => $data->example3,
-                'type' => $data->type
-            ));
-        }
+        // 반납하는 값
+        $returnValue = array(
+            'students' => array(
+                0 => array(
+                    'id'
+                )
+            ),
+            'check'
+        );
 
-        return array('raceList' => $returnValue);
-    }*/
+        return $returnValue;
+    }
 }
