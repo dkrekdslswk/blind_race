@@ -104,8 +104,7 @@ class BlindDummyTableSeeder extends Seeder
             'groupNumber'=>$groupId,
             'teacherNumber'=>$users[0][0],
             'listNumber'=>$listId,
-            'type'=>'race',
-            'questionNumber'=>0
+            'type'=>'race'
         ], 'number');
 
         $bookId =DB::table('books')->insertGetId([
@@ -165,7 +164,6 @@ class BlindDummyTableSeeder extends Seeder
                 'teacherNumber' => $users[0][0],
                 'listNumber'    => $listId,
                 'type'          => 'race',
-                'questionNumber'=> 6,
                 'created_at'    => DB::raw('subdate(now(), INTERVAL '.($count+1).' DAY)')
             ], 'number');
 

@@ -535,12 +535,7 @@ class QuizTreeController extends Controller
     public function deleteList(){
         // 요구하는 값
         $postData = array(
-            'groupId',
-            'students' => array(
-                0 => array(
-                    'id'
-                )
-            )
+            'listId' => 1
         );
 
 
