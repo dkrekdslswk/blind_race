@@ -143,6 +143,7 @@ class QuizTreeController extends Controller
                     'l.openState' => self::OPEN_STATE
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+                ->leftJoin('races as r', 'r.listNumber', '=', 'l.number')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();

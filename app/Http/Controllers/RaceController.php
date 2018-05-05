@@ -557,7 +557,7 @@ class RaceController extends Controller{
         // 선생정보 가져오기기
        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-       if($userData->roomPin) {
+       if($userData['roomPin']) {
            // 최종 성적 정보 가져오기
            $students = DB::table('records as r')
                ->select(
@@ -567,7 +567,7 @@ class RaceController extends Controller{
                    DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
                )
                ->where([
-                   'r.raceNo' => $userData->raceId
+                   'r.raceNo' => $userData['raceId']
                ])
                ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
                ->orderBy('rightCount', 'userId')
@@ -577,7 +577,7 @@ class RaceController extends Controller{
            // 세션 초기화
            DB::table('sessionDatas')
                ->where([
-                   'PIN' => $userData->roomPin
+                   'PIN' => $userData['roomPin']
                ])
                ->update([
                    'nick' => null,
