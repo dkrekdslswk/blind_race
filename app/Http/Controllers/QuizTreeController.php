@@ -155,7 +155,8 @@ class QuizTreeController extends Controller
                 ->select(
                     'l.number                       as listId',
                     'l.name                         as listName',
-                    DB::raw('COUNT(lq.quizNumber)   as quizCount')
+                    DB::raw('COUNT(lq.quizNumber)   as quizCount'),
+                    DB::raw('COUNT(r.number)        as raceCount')
                 )
                 ->where([
                     's.number' => $sessionId,
@@ -164,6 +165,7 @@ class QuizTreeController extends Controller
                 ->join('listQuizs as lq',   'lq.listNumber',    '=', 'l.number')
                 ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
                 ->join('sessionDatas as s', 's.userNumber',     '=', 'f.teacherNumber')
+                ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();
@@ -175,7 +177,9 @@ class QuizTreeController extends Controller
             array_push($lists, array(
                 'listId'    => $list->listId,
                 'listName'  => $list->listName,
-                'quizCount' => $list->quizCount));
+                'quizCount' => $list->quizCount,
+                'raceCount' => $list->raceCount
+            ));
         }
 
         return $lists;
@@ -534,29 +538,93 @@ class QuizTreeController extends Controller
     }
 
     // 삭제
-    public function deleteList(){
+    public function deleteList(Request $request){
         // 요구하는 값
         $postData = array(
             'listId' => 1
         );
 
+        // 유저정보 받아오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-
-        // 반납하는 값
-        $returnValue = array(
-            'students' => array(
-                0 => array(
-                    'id'
+        // 삭제할 리스트인지 확인
+        if($userData){
+            $data = DB::table('lists as l')
+                ->select(
+                    'l.number                   as listId',
+                    DB::raw('COUNT(r.number)    as raceCount'),
+                    'openState                  as openState'
                 )
-            ),
-            'check'
-        );
+                ->where([
+                    'l.number' => $postData['listId'],
+                    'f.userNumber' => $userData['userId']
+                ])
+                ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
+                ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
+                ->groupBy('l.number')
+                ->orderBy('l.number', 'desc')
+                ->get();
+
+            // 삭제할 리스트이면 삭제
+            if ($data && ($data->raceCount == 0) && ($data->openState == 1)){
+                // 문제 리스트 받아오기
+                $listQuizs = DB::table('listQuizs')
+                    ->select(
+                        'quizNumber'
+                    )
+                    ->where([
+                        'listNumber' => $data->listId
+                    ])
+                    ->get();
+
+                $quizs = array();
+                foreach ($listQuizs as $quiz){
+                    array_push($quizs, $quiz->quizNumber);
+                }
+
+                // 문제 리스트 삭제
+                DB::table('listQuizs')
+                    ->where([
+                        'listNumber' => $data->listId
+                    ])
+                    ->delete();
+
+                // 문제 삭제
+                DB::table('quizBanks')
+                    ->where([
+                        'number' => $quizs
+                    ])
+                    ->delete();
+
+                // 리스트삭제
+                DB::table('lists')
+                    ->where([
+                        'number' => $data->listId
+                    ])
+                    ->delete();
+
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => true
+                );
+            } else {
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            // 반납하는 값
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
 
     // 수정
-    public function updateList(){
+    public function updateList(Request $request){
         // 요구하는 값
         $postData = array(
             'groupId',
@@ -581,7 +649,7 @@ class QuizTreeController extends Controller
     }
 
     // 미리보기
-    public function showList(){
+    public function showList(Request $request){
         // 요구하는 값
         $postData = array(
             'groupId',
