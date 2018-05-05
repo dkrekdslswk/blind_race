@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>이까지는 가는데 밑에서 못받는구나</title>
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
@@ -17,21 +18,60 @@
 
             var changehtml ="" ;
 
-            var roomPin = "<?php echo $_GET['roomPin']; ?>" ;
-            var socket = io(':8890');
-            socket.emit('join',roomPin);
-            socket.emit('race_ending',roomPin);
+            // var roomPin = "<?php //echo $_GET['roomPin']; ?>" ;
+            // var socket = io(':8890');
+            // socket.emit('join',roomPin);
+            // socket.emit('race_ending',roomPin);
 
-            // socket.on('race_ending',function(data){
-            //     var r_result = JSON.parse(data);
-            //
-            //     for(var i=0;  i <r_result.length; i++){
-            //         // changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';
-            //         $('#'+i+'_nick').text(r_result[i].nickname);
-            //         $('#'+i+'_point').text(r_result[i].point);
-            //         $('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].character_num+".png");
-            //     }
-            // });
+            var groupId  = 1;
+            var raceType = 'race';
+            var listId = 1;
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/raceController/createRace')}}",
+                async:false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "groupId="+groupId+"&raceType="+raceType+"&listId="+listId,
+                success: function (result) {
+                    console.log(result['sessionId']);
+                    // roomPin = result['roomPin'];
+                    // t_sessionId = result['sessionId'];
+                },
+                error: function(request, status, error) {
+                    alert("AJAX 밖에것 에러입니다. ");
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/raceController/raceEnd')}}",
+                dataType: 'json',
+                // async:false,
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quizId,
+                success: function (result) {
+
+                    // //var r_result = JSON.parse(data);
+                    // var r_result = result['students'];
+                    // for(var i=0;  i <r_result.length; i++){
+                    //     // changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';
+                    //     $('#'+i+'_nick').text(r_result[i].nickname);
+                    //     $('#'+i+'_point').text(r_result[i].point);
+                    //     $('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].character_num+".png");
+                    // }
+                },
+                error: function(request, status, error) {
+                    alert("AJAX 에러입니다. ");
+                }
+            });
+
+
+            socket.on('race_ending',function(data){
+
+            });
 
         };
 
