@@ -570,8 +570,8 @@ class RaceController extends Controller{
                    'r.raceNo' => $userData['raceId']
                ])
                ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
-               ->orderBy('rightCount', 'userId')
-               ->groupBy('userId')
+               ->orderBy('rightCount', 's.userNumber')
+               ->groupBy('s.userNumber')
                ->get();
 
            // 세션 초기화

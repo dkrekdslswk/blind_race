@@ -137,7 +137,8 @@ class QuizTreeController extends Controller
                 ->select(
                     'l.number                       as listId',
                     'l.name                         as listName',
-                    DB::raw('COUNT(lq.quizNumber)   as quizCount')
+                    DB::raw('COUNT(lq.quizNumber)   as quizCount'),
+                    DB::raw('COUNT(r.number)        as raceCount')
                 )
                 ->where([
                     'l.openState' => self::OPEN_STATE
