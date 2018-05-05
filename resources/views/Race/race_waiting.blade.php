@@ -129,6 +129,7 @@
                     type: 'POST',
                     url: "{{url('/raceController/studentSet')}}",
                     dataType: 'json',
+                    async: false ,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
                     success: function (result) {
@@ -209,7 +210,7 @@
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
-            // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+            $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
             socket.emit('android_game_start',roomPin, quiz_JSON[0].quizId , quiz_JSON[0].makeType);
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
@@ -229,6 +230,7 @@
                     type: 'POST',
                     url: "{{url('/raceController/answerIn')}}",
                     dataType: 'json',
+                    async:false,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quizId,
                     //+quiz_JSON[quiz_numbar-1].quizId
@@ -241,9 +243,15 @@
                     }
                 });
 
+                console.log('답변자수 ' , answer_count);
+                console.log('입장플레이어수 ', quiz_member);
                 if(answer_count == quiz_member)
                 {
-                    socket.emit('count_off',quiz_numbar);
+                    if( quiz_numbar == quiz_JSON.length )
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+                    else
+                        socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
+
                     document.getElementById('answer_c').innerText="Answers";
                 }
             });
@@ -255,6 +263,7 @@
                 $("#content").hide();
                 document.getElementById('answer_c').innerText= "Answers";
                 $('#play_bgm').remove();
+                $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
 
                 // ranking_process(ranking_j);
                 $.ajax({
@@ -376,7 +385,6 @@
                         console.log("ajax실패"+t_sessionId+","+quiz_JSON[quizId-1].quizId);
                     }
                 });
-                // $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").show();
 
@@ -385,7 +393,7 @@
                     socket.emit('count','time on',roomPin);
 
                     $("#content").show();
-                    // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+                    $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
 
                     socket.emit('android_next_quiz',roomPin);
@@ -402,7 +410,7 @@
 
 
                 $("#content").show();
-                // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
+                $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
                 socket.emit('android_next_quiz',roomPin);

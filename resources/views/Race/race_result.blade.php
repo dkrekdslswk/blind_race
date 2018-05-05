@@ -20,7 +20,7 @@
             var roomPin = "<?php echo $_GET['roomPin']; ?>" ;
             var socket = io(':8890');
             socket.emit('join',roomPin);
-            socket.emit('ending',roomPin);
+            socket.emit('race_ending',roomPin);
 
             // socket.on('race_ending',function(data){
             //     var r_result = JSON.parse(data);
