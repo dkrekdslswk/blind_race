@@ -28,23 +28,23 @@ class RaceController extends Controller{
 
         // 유저가 선생인지 확인하고 선생이 아니면 강퇴
         // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
+        // $userData = DB::table('users as u')
+        //     ->select([
+        //         'u.number   as userId',
+        //         's.number   as sessionId'
+        //     ])
+        //     ->where('u.number', '=', 123456789)
+        //     ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
+        //     ->first();
 
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
+        // if(!isset($userData->sessionId)){
+        //     $request->session()->put('sessionId', DB::table('sessionDatas')
+        //         ->insertGetId([
+        //             'userNumber' => $userData->userId
+        //         ], 'number'));
+        // }else{
+        //     $request->session()->put('sessionId', $userData->sessionId);
+        // }
         // test
 
         // 로그인된 유저의 세션 정보 가져오기
@@ -147,7 +147,7 @@ class RaceController extends Controller{
         }
 
         // 값을 반납
-//        return $returnValue;
+        // return $returnValue;
         return view('Race/race_waiting')->with('response', $returnValue);
     }
 
@@ -555,56 +555,56 @@ class RaceController extends Controller{
     // 레이스 종료 후 세션 정리
     public function raceEnd(Request $request){
         // 선생정보 가져오기기
-       $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-       if($userData['roomPin']) {
-           // 최종 성적 정보 가져오기
-           $students = DB::table('records as r')
-               ->select(
-                   's.number           as sessionId',
-                   's.nick             as nick',
-                   's.characterNumber  as characterId',
-                   DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
-               )
-               ->where([
-                   'r.raceNo' => $userData['raceId']
-               ])
-               ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
-               ->orderBy('rightCount', 's.userNumber')
-               ->groupBy('s.userNumber')
-               ->get();
+        if($userData['roomPin']) {
+            // 최종 성적 정보 가져오기
+            $students = DB::table('records as r')
+                ->select(
+                    's.number           as sessionId',
+                    's.nick             as nick',
+                    's.characterNumber  as characterId',
+                    DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
+                )
+                ->where([
+                    'r.raceNo' => $userData['raceId']
+                ])
+                ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
+                ->orderBy('rightCount', 's.userNumber')
+                ->groupBy('s.userNumber')
+                ->get();
 
-           // 세션 초기화
-           DB::table('sessionDatas')
-               ->where([
-                   'PIN' => $userData['roomPin']
-               ])
-               ->update([
-                   'nick' => null,
-                   'PIN' => null,
-                   'characterNumber' => null,
-                   'raceNumber' => null
-               ]);
+            // 세션 초기화
+            DB::table('sessionDatas')
+                ->where([
+                    'PIN' => $userData['roomPin']
+                ])
+                ->update([
+                    'nick' => null,
+                    'PIN' => null,
+                    'characterNumber' => null,
+                    'raceNumber' => null
+                ]);
 
-           // 반납값 정리
-           $studentData = array();
-           foreach ($students as $student) {
-               array_push($studentData, array(
-                   'sessionId' => $student->sessionId,
-                   'nick' => $student->nick,
-                   'characterId' => $student->characterId,
-                   'rightCount' => $student->rightCount
-               ));
-           }
-           $returnValue = array(
-               'students' => $studentData,
-               'check' => true
-           );
-       } else {
-           $returnValue = array(
-               'check' => false
-           );
-       }
+            // 반납값 정리
+            $studentData = array();
+            foreach ($students as $student) {
+                array_push($studentData, array(
+                    'sessionId' => $student->sessionId,
+                    'nick' => $student->nick,
+                    'characterId' => $student->characterId,
+                    'rightCount' => $student->rightCount
+                ));
+            }
+            $returnValue = array(
+                'students' => $studentData,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
