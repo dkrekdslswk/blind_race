@@ -265,14 +265,16 @@ class GroupController extends Controller{
                         'u.classification   as classification'
                     )
                     ->where([
-                        ['gs.groupNumber', '<>', $postData['groupId']],
-                        ['u.classification', 'LIKE', '%' . 'student'],
-                        ['u.name', 'LIKE', '%' . $postData['search'] . '%']
+                        ['u.classification', 'LIKE', '%' . 'student']
                     ])
-//                    ->where(function ($query) use ($postData){
-//                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
-//                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
-//                    })
+                    ->where(function ($query) use ($postData){
+                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
+                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+                    })
+                    ->where(function ($query) use ($postData){
+                        $query->where('gs.groupNumber', '<>', $postData['groupId'])
+                            ->orWhereNull('gs.groupNumber');
+                    })
                     ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                     ->orderBy('u.number', 'desc')
                     ->get();

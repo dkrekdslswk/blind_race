@@ -225,10 +225,11 @@ class QuizTreeController extends Controller
         // 반납할 값 반납
         if (isset($listId)) {
             $returnValue = array(
-                'listId' => $listId,
-                'listName' => $postData['listName'],
-                'bookList' => $bookList,
-                'check' => true
+                'listId'    => $listId,
+                'listName'  => $postData['listName'],
+                'bookList'  => $bookList,
+                'quizs'     => array(),
+                'check'     => true
             );
         }else{
             $returnValue = array(
