@@ -36,8 +36,6 @@ class CreateRaceTable extends Migration
             $table->unsignedInteger('teacherNumber');
             $table->foreign('teacherNumber')->references('number')->on('users');
 
-	        $table->unsignedSmallInteger('questionNumber')->default(0);
-
 	        $table->char('type', 20);
 	        $table->foreign('type')->references('name')->on('raceTypes');
 
