@@ -547,6 +547,7 @@ class QuizTreeController extends Controller
             'listId' => 1
         );
 
+        // 유저 데이터 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 권한확인하기
@@ -563,7 +564,7 @@ class QuizTreeController extends Controller
             ->first();
         if($listData){
             // 저장된 문제들 읽어오기
-
+            $quizs = $this->getListQuiz($listData->listId);
 
             // 저장된 교재 정보 가져오기
             $bookList = $this->getBookGet();
@@ -573,10 +574,9 @@ class QuizTreeController extends Controller
                 'listId'    => $listData->listId,
                 'listName'  => $listData->name,
                 'bookList'  => $bookList,
-                'quizs',
+                'quizs'     => $quizs,
                 'check'     => true
             );
-
         } else {
             $returnValue = array(
                 'check' => false
@@ -612,5 +612,44 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 문제읽어오기
+    // 문제가져오기
+    private function getListQuiz($listId){
+        // 저장된 문제들 읽어오기
+        $quizData = DB::table('quizBanks as qb')
+            ->select([
+                'qb.number          as number',
+                'qb.question        as question',
+                'qb.hint            as hint',
+                'qb.rightAnswer     as rightAnswer',
+                'qb.example1        as example1',
+                'qb.example2        as example2',
+                'qb.example3        as example3',
+                'qb.type            as type'
+            ])
+            ->where([
+                'lq.listNumber' => $listId
+            ])
+            ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+            ->orderBy('qb.number', 'desc')
+            ->get();
+
+        // 반납값 정리
+        $quizs = array();
+        foreach ($quizData as $quiz) {
+            $type = explode(' ', $quiz->type);
+            array_push($quizs, array(
+                'quizId'    => $quiz->number,
+                'question'  => $quiz->question,
+                'hint'      => $quiz->hint,
+                'right'     => $quiz->rightAnswer,
+                'example1'  => $quiz->example1,
+                'example2'  => $quiz->example2,
+                'example3'  => $quiz->example3,
+                'quizType'  => $type[0],
+                'makeType'  => $type[1]
+            ));
+        }
+
+        return $quizs;
+    }
 }

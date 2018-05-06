@@ -21,14 +21,14 @@ class GroupController extends Controller{
                 break;
             case 'teacher':
                 $classificationWhere = array(
-                    'number' => $userData['userId']
+                    'teacherNumber' => $userData['userId']
                 );
                 $check = true;
                 break;
             case 'student':
             default:
                 $classificationWhere = array(
-                    'number' => 0
+                    'teacherNumber' => 0
                 );
                 $check = false;
                 break;
@@ -266,12 +266,13 @@ class GroupController extends Controller{
                     )
                     ->where([
                         ['gs.groupNumber', '<>', $postData['groupId']],
-                        ['u.classification', 'LIKE', '%' . 'student']
+                        ['u.classification', 'LIKE', '%' . 'student'],
+                        ['u.name', 'LIKE', '%' . $postData['search'] . '%']
                     ])
-                    ->where(function ($query) use ($postData){
-                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
-                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
-                    })
+//                    ->where(function ($query) use ($postData){
+//                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
+//                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+//                    })
                     ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                     ->orderBy('u.number', 'desc')
                     ->get();
