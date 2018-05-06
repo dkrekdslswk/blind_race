@@ -19,27 +19,6 @@ class QuizTreeController extends Controller
 //        $postData = array('folderId' => 'base');
         $postData = array('folderId' => $request->post('folderId'));
 
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number  as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
-
         // 유저의 폴더 정보 가져오기
         $folders = $this->getFolders($request->session()->get('sessionId'));
 
@@ -233,27 +212,6 @@ class QuizTreeController extends Controller
             'folderId' => $request->input('folderId')
         );
 
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
-
         // 리스트 만들기
         $listId = DB::table('lists')
             ->insertGetId([
@@ -324,27 +282,6 @@ class QuizTreeController extends Controller
             'pageEnd'   => $request->input('pageEnd'),
             'level'     => $request->input('level')
         );
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
 
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
@@ -437,27 +374,7 @@ class QuizTreeController extends Controller
             'listId' => $request->input('listId'),
             'quizs' => $request->input('quizs')
         );
-//
-//         유저가 선생인지 확인하고 선생이 아니면 강퇴
-//         test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
 
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 입력 실패한 문제의 배열상 위치를 반납
