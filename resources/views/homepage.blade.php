@@ -25,7 +25,7 @@
             <header id="header" class="clear">
              
                 <div id="logo" class="fl_left">
-                    <h1>
+                    <h1>s
                         <a href="#">
                             <em>十</em>分<em>十</em>分</a>
                     </h1>

@@ -5,6 +5,7 @@
             name="viewport"
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Document</title>
 
     <!-- Bootstrap CSS CDN -->
@@ -75,11 +76,51 @@
 
     <script type="text/javascript">
 
-        $('#mygroup').html("asdasda");
+         function getValue() {
+      
+
+        // list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('GroupController/groupsGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: null,
+            success: function (data) {
+                GroupData = data;
+                alert(JSON.stringify(GroupData));
+                //alert(JSON.stringify(GroupData["groups"]));
+
+          
+            },
+            error: function (data) {
+                alert("earror");
+            }
+        });
+
+        }
+
+        
     </script>
 
 </head>
-<body>
+
+<body onload="getValue()">
+
+<?php 
+$data = Session::all();
+
+if (isset($data)){
+    echo "있음";
+}else {
+    echo "없음";
+}
+?>
+
+<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 <nav>
     @include('Navigation.main_nav')
@@ -98,7 +139,8 @@
             @include('Mygroup.mygroup')
             @include('Mygroup.mygroup_modal')
         </div>
-
+     
+ 
 
     </div>
 </div>
