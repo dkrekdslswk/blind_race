@@ -82,7 +82,7 @@
         // list 정보 불러오기
         $.ajax({
             type: 'POST',
-            url: "{{url('GroupController/groupsGet')}}",
+            url: "{{url('/groupController/groupsGet')}}",
             //processData: false,
             //contentType: false,
             dataType: 'json',
