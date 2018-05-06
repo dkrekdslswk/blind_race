@@ -547,7 +547,7 @@ class QuizTreeController extends Controller
             'listId' => 1
         );
 
-        $userData = UserController::sessionDataGet($request->session()->get('session'));
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 권한확인하기
         $listData = DB::table('lists as l')
@@ -564,21 +564,20 @@ class QuizTreeController extends Controller
         if($listData){
             // 저장된 문제들 읽어오기
 
-        }
 
-        // 저장된 교재 정보 가져오기
-        $bookList = $this->getBookGet();
+            // 저장된 교재 정보 가져오기
+            $bookList = $this->getBookGet();
 
-        // 반납할 값 반납
-        if (isset($listId)) {
+            // 반납할 값 반납
             $returnValue = array(
-                'listId'    => $listId,
-                'listName'  => $postData['listName'],
+                'listId'    => $listData->listId,
+                'listName'  => $listData->name,
                 'bookList'  => $bookList,
                 'quizs',
                 'check'     => true
             );
-        }else{
+
+        } else {
             $returnValue = array(
                 'check' => false
             );
@@ -612,4 +611,6 @@ class QuizTreeController extends Controller
 
         return $returnValue;
     }
+
+    // 문제읽어오기
 }

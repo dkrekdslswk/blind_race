@@ -138,7 +138,7 @@ class RaceController extends Controller{
                 'sessionId' => $request->session()->get('sessionId'),
                 'check'     => true,
                 'roomPin'   => $roomPin,
-                'quizs'     => $this->quizNext($listData->listId)
+                'quizs'     => $this->quizGet($listData->listId)
             );
         } else {
             $returnValue = array(
@@ -283,7 +283,7 @@ class RaceController extends Controller{
     }
 
     // get quiz
-    private function quizNext($listId){
+    private function quizGet($listId){
 
         // 문제 가져오기
         $quizData = DB::table('quizBanks as qb')
@@ -312,15 +312,15 @@ class RaceController extends Controller{
             foreach ($quizData as $quiz) {
                 $type = explode(' ', $quiz->type);
                 array_push($quizs, array(
-                    'quizId' => $quiz->number,
-                    'question' => $quiz->question,
-                    'hint' => $quiz->hint,
-                    'right' => $quiz->rightAnswer,
-                    'example1' => $quiz->example1,
-                    'example2' => $quiz->example2,
-                    'example3' => $quiz->example3,
-                    'quizType' => $type[0],
-                    'makeType' => $type[1]
+                    'quizId'    => $quiz->number,
+                    'question'  => $quiz->question,
+                    'hint'      => $quiz->hint,
+                    'right'     => $quiz->rightAnswer,
+                    'example1'  => $quiz->example1,
+                    'example2'  => $quiz->example2,
+                    'example3'  => $quiz->example3,
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1]
                 ));
             }
             $returnValue = array(
