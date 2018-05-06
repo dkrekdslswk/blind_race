@@ -1,11 +1,9 @@
 <?php
 namespace app\Http\Controllers;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
-use app\Http\Controllers\UserController;
 
 class GroupController extends Controller{
     // 그룹 목록 가져오기 root(all teachers), teacher(mine)
