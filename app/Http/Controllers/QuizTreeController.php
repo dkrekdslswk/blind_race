@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
+use app\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
@@ -644,11 +645,10 @@ class QuizTreeController extends Controller
             ])
             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
             ->first();
-//        if(){
-//
-//        }
+        if($listData){
+            // 저장된 문제들 읽어오기
 
-        // 저장된 문제들 읽어오기
+        }
 
         // 저장된 교재 정보 가져오기
         $bookList = $this->getBookGet();
