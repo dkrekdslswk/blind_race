@@ -21,14 +21,14 @@ class GroupController extends Controller{
                 break;
             case 'teacher':
                 $classificationWhere = array(
-                    'g.number' => $userData['userId']
+                    'number' => $userData['userId']
                 );
                 $check = true;
                 break;
             case 'student':
             default:
                 $classificationWhere = array(
-                    'g.number' => 0
+                    'number' => 0
                 );
                 $check = false;
                 break;
