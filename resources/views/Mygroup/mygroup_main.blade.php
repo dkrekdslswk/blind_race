@@ -74,37 +74,6 @@
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
-    <script type="text/javascript">
-
-         function getValue() {
-      
-
-        // list 정보 불러오기
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/groupController/groupsGet')}}",
-            //processData: false,
-            //contentType: false,
-            dataType: 'json',
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            //data: {_token: CSRF_TOKEN, 'post':params},
-            data: null,
-            success: function (data) {
-                GroupData = data;
-                alert(JSON.stringify(GroupData));
-                //alert(JSON.stringify(GroupData["groups"]));
-
-          
-            },
-            error: function (data) {
-                alert("earror");
-            }
-        });
-
-        }
-
-        
-    </script>
 
 </head>
 

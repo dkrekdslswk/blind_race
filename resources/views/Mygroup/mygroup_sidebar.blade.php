@@ -1,4 +1,5 @@
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         .page-small .learn-small,
@@ -134,14 +135,40 @@
 
         .w3-card,
         .w3-card-2 {
-             position: absolute !important;
+            position: absolute !important;
         }
         .margins {
-            margin-top : 300px;
-                }
+            margin-top: 300px;
+        }
     </style>
     <script>
         $(document).ready(function () {
+            
+        // list 정보 불러오기
+        $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/selectUser')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "search=''&groupId=1",
+                success: function (data) {
+                    GroupData = data;
+                    alert(JSON.stringify(GroupData));
+                    //alert(JSON.stringify(GroupData["groups"]));
+
+                
+                },
+                error: function (data) {
+                    alert("r기다려봐");
+                }
+        });
+
+
+            
+            
+            
             $('#chkParent').click(function () {
                 var isChecked = $(this).prop("checked");
                 $('#tblData tr:has(td)')
@@ -196,7 +223,7 @@
         }
     </script>
 </head>
-
+<body>
 <div id="navigation" style="min-height: 600px;">
 
     <!--네비바 위부분 공백-->
@@ -204,15 +231,18 @@
         class="page-small"
         style="text-align: center; margin-top: 10px; margin-bottom:10px;"></div>
 
+   
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card">
-        <form>
-            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form> -->
+        <!-- <form> -->
+            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
+            -->
 
             <button class="w3-bar-item w3-button">
-                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">미등록 학생</a> -->
+                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
+                w3-button""="w3-button""">미등록 학생</a> -->
             </button>
             <button class="w3-bar-item w3-button">
-                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">엑셀로 불러오기</a>
+                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button" "">엑셀로 불러오기</a>
             </button>
             <button
                 type="button"
@@ -226,17 +256,16 @@
                 <h2>나의 클래스</h2>
 
                 <a href="#" class="w3-bar-item w3-button fa-folder-open">A반</a>
-         
-    
+
             </div>
-            <input 
-                class ="margins"
+            <input
+                class="margins"
                 type="text"
                 id="myInput"
                 onkeyup="myFunction()"
                 placeholder="학생 찾기"
                 title="Type in a name"
-                value = " ">
+                value=" ">
 
                 <table id="myTable">
                     <tr class="header">
@@ -247,17 +276,20 @@
                     <tr>
                         <td>김민수</td>
                         <td>1301036</td>
-                        <td><button>+</button></td>
+                        <td>
+                            <button>+</button>
+                        </td>
                     </tr>
                     <tr>
                         <td>안준휘</td>
                         <td>1401036</td>
-                        <td><button>+</button></td>
+                        <td>
+                            <button>+</button>
+                        </td>
                     </tr>
-                    
+
                 </table>
 
-                
             </div>
 
-        
+            </body>

@@ -30,7 +30,12 @@ class BlindDummyTableSeeder extends Seeder
                 'classification'    => array_get($user, 3)
             ]);
         }
-
+        DB::table('users')->insert([
+            'number'            => 1300009,
+            'pw'                 => '1234',
+            'name'               => '안기부',
+            'classification'    => 'student',
+        ]);
         $groupId = DB::table('groups')->insertGetId([
             'name'              => 'group1',
             'teacherNumber'     => $users[0][0]
