@@ -136,8 +136,8 @@ Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList'
 
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
-Route::post('/GroupController/groupsGet','GroupController@groupsGet');
-Route::post('/GroupController/selectUser','GroupController@selectUser');
+Route::post('/groupController/groupsGet','GroupController@groupsGet');
+Route::post('/groupController/selectUser','GroupController@selectUser');
 
 ?>
 

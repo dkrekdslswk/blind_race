@@ -557,7 +557,7 @@ class QuizTreeController extends Controller
                 )
                 ->where([
                     'l.number' => $postData['listId'],
-                    'f.userNumber' => $userData['userId']
+                    'f.teacherNumber' => $userData['userId']
                 ])
                 ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
                 ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
@@ -627,24 +627,48 @@ class QuizTreeController extends Controller
     public function updateList(Request $request){
         // 요구하는 값
         $postData = array(
-            'groupId',
-            'students' => array(
-                0 => array(
-                    'id'
-                )
+            'listId' => 1
+        );
+
+        $userData = UserController::sessionDataGet($request->session()->get('session'));
+
+        // 권한확인하기
+        $listData = DB::table('lists as l')
+            ->select(
+                'l.number   as listId',
+                'l.listName as name'
             )
-        );
+            ->where([
+                'l.number'          => $postData['listId'],
+                'f.teacherNumber'   => $userData->userNumber
+            ])
+            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->first();
+//        if(){
+//
+//        }
 
-        // 반납하는 값
-        $returnValue = array(
-            'students' => array(
-                0 => array(
-                    'id'
-                )
-            ),
-            'check'
-        );
+        // 저장된 문제들 읽어오기
 
+        // 저장된 교재 정보 가져오기
+        $bookList = $this->getBookGet();
+
+        // 반납할 값 반납
+        if (isset($listId)) {
+            $returnValue = array(
+                'listId'    => $listId,
+                'listName'  => $postData['listName'],
+                'bookList'  => $bookList,
+                'quizs',
+                'check'     => true
+            );
+        }else{
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+//        return $returnValue;
         return view('QuizTree/quiz_making')->with('response', $returnValue);
     }
 

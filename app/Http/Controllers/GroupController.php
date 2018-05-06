@@ -9,26 +9,6 @@ use Illuminate\Support\Facades\DB;
 class GroupController extends Controller{
     // 그룹 목록 가져오기 root(all teachers), teacher(mine)
     public function groupsGet(Request $request){
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number  as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
 
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
