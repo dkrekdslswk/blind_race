@@ -19,7 +19,7 @@
                                 <div class="form-group">
                                 <label for="exampleDropdownFormEmail1">클래스 이름</label>
                                 <input
-                                    type="email"
+                                    type="text"
                                     class="form-control"
                                     id="exampleDropdownFormEmail1"
                                     placeholder="클래스 이름을 입력하세요">
