@@ -94,9 +94,9 @@ class GroupController extends Controller{
             // 검색방식 설정
             // 1. 자기 그룹 조회
             case 'teacher':
-                $where = array([
+                $where = array(
                     'g.teacherNumber' => $userData['userId']
-                ]);
+                );
             // 2. 루트는 모든 그룹 조회 가능
             case 'root':
                 // 그룹과 선생정보 가져오기
