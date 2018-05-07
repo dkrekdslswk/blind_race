@@ -214,7 +214,8 @@
                 type="text"
                 placeholder="학번을  입력"
                 name="p_ID"
-                required="required">
+                required="required"
+                value="123456789">
 
             <label for="p_PW">
                 <b>Password</b>
@@ -223,7 +224,9 @@
                 type="password"
                 placeholder="Enter Password"
                 name="p_PW"
-                required="required">
+                required="required"
+                value="sub"
+                >
         
             <button type="submit" style ="color : black">Login</button>
            

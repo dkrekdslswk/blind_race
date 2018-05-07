@@ -152,12 +152,24 @@
                 //contentType: false,
                 dataType: 'json',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: "search=''&groupId=1",
+                data: "search=&groupId=1",
                 success: function (data) {
                     GroupData = data;
-                    alert(JSON.stringify(GroupData));
-                    //alert(JSON.stringify(GroupData["groups"]));
+                    
+                    search_studentJSON = GroupData['users'];
 
+                    var student_list = '';
+
+                    for( var i = 0 ; i < search_studentJSON.length; i++){
+                        
+                        student_list +='<tr><td>'
+                        +search_studentJSON[i].name
+                        +'</td><td>'
+                        +search_studentJSON[i].id
+                        +'</td><td><button>+</button></td></tr>'
+                    }          
+
+                    $('#myTable').html(student_list);
                 
                 },
                 error: function (data) {
