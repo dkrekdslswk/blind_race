@@ -123,17 +123,23 @@ Route::post('/raceController/studentSet','RaceController@studentSet');
 Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
+Route::post('/raceController/raceEnd','RaceController@raceEnd');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
 Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList');
 Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
+Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList');
+Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
+Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
-Route::post('/GroupController/groupsGet','GroupController@groupsGet');
-Route::post('/GroupController/selectUser','GroupController@selectUser');
+Route::post('/groupController/groupsGet','GroupController@groupsGet');
+Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
+Route::post('/groupController/createGroup','GroupController@createGroup');
+Route::post('/groupController/selectUser','GroupController@selectUser');
 
 ?>
 

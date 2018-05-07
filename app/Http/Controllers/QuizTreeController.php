@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
+use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
@@ -18,27 +19,6 @@ class QuizTreeController extends Controller
         // 들어올 정보
 //        $postData = array('folderId' => 'base');
         $postData = array('folderId' => $request->post('folderId'));
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number  as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
 
         // 유저의 폴더 정보 가져오기
         $folders = $this->getFolders($request->session()->get('sessionId'));
@@ -56,8 +36,8 @@ class QuizTreeController extends Controller
 
         // 반납할 데이터 정리
         $returnValue = array(
-            'folders'    => $folders,
-            'lists'      => $lists,
+            'folders'       => $folders,
+            'lists'         => $lists,
             'selectFolder'  => $selectFolderId,
             'check'         => true
         );
@@ -137,12 +117,14 @@ class QuizTreeController extends Controller
                 ->select(
                     'l.number                       as listId',
                     'l.name                         as listName',
-                    DB::raw('COUNT(lq.quizNumber)   as quizCount')
+                    DB::raw('COUNT(lq.quizNumber)   as quizCount'),
+                    DB::raw('COUNT(r.number)        as raceCount')
                 )
                 ->where([
                     'l.openState' => self::OPEN_STATE
                 ])
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+                ->leftJoin('races as r', 'r.listNumber', '=', 'l.number')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();
@@ -153,7 +135,8 @@ class QuizTreeController extends Controller
                 ->select(
                     'l.number                       as listId',
                     'l.name                         as listName',
-                    DB::raw('COUNT(lq.quizNumber)   as quizCount')
+                    DB::raw('COUNT(lq.quizNumber)   as quizCount'),
+                    DB::raw('COUNT(r.number)        as raceCount')
                 )
                 ->where([
                     's.number' => $sessionId,
@@ -162,6 +145,7 @@ class QuizTreeController extends Controller
                 ->join('listQuizs as lq',   'lq.listNumber',    '=', 'l.number')
                 ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
                 ->join('sessionDatas as s', 's.userNumber',     '=', 'f.teacherNumber')
+                ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
                 ->groupBy('l.number')
                 ->orderBy('l.number', 'desc')
                 ->get();
@@ -173,7 +157,9 @@ class QuizTreeController extends Controller
             array_push($lists, array(
                 'listId'    => $list->listId,
                 'listName'  => $list->listName,
-                'quizCount' => $list->quizCount));
+                'quizCount' => $list->quizCount,
+                'raceCount' => $list->raceCount
+            ));
         }
 
         return $lists;
@@ -227,27 +213,6 @@ class QuizTreeController extends Controller
             'folderId' => $request->input('folderId')
         );
 
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
-
         // 리스트 만들기
         $listId = DB::table('lists')
             ->insertGetId([
@@ -261,10 +226,11 @@ class QuizTreeController extends Controller
         // 반납할 값 반납
         if (isset($listId)) {
             $returnValue = array(
-                'listId' => $listId,
-                'listName' => $postData['listName'],
-                'bookList' => $bookList,
-                'check' => true
+                'listId'    => $listId,
+                'listName'  => $postData['listName'],
+                'bookList'  => $bookList,
+                'quizs'     => array(),
+                'check'     => true
             );
         }else{
             $returnValue = array(
@@ -318,27 +284,6 @@ class QuizTreeController extends Controller
             'pageEnd'   => $request->input('pageEnd'),
             'level'     => $request->input('level')
         );
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
 
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
@@ -431,27 +376,7 @@ class QuizTreeController extends Controller
             'listId' => $request->input('listId'),
             'quizs' => $request->input('quizs')
         );
-//
-//         유저가 선생인지 확인하고 선생이 아니면 강퇴
-//         test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number   as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
 
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 입력 실패한 문제의 배열상 위치를 반납
@@ -531,49 +456,235 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    /*public function deleteRace(Request $request){
+    // 삭제
+    public function deleteList(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'listId' => $request->input('listId')
         );
 
-        $rowCount = DB::table('races')
-            ->where()
-            ->delete();
+        // 유저정보 받아오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 삭제할 리스트인지 확인
+        if($userData){
+            $listData = DB::table('lists as l')
+                ->select(
+                    'l.number                   as listId',
+                    DB::raw('COUNT(r.number)    as raceCount')
+                )
+                ->where([
+                    'l.number'          => $postData['listId'],
+                    'f.teacherNumber'   => $userData['userId'],
+                    'l.openState'       => 1
+                ])
+                ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
+                ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
+                ->groupBy('l.number')
+                ->first();
+
+            // 삭제할 리스트이면 삭제
+            if ($listData && ((int)$listData->raceCount == 0)){
+                // 문제 리스트 받아오기
+                $listQuizs = DB::table('listQuizs')
+                    ->select(
+                        'quizNumber'
+                    )
+                    ->where([
+                        'listNumber' => $listData->listId
+                    ])
+                    ->get();
+
+                $quizs = array();
+                foreach ($listQuizs as $quiz){
+                    array_push($quizs, $quiz->quizNumber);
+                }
+
+                // 문제 리스트 삭제
+                DB::table('listQuizs')
+                    ->where([
+                        'listNumber' => $listData->listId
+                    ])
+                    ->delete();
+
+                // 문제 삭제
+                DB::table('quizBanks')
+                    ->where([
+                        'number' => $quizs
+                    ])
+                    ->delete();
+
+                // 리스트삭제
+                DB::table('lists')
+                    ->where([
+                        'number' => $listData->listId
+                    ])
+                    ->delete();
+
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => true
+                );
+            } else {
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            // 반납하는 값
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
-    }*/
+    }
 
-    /*public function getRaceQuiz(Request $request){
+    // 수정
+    public function updateList(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'listId' => $request->input('listId')
         );
 
-        $quiz_data = DB::table('race_quizs as rq')
+        // 유저 데이터 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인하기
+        $listData = DB::table('lists as l')
             ->select(
-                'qb.quiz_question as question',
-                'qb.quiz_right_answer as right',
-                'qb.quiz_example1 as example1',
-                'qb.quiz_example2 as example2',
-                'qb.quiz_example3 as example3',
-                'qb.quiz_type as type'
+                'l.number                   as listId',
+                'l.name                     as name',
+                DB::raw('COUNT(r.number)    as raceCount')
             )
-            ->where('rq.race_num', '=', $postData{'raceId'})
-            ->join('quiz_bank as qb', 'qb.quiz_num', '=', 'rq.quiz_num')
-            ->orderBy('qb.quiz_num')
+            ->where([
+                'l.number'          => $postData['listId'],
+                'f.teacherNumber'   => $userData['userId'],
+                'l.openState'       => 1
+            ])
+            ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
+            ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
+            ->groupBy('l.number')
+            ->first();
+
+        if($listData && ((int)$listData->raceCount == 0)){
+            // 저장된 문제들 읽어오기
+            $quizs = $this->getListQuiz($listData->listId);
+
+            // 저장된 교재 정보 가져오기
+            $bookList = $this->getBookGet();
+
+            // 반납할 값 반납
+            $returnValue = array(
+                'listId'    => $listData->listId,
+                'listName'  => $listData->name,
+                'bookList'  => $bookList,
+                'quizs'     => $quizs,
+                'check'     => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+//        return $returnValue;
+        return view('QuizTree/quiz_making')->with('response', $returnValue);
+    }
+
+    // 미리보기
+    public function showList(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
+        $postData = array(
+            'listId' => $request->input('listId')
+        );
+
+        // 유저 데이터 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인하기
+        $listData = DB::table('lists as l')
+            ->select(
+                'l.number   as listId',
+                'l.listName as name'
+            )
+            ->where([
+                'l.number'          => $postData['listId']
+            ])
+            ->where(function ($query) use ($userData){
+                $query->where('f.teacherNumber', '=', $userData->userNumber)
+                    ->orWhere('l.openState', '=', self::OPEN_STATE);
+            })
+            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->first();
+
+        if($listData) {
+            // 저장된 문제들 읽어오기
+            $quizs = $this->getListQuiz($listData->listId);
+
+            // 반납하는 값
+            $returnValue = array(
+                'listName'  => $listData->name,
+                'quizs'     => $quizs,
+                'check'     => true
+            );
+        } else {
+            $returnValue = array(
+                'check'     => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 문제가져오기
+    private function getListQuiz($listId){
+        // 저장된 문제들 읽어오기
+        $quizData = DB::table('quizBanks as qb')
+            ->select([
+                'qb.number          as number',
+                'qb.question        as question',
+                'qb.hint            as hint',
+                'qb.rightAnswer     as rightAnswer',
+                'qb.example1        as example1',
+                'qb.example2        as example2',
+                'qb.example3        as example3',
+                'qb.type            as type'
+            ])
+            ->where([
+                'lq.listNumber' => $listId
+            ])
+            ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+            ->orderBy('qb.number', 'desc')
             ->get();
 
-        $returnValue = array();
-        foreach ($quiz_data as $data){
-            array_push($returnValue, array(
-                'name' => $data->question,
-                'answer1' => $data->right,
-                'answer2' => $data->example1,
-                'answer3' => $data->example2,
-                'answer4' => $data->example3,
-                'type' => $data->type
+        // 반납값 정리
+        $quizs = array();
+        foreach ($quizData as $quiz) {
+            $type = explode(' ', $quiz->type);
+            array_push($quizs, array(
+                'quizId'    => $quiz->number,
+                'question'  => $quiz->question,
+                'hint'      => $quiz->hint,
+                'right'     => $quiz->rightAnswer,
+                'example1'  => $quiz->example1,
+                'example2'  => $quiz->example2,
+                'example3'  => $quiz->example3,
+                'quizType'  => $type[0],
+                'makeType'  => $type[1]
             ));
         }
 
-        return array('raceList' => $returnValue);
-    }*/
+        return $quizs;
+    }
 }

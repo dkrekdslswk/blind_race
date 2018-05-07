@@ -1,3 +1,7 @@
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
 <!-- careate Modal -->
 
                     <div
@@ -9,32 +13,24 @@
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                  
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">클래스 이름</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="클래스 이름을 입력하세요">
-                            </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">create class</button>
-                                </div>
+
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <label for="createCl">
+                                        <b>클래스 생성</b>
+                                    </label>
+                                    <input id="groupNameValue" type="text"
+                                           placeholder="클래스 입력"
+                                           name="groupName"
+                                           required="required"
+                                    >
+                                    <button onclick="createGroup()" style ="color : black">클래스 생성</button>
+
                             </div>
 
-                            
+
                         </div>
 
-                        
+
                     </div>
 
             <!-- teacher modal -->
@@ -163,7 +159,7 @@
                     </div>
                 </div>
 
-                        <script>
+                <script>
                     // Get the modal
                     var modal = document.getElementById('myModal');
 
@@ -200,5 +196,24 @@
                         }
                     }
 
-                    
+                    function createGroup(){
+                        var groupNameValue = document.getElementById("groupNameValue").value;
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{url('/groupController/createGroup')}}",
+                            dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            data: "groupName="+groupNameValue,
+                            success: function (data) {
+                                if(data['check'])
+                                    alert('그룹생성이 완료되었습니다.');
+
+                                window.location.href="{{url('mygroup')}}";
+                            },
+                            error: function (data) {
+                                alert("클래스찾기 에러");
+                            }
+                        });
+                    }
+
                 </script>

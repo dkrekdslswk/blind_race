@@ -303,7 +303,7 @@
                 }
             },
             error: function (data) {
-                alert("저장 실패");
+                alert("출제 유형과 문제 유형을 모두 입력해주세요");
             }
         });
 

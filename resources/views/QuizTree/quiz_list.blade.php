@@ -117,17 +117,87 @@
     function listValue() {
 
         for(var i = 0; i < quizlistData['lists'].length; i++) {
-            $("#list").append(
-                "<tr>" +
-                "<td align='center'>" +
-                "<a class='btn btn-default'><em class='fa fa-pencil'></em></a>" +
-                "<a class='btn btn-danger'><em class='fa fa-trash'></em></a>" +
-                "</td>" +
-                "<td class='hidden-xs' style='text-align: center'>"+ quizlistData['lists'][i]['listId'] + "</td>" +
-                "<td style='text-align: center'>"+ quizlistData['lists'][i]['listName'] + "</td>" +
-                "<td style='text-align: center'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
-                "</tr>");
+
+            <?php
+            $idNum = array()
+            ?>
+
+            // 레이스로 활용되지 않은 문제만 수정・삭제 가능
+            if(quizlistData['lists'][i]['raceCount'] == 0) {
+                $("#list").append(
+                    "<tr>" +
+                    "<td align='center'>" +
+                    "<a class='btn btn-default'><em class='fa fa-pencil'></em></a>" +
+                    "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-trash'></em></a>" +
+                    "</td>" +
+                    "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['listId'] + "</td>" +
+                    "<td style='text-align: center'>" + quizlistData['lists'][i]['listName'] + "</td>" +
+                    "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                    "</tr>"
+                );
+
+                $("#test").append(
+                    "<div class='modal fade' id='deleteModal" + quizlistData['lists'][i]['listId'] + "' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>" +
+                    "<div class='modal-dialog' role='document'>" +
+                    "<div class='modal-content'>" +
+                    "<div class='modal-header'>" +
+                    "<h5 class='modal-title' id='ModalLabel'>퀴즈 삭제하기</h5>" +
+                    "</div>" +
+                    "<div class='modal-body' style='text-align: center'>[" + quizlistData['lists'][i]['listName'] +"] 퀴즈를 삭제하겠습니까?" +
+                    "</div>" +
+                    "<div class='modal-footer'>" +
+                    "<button type='submit' class='btn btn-primary' onclick='deleteList(" + quizlistData['lists'][i]['listId'] + ")'>삭제하기</button>" +
+                    "<button type='button' class='btn btn-secondary' data-dismiss='modal'>취소</button>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+            }
+
+            else {
+                $("#list").append(
+                    "<tr>" +
+                    "<td align='center'>" +
+                    "<button class='btn btn-default'>수정・삭제 불가능</button>" +
+                    "</td>" +
+                    "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['listId'] + "</td>" +
+                    "<td style='text-align: center'>" + quizlistData['lists'][i]['listName'] + "</td>" +
+                    "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                    "</tr>"
+                );
+            }
         }
+    }
+
+
+    // 퀴즈 삭제 : ajax
+    function deleteList(idNum) {
+
+        var params = {
+            folderId: 1,
+            listId: idNum
+        };
+
+        // 퀴즈 삭제 후 list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/deleteList')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+
+                if(data['check'] == true) window.location.href = "{{url('quiz_list')}}";
+            },
+            error: function (data) {
+
+                alert("error");
+            }
+        });
     }
 
 </script>
@@ -167,9 +237,7 @@
                     </tr>
                     </thead>
                     <tbody id="list">
-
                     {{--list 공간--}}
-
                     </tbody>
                 </table>
             </div>
@@ -219,6 +287,10 @@
         </form>
     </div>
 </div>
+
+{{--Modal : delete quiz--}}
+<div id="test"></div>
+
 
 </body>
 

@@ -1,35 +1,14 @@
 <?php
 namespace app\Http\Controllers;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\UserController;
 class GroupController extends Controller{
     // 그룹 목록 가져오기 root(all teachers), teacher(mine)
     public function groupsGet(Request $request){
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        $userData = DB::table('users as u')
-            ->select([
-                'u.number   as userId',
-                's.number  as sessionId'
-            ])
-            ->where('u.number', '=', 123456789)
-            ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-            ->first();
-
-        if(!isset($userData->sessionId)){
-            $request->session()->put('sessionId', DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userData->userId
-                ], 'number'));
-        }else{
-            $request->session()->put('sessionId', $userData->sessionId);
-        }
-        // test
-
+        
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 유저 로그인 확인
@@ -42,14 +21,14 @@ class GroupController extends Controller{
                 break;
             case 'teacher':
                 $classificationWhere = array(
-                    'g.number' => $userData['userId']
+                    'teacherNumber' => $userData['userId']
                 );
                 $check = true;
                 break;
             case 'student':
             default:
                 $classificationWhere = array(
-                    'g.number' => 0
+                    'teacherNumber' => 0
                 );
                 $check = false;
                 break;
@@ -99,44 +78,86 @@ class GroupController extends Controller{
     // 그룹 정보 가져오기 root, teacher
     public function groupDataGet(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupId'
+//        );
         $postData = array(
-            'groupId'
+            'groupId' => $request->input('groupId')
         );
 
         // 유저정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 유저 로그인 확인
-        if($userData['check']) {
-            // 유저 권한 확인
-            $userCheck = DB::table()
-                ->select(
+        // 권한 확인
+        $where = array();
+        switch ($userData['classification']) {
+            // 검색방식 설정
+            // 1. 자기 그룹 조회
+            case 'teacher':
+                $where = array(
+                    'g.teacherNumber' => $userData['userId']
+                );
+            // 2. 루트는 모든 그룹 조회 가능
+            case 'root':
+                // 그룹과 선생정보 가져오기
+                $groupData = DB::table('groups as g')
+                    ->select(
+                        'g.number   as groupId',
+                        'g.name     as groupName',
+                        'u.number   as teacherId',
+                        'u.name     as teacherName'
+                    )
+                    ->where([
+                        'g.number'          => $postData['groupId']
+                    ])
+                    ->where($where)
+                    ->join('users as u', 'u.number', '=', 'g.teacherNumber')
+                    ->first();
 
-                )
-                ->where([
+                // 학생들 가져오기
+                $studentData = DB::table('groupStudents as gs')
+                    ->select(
+                        'gs.userNumber  as userId',
+                        'u.name         as userName'
+                    )
+                    ->where([
+                        'gs.groupNumber' => $postData['groupId']
+                    ])
+                    ->join('users as u', 'u.number', '=', 'gs.userNumber')
+                    ->get();
 
-                ])
-                ->first();
+                $students = array();
+                foreach ($studentData as $student){
+                    array_push($students, array(
+                        'id'    => $student->userId,
+                        'name'  => $student->userName
+                    ));
+                }
+
+                // 반납하는 값
+                $returnValue = array(
+                    'group' => array(
+                        'id'            => $groupData->groupId,
+                        'name'          => $groupData->groupName,
+                        'studentCount'  => count($students)
+                    ),
+                    'teacher' => array(
+                        'id'    => $groupData->teacherId,
+                        'name'  => $groupData->teacherName
+                    ),
+                    'students' => $students,
+                    'check' => true
+                );
+                break;
+
+            // 2. 권한 외
+            default:
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => false
+                );
+                break;
         }
-        // 반납하는 값
-        $returnValue = array(
-            'group' => array(
-                'id',
-                'name',
-                'studentCount'
-            ),
-            'teacher' => array(
-                'id',
-                'name'
-            ),
-            'students' => array(
-                0 => array(
-                    'id',
-                    'name'
-                )
-            ),
-            'check'
-        );
 
         return $returnValue;
     }
@@ -144,65 +165,98 @@ class GroupController extends Controller{
     // 그룹 만들기 root, teacher
     public function createGroup(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupName'
+//        );
         $postData = array(
-            'groupName'
+            'groupName' => $request->input('groupName')
         );
 
-        // 반납하는 값
-        $returnValue = array(
-            'group' => array(
-                'id',
-                'name',
-                'studentCount'
-            ),
-            'teacher' => array(
-                'id',
-                'name'
-            ),
-            'students' => array(), // 호환용 비어있는 변수
-            'check'
-        );
+        // 유저확인
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 유저 로그인 확인
+        if ($userData['check']) {
+            // 권한확인
+            switch ($userData['classification']) {
+                case 'root':
+                case 'teacher':
+                    $groupId = DB::table('groups')
+                        ->insertGetId([
+                            'name'          => $postData['groupName'],
+                            'teacherNumber' => $userData['userId']
+                        ]);
+                    $check = true;
+                    break;
+                default:
+                    $groupId = false;
+                    $check = false;
+                    break;
+            }
+
+            // 반납는 값
+            if ($check && $groupId){
+                $returnValue = array(
+                    'group' => array(
+                        'id'            => $groupId,
+                        'name'          => $postData['groupName'],
+                        'studentCount'  => 0 // 갓 만들었기 때문에 없음.
+                    ),
+                    'teacher' => array(
+                        'id'    => $userData['userId'],
+                        'name'  => $userData['userName']
+                    ),
+                    'students'  => array(), // 호환용 비어있는 변수
+                    'check'     => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
 
-    // 학생 초대하기 root, teacher
+    // 학생 등록하기 root, teacher
+    // 구현중
     public function PushInvitation(Request $request){
         // 요구하는 값
         $postData = array(
             'groupId',
             'students' => array(
-                0 => array(
-                    'id'
-                )
+                0 => 'id'
             )
         );
+
+        // 유저 정보가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        
+        // 유저권한확인
+        if ($userData['check']) {
+            // 유저 추가
+            switch ($userData['classification']){
+                case 'teacher':
+                case 'root':
+
+                    break;
+                default:
+                    break;
+            }
+        }
 
         // 반납하는 값
         $returnValue = array(
             'students' => array(
                 0 => array(
-                    'id',
-                    'accessionState'
+                    'id'
                 )
             ),
-            'check'
-        );
-
-        return $returnValue;
-    }
-
-    // 학생 초대받기 root, teacher
-    public function GetInvitation(Request $request){
-        // 요구하는 값
-        $postData = array(
-            'groupId'
-        );
-
-        // 반납하는 값
-        $returnValue = array(
-            'groupId',
-            'accessionState',
             'check'
         );
 
@@ -232,6 +286,7 @@ class GroupController extends Controller{
             // 이름, 학번에 해당 문자가 포감되는지 확인
             // 학생만 검색
             case 'teacher':
+            case 'root':
                 $users = DB::table('users as u')
                     ->select(
                         'u.number           as id',
@@ -239,12 +294,15 @@ class GroupController extends Controller{
                         'u.classification   as classification'
                     )
                     ->where([
-                        ['gs.groupNumber', '<>', $postData['groupId']],
                         ['u.classification', 'LIKE', '%' . 'student']
                     ])
                     ->where(function ($query) use ($postData){
                         $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
                             ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+                    })
+                    ->where(function ($query) use ($postData){
+                        $query->where('gs.groupNumber', '<>', $postData['groupId'])
+                            ->orWhereNull('gs.groupNumber');
                     })
                     ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                     ->orderBy('u.number', 'desc')
@@ -289,6 +347,7 @@ class GroupController extends Controller{
     }
 
     // 학생 정보수정 root, teacher
+    // 미구현
     public function studentModify(Request $request){
         // 요구하는 값
         $postData = array(
@@ -308,6 +367,7 @@ class GroupController extends Controller{
     }
 
     // 학생 그룹에서 제외 root, teacher
+    // 미구현
     public function studentGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
@@ -328,6 +388,7 @@ class GroupController extends Controller{
     }
 
     // 교사 임명 root
+    // 미구현
     public function teacherEmpowerment(Request $request){
         // 요구하는 값
         $postData = array(
@@ -346,6 +407,7 @@ class GroupController extends Controller{
     }
 
     // 그룹 담당 교사 변경 root
+    // 미구현
     public function teacherGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(

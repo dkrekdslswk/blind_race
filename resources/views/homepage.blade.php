@@ -2,6 +2,7 @@
 
 <html>
     <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
         <script
             defer="defer"
             src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
@@ -12,8 +13,8 @@
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link href="css/homemain.css" rel="stylesheet" type="text/css" media="all">
-
+        <link href="{{url('css/homemain.css')}}" rel="stylesheet" type="text/css" media="all">
+      
     </head>
     <body
         id="top"
@@ -24,7 +25,7 @@
             <header id="header" class="clear">
              
                 <div id="logo" class="fl_left">
-                    <h1>
+                    <h1>s
                         <a href="#">
                             <em>十</em>分<em>十</em>分</a>
                     </h1>
@@ -63,7 +64,7 @@
                         </li>
                         <li>
 
-                        <button  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Login</button> 
+                        <button  onclick="document.getElementById('id01').style.display='block'" class="mainbtn"><?php if(isset($response['check'] )){echo "logout"; } else { echo "login" ;}; ?>  </button> 
                         </li>
                         <li>
                        
@@ -83,7 +84,7 @@
                     <li>
                             <a class="mt-purple" href="/mygroup">
                                 <i class="fa fa-5x fa-child"></i>
-                                <em>My group</em>
+                                <em>My Class</em>
                             </a>
                         </li>
                     
@@ -147,25 +148,7 @@
                 </div>
             </div>
 
-            <!-- <div
-                class="wrapper "
-                style="background-image:url('https://i.imgur.com/TblNDot.png');">
-                <div>
-                    <div id="cta" class="clear center">
-                        <!--
-                        ################################################################################################
-                        -->
-                        <!-- <h2 class="heading"></h2>
-                        <ul>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                      
-                    </div>
-                </div>
-            </div> --> -->
+   
 
            
 
@@ -179,25 +162,11 @@
     style="background-image:url('images/demo/backgrounds/02.png');">
     <div class="lrspace overlay">
         <footer id="footer" class="clear">
-            <!--
-            ################################################################################################
-            -->
-
-            <!--
-            ################################################################################################
-            -->
+         
         </footer>
     </div>
 </div>
-<!--
-################################################################################################
--->
-<!--
-################################################################################################
--->
-<!--
-################################################################################################
--->
+
 <div class="wrapper row5">
     <div class="lrspace">
         <div id="copyright" class="clear">
@@ -205,29 +174,19 @@
             ################################################################################################
             -->
             <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
-                <a href="#">캡스톤 디자인</a>
+                <a href="#">캡스톤 십자인대</a>
             </p>
-            <p class="fl_right">Template by
+            <p class="fl_right">Template By
                 <a
                     target="_blank"
                     href="http://www.os-templates.com/"
                     title="Free Website Templates">WDJ7조</a>
             </p>
-            <!--
-            ################################################################################################
-            -->
+            
         </div>
     </div>
 </div>
-<!--
-################################################################################################
--->
-<!--
-################################################################################################
--->
-<!--
-################################################################################################
--->
+
 <a id="backtotop" href="#top">
     <i class="fa fa-chevron-up"></i>
 </a>
@@ -235,9 +194,10 @@
 
 
 <div id="id01" class="modal">
-
-    <form class="modal-content animate" action="/action_page.php">
+   <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
+  
         <div class="imgcontainer">
+        
             <span
                 onclick="document.getElementById('id01').style.display='none'"
                 class="close"
@@ -246,24 +206,28 @@
         </div>
 
         <div class="container">
-            <label for="uname">
-                <b>학번</b>
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <label for="p_ID">
+                <b>학 번</b>
             </label>
             <input
                 type="text"
-                placeholder="학번 입력"
-                name="uname"
-                required="required">
+                placeholder="학번을  입력"
+                name="p_ID"
+                required="required"
+                value="123456789">
 
-            <label for="psw">
+            <label for="p_PW">
                 <b>Password</b>
             </label>
             <input
                 type="password"
                 placeholder="Enter Password"
-                name="psw"
-                required="required">
-           
+                name="p_PW"
+                required="required"
+                value="sub"
+                >
+        
             <button type="submit" style ="color : black">Login</button>
            
 
@@ -277,7 +241,10 @@
 
 <div id="id02" class="modal">
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-  <form class="modal-content" action="/action_page.php">
+
+
+  
+  <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
     <div class="container">
       <h1>Sign Up</h1>
       
@@ -305,13 +272,17 @@
 
 
 <!-- JAVASCRIPTS -->
-<script src="js/jquery.min.js"></script>
-<script src="js/mi.js"></script>
-<script src="js/jquery.backtotop.js"></script>
-<script src="js/jquery.mobilemenu.js"></script>
+
+<script src="{{url('js/jquery.min.js')}}"></script>
+<script src="{{url('js/mi.js')}}"></script>
+<script src="{{url('js/jquery.backtotop.js')}}"></script>
+<script src="{{url('js/jquery.mobilemenu.js')}}"></script>
+
 
 <script>
-  
+   
+//    alert(JSON.stringify( $returnvalue));
+// alert('<?php //echo $returnvalue; ?>');
     var modal = document.getElementById('id01');
 
     
@@ -329,8 +300,15 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
-</script
+
 </script>
+<?php if(isset($response)){echo $response['check']  ;} if(isset($response) && $response['check']==false){ echo "실패"; } 
+
+
+
+?>
+
+
 
 </body>
 

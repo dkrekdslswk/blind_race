@@ -15,19 +15,19 @@ class CreateGroupStudentTable extends Migration
     public function up()
     {
 
-        Schema::create('accessionStates', function (Blueprint $table) {
-            $table->char('name', 20);
-	        $table->primary('name');
-        });
-
-        DB::table('accessionStates')->insert([
-	        ['name' => 'user apply'],
-	        ['name' => 'teacher apply'],
-            ['name' => 'user refuse'],
-            ['name' => 'teacher refuse'],
-            ['name' => 'unregistered'],
-            ['name' => 'enrollment']
-        ]);
+//        Schema::create('accessionStates', function (Blueprint $table) {
+//            $table->char('name', 20);
+//	        $table->primary('name');
+//        });
+//
+//        DB::table('accessionStates')->insert([
+//	        ['name' => 'user apply'],
+//	        ['name' => 'teacher apply'],
+//            ['name' => 'user refuse'],
+//            ['name' => 'teacher refuse'],
+//            ['name' => 'unregistered'],
+//            ['name' => 'enrollment']
+//        ]);
 
         Schema::create('groupStudents', function (Blueprint $table) {
 	        $table->unsignedInteger('groupNumber');
@@ -39,8 +39,8 @@ class CreateGroupStudentTable extends Migration
 
             $table->char('userName', 20);
 
-            $table->char('accessionState', 20);
-	        $table->foreign('accessionState')->references('name')->on('accessionStates');
+//            $table->char('accessionState', 20);
+//	        $table->foreign('accessionState')->references('name')->on('accessionStates');
 
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

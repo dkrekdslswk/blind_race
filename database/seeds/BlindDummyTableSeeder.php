@@ -30,7 +30,12 @@ class BlindDummyTableSeeder extends Seeder
                 'classification'    => array_get($user, 3)
             ]);
         }
-
+        DB::table('users')->insert([
+            'number'            => 1300009,
+            'pw'                 => '1234',
+            'name'               => '안기부',
+            'classification'    => 'student',
+        ]);
         $groupId = DB::table('groups')->insertGetId([
             'name'              => 'group1',
             'teacherNumber'     => $users[0][0]
@@ -41,7 +46,7 @@ class BlindDummyTableSeeder extends Seeder
                 'groupNumber'           => $groupId,
                 'userNumber'            => $users[$number][0],
                 'userName'              => $users[$number][2],
-                'accessionState'        => 'enrollment'
+//                'accessionState'        => 'enrollment'
             ]);
         }
 
@@ -104,8 +109,7 @@ class BlindDummyTableSeeder extends Seeder
             'groupNumber'=>$groupId,
             'teacherNumber'=>$users[0][0],
             'listNumber'=>$listId,
-            'type'=>'race',
-            'questionNumber'=>0
+            'type'=>'race'
         ], 'number');
 
         $bookId =DB::table('books')->insertGetId([
@@ -165,7 +169,6 @@ class BlindDummyTableSeeder extends Seeder
                 'teacherNumber' => $users[0][0],
                 'listNumber'    => $listId,
                 'type'          => 'race',
-                'questionNumber'=> 6,
                 'created_at'    => DB::raw('subdate(now(), INTERVAL '.($count+1).' DAY)')
             ], 'number');
 
@@ -181,11 +184,12 @@ class BlindDummyTableSeeder extends Seeder
             for ($count = 1; $count <= 6; $count++) {
                 for ($number = 2; $number < count($users); $number++) {
                     DB::table('records')->insert([
-                        'raceNo'    => $raceId,
-                        'userNo'    => $users[$number][0],
-                        'listNo'    => $listId,
-                        'quizNo'    => $quizList[$count - 1],
-                        'answer'        => (string)mt_rand(0, 2) == 0 ? '#' : '@'
+                        'raceNo'        => $raceId,
+                        'userNo'        => $users[$number][0],
+                        'listNo'        => $listId,
+                        'quizNo'        => $quizList[$count - 1],
+                        'answerCheck'   => (string)(mt_rand(0, 2) == 0 ? 'X' : 'O'),
+                        'answer'        => '1'
                     ]);
                 }
             }

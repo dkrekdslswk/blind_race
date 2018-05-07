@@ -47,13 +47,10 @@ class UserController extends Controller{
 
         // 로그인 성공
         if ($userData['check']){
-            // 세션 아이디 저장
-            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
-
             // 반납값 설정
             $returnValue = array(
                 'check'             => true,
-                'sessionId'         => $request->session()->get('sessionId'),
+                'sessionId'         => $this->sessionIdGet($userData['userId']),
                 'userName'          => $userData['name'],
                 'classification'    => $userData['classification']
             );
@@ -87,10 +84,11 @@ class UserController extends Controller{
         } else {
             $returnValue = array(
                 'check'     => false
+                
             );
         }
 
-        return $returnValue;
+        return view('homepage')->with('response', $returnValue);
     }
 
     // 세션 정보 및 유저정보 읽어오기
@@ -173,6 +171,7 @@ class UserController extends Controller{
         return $sessionId;
     }
 
+    // 오류발생 임시동결
     // 오래된 세션을 삭제
 //    public function oldLoginCheck(){
 //        DB::table('sessionDatas')
@@ -183,6 +182,7 @@ class UserController extends Controller{
 //            ->delete();
 //    }
 
+    // 미구현
     /*public function store(Request $request){
 
         // 회원가입
