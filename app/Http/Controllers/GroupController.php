@@ -224,9 +224,7 @@ class GroupController extends Controller{
         $postData = array(
             'groupId',
             'students' => array(
-                0 => array(
-                    'id'
-                )
+                0 => 'id'
             )
         );
 
@@ -236,6 +234,14 @@ class GroupController extends Controller{
         // 유저권한확인
         if ($userData['check']) {
             // 유저 추가
+            switch ($userData['classification']){
+                case 'teacher':
+                case 'root':
+
+                    break;
+                default:
+                    break;
+            }
         }
 
         // 반납하는 값
