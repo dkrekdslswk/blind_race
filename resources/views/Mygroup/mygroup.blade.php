@@ -9,6 +9,7 @@
         src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
         integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
         crossorigin="anonymous"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <body>
 
         <!-- Sidebar -->
@@ -289,10 +290,13 @@
 
 
                   function getValue() {
-      
 
-                // list 정보 불러오기
-                $.ajax({
+                      var params = {
+                          groupId: 1
+                      };
+
+
+                      $.ajax({
                     type: 'POST',
                     url: "{{url('/groupController/groupDataGet')}}",
                     //processData: false,
@@ -300,7 +304,7 @@
                     dataType: 'json',
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     //data: {_token: CSRF_TOKEN, 'post':params},
-                    data: null,
+                    data: params,
                     success: function (data) {
                         GroupData = data;
                         alert(JSON.stringify(GroupData));

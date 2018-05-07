@@ -143,8 +143,47 @@
     </style>
     <script>
         $(document).ready(function () {
-            
-        // list 정보 불러오기
+
+
+            var params = {
+                groupId: 1
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupsGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: params,
+                success: function (data) {
+                    GroupData = data;
+//                    alert(JSON.stringify(GroupData['groups'][0]['groupName']));
+
+
+                    Myclass = GroupData['groups'];
+
+                    var class_list = '';
+
+                    for( var i = 0 ; i < Myclass.length; i++){
+
+                        class_list +=Myclass[i].groupName
+
+
+                    }
+
+                    $('#myclass').html(class_list);
+                },
+                error: function (data) {
+                    alert("그룹 불러오기 에러");
+                }
+            });
+
+
+
+            // 검색하기
         $.ajax({
                 type: 'POST',
                 url: "{{url('/groupController/selectUser')}}",
@@ -173,7 +212,7 @@
                 
                 },
                 error: function (data) {
-                    alert("r기다려봐");
+                    alert("기다려봐");
                 }
         });
 
@@ -267,7 +306,7 @@
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
 
-                <a href="#" class="w3-bar-item w3-button fa-folder-open">A반</a>
+                <a href="#" id ="myclass" class="w3-bar-item w3-button fa-folder-open">A반</a>
 
             </div>
             <input
@@ -278,29 +317,16 @@
                 placeholder="학생 찾기"
                 title="Type in a name"
                 value=" ">
-
-                <table id="myTable">
+                <table>
                     <tr class="header">
-                        <th style="width:30%;">이름</th>
-                        <th style="width:20%;">학번</th>
+                        <th style="width:25%;">이름</th>
+                        <th style="width:35%;">학번</th>
                         <th style="width:20%;">추가</th>
                     </tr>
-                    <tr>
-                        <td>김민수</td>
-                        <td>1301036</td>
-                        <td>
-                            <button>+</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>안준휘</td>
-                        <td>1401036</td>
-                        <td>
-                            <button>+</button>
-                        </td>
-                    </tr>
-
                 </table>
+                <table id="myTable">
+                </table>
+
 
             </div>
 
