@@ -519,6 +519,9 @@
                             break;
 
                         case "sub" :
+
+                            $('#sub').html('주관식문제 <br>Hint : '+quiz_JSON[data].hint);
+
                             $(".obj").hide();
                             $("#sub").show();
                             break;
