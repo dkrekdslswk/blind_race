@@ -600,15 +600,40 @@ class QuizTreeController extends Controller
             )
         );
 
-        // 반납하는 값
-        $returnValue = array(
-            'students' => array(
-                0 => array(
-                    'id'
-                )
-            ),
-            'check'
-        );
+        // 유저 데이터 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인하기
+        $listData = DB::table('lists as l')
+            ->select(
+                'l.number   as listId',
+                'l.listName as name'
+            )
+            ->where([
+                'l.number'          => $postData['listId']
+            ])
+            ->where(function ($query) use ($userData){
+                $query->where('f.teacherNumber', '=', $userData->userNumber)
+                    ->orWhere('l.openState', '=', self::OPEN_STATE);
+            })
+            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->first();
+
+        if($listData) {
+            // 저장된 문제들 읽어오기
+            $quizs = $this->getListQuiz($listData->listId);
+
+            // 반납하는 값
+            $returnValue = array(
+                'listName'  => $listData->name,
+                'quizs'     => $quizs,
+                'check'     => true
+            );
+        } else {
+            $returnValue = array(
+                'check'     => false
+            );
+        }
 
         return $returnValue;
     }
