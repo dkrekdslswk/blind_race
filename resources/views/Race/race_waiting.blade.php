@@ -84,6 +84,8 @@
     <script>
         var quiz_numbar = 0;
         var quiz_member = 0;
+        var quiz_continue = true;
+
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
@@ -375,8 +377,10 @@
 
                             ranking_process(result['studentResults']);
 
-                            if( quiz_numbar >quiz_JSON.length)
+                            if( quiz_numbar >quiz_JSON.length){
                                 quiz_numbar--;
+                                quiz_continue = false;
+                            }
 
                             socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType , JSON.stringify(result['studentResults']) );
                         }
@@ -396,7 +400,8 @@
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
 
-                    socket.emit('android_next_quiz',roomPin);
+                    if(quiz_continue == true)
+                        socket.emit('android_next_quiz',roomPin);
                 }, 30000);
             });
 
@@ -413,7 +418,9 @@
                 $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
-                socket.emit('android_next_quiz',roomPin);
+
+                if(quiz_continue == true )
+                    socket.emit('android_next_quiz',roomPin);
             });
 
 
