@@ -458,8 +458,11 @@ class QuizTreeController extends Controller
     // 삭제
     public function deleteList(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
         $postData = array(
-            'listId' => 1
+            'listId' => $request->input('listId')
         );
 
         // 유저정보 받아오기
@@ -467,31 +470,30 @@ class QuizTreeController extends Controller
 
         // 삭제할 리스트인지 확인
         if($userData){
-            $data = DB::table('lists as l')
+            $listData = DB::table('lists as l')
                 ->select(
                     'l.number                   as listId',
-                    DB::raw('COUNT(r.number)    as raceCount'),
-                    'openState                  as openState'
+                    DB::raw('COUNT(r.number)    as raceCount')
                 )
                 ->where([
-                    'l.number' => $postData['listId'],
-                    'f.teacherNumber' => $userData['userId']
+                    'l.number'          => $postData['listId'],
+                    'f.teacherNumber'   => $userData['userId'],
+                    'l.openState'       => 1
                 ])
                 ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
                 ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
                 ->groupBy('l.number')
-                ->orderBy('l.number', 'desc')
-                ->get();
+                ->first();
 
             // 삭제할 리스트이면 삭제
-            if ($data && ($data->raceCount == 0) && ($data->openState == 1)){
+            if ($listData && ((int)$listData->raceCount == 0)){
                 // 문제 리스트 받아오기
                 $listQuizs = DB::table('listQuizs')
                     ->select(
                         'quizNumber'
                     )
                     ->where([
-                        'listNumber' => $data->listId
+                        'listNumber' => $listData->listId
                     ])
                     ->get();
 
@@ -503,7 +505,7 @@ class QuizTreeController extends Controller
                 // 문제 리스트 삭제
                 DB::table('listQuizs')
                     ->where([
-                        'listNumber' => $data->listId
+                        'listNumber' => $listData->listId
                     ])
                     ->delete();
 
@@ -517,7 +519,7 @@ class QuizTreeController extends Controller
                 // 리스트삭제
                 DB::table('lists')
                     ->where([
-                        'number' => $data->listId
+                        'number' => $listData->listId
                     ])
                     ->delete();
 
@@ -544,8 +546,11 @@ class QuizTreeController extends Controller
     // 수정
     public function updateList(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
         $postData = array(
-            'listId' => 1
+            'listId' => $request->input('listId')
         );
 
         // 유저 데이터 가져오기
@@ -554,16 +559,21 @@ class QuizTreeController extends Controller
         // 권한확인하기
         $listData = DB::table('lists as l')
             ->select(
-                'l.number   as listId',
-                'l.listName as name'
+                'l.number                   as listId',
+                'l.listName                 as name',
+                DB::raw('COUNT(r.number)    as raceCount')
             )
             ->where([
                 'l.number'          => $postData['listId'],
-                'f.teacherNumber'   => $userData->userNumber
+                'f.teacherNumber'   => $userData['userId'],
+                'l.openState'       => 1
             ])
-            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->join('folders as f',      'f.number',         '=', 'l.folderNumber')
+            ->leftJoin('races as r',    'r.listNumber',     '=', 'l.number')
+            ->groupBy('l.number')
             ->first();
-        if($listData){
+
+        if($listData && ((int)$listData->raceCount == 0)){
             // 저장된 문제들 읽어오기
             $quizs = $this->getListQuiz($listData->listId);
 
@@ -591,13 +601,11 @@ class QuizTreeController extends Controller
     // 미리보기
     public function showList(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'listId' => 1
+//        );
         $postData = array(
-            'groupId',
-            'students' => array(
-                0 => array(
-                    'id'
-                )
-            )
+            'listId' => $request->input('listId')
         );
 
         // 유저 데이터 가져오기
