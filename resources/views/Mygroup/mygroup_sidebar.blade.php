@@ -140,6 +140,12 @@
         .margins {
 
         }
+
+
+
+
+
+
     </style>
     <script>
         $(document).ready(function () {
@@ -160,7 +166,7 @@
                 data: params,
                 success: function (data) {
                     GroupData = data;
-                 alert(JSON.stringify(GroupData['groups']));
+//                 alert(JSON.stringify(GroupData['groups']));
 
 
                     Myclass = GroupData['groups'];
@@ -173,7 +179,7 @@
 //                        class_list +=Myclass[i].groupName
                             class_list
                                 +='<tr><td>'
-                                +'<button id="'+buttonGroupID+'" onclick="getAnothergroup(this.id)">'+Myclass[i].groupName+'</button>'
+                                +'<button class="btn btn-link" id="'+buttonGroupID+'" onclick="getAnothergroup(this.id)">'+Myclass[i].groupName+'</button>'
                                 +'</td><tr>'
 
 
