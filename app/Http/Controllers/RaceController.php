@@ -10,9 +10,6 @@ class RaceController extends Controller{
     // 리스트 선택 후 레이스 혹은 테스트를 생성
     public function createRace(Request $request)
     {
-        // 내부 함수에서도 userData를 가져가 쓰기위해서 사용
-        global $userData;
-
         // 받을 값 설정.
 //        $postData     = array(
 //            'groupId'   => 1,
@@ -78,11 +75,10 @@ class RaceController extends Controller{
             ->where([
                 'l.number' => $postData['listId'],
             ])
-            ->where(function ($query){
-                global $userData;
+            ->where(function ($query) use ($userData){
                 $query->where([
-                    'f.teacherNumber' => $userData['userId']
-                ])
+                        'f.teacherNumber' => $userData['userId']
+                     ])
                     ->orWhere([
                         'l.openState' => QuizTreeController::OPEN_STATE
                     ]);
