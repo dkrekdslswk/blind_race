@@ -9,6 +9,7 @@
         src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
         integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
         crossorigin="anonymous"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <body>
 
         <!-- Sidebar -->
@@ -288,7 +289,37 @@
 
 
 
-                
+                  function getValue() {
+
+                      var params = {
+                          groupId: 1
+                      };
+
+
+                      $.ajax({
+                    type: 'POST',
+                    url: "{{url('/groupController/groupDataGet')}}",
+                    //processData: false,
+                    //contentType: false,
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    //data: {_token: CSRF_TOKEN, 'post':params},
+                    data: params,
+                    success: function (data) {
+                        GroupData = data;
+                        alert(JSON.stringify(GroupData));
+                        //alert(JSON.stringify(GroupData["groups"]));
+
+                    
+                    },
+                    error: function (data) {
+                        alert("에러");
+                    }
+                });
+
+                }
+
+          
             </script>
         </body>
     </html>

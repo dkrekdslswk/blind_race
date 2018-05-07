@@ -1,4 +1,5 @@
 <head>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         .page-small .learn-small,
@@ -134,14 +135,91 @@
 
         .w3-card,
         .w3-card-2 {
-             position: absolute !important;
+            position: absolute !important;
         }
         .margins {
-            margin-top : 300px;
-                }
+            margin-top: 300px;
+        }
     </style>
     <script>
         $(document).ready(function () {
+
+
+            var params = {
+                groupId: 1
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupsGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: params,
+                success: function (data) {
+                    GroupData = data;
+//                    alert(JSON.stringify(GroupData['groups'][0]['groupName']));
+
+
+                    Myclass = GroupData['groups'];
+
+                    var class_list = '';
+
+                    for( var i = 0 ; i < Myclass.length; i++){
+
+                        class_list +=Myclass[i].groupName
+
+
+                    }
+
+                    $('#myclass').html(class_list);
+                },
+                error: function (data) {
+                    alert("");
+                }
+            });
+
+
+
+            // 검색하기
+        $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/selectUser')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "search=&groupId=1",
+                success: function (data) {
+                    GroupData = data;
+                    
+                    search_studentJSON = GroupData['users'];
+
+                    var student_list = '';
+
+                    for( var i = 0 ; i < search_studentJSON.length; i++){
+                        
+                        student_list +='<tr><td>'
+                        +search_studentJSON[i].name
+                        +'</td><td>'
+                        +search_studentJSON[i].id
+                        +'</td><td><button>+</button></td></tr>'
+                    }          
+
+                    $('#myTable').html(student_list);
+                
+                },
+                error: function (data) {
+                    alert("기다려봐");
+                }
+        });
+
+
+            
+            
+            
             $('#chkParent').click(function () {
                 var isChecked = $(this).prop("checked");
                 $('#tblData tr:has(td)')
@@ -196,7 +274,7 @@
         }
     </script>
 </head>
-
+<body>
 <div id="navigation" style="min-height: 600px;">
 
     <!--네비바 위부분 공백-->
@@ -204,15 +282,18 @@
         class="page-small"
         style="text-align: center; margin-top: 10px; margin-bottom:10px;"></div>
 
+   
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card">
-        <form>
-            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form> -->
+        <!-- <form> -->
+            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
+            -->
 
             <button class="w3-bar-item w3-button">
-                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">미등록 학생</a> -->
+                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
+                w3-button""="w3-button""">미등록 학생</a> -->
             </button>
             <button class="w3-bar-item w3-button">
-                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button""">엑셀로 불러오기</a>
+                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button" "">엑셀로 불러오기</a>
             </button>
             <button
                 type="button"
@@ -225,39 +306,28 @@
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
 
-                <a href="#" class="w3-bar-item w3-button fa-folder-open">A반</a>
-         
-    
+                <a href="#" id ="myclass" class="w3-bar-item w3-button fa-folder-open">A반</a>
+
             </div>
-            <input 
-                class ="margins"
+            <input
+                class="margins"
                 type="text"
                 id="myInput"
                 onkeyup="myFunction()"
                 placeholder="학생 찾기"
                 title="Type in a name"
-                value = " ">
-
-                <table id="myTable">
+                value=" ">
+                <table>
                     <tr class="header">
-                        <th style="width:30%;">이름</th>
-                        <th style="width:20%;">학번</th>
+                        <th style="width:25%;">이름</th>
+                        <th style="width:35%;">학번</th>
                         <th style="width:20%;">추가</th>
                     </tr>
-                    <tr>
-                        <td>김민수</td>
-                        <td>1301036</td>
-                        <td><button>+</button></td>
-                    </tr>
-                    <tr>
-                        <td>안준휘</td>
-                        <td>1401036</td>
-                        <td><button>+</button></td>
-                    </tr>
-                    
+                </table>
+                <table id="myTable">
                 </table>
 
-                
+
             </div>
 
-        
+            </body>

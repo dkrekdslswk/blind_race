@@ -25,7 +25,7 @@
             <header id="header" class="clear">
              
                 <div id="logo" class="fl_left">
-                    <h1>
+                    <h1>s
                         <a href="#">
                             <em>十</em>分<em>十</em>分</a>
                     </h1>
@@ -214,7 +214,8 @@
                 type="text"
                 placeholder="학번을  입력"
                 name="p_ID"
-                required="required">
+                required="required"
+                value="123456789">
 
             <label for="p_PW">
                 <b>Password</b>
@@ -223,7 +224,9 @@
                 type="password"
                 placeholder="Enter Password"
                 name="p_PW"
-                required="required">
+                required="required"
+                value="sub"
+                >
         
             <button type="submit" style ="color : black">Login</button>
            

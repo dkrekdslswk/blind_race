@@ -1,18 +1,16 @@
 <?php
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
+use App\Http\Controllers\UserController;
 
 class RaceController extends Controller{
     // 리스트 선택 후 레이스 혹은 테스트를 생성
     public function createRace(Request $request)
     {
-        // 내부 함수에서도 userData를 가져가 쓰기위해서 사용
-        global $userData;
-
         // 받을 값 설정.
 //        $postData     = array(
 //            'groupId'   => 1,
@@ -78,11 +76,10 @@ class RaceController extends Controller{
             ->where([
                 'l.number' => $postData['listId'],
             ])
-            ->where(function ($query){
-                global $userData;
+            ->where(function ($query) use ($userData){
                 $query->where([
-                    'f.teacherNumber' => $userData['userId']
-                ])
+                        'f.teacherNumber' => $userData['userId']
+                     ])
                     ->orWhere([
                         'l.openState' => QuizTreeController::OPEN_STATE
                     ]);
@@ -138,7 +135,7 @@ class RaceController extends Controller{
                 'sessionId' => $request->session()->get('sessionId'),
                 'check'     => true,
                 'roomPin'   => $roomPin,
-                'quizs'     => $this->quizNext($listData->listId)
+                'quizs'     => $this->quizGet($listData->listId)
             );
         } else {
             $returnValue = array(
@@ -283,7 +280,7 @@ class RaceController extends Controller{
     }
 
     // get quiz
-    private function quizNext($listId){
+    private function quizGet($listId){
 
         // 문제 가져오기
         $quizData = DB::table('quizBanks as qb')
@@ -312,15 +309,15 @@ class RaceController extends Controller{
             foreach ($quizData as $quiz) {
                 $type = explode(' ', $quiz->type);
                 array_push($quizs, array(
-                    'quizId' => $quiz->number,
-                    'question' => $quiz->question,
-                    'hint' => $quiz->hint,
-                    'right' => $quiz->rightAnswer,
-                    'example1' => $quiz->example1,
-                    'example2' => $quiz->example2,
-                    'example3' => $quiz->example3,
-                    'quizType' => $type[0],
-                    'makeType' => $type[1]
+                    'quizId'    => $quiz->number,
+                    'question'  => $quiz->question,
+                    'hint'      => $quiz->hint,
+                    'right'     => $quiz->rightAnswer,
+                    'example1'  => $quiz->example1,
+                    'example2'  => $quiz->example2,
+                    'example3'  => $quiz->example3,
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1]
                 ));
             }
             $returnValue = array(

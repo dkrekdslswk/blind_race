@@ -1,3 +1,7 @@
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
 <!-- careate Modal -->
 
                     <div
@@ -9,32 +13,24 @@
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                  
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">클래스 이름</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="클래스 이름을 입력하세요">
-                            </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">create class</button>
-                                </div>
+                                <form action="{{url('GroupController/createGroup')}}"  method="Get" enctype="multipart/form-data">
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <label for="createCl">
+                                        <b>클래스 생성</b>
+                                    </label>
+                                    <input type="text"
+                                           placeholder="클래스 입력"
+                                           name="groupName"
+                                           required="required"
+                                    >
+                                    <button type="submit" style ="color : black">클래스 생성</button>
+                                </form>
                             </div>
 
-                            
+
                         </div>
 
-                        
+
                     </div>
 
             <!-- teacher modal -->

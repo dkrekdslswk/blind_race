@@ -5,6 +5,7 @@
             name="viewport"
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Document</title>
 
     <!-- Bootstrap CSS CDN -->
@@ -73,13 +74,22 @@
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
-    <script type="text/javascript">
-
-        $('#mygroup').html("asdasda");
-    </script>
 
 </head>
-<body>
+
+<body onload="getValue()">
+
+<?php 
+$data = Session::all();
+
+if (isset($data)){
+    echo "있음";
+}else {
+    echo "없음";
+}
+?>
+
+<input type="hidden" name="_token" value="{{csrf_token()}}">
 
 <nav>
     @include('Navigation.main_nav')
@@ -98,7 +108,8 @@
             @include('Mygroup.mygroup')
             @include('Mygroup.mygroup_modal')
         </div>
-
+     
+ 
 
     </div>
 </div>
