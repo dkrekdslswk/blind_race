@@ -78,8 +78,11 @@ class GroupController extends Controller{
     // 그룹 정보 가져오기 root, teacher
     public function groupDataGet(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupId'
+//        );
         $postData = array(
-            'groupId'
+            'groupId' => $request->input('groupId')
         );
 
         // 유저정보 가져오기
@@ -164,8 +167,11 @@ class GroupController extends Controller{
     // 그룹 만들기 root, teacher
     public function createGroup(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupName'
+//        );
         $postData = array(
-            'groupName'
+            'groupName' => $request->input('groupName')
         );
 
         // 유저확인
