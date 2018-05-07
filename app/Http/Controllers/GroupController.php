@@ -123,7 +123,7 @@ class GroupController extends Controller{
                     ->where([
                         'gs.groupNumber' => $postData['groupId']
                     ])
-                    ->join('u.users as u', 'u.number', '=', 'gs.userNumber')
+                    ->join('users as u', 'u.number', '=', 'gs.userNumber')
                     ->get();
 
                 $students = array();
