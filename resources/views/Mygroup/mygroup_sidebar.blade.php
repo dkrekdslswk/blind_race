@@ -177,7 +177,7 @@
                     $('#myclass').html(class_list);
                 },
                 error: function (data) {
-                    alert("그룹 불러오기 에러");
+                    alert("");
                 }
             });
 
