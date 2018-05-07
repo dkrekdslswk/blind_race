@@ -89,15 +89,16 @@ class GroupController extends Controller{
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 권한 확인
+        $where = array();
         switch ($userData['classification']) {
             // 검색방식 설정
             // 1. 자기 그룹 조회
             case 'teacher':
+                $where = array(
+                    'g.teacherNumber' => $userData['userId']
+                );
             // 2. 루트는 모든 그룹 조회 가능
             case 'root':
-                $where = array([
-
-                ]);
                 // 그룹과 선생정보 가져오기
                 $groupData = DB::table('groups as g')
                     ->select(
@@ -109,10 +110,7 @@ class GroupController extends Controller{
                     ->where([
                         'g.number'          => $postData['groupId']
                     ])
-                    ->where(function ($query) use ($userData){
-                        $query->where('g.teacherNumber', '=', $userData['userId'])
-                            ->orWhere(DB::raw('"root" = "'.$userData['classification'].'"'));
-                    })
+                    ->where($where)
                     ->join('users as u', 'u.number', '=', 'g.teacherNumber')
                     ->first();
 
@@ -125,7 +123,7 @@ class GroupController extends Controller{
                     ->where([
                         'gs.groupNumber' => $postData['groupId']
                     ])
-                    ->join('u.users as u', 'u.number', '=', 'gs.userNumber')
+                    ->join('users as u', 'u.number', '=', 'gs.userNumber')
                     ->get();
 
                 $students = array();

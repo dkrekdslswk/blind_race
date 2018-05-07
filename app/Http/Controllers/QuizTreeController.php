@@ -561,7 +561,7 @@ class QuizTreeController extends Controller
         $listData = DB::table('lists as l')
             ->select(
                 'l.number                   as listId',
-                'l.listName                 as name',
+                'l.name                     as name',
                 DB::raw('COUNT(r.number)    as raceCount')
             )
             ->where([

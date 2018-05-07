@@ -131,8 +131,8 @@ Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList'
 Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
 Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
 Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList');
-//Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
-//Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
+Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
+Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
 //Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
 
