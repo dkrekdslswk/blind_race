@@ -10,7 +10,8 @@
         integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
         crossorigin="anonymous"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <body>
+    <body >
+    <!--그룹이 아무것도 없을때의 경우를 생각하지않았음 -->
 
         <!-- Sidebar -->
         <!-- <div class="w3-sidebar w3-bar-block w3-light-grey w3-card"
@@ -299,12 +300,8 @@
 
 
 
-                  function getValue() {
-
-                      var params = {
-                          groupId: 1
-                      };
-
+                function getValue() {
+                    var groupId = 1;
 
                       $.ajax({
                     type: 'POST',
@@ -314,7 +311,7 @@
                     dataType: 'json',
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     //data: {_token: CSRF_TOKEN, 'post':params},
-                    data: params,
+                    data: "groupId="+groupId,
                     success: function (data) {
                         GroupData = data;
 //                        alert(JSON.stringify(GroupData['students']));
@@ -353,7 +350,6 @@
 
                 }
 
-          
             </script>
         </body>
     </html>
