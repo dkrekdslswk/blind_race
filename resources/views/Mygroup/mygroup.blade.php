@@ -30,12 +30,13 @@
 
                 <form class="form-inline">
                     <div class="form-group"></div>
-                    <div class="form-group"></form>
+                    <div class="form-group"></div>
+                </form>
                     <!-- <div class="fa-3x">
                         <i class="fas fa-cog fa-spin light" data-toggle="modal" data-target="#teacher"></i>
                     </div> -->
-                    <p>김민수 선생님</p>
-                    <h1>현재 클래스 이름</h1>
+                    <p id ="teacher">김민수 선생님</p>
+                    <h1  id ="group" >A반</h1>
 
                 
                     <!-- <button
@@ -50,7 +51,16 @@
             </div>
 
             <div class="w3-container"></div>
-            <table id="tblData">
+        <table>
+            <tr class="header">
+                <th style="width:15%;">이름</th>
+                <th style="width:20%;">학번</th>
+                <th style="width:35%;">학생 정보</th>
+                <th style="width:25%;">삭제</th>
+            </tr>
+        </table>
+
+            <table id="student">
                 <tr>
                     <th>
                         <input type="checkbox"/>클래스</th>
@@ -307,10 +317,34 @@
                     data: params,
                     success: function (data) {
                         GroupData = data;
-                        alert(JSON.stringify(GroupData));
-                        //alert(JSON.stringify(GroupData["groups"]));
+//                        alert(JSON.stringify(GroupData['students']));
 
-                    
+                        teacher = GroupData['teacher']['name'];
+                        group = GroupData['group']['name'];
+                        student = GroupData['students'];
+
+                        $('#teacher').html(teacher);
+                        $('#group').html(group);
+
+                        var student_list = '';
+
+                        for( var i = 0 ; i < student.length; i++){
+
+                            student_list +='<tr><td>'
+
+                                +student[i].name
+                                +'</td><td>'
+                                +student[i].id
+                                +'</td><td>'+
+                                '<button>학생 정보 수정</button>' +
+                                '</td><td>'+
+                                '<button>삭제하기</button>'+
+                                '</td></tr>'
+                        }
+
+                        $('#student').html(student_list);
+
+
                     },
                     error: function (data) {
                         alert("에러");

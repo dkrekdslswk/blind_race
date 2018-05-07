@@ -13,18 +13,18 @@
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <form action="{{url('GroupController/createGroup')}}"  method="Get" enctype="multipart/form-data">
+
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <label for="createCl">
                                         <b>클래스 생성</b>
                                     </label>
-                                    <input type="text"
+                                    <input id="groupNameValue" type="text"
                                            placeholder="클래스 입력"
                                            name="groupName"
                                            required="required"
                                     >
-                                    <button type="submit" style ="color : black">클래스 생성</button>
-                                </form>
+                                    <button onclick="createGroup()" style ="color : black">클래스 생성</button>
+
                             </div>
 
 
@@ -159,7 +159,7 @@
                     </div>
                 </div>
 
-                        <script>
+                <script>
                     // Get the modal
                     var modal = document.getElementById('myModal');
 
@@ -196,5 +196,24 @@
                         }
                     }
 
-                    
+                    function createGroup(){
+                        var groupNameValue = document.getElementById("groupNameValue").value;
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{url('/groupController/createGroup')}}",
+                            dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            data: "groupName="+groupNameValue,
+                            success: function (data) {
+                                if(data['check'])
+                                    alert('그룹생성이 완료되었습니다.');
+
+                                window.location.href="{{url('mygroup')}}";
+                            },
+                            error: function (data) {
+                                alert("클래스찾기 에러");
+                            }
+                        });
+                    }
+
                 </script>

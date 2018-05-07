@@ -138,7 +138,7 @@
             position: absolute !important;
         }
         .margins {
-            margin-top: 300px;
+
         }
     </style>
     <script>
@@ -160,7 +160,7 @@
                 data: params,
                 success: function (data) {
                     GroupData = data;
-//                    alert(JSON.stringify(GroupData['groups'][0]['groupName']));
+                    alert(JSON.stringify(GroupData['groups']));
 
 
                     Myclass = GroupData['groups'];
@@ -169,7 +169,11 @@
 
                     for( var i = 0 ; i < Myclass.length; i++){
 
-                        class_list +=Myclass[i].groupName
+//                        class_list +=Myclass[i].groupName
+                        class_list +='<tr><td>'
+
+                            +Myclass[i].groupName
+                            +'</td><td>'
 
 
                     }
@@ -177,7 +181,7 @@
                     $('#myclass').html(class_list);
                 },
                 error: function (data) {
-                    alert("");
+                    alert("클래스찾기 에러");
                 }
             });
 
@@ -212,7 +216,7 @@
                 
                 },
                 error: function (data) {
-                    alert("기다려봐");
+                    alert("검색에러");
                 }
         });
 
@@ -306,7 +310,10 @@
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
 
-                <a href="#" id ="myclass" class="w3-bar-item w3-button fa-folder-open">A반</a>
+
+                <table id="myclass">
+                </table>
+
 
             </div>
             <input
