@@ -90,8 +90,13 @@ class GroupController extends Controller{
             // 검색방식 설정
             // 1. 자기 그룹 조회
             case 'teacher':
+            // 2. 루트는 모든 그룹 조회 가능
+            case 'root':
+                $where = array([
+
+                ]);
                 // 그룹과 선생정보 가져오기
-                $group = DB::table('groups as g')
+                $groupData = DB::table('groups as g')
                     ->select(
                         'g.number   as groupId',
                         'g.name     as groupName',
@@ -99,14 +104,17 @@ class GroupController extends Controller{
                         'u.name     as teacherName'
                     )
                     ->where([
-                        'g.number'          => $postData['groupId'] ,
-                        'g.teacherNumber'   => $userData['userId']
+                        'g.number'          => $postData['groupId']
                     ])
+                    ->where(function ($query) use ($userData){
+                        $query->where('g.teacherNumber', '=', $userData['userId'])
+                            ->orWhere(DB::raw('"root" = "'.$userData['classification'].'"'));
+                    })
                     ->join('users as u', 'u.number', '=', 'g.teacherNumber')
                     ->first();
 
                 // 학생들 가져오기
-                $students = DB::table('groupStudents as gs')
+                $studentData = DB::table('groupStudents as gs')
                     ->select(
                         'gs.userNumber  as userId',
                         'u.name         as userName'
@@ -116,45 +124,39 @@ class GroupController extends Controller{
                     ])
                     ->join('u.users as u', 'u.number', '=', 'gs.userNumber')
                     ->get();
+
+                $students = array();
+                foreach ($studentData as $student){
+                    array_push($students, array(
+                        'id'    => $student->userId,
+                        'name'  => $student->userName
+                    ));
+                }
+
+                // 반납하는 값
+                $returnValue = array(
+                    'group' => array(
+                        'id'            => $groupData->groupId,
+                        'name'          => $groupData->groupName,
+                        'studentCount'  => count($students)
+                    ),
+                    'teacher' => array(
+                        'id'    => $groupData->teacherId,
+                        'name'  => $groupData->teacherName
+                    ),
+                    'students' => $students,
+                    'check' => true
+                );
                 break;
 
-            // 2. 루트의 그룹조회
-            // 존재하는 모든 그룹 조회가능
-            // 미구현
-//            case 'root':
-//                break;
-
-            // 3. 권한 외
+            // 2. 권한 외
             default:
-                $group = false;
+                // 반납하는 값
+                $returnValue = array(
+                    'check' => false
+                );
                 break;
         }
-
-        // 반납하는 값
-        if($group){
-            $groupArr = array(
-                'id' => $group->groupId,
-                'name' => $group->groupName
-            );
-        }
-        $returnValue = array(
-            'group' => array(
-                'id',
-                'name',
-                'studentCount'
-            ),
-            'teacher' => array(
-                'id',
-                'name'
-            ),
-            'students' => array(
-                0 => array(
-                    'id',
-                    'name'
-                )
-            ),
-            'check'
-        );
 
         return $returnValue;
     }
