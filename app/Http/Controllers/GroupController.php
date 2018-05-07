@@ -184,7 +184,7 @@ class GroupController extends Controller{
                     $groupId = DB::table('groups')
                         ->insertGetId([
                             'name'          => $postData['groupName'],
-                            'teacherNumber' => $userData->userId
+                            'teacherNumber' => $userData['userId']
                         ]);
                     $check = true;
                     break;
