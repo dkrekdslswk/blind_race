@@ -625,7 +625,7 @@ class QuizTreeController extends Controller
         $listData = DB::table('lists as l')
             ->select(
                 'l.number   as listId',
-                'l.listName as name'
+                'l.name     as listName'
             )
             ->where([
                 'l.number'          => $postData['listId']
@@ -643,7 +643,7 @@ class QuizTreeController extends Controller
 
             // 반납하는 값
             $returnValue = array(
-                'listName'  => $listData->name,
+                'listName'  => $listData->listName,
                 'quizs'     => $quizs,
                 'check'     => true
             );
