@@ -84,12 +84,21 @@
     <script>
         var quiz_numbar = 0;
         var quiz_member = 0;
+        var quiz_continue = true;
+        var quiz_answer_list = [1,2,3,4];
+        var rightAnswer;
+
+        var real_A = new Array();
+
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         window.onload = function() {
+
+
+
             var socket = io(':8890');
 
             $('#race_name').html('<?php echo $response['list']['listName']; ?>');
@@ -160,6 +169,17 @@
                 $('#'+user_num).remove();
             })
         };
+        //정답뒤섞기
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length; i; i -= 1) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+        }
+
 
         //순위 변동 함수 정의
         function ranking_process(ranking_j){
@@ -225,6 +245,15 @@
 
 
             socket.on('answer-sum', function(answer ,sessionId , quizId){
+
+                if( answer == rightAnswer)
+                    answer = 1;
+                else{
+                    answer = real_A[ answer ];
+                }
+
+
+
 
                 $.ajax({
                     type: 'POST',
@@ -375,8 +404,10 @@
 
                             ranking_process(result['studentResults']);
 
-                            if( quiz_numbar >quiz_JSON.length)
+                            if( quiz_numbar >quiz_JSON.length){
                                 quiz_numbar--;
+                                quiz_continue = false;
+                            }
 
                             socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType , JSON.stringify(result['studentResults']) );
                         }
@@ -396,7 +427,8 @@
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
 
-                    socket.emit('android_next_quiz',roomPin);
+                    if(quiz_continue == true)
+                        socket.emit('android_next_quiz',roomPin);
                 }, 30000);
             });
 
@@ -413,7 +445,9 @@
                 $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                 $("#mid_result").hide();
-                socket.emit('android_next_quiz',roomPin);
+
+                if(quiz_continue == true )
+                    socket.emit('android_next_quiz',roomPin);
             });
 
 
@@ -440,10 +474,13 @@
 
 
             var x = document.getElementById("mondai-content");
-            var A1 = document.getElementById("answer1");
-            var A2 = document.getElementById("answer2");
-            var A3 = document.getElementById("answer3");
-            var A4 = document.getElementById("answer4");
+
+            var A = new Array();
+
+            A[1] = document.getElementById("answer1");
+            A[2] = document.getElementById("answer2");
+            A[3] = document.getElementById("answer3");
+            A[4] = document.getElementById("answer4");
 
             socket.on('nextok',function(data, makeType){
                 answer_count = 0 ;
@@ -456,18 +493,35 @@
                     $('#Mid_skip_btn').attr("href", "/race_result?roomPin="+roomPin);
                 }
                 else{
+
                     x.innerText  = quiz_JSON[data].question ;
+
                     switch(makeType){
+
                         case "obj" :
-                            A1.innerText = quiz_JSON[data].right;
-                            A2.innerText = quiz_JSON[data].example1;
-                            A3.innerText = quiz_JSON[data].example2;
-                            A4.innerText = quiz_JSON[data].example3;
+                            shuffle(quiz_answer_list);
+
+                            A[ quiz_answer_list[0] ].innerText = quiz_JSON[data].right;
+                            A[ quiz_answer_list[1] ].innerText = quiz_JSON[data].example1;
+                            A[ quiz_answer_list[2] ].innerText = quiz_JSON[data].example2;
+                            A[ quiz_answer_list[3] ].innerText = quiz_JSON[data].example3;
+
+                            real_A[quiz_answer_list[0]] = quiz_JSON[data].right;
+                            real_A[quiz_answer_list[1]] = quiz_JSON[data].example1;
+                            real_A[quiz_answer_list[2]] = quiz_JSON[data].example2;
+                            real_A[quiz_answer_list[3]] = quiz_JSON[data].example3;
+
+
+                            rightAnswer = quiz_answer_list[0];
+
                             $("#sub").hide();
                             $(".obj").show();
                             break;
 
                         case "sub" :
+
+                            $('#sub').html('주관식문제 <br>Hint : '+quiz_JSON[data].hint);
+
                             $(".obj").hide();
                             $("#sub").show();
                             break;

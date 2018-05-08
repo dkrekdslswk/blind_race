@@ -137,10 +137,10 @@ io.on('connection', function (socket){
     });
 
     //
-    // socket.on('race_ending',function(data){
-    //     clearInterval(Timer);
-    //     io.sockets.emit('race_ending',query_result);
-    // });
+    socket.on('race_ending',function(roomPin){
+        clearInterval(Timer);
+        io.sockets.emit('race_ending',roomPin);
+    });
 
 
 });

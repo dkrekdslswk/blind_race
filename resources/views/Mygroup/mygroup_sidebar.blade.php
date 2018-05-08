@@ -138,8 +138,14 @@
             position: absolute !important;
         }
         .margins {
-            margin-top: 300px;
+
         }
+
+
+
+
+
+
     </style>
     <script>
         $(document).ready(function () {
@@ -160,7 +166,7 @@
                 data: params,
                 success: function (data) {
                     GroupData = data;
-//                    alert(JSON.stringify(GroupData['groups'][0]['groupName']));
+//                 alert(JSON.stringify(GroupData['groups']));
 
 
                     Myclass = GroupData['groups'];
@@ -169,7 +175,12 @@
 
                     for( var i = 0 ; i < Myclass.length; i++){
 
-                        class_list +=Myclass[i].groupName
+                        buttonGroupID = Myclass[i].groupId;
+//                        class_list +=Myclass[i].groupName
+                            class_list
+                                +='<tr><td>'
+                                +'<button class="btn btn-link" id="'+buttonGroupID+'" onclick="getAnothergroup(this.id)">'+Myclass[i].groupName+'</button>'
+                                +'</td><tr>'
 
 
                     }
@@ -177,7 +188,7 @@
                     $('#myclass').html(class_list);
                 },
                 error: function (data) {
-                    alert("");
+                    alert("클래스찾기 에러");
                 }
             });
 
@@ -212,7 +223,7 @@
                 
                 },
                 error: function (data) {
-                    alert("기다려봐");
+                    alert("검색에러");
                 }
         });
 
@@ -272,6 +283,55 @@
                 }
             }
         }
+
+        function getAnothergroup(groupId) {
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: "groupId="+groupId,
+                success: function (data) {
+                    GroupData = data;
+//                        alert(JSON.stringify(GroupData['students']));
+
+                    teacher = GroupData['teacher']['name'];
+                    group = GroupData['group']['name'];
+                    student = GroupData['students'];
+
+                    $('#teacher').html(teacher);
+                    $('#group').html(group);
+
+                    var student_list = '';
+
+                    for( var i = 0 ; i < student.length; i++){
+
+                        student_list +='<tr><td>'
+
+                            +student[i].name
+                            +'</td><td>'
+                            +student[i].id
+                            +'</td><td>'+
+                            '<button>학생 정보 수정</button>' +
+                            '</td><td>'+
+                            '<button>삭제하기</button>'+
+                            '</td></tr>'
+                    }
+
+                    $('#student').html(student_list);
+
+
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+
+        }
     </script>
 </head>
 <body>
@@ -306,7 +366,10 @@
             <div class="w3-dropdown-hover">
                 <h2>나의 클래스</h2>
 
-                <a href="#" id ="myclass" class="w3-bar-item w3-button fa-folder-open">A반</a>
+
+                <table id="myclass">
+                </table>
+
 
             </div>
             <input

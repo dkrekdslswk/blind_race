@@ -79,15 +79,7 @@
 
 <body onload="getValue()">
 
-<?php 
-$data = Session::all();
 
-if (isset($data)){
-    echo "있음";
-}else {
-    echo "없음";
-}
-?>
 
 <input type="hidden" name="_token" value="{{csrf_token()}}">
 

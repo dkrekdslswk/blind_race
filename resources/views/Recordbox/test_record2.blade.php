@@ -1,159 +1,164 @@
-{{--메인 페이지--}}
-<div id="wrapper_body">
+<!DOCTYPE HTML>
+<html>
+<head>
+    <style>
 
-    {{--헤드라인--}}
-    <div class="content title-content" style="padding-top: 20px;">
+    </style>
+    <script>
+        window.onload = function () {
 
-        {{--패널 헤더--}}
-        <div class="panel" style="margin-bottom: 0px;">
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                width: 1000,
+                height: 700,
+                title:{},
+                axisX:{
+                    labelFontSize: 15,
+                    valueFormatString: "DD MMM",
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                }
+                ,
+                axisY: {
+                    crosshair: {
+                        enabled: true
+                    }
+                },
+                toolTip:{
+                    shared:true
+                },
+                legend:{
+                    cursor:"pointer",
+                    verticalAlign: "bottom",
+                    horizontalAlign: "left",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                    type: "line",
+                    showInLegend: true,
+                    name: "전체 점수",
+                    markerType: "square",
+                    xValueFormatString: "DD, MMM, DD MMM, YYYY",
+                    color: "#F08080",
+                    toolTipContent: "{name}",
+                    dataPoints: [
+                        { x: new Date(2017, 0, 3), y: 65, name: "문제 : 스쿠스쿠" },
+                        { x: new Date(2017, 0, 4), y: 70 },
+                        { x: new Date(2017, 0, 5), y: 71 },
+                        { x: new Date(2017, 0, 6), y: 65 },
+                        { x: new Date(2017, 0, 7), y: 73 },
+                        { x: new Date(2017, 0, 8), y: 96 },
+                        { x: new Date(2017, 0, 9), y: 84 },
+                        { x: new Date(2017, 0, 10), y: 85 },
+                        { x: new Date(2017, 0, 11), y: 86 },
+                        { x: new Date(2017, 0, 12), y: 94 },
+                        { x: new Date(2017, 0, 13), y: 97 },
+                        { x: new Date(2017, 0, 14), y: 86 },
+                        { x: new Date(2017, 0, 15), y: 89 },
+                        { x: new Date(2017, 0, 16), y: 93 }
+                    ]
+                },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "어학 점수",
+                        lineDashType: "dash",
+                        dataPoints: [
+                            { x: new Date(2017, 0, 3), y: 51 },
+                            { x: new Date(2017, 0, 4), y: 56 },
+                            { x: new Date(2017, 0, 5), y: 54 },
+                            { x: new Date(2017, 0, 6), y: 55 },
+                            { x: new Date(2017, 0, 7), y: 54 },
+                            { x: new Date(2017, 0, 8), y: 69 },
+                            { x: new Date(2017, 0, 9), y: 65 },
+                            { x: new Date(2017, 0, 10), y: 66 },
+                            { x: new Date(2017, 0, 11), y: 63 },
+                            { x: new Date(2017, 0, 12), y: 67 },
+                            { x: new Date(2017, 0, 13), y: 66 },
+                            { x: new Date(2017, 0, 14), y: 56 },
+                            { x: new Date(2017, 0, 15), y: 64 },
+                            { x: new Date(2017, 0, 16), y: 57 }
+                        ]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "문법 점수",
+                        lineDashType: "dash",
+                        dataPoints: [
+                            { x: new Date(2017, 0, 3), y: 24 },
+                            { x: new Date(2017, 0, 4), y: 20 },
+                            { x: new Date(2017, 0, 5), y: 28 },
+                            { x: new Date(2017, 0, 6), y: 35 },
+                            { x: new Date(2017, 0, 7), y: 24 },
+                            { x: new Date(2017, 0, 8), y: 25 },
+                            { x: new Date(2017, 0, 9), y: 35 },
+                            { x: new Date(2017, 0, 10), y: 45 },
+                            { x: new Date(2017, 0, 11), y: 35 },
+                            { x: new Date(2017, 0, 12), y: 45 },
+                            { x: new Date(2017, 0, 13), y: 32 },
+                            { x: new Date(2017, 0, 14), y: 45 },
+                            { x: new Date(2017, 0, 15), y: 65 },
+                            { x: new Date(2017, 0, 16), y: 56 }
+                        ]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "독해 점수",
+                        lineDashType: "dash",
+                        dataPoints: [
+                            { x: new Date(2017, 0, 3), y: 45 },
+                            { x: new Date(2017, 0, 4), y: 35 },
+                            { x: new Date(2017, 0, 5), y: 32 },
+                            { x: new Date(2017, 0, 6), y: 45 },
+                            { x: new Date(2017, 0, 7), y: 54 },
+                            { x: new Date(2017, 0, 8), y: 23 },
+                            { x: new Date(2017, 0, 9), y: 45 },
+                            { x: new Date(2017, 0, 10), y: 21 },
+                            { x: new Date(2017, 0, 11), y: 32 },
+                            { x: new Date(2017, 0, 12), y: 12 },
+                            { x: new Date(2017, 0, 13), y: 33 },
+                            { x: new Date(2017, 0, 14), y: 23 },
+                            { x: new Date(2017, 0, 15), y: 56 },
+                            { x: new Date(2017, 0, 16), y: 23 }
+                        ]
+                    }
+                ]
+            });
+            chart.render();
 
-            {{--패널 헤더 바디--}}
-            <div class="panel-body" style="background-color: #d6e8ec; border-top: none; position: relative; padding: 10px;">
-                <div id="mygroup_panel_name" style="margin-left: 10px;padding-top: 25px;font-size: 24px; font-weight: 600;height:80px;">
-                    나의 그룹
-                </div>
+            function toogleDataSeries(e){
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else{
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
 
-                {{--그래프 출력--}}
-                <div style="text-align: center;width: 100%;">
-                    <div id="curve_chart2" class="chart" style="margin-left: 140px;"></div>
-                </div>
-            </div>
-            {{--패널 헤더 풋터--}}
-            <div class="panel-body" style="padding: 10px 0px 0px 0px;background-color: white">
-                <ul class="nav main-nav" style="padding: 0px;">
-                    <li class="">
-                        <a href="#">학생관리</a>
-                    </li>
-                    <li class="">
-                        <a href="#">피드백</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        }
+    </script>
+</head>
 
-        {{--패널 바디--}}
-        <div class="content animate-panel content-main" style="padding: 15px 0px 15px 0px;">
-            <div class="hpanel ccpanel">
+<body>
 
-                {{--학생 레이어--}}
-                <div class="content" style="padding-top: 0px;">
-                    <div class="row class-info-layer class-set-list">
-                        <div class="col-sm-12">
-                            <div class="row owner-tools before">
-                                <div class="col-xs-6" style="padding: 6px 15px;">
-                                    학생 1명
-                                </div>
-                            </div>
-                            <form id="selectedSetForm" method="post">
-                                <input type="hidden" name="class_idx" value="17075">
-                                <div class="mem-list-body">
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <strong class="user-name">김승목</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <div class="col-xs-5" style="width: 40%;">
-                                                        <img src="/images/main/img_no_member02.png" class="profile-img m-r-sm" alt="logo" style="width:35px;">
-                                                        <strong class="user-name" style="opacity: 0.3;">초대해 주세요</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style=" display:none;">
-                                        </div>
-                                    </div>
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <div class="col-xs-5" style="width: 40%;">
-                                                        <img src="/images/main/img_no_member02.png" class="profile-img m-r-sm" alt="logo" style="width:35px;">
-                                                        <strong class="user-name" style="opacity: 0.3;">초대해 주세요</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style=" display:none;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                {{--피드백 레이어--}}
-                <div class="content" style="padding-top: 0px;" id="feedback">
-                    <div class="row class-info-layer class-set-list">
-
-                        <div class="col-sm-12">
-                            <div class="row owner-tools before">
-                                <div class="col-xs-6" style="padding: 6px 15px;">
-                                    학생 1명
-                                </div>
-                            </div>
-                            <form id="selectedSetForm" method="post">
-                                <input type="hidden" name="class_idx" value="17075">
-                                <div class="mem-list-body">
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <strong class="user-name">김승목</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <div class="col-xs-5" style="width: 40%;">
-                                                        <img src="/images/main/img_no_member02.png" class="profile-img m-r-sm" alt="logo" style="width:35px;">
-                                                        <strong class="user-name" style="opacity: 0.3;">초대해 주세요</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style=" display:none;">
-                                        </div>
-                                    </div>
-                                    <div class="hpanel collapsed">
-                                        <div class="panel-heading hbuilt">
-                                            <div class="owner-mem-row">
-                                                <div class="row">
-                                                    <div class="col-xs-5" style="width: 40%;">
-                                                        <img src="/images/main/img_no_member02.png" class="profile-img m-r-sm" alt="logo" style="width:35px;">
-                                                        <strong class="user-name" style="opacity: 0.3;">초대해 주세요</strong>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body" style=" display:none;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-
-
-        </div>
-    </div>
-
-
+<div class="radio">
+    <h3>보기</h3>
+    <h4>날짜 순</h4>
+    <label><input type="radio" name="optradio" value='1' >일</label>
+    <label><input type="radio" name="optradio" value='2' >월</label>
+    <label><input type="radio" name="optradio" value='3' >년도</label>
 </div>
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+</body>
+
+</html>
