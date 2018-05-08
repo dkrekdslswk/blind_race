@@ -1,3 +1,8 @@
+<?php
+
+    $getName = $_GET('student');
+?>
+
 <html>
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -116,11 +121,7 @@
             $('#wrapper').hide();
         });
 
-
-
     </script>
-
-
 
 </head>
 <body>
@@ -141,15 +142,11 @@
 
     {{--메인 네비바 불러오기--}}
     <div id="main-recordnav" style="margin-bottom: 20px;">
-        @include('Recordbox.test_recordnav')
+        @include('Recordbox.recordnav_student')
     </div>
 
     <div id="group_chart">
         @include('Recordbox.record_chart')
-    </div>
-
-    <div class="hidden" id="record_history">
-        @include('Recordbox.record_history')
     </div>
 
     <div class="hidden" id="record_students">

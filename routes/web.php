@@ -75,6 +75,11 @@ Route::get('/recordbox', function(){
     return view('Recordbox/recordbox_main');
 });
 
+/* 4. Record Box : Record List */
+Route::get('/recordbox_student', function(){
+    return view('Recordbox/recordbox_student_main');
+});
+
 /* 4-1. Record Box : Feedback */
 Route::get('/feedback', function(){
     return view('Recordbox/feedback');

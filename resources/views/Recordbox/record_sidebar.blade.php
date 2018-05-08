@@ -72,6 +72,55 @@
 
     <script src="text/javascript">
 
+        function getValue() {
+            var groupId = 1;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: "groupId=" + groupId,
+                success: function (data) {
+                    var groupData = data;
+
+                    console.log(groupData);
+
+                    console.log(groupData['teacher']['name']);
+                    console.log(groupData['group']['name']);
+                    console.log(groupData['students']);
+
+                    /*$('#teacher').html(teacher);
+                    $('#group').html(group);
+
+                    var student_list = '';
+
+                    for (var i = 0; i < student.length; i++) {
+
+                        student_list += '<tr><td>'
+
+                            + student[i].name
+                            + '</td><td>'
+                            + student[i].id
+                            + '</td><td>' +
+                            '<button>학생 정보 수정</button>' +
+                            '</td><td>' +
+                            '<button>삭제하기</button>' +
+                            '</td></tr>'
+                    }
+
+                    $('#student').html(student_list);
+*/
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+        }
+
     </script>
 
 </head>
