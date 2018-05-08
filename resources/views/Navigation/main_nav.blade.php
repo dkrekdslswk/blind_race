@@ -112,7 +112,7 @@
                                 <a href="{{ url('race_list') }}">Race</a>
                             </li>
                             <li>
-                                <a href="{{ url('mygroup') }}">RecordBox</a>
+                                <a href="{{ url('recordbox') }}">RecordBox</a>
                             </li>
                             <li>
                                 <a href="{{ url('quiz_list') }}">QuizTree</a>
