@@ -236,7 +236,7 @@ class GroupController extends Controller{
 //        );
         $postData = array(
             'groupId' => $request->input('groupId'),
-            'students' => $request->input('students')
+            'students' => json_decode($request->input('students'))
         );
 
         // 유저 정보가져오기
