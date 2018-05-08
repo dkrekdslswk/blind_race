@@ -264,26 +264,22 @@ class GroupController extends Controller{
 
                     // 권한 확인
                     if ($groupData) {
-                        // 그룹에 가입안된 유저들 검색
+                        // 그룹에 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
-                            ->where([
-                                ['u.classifications', 'LIKE', '%' . 'student']
-                            ])
+                            ->where('u.classification', 'LIKE', '%student')
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
                             ->toArray();
 
-                        // 그룹에 포함안된 학생 검색
+                        // 그룹에 가입안된 학생 검색
                         $studentData = DB::table('users')
                             ->select(
                                 'number           as id',
                                 'name             as name'
                             )
-                            ->where([
-                                ['classification', 'LIKE', '%' . 'student']
-                            ])
+                            ->where('classification', 'LIKE', '%student')
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
                             ->orderBy('number', 'desc')

@@ -79,14 +79,27 @@ class RecordBoxController extends Controller{
     // 오답노트 재출 명령하기기
 
     // 기간내의 정보 읽어오기
-    private function selectGroupRecords($groupId, $startDate, $endDate){
+    private function selectGroupRecords($groupId, $type, $startDate, $endDate){
+        // 그룹 선택
 
+        // 타입별 설정
+        // 날자 쿼리 생성
+
+        // 일별
+        // 월별
+
+
+        // 반납할 값 정리
     }
 
-    // 한개의 레이스 정보 읽어오기
-//    private
+    // 한 개의 레이스 정보 읽어오기
+    private function selectOneRaceRecords(){}
 
-    // 각 학생별 성정을 읽어오기
+    // 각 학생별 성적을 읽어오기
+    private function selectStudensRecords(){}
+
+    // 한 명의 레이스 성적 읽어오기
+    private function selectOneStudentRecords(){}
 }
 
 ?>
