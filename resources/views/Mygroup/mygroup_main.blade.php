@@ -18,15 +18,22 @@
         function add_student(st_made_number){
             var student_number = $("#st"+st_made_number).text();
 
+            var student_number_zip = new Array();
+
+            //배열을 push 할 경우는 [["13","14","15"],"19","18"] 이런식으로 2차원으로 들어가 처리가 더필요함
+            student_number_zip.push(student_number);
+
+
+            student_number_zip = JSON.stringify(student_number_zip);
+
             $.ajax({
                 type: 'POST',
-                url: "{{url('/groupController/groupDataGet')}}",
-                //processData: false,
-                //contentType: false,
+                url: "{{url('/groupController/pushInvitation')}}",
                 dataType: 'json',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: "groupId="+pub_groupId+"&학번="+student_number,
+                data: "groupId="+pub_groupId+"&students="+student_number_zip,
                 success: function (data) {
+                    alert("성공");
                 },
                 error: function (data) {
                     alert("에러");

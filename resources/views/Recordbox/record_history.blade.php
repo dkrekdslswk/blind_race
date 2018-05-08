@@ -381,8 +381,8 @@
                                 <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
                                     3
                                 </td>
-                                <td rowspan="1" colspan="2">
-                                    이러쿵 저러쿵 해서 이래요
+                                <td rowspan="1" colspan="2" style="text-align: center;">
+                                    苦労してためたお金なのだから、一円（　　）無駄には使いたくない。
                                 </td>
                                 <td rowspan="3" style="border-left: 1px solid transparent;">
                                     3/5
@@ -390,18 +390,18 @@
                             </tr>
                             <tr>
                                 <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                    정답1
+                                    たりとも
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답2
+                                    ばかりも
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    정답3
+                                    だけさえ
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답4
+                                    とはいえ
                                 </td>
                             </tr>
                         </div>
@@ -410,8 +410,8 @@
                                 <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
                                     13
                                 </td>
-                                <td rowspan="1" colspan="2">
-                                    이러쿵 저러쿵 해서 이래요
+                                <td rowspan="1" colspan="2" style="text-align: center;">
+                                    この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。
                                 </td>
                                 <td >
                                     2/5
@@ -419,18 +419,18 @@
                             </tr>
                             <tr>
                                 <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                    정답1
+                                    とあって
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답2
+                                    からして
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    정답3
+                                    にあって
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답4
+                                    にしては
                                 </td>
                             </tr>
                         </div>
@@ -439,8 +439,8 @@
                                 <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
                                     17
                                 </td>
-                                <td rowspan="1" colspan="2">
-                                    이러쿵 저러쿵 해서 이래요
+                                <td rowspan="1" colspan="2" style="text-align: center;">
+                                    姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
                                 </td>
                                 <td>
                                     2/5
@@ -448,18 +448,18 @@
                             </tr>
                             <tr>
                                 <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                    정답1
+                                    かたわら
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답2
+                                    かたがた
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    정답3
+                                    こととて
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    정답4
+                                    うちに
                                 </td>
                             </tr>
                         </div>

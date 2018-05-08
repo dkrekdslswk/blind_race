@@ -4,10 +4,12 @@
 
     <script>
         var id = "chartContainer";
+        var id2 = "chartContainer2";
         var DateType = "DD MMM";
 
         window.onload = function () {
             makingChart(id,DateType);
+
             makingDropdown();
         };
 
@@ -52,7 +54,7 @@
                 animationEnabled: true,
                 theme: "light2",
                 width: 1000,
-                height: 700,
+                height: 600,
                 title:{},
                 axisX:{
                     labelFontSize: 15,
@@ -65,7 +67,7 @@
                 ,
                 axisY: {
                     crosshair: {
-                        enabled: true
+                        enabled: false
                     }
                 },
                 toolTip:{
@@ -81,7 +83,7 @@
                 data: [{
                     type: "line",
                     showInLegend: true,
-                    name: "전체 점수",
+                    name: "전체 평균 점수",
                     markerType: "square",
                     xValueFormatString: "DD, MMM, DD MMM, YYYY",
                     color: "#F08080",
@@ -202,6 +204,7 @@
                 chart.render();
             }
         }
+
     </script>
 </head>
 
@@ -257,6 +260,8 @@
     </div>
 
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+    <div id="chartContainer2" style="height: 600px;margin-top: 30px;"></div>
 
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
