@@ -291,15 +291,15 @@ class GroupController extends Controller{
 
                         $studentIds = array();
                         foreach ($studentData as $student) {
-                            array($studentIds, $student->id);
+                            array($studentIds, array(
+                                'groupNumber' => $groupData->groupId,
+                                'userNumber' => $student->id
+                            ));
                         }
 
                         // 학생 등록하기
                         DB::table('groupStudents')
-                            ->insert([
-                                'groupNumber' => $groupData->groupId,
-                                'userNumber' => $studentIds
-                            ]);
+                            ->insert($studentIds);
 
                         // 등록 실패한 학생 처리하기
                         // 미구현
