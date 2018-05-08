@@ -13,7 +13,7 @@ class BlindDummyTableSeeder extends Seeder
     public function run()
     {
         $users = [
-            [123456789,'sub','t','teacher'],
+            [123456789,'sub','이OO교수','teacher'],
             [999999999,'main','s','root'],
             [1300000,'1234','김똘똘','student'],
             [1300001,'1234','최천재','student'],
@@ -37,7 +37,7 @@ class BlindDummyTableSeeder extends Seeder
             'classification'    => 'student',
         ]);
         $groupId = DB::table('groups')->insertGetId([
-            'name'              => 'group1',
+            'name'              => '3WDJ',
             'teacherNumber'     => $users[0][0]
         ], 'number');
 
