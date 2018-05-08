@@ -7,12 +7,6 @@
         var id2 = "chartContainer2";
         var DateType = "DD MMM";
 
-        window.onload = function () {
-            makingChart(id,DateType);
-
-            makingDropdown();
-        };
-
         function makingDropdown() {
             for (var i = 2017 ; i <= 2017 ; i++) {
                 $('#year1').append("<option value='"+i+"'>"+ i);
