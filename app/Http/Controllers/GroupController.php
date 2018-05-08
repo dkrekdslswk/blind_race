@@ -228,11 +228,15 @@ class GroupController extends Controller{
     // 구현중
     public function pushInvitation(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupId',
+//            'students' => array(
+//                0 => 'id'
+//            )
+//        );
         $postData = array(
-            'groupId',
-            'students' => array(
-                0 => 'id'
-            )
+            'groupId' => $request->input('groupId'),
+            'students' => json_decode($request->input('students'))
         );
 
         // 유저 정보가져오기
@@ -263,7 +267,7 @@ class GroupController extends Controller{
                         // 그룹에 가입안된 유저들 검색
                         $groupUsers = DB::table('users as u')
                             ->where([
-                                ['u.classifications', 'LIKE', '%' . 'student']
+                                ['u.classification', 'LIKE', '%' . 'student']
                             ])
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
@@ -287,15 +291,15 @@ class GroupController extends Controller{
 
                         $studentIds = array();
                         foreach ($studentData as $student) {
-                            array($studentIds, $student->id);
+                            array($studentIds, array(
+                                'groupNumber' => $groupData->groupId,
+                                'userNumber' => $student->id
+                            ));
                         }
 
                         // 학생 등록하기
                         DB::table('groupStudents')
-                            ->insert([
-                                'groupNumber' => $groupData->groupId,
-                                'userNumber' => $studentIds
-                            ]);
+                            ->insert($studentIds);
 
                         // 등록 실패한 학생 처리하기
                         // 미구현
