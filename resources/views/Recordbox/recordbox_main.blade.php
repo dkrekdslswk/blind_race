@@ -1,10 +1,10 @@
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -34,7 +34,6 @@
         }
 
 
-
         #wrapper {
             margin: 0 0 0 220px;
             padding: 0;
@@ -60,17 +59,65 @@
             border-right: 1px solid #e1e2e3;
             border-bottom: 1px solid #e1e2e3;
         }
+
+        #group_chart {
+            margin-left: 20px;
+        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/combodate.js"></script>
 
-    <script>
+    <script type="text/javascript">
+
         function recordControl(id){
-            alert(id);
+            switch (id){
+                case "nav_group_name" :
+                    $('#group_chart').attr('class','');
+                    $('#record_history').attr('class','hidden');
+                    $('#record_students').attr('class','hidden');
+                    $('#record_feedback').attr('class','hidden');
+                    break;
+                case "history" :
+                    $('#record_history').attr('class','');
+                    $('#group_chart').attr('class','hidden');
+                    $('#record_students').attr('class','hidden');
+                    $('#record_feedback').attr('class','hidden');
+                    break;
+                case "students" :
+                    $('#record_students').attr('class','');
+                    $('#group_chart').attr('class','hidden');
+                    $('#record_history').attr('class','hidden');
+                    $('#record_feedback').attr('class','hidden');
+                    break;
+                case "feedback" :
+                    $('#record_feedback').attr('class','');
+                    $('#record_students').attr('class','hidden');
+                    $('#group_chart').attr('class','hidden');
+                    $('#record_history').attr('class','hidden');
+                    break;
+            }
         }
+
+        $(document).on('click','#groupA',function () {
+            $('#nav_group_name').text("특강 A반");
+            $('#wrapper').show();
+            $('#group_chart').attr('class','');
+            $('#record_history').attr('class','hidden');
+        });
+
+        $(document).on('click','#groupB',function () {
+            $('#nav_group_name').text("특강 B반");
+            $('#wrapper').hide();
+        });
+
+
+
     </script>
 
 
@@ -97,9 +144,20 @@
         @include('Recordbox.test_recordnav')
     </div>
 
-    {{--최근 레이스 기록 불러오기--}}
-    <div class="" id="history" >
+    <div id="group_chart">
+        @include('Recordbox.record_chart')
+    </div>
+
+    <div class="hidden" id="record_history">
         @include('Recordbox.record_history')
+    </div>
+
+    <div class="hidden" id="record_students">
+        @include('Recordbox.record_students_list')
+    </div>
+
+    <div class="hidden" id="record_feedback">
+        @include('Recordbox.feedback')
     </div>
 
 </div>

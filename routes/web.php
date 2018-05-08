@@ -72,7 +72,7 @@ Route::get('/quiz_making', function(){
 
 /* 4. Record Box : Record List */
 Route::get('/recordbox', function(){
-    return view('Recordbox/recordbox');
+    return view('Recordbox/recordbox_main');
 });
 
 /* 4-1. Record Box : Feedback */
