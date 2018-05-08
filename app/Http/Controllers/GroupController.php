@@ -228,11 +228,15 @@ class GroupController extends Controller{
     // 구현중
     public function pushInvitation(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupId',
+//            'students' => array(
+//                0 => 'id'
+//            )
+//        );
         $postData = array(
-            'groupId',
-            'students' => array(
-                0 => 'id'
-            )
+            'groupId' => $request->input('groupId'),
+            'students' => $request->input('students')
         );
 
         // 유저 정보가져오기
