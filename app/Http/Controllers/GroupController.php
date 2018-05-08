@@ -267,7 +267,7 @@ class GroupController extends Controller{
                         // 그룹에 가입안된 유저들 검색
                         $groupUsers = DB::table('users as u')
                             ->where([
-                                ['u.classifications', 'LIKE', '%' . 'student']
+                                ['u.classification', 'LIKE', '%' . 'student']
                             ])
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
