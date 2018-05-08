@@ -139,6 +139,7 @@ Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
 Route::post('/groupController/createGroup','GroupController@createGroup');
+Route::post('/groupController/pushInvitation','GroupController@pushInvitation');
 Route::post('/groupController/selectUser','GroupController@selectUser');
 
 ?>

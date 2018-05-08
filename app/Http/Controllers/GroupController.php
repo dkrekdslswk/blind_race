@@ -226,7 +226,7 @@ class GroupController extends Controller{
 
     // 학생 등록하기 root, teacher
     // 구현중
-    public function PushInvitation(Request $request){
+    public function pushInvitation(Request $request){
         // 요구하는 값
         $postData = array(
             'groupId',
@@ -240,33 +240,96 @@ class GroupController extends Controller{
         
         // 유저권한확인
         if ($userData['check']) {
+            $where = array();
             // 유저 추가
-            switch ($userData['classification']){
+            switch ($userData['classification']) {
                 case 'teacher':
+                    $where = array('teacherNumber' => $userData['userId']);
                 case 'root':
-                    DB::table()
-                        ->select()
-                        ->where()
+                    // 그룹에 대한 권한 확인
+                    $groupData = DB::table('groups')
+                        ->select(
+                            'number         as groupId',
+                            'teacherNumber  as teacherId'
+                        )
+                        ->where([
+                            'number' => $postData['groupId']
+                        ])
+                        ->where($where)
                         ->first();
+
+                    // 권한 확인
+                    if ($groupData) {
+                        // 그룹에 가입안된 유저들 검색
+                        $groupUsers = DB::table('users as u')
+                            ->where([
+                                ['u.classifications', 'LIKE', '%' . 'student']
+                            ])
+                            ->where('gs.groupNumber', '=', $postData['groupId'])
+                            ->whereIn('u.number', $postData['students'])
+                            ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
+                            ->pluck('u.number')
+                            ->toArray();
+
+                        // 그룹에 포함안된 학생 검색
+                        $studentData = DB::table('users')
+                            ->select(
+                                'number           as id',
+                                'name             as name'
+                            )
+                            ->where([
+                                ['classification', 'LIKE', '%' . 'student']
+                            ])
+                            ->whereNotIn('number', $groupUsers)
+                            ->whereIn('number', $postData['students'])
+                            ->orderBy('number', 'desc')
+                            ->get();
+
+                        $studentIds = array();
+                        foreach ($studentData as $student) {
+                            array($studentIds, $student->id);
+                        }
+
+                        // 학생 등록하기
+                        DB::table('groupStudents')
+                            ->insert([
+                                'groupNumber' => $groupData->groupId,
+                                'userNumber' => $studentIds
+                            ]);
+
+                        // 등록 실패한 학생 처리하기
+                        // 미구현
+
+                        // 반납하는 값
+                        $students = array();
+                        foreach ($studentData as $student) {
+                            array($students, array(
+                                'id' => $student->id,
+                                'name' => $student->name
+                            ));
+                        }
+                        $returnValue = array(
+                            'students' => $students,
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
                     break;
                 default:
+                    $returnValue = array(
+                        'check' => false
+                    );
                     break;
             }
         }
-
-        // 이미 있는 학생
-        // 새로 등록된 학생
-        // 미가입 학생
-
-        // 반납하는 값
-        $returnValue = array(
-            'students' => array(
-                0 => array(
-                    'id'
-                )
-            ),
-            'check'
-        );
+        else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
@@ -295,12 +358,8 @@ class GroupController extends Controller{
             // 학생만 검색
             case 'teacher':
             case 'root':
-                $users = DB::table('users as u')
-                    ->select(
-                        'u.number           as id',
-                        'u.name             as name',
-                        'u.classification   as classification'
-                    )
+                // 그룹에 포함된 학생 검색
+                $groupUsers = DB::table('users as u')
                     ->where([
                         ['u.classification', 'LIKE', '%' . 'student']
                     ])
@@ -308,12 +367,27 @@ class GroupController extends Controller{
                         $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
                             ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
                     })
-                    ->where(function ($query) use ($postData){
-                        $query->where('gs.groupNumber', '<>', $postData['groupId'])
-                            ->orWhereNull('gs.groupNumber');
-                    })
+                    ->where('gs.groupNumber', '=', $postData['groupId'])
                     ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
-                    ->orderBy('u.number', 'desc')
+                    ->pluck('u.number')
+                    ->toArray();
+
+                // 그룹에 포함안된 학생 검색
+                $users = DB::table('users')
+                    ->select(
+                        'number           as id',
+                        'name             as name',
+                        'classification   as classification'
+                    )
+                    ->where([
+                        ['classification', 'LIKE', '%' . 'student']
+                    ])
+                    ->whereNotIn('number', $groupUsers)
+                    ->where(function ($query) use ($postData){
+                        $query->where('number', 'LIKE', '%' . $postData['search'] . '%')
+                            ->orWhere('name', 'LIKE', '%' . $postData['search'] . '%');
+                    })
+                    ->orderBy('number', 'desc')
                     ->get();
                 break;
 
