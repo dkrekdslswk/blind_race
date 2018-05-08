@@ -12,7 +12,28 @@
     <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script>
+        //그룹ID
 
+        function add_student(st_made_number){
+            var student_number = $("#st"+st_made_number).text();
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "groupId="+pub_groupId+"&학번="+student_number,
+                success: function (data) {
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+        }
+    </script>
     <style>
         body {
             font-family: arial, sans-serif;
