@@ -392,8 +392,11 @@ class QuizTreeController extends Controller
             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
             ->first();
 
-        if(isset($listUserCheck->listId)) {
+        if($listUserCheck) {
             foreach ($postData['quizs'] as $quiz) {
+                // 문제들 삭제
+                $this->deleteListQuiz($listUserCheck->listId);
+
                 // 문제를 저장
                 // 주관식 객관식 구분
                 if($quiz['makeType'] == 'obj') {
@@ -488,34 +491,8 @@ class QuizTreeController extends Controller
 
             // 삭제할 리스트이면 삭제
             if ($listData && ((int)$listData->raceCount == 0)){
-                // 문제 리스트 받아오기
-                $listQuizs = DB::table('listQuizs')
-                    ->select(
-                        'quizNumber'
-                    )
-                    ->where([
-                        'listNumber' => $listData->listId
-                    ])
-                    ->get();
-
-                $quizs = array();
-                foreach ($listQuizs as $quiz){
-                    array_push($quizs, $quiz->quizNumber);
-                }
-
-                // 문제 리스트 삭제
-                DB::table('listQuizs')
-                    ->where([
-                        'listNumber' => $listData->listId
-                    ])
-                    ->delete();
-
-                // 문제 삭제
-                DB::table('quizBanks')
-                    ->where([
-                        'number' => $quizs
-                    ])
-                    ->delete();
+                // 문제들 삭제
+                $this->deleteListQuiz($listData->listId);
 
                 // 리스트삭제
                 DB::table('lists')
@@ -542,6 +519,38 @@ class QuizTreeController extends Controller
         }
 
         return $returnValue;
+    }
+
+    // 문제들 삭제
+    private function deleteListQuiz($listId){
+        // 문제 리스트 받아오기
+        $listQuizs = DB::table('listQuizs')
+            ->select(
+                'quizNumber'
+            )
+            ->where([
+                'listNumber' => $listId
+            ])
+            ->get();
+
+        $quizs = array();
+        foreach ($listQuizs as $quiz){
+            array_push($quizs, $quiz->quizNumber);
+        }
+
+        // 문제 리스트 삭제
+        DB::table('listQuizs')
+            ->where([
+                'listNumber' => $listId
+            ])
+            ->delete();
+
+        // 문제 삭제
+        DB::table('quizBanks')
+            ->where([
+                'number' => $quizs
+            ])
+            ->delete();
     }
 
     // 수정
@@ -616,13 +625,13 @@ class QuizTreeController extends Controller
         $listData = DB::table('lists as l')
             ->select(
                 'l.number   as listId',
-                'l.listName as name'
+                'l.name     as listName'
             )
             ->where([
                 'l.number'          => $postData['listId']
             ])
             ->where(function ($query) use ($userData){
-                $query->where('f.teacherNumber', '=', $userData->userNumber)
+                $query->where('f.teacherNumber', '=', $userData['userId'])
                     ->orWhere('l.openState', '=', self::OPEN_STATE);
             })
             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
@@ -634,7 +643,7 @@ class QuizTreeController extends Controller
 
             // 반납하는 값
             $returnValue = array(
-                'listName'  => $listData->name,
+                'listName'  => $listData->listName,
                 'quizs'     => $quizs,
                 'check'     => true
             );

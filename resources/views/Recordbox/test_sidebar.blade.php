@@ -93,14 +93,11 @@
             </li>
             <li class="class-toggle">
                 <div class="nav-second-level class_list">
-                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 A반');$('#side-menu3_li').attr('class','active');">
-                        <div style="display:inline-block; width: 160px;">특강 A반</div>
+                    <a class="" href="#">
+                        <div style="display:inline-block; width: 160px;" id="groupA">특강 A반</div>
                     </a>
-                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 B반');$('#side-menu3_li').attr('class','active');">
-                        <div style="display:inline-block; width: 160px;">특강 B반</div>
-                    </a>
-                    <a class="" href="#" onclick="$('#myrace').attr('class','hidden');$('#mygroup').attr('class','');$('.active').attr('class','');$('#mygroup_panel_name').text('특강 C반');$('#side-menu3_li').attr('class','active');">
-                        <div style="display:inline-block; width: 160px;">특강 C반</div>
+                    <a class="" href="#">
+                        <div style="display:inline-block; width: 160px;" id="groupB">특강 B반</div>
                     </a>
                 </div>
 

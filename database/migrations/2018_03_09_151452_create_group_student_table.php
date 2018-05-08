@@ -37,7 +37,7 @@ class CreateGroupStudentTable extends Migration
 	        $table->foreign('userNumber')->references('number')->on('users');
 	        $table->primary(['groupNumber', 'userNumber']);
 
-            $table->char('userName', 20);
+//            $table->char('userName', 20);
 
 //            $table->char('accessionState', 20);
 //	        $table->foreign('accessionState')->references('name')->on('accessionStates');

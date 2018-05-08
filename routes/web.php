@@ -72,7 +72,7 @@ Route::get('/quiz_making', function(){
 
 /* 4. Record Box : Record List */
 Route::get('/recordbox', function(){
-    return view('Recordbox/recordbox');
+    return view('Recordbox/recordbox_main');
 });
 
 /* 4-1. Record Box : Feedback */
@@ -139,6 +139,7 @@ Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
 Route::post('/groupController/createGroup','GroupController@createGroup');
+Route::post('/groupController/pushInvitation','GroupController@pushInvitation');
 Route::post('/groupController/selectUser','GroupController@selectUser');
 
 ?>
