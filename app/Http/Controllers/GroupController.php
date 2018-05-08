@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 class GroupController extends Controller{
     // 그룹 목록 가져오기 root(all teachers), teacher(mine)
+    // --레코드박스 그룹 목록 가져오기에도 사용
     public function groupsGet(Request $request){
         
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -243,12 +244,19 @@ class GroupController extends Controller{
             switch ($userData['classification']){
                 case 'teacher':
                 case 'root':
-
+                    DB::table()
+                        ->select()
+                        ->where()
+                        ->first();
                     break;
                 default:
                     break;
             }
         }
+
+        // 이미 있는 학생
+        // 새로 등록된 학생
+        // 미가입 학생
 
         // 반납하는 값
         $returnValue = array(
