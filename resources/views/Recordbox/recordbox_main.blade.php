@@ -4,8 +4,6 @@
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -60,8 +58,13 @@
             border-bottom: 1px solid #e1e2e3;
         }
 
-        #group_chart {
-            margin-left: 20px;
+        #group_chart, #record_history , #record_students, #record_feedback {
+            margin-left: 10px;
+            margin-right: 10px;
+            min-height: 700px;
+            min-width: 700px;
+            display: block;
+
         }
     </style>
 
@@ -73,30 +76,120 @@
 
     <script type="text/javascript">
 
+        var group_id = 1;
+
+        //처음 화면 로드
         window.onload = function() {
-            getValue();
-            makingChart(id,DateType);
-            makingDropdown();
+
+            /*part.1 사이드바*/
+            //클래스 불러오기
+            getGroups(group_id);
+
+            /*part.2 메인 페이지*/
+            //페이지 전부 불러오기
+            pageLoad(group_id);
+
         };
 
+        //클래스 클릭 할 때 마다 메인 페이지 로드
+        $(document).on('click','.groups',function () {
+
+            var reqGroupId = $(this).attr('id');
+            var reqGroupName = $(this).attr('name');
+
+            //레코드 네비바 클래스 이름 바꾸기
+            $('#nav_group_name').text(reqGroupName).css("width","150px");
+
+            //메인 페이지 불러오기
+            pageLoad(reqGroupId);
+
+        });
+
+
+        //전체 페이지 로드
+        function pageLoad(groupId){
+
+            /*part.1 차트화면*/
+            //차트 만들기 실행 -> record_chart.blade.php
+            makingChart(id,DateType);
+
+            /*part.2 최근 기록*/
+            //최근 레이스 목록들 불러오기 -> record_history.blade.php
+
+
+            /*part.3 학생 관리*/
+
+
+            /*part.4 피드백*/
+
+
+        }
+
+
+
+
+        //클래스 가져오기
+        function getGroups(groupId) {
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupsGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: groupId,
+                success: function (data) {
+                    GroupData = data;
+
+                    for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
+
+                        $('#group_names').append($('<a href="#">')
+                            .append($('<div class="groups" name="'+GroupData['groups'][i].groupName+'" id="'+ GroupData['groups'][i].groupId +'">')
+                            .text(GroupData['groups'][i].groupName)));
+
+                    }
+
+                    $('#nav_group_name').text(GroupData['groups'][0].groupName);
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+
+        }
+
+
+        //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
             switch (id){
                 case "nav_group_name" :
                     $('#group_chart').attr('class','');
                     $('#record_history').attr('class','hidden');
                     $('#record_students').attr('class','hidden');
+                    $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
                     break;
                 case "history" :
                     $('#record_history').attr('class','');
                     $('#group_chart').attr('class','hidden');
                     $('#record_students').attr('class','hidden');
+                    $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
                     break;
                 case "students" :
                     $('#record_students').attr('class','');
                     $('#group_chart').attr('class','hidden');
                     $('#record_history').attr('class','hidden');
+                    $('#record_homework').attr('class','hidden');
+                    $('#record_feedback').attr('class','hidden');
+                    break;
+                case "homework" :
+                    $('#record_homework').attr('class','');
+                    $('#group_chart').attr('class','hidden');
+                    $('#record_history').attr('class','hidden');
+                    $('#record_students').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
                     break;
                 case "feedback" :
@@ -104,74 +197,10 @@
                     $('#group_chart').attr('class','hidden');
                     $('#record_students').attr('class','hidden');
                     $('#record_history').attr('class','hidden');
+                    $('#record_homework').attr('class','hidden');
                     break;
             }
         }
-
-        $(document).on('click','#groupA',function () {
-            $('#nav_group_name').text("특강 A반");
-            $('#wrapper').show();
-            $('#group_chart').attr('class','');
-            $('#record_history').attr('class','hidden');
-        });
-
-        $(document).on('click','#groupB',function () {
-            $('#nav_group_name').text("특강 B반");
-            $('#wrapper').hide();
-        });
-
-
-        function getValue() {
-
-            var groupId = 1;
-            var groupData = "";
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/groupDataGet')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: "groupId=" + groupId,
-                success: function (data) {
-                    groupData = data;
-
-                    alert("Asdasd");
-
-                    console.log(groupData['teacher']['name']);
-                    console.log(groupData['group']['name']);
-                    console.log(groupData['students']);
-
-                    /*$('#teacher').html(teacher);
-                    $('#group').html(group);
-
-                    var student_list = '';
-
-                    for (var i = 0; i < student.length; i++) {
-
-                        student_list += '<tr><td>'
-
-                            + student[i].name
-                            + '</td><td>'
-                            + student[i].id
-                            + '</td><td>' +
-                            '<button>학생 정보 수정</button>' +
-                            '</td><td>' +
-                            '<button>삭제하기</button>' +
-                            '</td></tr>'
-                    }
-
-                    $('#student').html(student_list);
-*/
-                },
-                error: function(request, status, error) {
-                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-                }
-            });
-        }
-
 
     </script>
 
@@ -192,12 +221,14 @@
 
 
 {{--첫 화면 레이스 목록--}}
-<div id="wrapper" class="" style="min-height: 1024px;">
+<div id="wrapper" class="">
 
-    {{--메인 네비바 불러오기--}}
+    {{--레코드 네비바 불러오기--}}
     <div id="main-recordnav" style="margin-bottom: 20px;">
-        @include('Recordbox.test_recordnav')
+        @include('Recordbox.record_recordnav')
     </div>
+
+
 
     <div id="group_chart">
         @include('Recordbox.record_chart')
@@ -211,8 +242,12 @@
         @include('Recordbox.record_students_list')
     </div>
 
+    <div class="hidden" id="record_homework">
+        @include('Recordbox.record_homework')
+    </div>
+
     <div class="hidden" id="record_feedback">
-        @include('Recordbox.feedback')
+        @include('Recordbox.record_feedback')
     </div>
 
 </div>

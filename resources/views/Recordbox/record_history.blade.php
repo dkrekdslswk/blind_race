@@ -1,4 +1,4 @@
-<div id="history_list" style="margin-left: 10px;">
+<div id="history_list">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -16,80 +16,10 @@
             <td>스쿠스쿠3</td>
             <td>2018년 1월 16일</td>
             <td>
-                <button class="btn btn-info" id="btn_retest6" onclick="$('#btn_retest6').attr('class','btn-primary').text('응시중');">응시하기</button>
+                <button class="btn btn-default" id="btn_retest" > 0 / 4</button>
             </td>
             <td>
-                <button class="btn btn-info" id="btn_notebook6" onclick="$('#btn_notebook6').attr('class','btn-primary').text('0/5');">출제</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>기출문제3</td>
-            <td>2018년 1월 15일</td>
-            <td>
-                <button class="btn btn-info" id="btn_retest5" onclick="$('#btn_retest5').attr('class','btn-primary').text('응시중');">응시하기</button>
-            </td>
-            <td>
-                <button class="btn btn-info" id="btn_notebook5" onclick="$('#btn_notebook5').attr('class','btn-primary').text('0/5');">출제</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>스쿠스쿠2</td>
-            <td>2018년 1월 14일</td>
-            <td>
-                <button class="btn btn-info" id="btn_retest4" onclick="$('#btn_retest4').attr('class','btn-primary').text('응시중');">응시하기</button>
-            </td>
-            <td>
-                <button class="btn btn-info" id="btn_notebook4" onclick="$('#btn_notebook4').attr('class','btn-primary').text('0/5');">출제</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-            </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>기출문제2</td>
-            <td>2018년 1월 13일</td>
-            <td>
-                <button class="btn btn-info" id="btn_retest3" onclick="$('#btn_retest3').attr('class','btn-primary').text('응시중');">응시하기</button>
-            </td>
-            <td>
-                <button class="btn btn-info" id="btn_notebook3" onclick="$('#btn_notebook3').attr('class','btn-primary').text('0/5');">출제</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-            </td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>스쿠스쿠1</td>
-            <td>2018년 1월 12일</td>
-            <td>
-                <button class="btn btn-info" id="btn_retest2" onclick="$('#btn_retest2').attr('class','btn-primary').text('응시중');">응시하기</button>
-            </td>
-            <td>
-                <button class="btn btn-info" id="btn_notebook2" onclick="$('#btn_notebook2').attr('class','btn-primary').text('0/5');">출제</button>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-            </td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>기출문제1</td>
-            <td>2018년 1월 11일</td>
-            <td>
-                <button class="btn btn-info" id="btn_retest1" onclick="$('#btn_retest1').attr('class','btn-primary').text('응시중');">응시하기</button>
-            </td>
-            <td>
-                <button class="btn btn-info" id="btn_notebook1" onclick="$('#btn_notebook1').attr('class','btn-primary').text('0/5');">출제</button>
+                <button class="btn btn-default" id="btn_notebook"> 0 / 4</button>
             </td>
             <td>
                 <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
@@ -98,7 +28,7 @@
         </tbody>
     </table>
 
-    <div class="panel-footer" style="height: 100px;">
+    <div class="panel-footer" style="height: 80px;">
         <div class="row">
             <div class="col col-xs-4">Page 1 of 5
             </div>
@@ -158,149 +88,50 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            김똘똘
-                        </td>
-                        <td>
-                            95
-                        </td>
-                        <td>
-                            32
-                        </td>
-                        <td>
-                            30
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            19/20
-                        </td>
-                        <td>
-                            <button class="btn-default">미응시</button>
-                        </td>
-                        <td>
-                            <button class="btn-default">미제출</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            최천재
-                        </td>
-                        <td>
-                            100
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            20/20
-                        </td>
-                        <td>
-                            <button class="btn-default">미응시</button>
-                        </td>
-                        <td>
-                            <button class="btn-default">미제출</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            안예민
-                        </td>
-                        <td>
-                            90
-                        </td>
-                        <td>
-                            30
-                        </td>
-                        <td>
-                            30
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            18/20
-                        </td>
-                        <td>
-                            <button class="btn-default">미응시</button>
-                        </td>
-                        <td>
-                            <button class="btn-default">미제출</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            심사쵸
-                        </td>
-                        <td>
-                            95
-                        </td>
-                        <td>
-                            30
-                        </td>
-                        <td>
-                            33
-                        </td>
-                        <td>
-                            32
-                        </td>
-                        <td>
-                            19/20
-                        </td>
-                        <td>
-                            <button class="btn-default">미응시</button>
-                        </td>
-                        <td>
-                            <button class="btn-default">미제출</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            사라다
-                        </td>
-                        <td>
-                            85
-                        </td>
-                        <td>
-                            28
-                        </td>
-                        <td>
-                            32
-                        </td>
-                        <td>
-                            30
-                        </td>
-                        <td>
-                            17/20
-                        </td>
-                        <td>
-                            <button class="btn-default">미응시</button>
-                        </td>
-                        <td>
-                            <button class="btn-default">미제출</button>
-                        </td>
-                    </tr>
+                    <tbody id="student_grade_list">
+
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+
+            <script>
+
+                var grade1 = ["김똘똘",95,32,30,33,"19/20","pass","pass"];
+                var grade2 = ["최천재",75,20,28,27,"15/20","pass","pass"];
+                var grade3 = ["심사쵸",55,15,14,15,"11/20","retest_yet","submit_yet"];
+                var grade4 = ["안예민",55,15,14,15,"11/20","retest_done","submit_yet"];
+                var grade5 = ["사라다",55,15,14,15,"11/20","retest_done","submit_done"];
+
+                var all_grade = [grade1,grade2,grade3,grade4,grade5];
+
+                for(var i = 0 ; i < all_grade.length ; i++){
+                    $('#student_grade_list').append($('<tr id="grade_'+all_grade[i][0]+'">'));
+
+                    for(var j = 0 ; j < all_grade[0].length ; j++ ) {
+
+                        if( j >= 6){
+                            if (all_grade[i][j] != "pass"){
+                                $('#grade_' + all_grade[i][0]).append($('<td>').append($('<a href="#">').text(all_grade[i][j])));
+                            }else{
+                                $('#grade_' + all_grade[i][0]).append($('<td>').text(all_grade[i][j]));
+                            }
+                        }else{
+                            $('#grade_' + all_grade[i][0]).append($('<td>').text(all_grade[i][j]));
+                        }
+                    }
+                }
+
+            </script>
+
+                <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">학생 점수 인쇄</button>
             </div>
         </div>
 
-        {{--시험 성적표--}}
+        {{--상세 보기--}}
         <div class="modal-content" style="margin-top: 10px;padding: 10px 20px 0 20px;">
             <div class="modal-header">
-                <h3 class="modal-title" id="ModalLabel" style="text-align: center;">시험 성적표</h3>
+                <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
             </div>
             <div class="modal-body" style="text-align: left;margin: 0;">
                 <div class="race_and_teacher" style="width: 100%;">
@@ -318,7 +149,22 @@
 
                 <div class="detail_record" >
                     <div style="margin: 0">세부 학습 내역</div>
-                    <table class="table table-hover">
+
+                    <style>
+                        .table-striped {
+                            border: 1px solid #e5e6e8;
+                        }
+                        .table-striped thead tr> :first-child{
+                            width: 130px;
+                            text-align: center;
+                        }
+                        .table-striped tbody tr td {
+                            width: 70px;
+                            border: 1px solid #e5e6e8;
+                        }
+                    </style>
+
+                    <table class="table table-striped">
                         <thead>
                             <tr id="race_detail_record">
                                 <th>
@@ -335,17 +181,17 @@
                         var names = [ "김똘똘", "최천재", "안예민", "심사쵸" , "사라다"];
 
                         var grade1 = ["o","o","x","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o"];
-                        var grade2 = ["o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o"];
-                        var grade3 = ["o","o","o","o","o","o","o","o","o","o","o","o","x","o","o","o","x","o","o","o"];
-                        var grade4 = ["o","o","x","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o"];
-                        var grade5 = ["o","o","x","o","o","o","o","o","o","o","o","o","x","o","o","o","x","o","o","o"];
+                        var grade2 = ["o","o","x","x","o","o","o","o","o","x","o","o","o","x","o","o","x","o","x","o"];
+                        var grade3 = ["o","o","x","o","x","x","o","o","x","o","x","o","x","o","o","o","x","o","x","x"];
+                        var grade4 = ["o","o","x","o","x","x","o","o","x","o","x","o","x","o","o","o","x","o","x","x"];
+                        var grade5 = ["o","o","x","o","x","x","o","o","x","o","x","o","x","o","o","o","x","o","x","x"];
 
-                        for(var i = 0; i < 20 ; i++){
-                            $("#race_detail_record").append($("<th>").text(i+1));
+                        for(var i = 1; i <= 20 ; i++){
+                                $("#race_detail_record").append($("<th>").text(i));
                         }
 
                         for(var i = 0 ; i < names.length ; i++){
-                            $('#details_record').append($('<tr id="'+names[i]+'">').text(names[i]));
+                                $('#details_record').append($('<tr id="'+names[i]+'">').text(names[i]));
                         }
 
                         for(var i = 0 ; i < grade1.length ; i++){
@@ -358,7 +204,7 @@
 
                     </script>
 
-                    <div style="margin: 0">오답 체크 ( 3개 )</div>
+                    <div style="margin: 0px;">오답 문제( 3개 )</div>
 
                     <table class="table table-hover">
                         <thead>
@@ -385,7 +231,7 @@
                                     苦労してためたお金なのだから、一円（　　）無駄には使いたくない。
                                 </td>
                                 <td rowspan="3" style="border-left: 1px solid transparent;">
-                                    3/5
+                                    0/5
                                 </td>
                             </tr>
                             <tr>
@@ -393,15 +239,30 @@
                                     たりとも
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
+                                    <div style="float:left;">
                                     ばかりも
+                                    </div>
+                                    <div style="float:right;">
+                                        2명
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    だけさえ
+                                    <div style="float:left;">
+                                        だけさえ
+                                    </div>
+                                    <div style="float:right;">
+                                        2명
+                                    </div>
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    とはいえ
+                                    <div style="float:left;">
+                                        とはいえ
+                                    </div>
+                                    <div style="float:right;">
+                                        1명
+                                    </div>
                                 </td>
                             </tr>
                         </div>
@@ -430,7 +291,12 @@
                                     にあって
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    にしては
+                                    <div style="float:left;">
+                                        にしては
+                                    </div>
+                                    <div style="float:right;">
+                                        3명
+                                    </div>
                                 </td>
                             </tr>
                         </div>
@@ -443,7 +309,7 @@
                                     姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
                                 </td>
                                 <td>
-                                    2/5
+                                    1/5
                                 </td>
                             </tr>
                             <tr>
@@ -456,10 +322,20 @@
                             </tr>
                             <tr>
                                 <td>
-                                    こととて
+                                    <div style="float:left;">
+                                        こととて
+                                    </div>
+                                    <div style="float:right;">
+                                        3명
+                                    </div>
                                 </td>
                                 <td style="border-left: 1px solid #e5e6e8;">
-                                    うちに
+                                    <div style="float:left;">
+                                        うちに
+                                    </div>
+                                    <div style="float:right;">
+                                        1명
+                                    </div>
                                 </td>
                             </tr>
                         </div>

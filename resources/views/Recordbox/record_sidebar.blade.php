@@ -72,7 +72,7 @@
 
 </head>
 
-<div id="navigation" style="min-height: 600px;">
+<div id="navigation" style="min-height: 600px;height:100%">
 
     <!--네비바 위부분 공백-->
     <div class="page-small" style="text-align: center; margin-top: 10px; margin-bottom:10px;">
@@ -82,27 +82,13 @@
         <ul class="main-left-menu" id="side-menu2">
 
             {{--그룹 파트--}}
-            <li class="" id="side-menu3_li" style=" margin-top: 20px;">
-                <a href="#">
-                    나의 그룹
-                </a>
+            <li class="" id="side-menu3_li" style=" margin-top: 20px;margin-left: 10px;">
+                    나의 클래스
             </li>
-            <li class="class-toggle">
-                <div class="nav-second-level class_list">
-                    <a class="" href="#">
-                        <div style="display:inline-block; width: 160px;" id="groupA">특강 A반</div>
-                    </a>
-                    <a class="" href="#">
-                        <div style="display:inline-block; width: 160px;" id="groupB">특강 B반</div>
-                    </a>
-                </div>
 
-                <div class="nav-second-level class-config" style="padding-left: 15px;">
-                    <div style="display: inline-block; width: 12%; text-align: center;">
-                        <a class="btn-new-class" style="display: block; padding: 10px 0px;" onclick="">
-                            <i class="fa fa-plus" style="font-size: 16px; position: relative; top: 1px;"></i>
-                        </a>
-                    </div>
+            <li class="class-toggle">
+                {{--클래스 이름 리스트 들어갈 자리--}}
+                <div class="nav-second-level class_list" id="group_names">
 
                 </div>
             </li>
