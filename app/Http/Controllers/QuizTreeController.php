@@ -158,6 +158,7 @@ class QuizTreeController extends Controller
             $raceData = DB::table('races as r')
                 ->select(
                     'r.created_at   as date',
+                    'r.type         as type',
                     'g.name         as groupName',
                     'u.name         as teacherName'
                 )
@@ -168,8 +169,9 @@ class QuizTreeController extends Controller
 
             $races = array();
             foreach ($raceData as $race){
-                array($races, array(
+                array_push($races, array(
                     'date'          => $race->date,
+                    'type'          => $race->type,
                     'groupName'     => $race->groupName,
                     'teacherName'   => $race->teacherName
                 ));
