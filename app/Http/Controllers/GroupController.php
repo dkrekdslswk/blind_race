@@ -281,7 +281,7 @@ class GroupController extends Controller{
                             )
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
-                            ->where(db::raw('classification LIKE "%student"'))
+                            ->where(db::raw('classification LIKE \'%student\''))
                             ->orderBy('number', 'desc')
                             ->get();
 
@@ -297,7 +297,7 @@ class GroupController extends Controller{
                         DB::table('groupStudents')
                             ->insert($studentIds);
 
-                        // 등록 실패한 학생 처리하기
+                        // 등록 안된 학생 처리하기
                         // 미구현
 
                         // 반납하는 값
