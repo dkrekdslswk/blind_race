@@ -158,17 +158,13 @@ class RaceController extends Controller{
 //        );
         $postData = array(
             'roomPin'       => $request->input('roomPin'),
-            'sessionId'     => $request->input('sessionId')
+            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
         // 반납값 디폴트
         $sessionCheck   = false;
 
         // 앱 로그인인지 웹 로그인인지 확인
-        if ($postData['sessionId'] == 0){
-            $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        } else {
-            $userData = UserController::sessionDataGet($postData['sessionId']);
-        }
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('races as r')
