@@ -17,10 +17,10 @@ class CreateListTable extends Migration
         Schema::create('folders', function (Blueprint $table) {
             $table->increments('number');
 
+            $table->string('name', 100)->nullable();
+
             $table->unsignedInteger('teacherNumber');
             $table->foreign('teacherNumber')->references('number')->on('users');
-
-            $table->string('name', 100)->nullable();
         });
 
         Schema::create('lists', function (Blueprint $table) {

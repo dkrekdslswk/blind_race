@@ -20,6 +20,9 @@ class CreateGroupTable extends Migration
 
 	        $table->unsignedInteger('teacherNumber');
 	        $table->foreign('teacherNumber')->references('number')->on('users');
+
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
