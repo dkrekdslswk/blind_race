@@ -158,11 +158,12 @@ class RaceController extends Controller{
 //        );
         $postData = array(
             'roomPin'       => $request->input('roomPin'),
-            'sessionId'     => $request->input('sessionId')
+            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
         // 반납값 디폴트
         $sessionCheck   = false;
 
+        // 앱 로그인인지 웹 로그인인지 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
@@ -199,7 +200,8 @@ class RaceController extends Controller{
                     ->insert([
                         'raceNumber'    => $data->raceId,
                         'userNumber'    => $userData['userId'],
-                        'retestState'   => 'not'
+                        'retestState'   => 'not',
+                        'wrongState'   => 'not'
                     ]);
             }
         }
@@ -212,7 +214,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 학생이 소켓에 들어올 때
+    // 학생이 닉네임과 캐릭터를 설정할 때
     public function studentSet(Request $request){
         // 받아야하는 값
 //        $postData = array(

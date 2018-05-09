@@ -14,12 +14,12 @@ class CreateRaceUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('retestStates', function (Blueprint $table) {
+        Schema::create('raceUserStates', function (Blueprint $table) {
             $table->char('name', 20);
             $table->primary('name');
         });
 
-        DB::table('retestStates')->insert([
+        DB::table('raceUserStates')->insert([
             ['name' => 'not'],
             ['name' => 'order'],
             ['name' => 'clear']
@@ -34,7 +34,10 @@ class CreateRaceUserTable extends Migration
 	        $table->primary(['raceNumber', 'userNumber']);
 
             $table->char('retestState', 20);
-            $table->foreign('retestState')->references('name')->on('retestStates');
+            $table->foreign('retestState')->references('name')->on('raceUserStates');
+
+            $table->char('wrongState', 20);
+            $table->foreign('wrongState')->references('name')->on('raceUserStates');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

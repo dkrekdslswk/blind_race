@@ -10,6 +10,9 @@ class RecordBoxController extends Controller{
     // 그룹에서 친 모든 레이스 정보 가져오기
     public function getRecordData(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'groupId'   => 1
+//        );
         $postData = array(
             'groupId'   => $request->input('groupId')
         );
@@ -22,7 +25,7 @@ class RecordBoxController extends Controller{
             $where = array();
             switch ($userData['classification']){
                 case 'teacher':
-                    $where = array('teacherId' => $userData['userId']);
+                    $where = array('teacherNumber' => $userData['userId']);
                 case 'root':
                     $groupData = DB::table('groups')
                         ->select(
@@ -36,40 +39,41 @@ class RecordBoxController extends Controller{
                         ->first();
 
                     if($groupData){
-                        $raceData = DB::table()
-                            ->select()
-                            ->where()
-                            ->get();
-                    }
+                        $time = time();
+                        $endDate = date('Y-m-d', $time);
+                        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
+                        $races = $this->selectGroupRecords($groupData->groupId, $startDate, $endDate);
 
+                        // 반납하는값
+                        $returnValue = array(
+                            'group' => array(
+                                'id' => $groupData->groupId,
+                                'name' => $groupData->groupName
+                            ),
+                            'races' => $races,
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
+                    break;
 //                case 'student':
                 default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
             }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         // 해당그룹의 레이스 정보 가져오기
 
-        // 반납하는값
-        $returnValue = array(
-            'group' => array(
-                'id',
-                'name'
-            ),
-            'races' => array(
-                0 => array(
-                    'id',
-                    'name',
-                    'all',
-                    'vocabulary',
-                    'word',
-                    'grammar',
-                    'year',
-                    'month',
-                    'day'
-                )
-            ),
-            'check'
-        );
         return $returnValue;
     }
 
@@ -79,17 +83,63 @@ class RecordBoxController extends Controller{
     // 오답노트 재출 명령하기기
 
     // 기간내의 정보 읽어오기
-    private function selectGroupRecords($groupId, $type, $startDate, $endDate){
-        // 그룹 선택
-
-        // 타입별 설정
-        // 날자 쿼리 생성
-
-        // 일별
-        // 월별
-
+    private function selectGroupRecords($groupId, $startDate, $endDate){
+        $recordDatas = DB::table('races as r')
+            ->select(
+                'l.name as listName',
+                'r.number as raceId',
+                DB::raw('year(r.created_at) as year'),
+                DB::raw('month(r.created_at) as month'),
+                DB::raw('dayofmonth(r.created_at) as day'),
+                DB::raw('count(distinct ru.userNumber) as userCount'),
+                DB::raw('count(distinct re.quizNo) as quizCount'),
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount'),
+                DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
+                DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                DB::raw('count(CASE WHEN q.type like "grammar%" THEN 1 END) as grammarCount'),
+                DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
+            )
+            ->where([
+                're.retest' => 0,
+                'r.groupNumber' => $groupId
+            ])
+            ->where(DB::raw('date(r.created_at) >= date('.$startDate.')'))
+            ->where(DB::raw('date(r.created_at) <= date('.$endDate.')'))
+            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+            ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
+            ->join('records as re', function ($join){
+                $join->on('re.raceNo', '=', 'ru.raceNumber');
+                $join->on('re.userNo', '=', 'ru.userNumber');
+            })
+            ->join('quizBanks as q', 'q.number', '=', 're.quizNo')
+            ->groupBy('r.number')
+            ->orderBy('r.number')
+            ->get();
 
         // 반납할 값 정리
+        $records = array();
+        foreach ($recordDatas as $record){
+            array_push($records, array(
+                'listName'                      => $record->listName,
+                'raceId'                        => $record->raceId,
+                'year'                          => $record->year,
+                'month'                         => $record->month,
+                'day'                           => $record->day,
+                'userCount'                     => $record->userCount,
+                'quizCount'                     => $record->quizCount,
+                'rightAnswerCount'              => $record->rightAnswerCount            / $record->userCount,
+                'vocabularyCount'               => $record->vocabularyCount             / $record->userCount,
+                'vocabularyRightAnswerCount'    => $record->vocabularyRightAnswerCount  / $record->userCount,
+                'wordCount'                     => $record->wordCount                   / $record->userCount,
+                'wordRightAnswerCount'          => $record->wordRightAnswerCount        / $record->userCount,
+                'grammarCount'                  => $record->grammarCount                / $record->userCount,
+                'grammarRightAnswerCount'       => $record->grammarRightAnswerCount     / $record->userCount
+            ));
+        }
+
+        return $records;
     }
 
     // 한 개의 레이스 정보 읽어오기

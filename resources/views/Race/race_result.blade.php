@@ -5,12 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>이까지는 가는데 밑에서 못받는구나</title>
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
+    <title>레이스 결과 </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <!-- Bulma Version 0.6.0 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
 
     <script>
@@ -24,6 +22,7 @@
             socket.emit('race_ending',roomPin);
 
             socket.on('race_ending',function(data){
+                $('#b-progress1').attr(":value",80);
 
                 $.ajax({
                     type: 'POST',
@@ -41,6 +40,7 @@
                             $('#'+i+'_nick').text(r_result[i].nick);
                             $('#'+i+'_point').text(r_result[i].rightCount);
                             $('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].characterId+".png");
+
                         }
                     },
                     error: function(request, status, error) {
@@ -55,6 +55,8 @@
 
 </head>
 <body>
+
+<div> @include('Navigation.main_nav')</div>
 
 <div id="app">
 

@@ -89,7 +89,17 @@
                         </li>
                     
                     <li>
-                            <a class="mt-green" href="{{ url('race_list') }}">
+                            {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
+
+                             <?php if(isset($response['classification'])){
+                                  if($response['classification'] == "teacher" )
+                                    echo "<a class='mt-green' href='/race_list'>";
+                                  else if($response['classification'] == "student")
+                                      echo "<a class='mt-green' href='/race_student'>";
+                                 }else{
+                                      echo "<a class='mt-green' >";
+                                 } ?>
+
                                 <i class="fa fa-5x fa-gamepad"></i>
                                 <em>Race</em>
                             </a>
@@ -122,57 +132,192 @@
                 </div>
             </div>
            
-            <div class="wrapper row3">
-                <div class="lrspace">
-                    <main class="container clear">
-                        <!-- main body -->
-                       
-                        <figure class="group">
-                            <div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>
-                            <figcaption class="one_half">
-                                <h1 class="xxl">十分十分
-                                </h1>
-                                <h1 class="xxl">
-                                    Free download Now!</h1>
-                                <p></p>
+            {{--<div class="wrapper row3">--}}
+                {{--<div class="lrspace">--}}
+                    {{--<main class="container clear">--}}
+                        {{--<!-- main body -->--}}
 
-                            </figcaption>
-                        </figure>
+                        {{--<figure class="group">--}}
+                            {{--<div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>--}}
+                            {{--<figcaption class="one_half">--}}
+                                {{--<h1 class="xxl">十分十分--}}
+                                {{--</h1>--}}
+                                {{--<h1 class="xxl">--}}
+                                    {{--Free download Now!</h1>--}}
+                                {{--<p></p>--}}
 
-                        <!--
-                        ################################################################################################
-                        -->
-                        <!-- / main body -->
-                        <div class="clear"></div>
-                    </main>
-                </div>
+                            {{--</figcaption>--}}
+                        {{--</figure>--}}
+
+                        {{--<!----}}
+                        {{--################################################################################################--}}
+                        {{---->--}}
+                        {{--<!-- / main body -->--}}
+                        {{--<div class="clear"></div>--}}
+                    {{--</main>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+
+
+        <div class="wrapper row3">
+            <div class="lrspace">
+                <main class="container clear ssize"  >
+
+                    <!-- Team member -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/baXiQ1M.jpg" alt="card image"></p>
+                                            <h4 class="card-title">to 성 형 석 길 이 맞  </h4>
+                                            <p class="card-text">집에가고싶다.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <h4 class="card-title">My class</h4>
+                                            <p class="card-text">영어로 se..brother suck.</p>
+                                            <ul class="list-inline">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/QUJ0Ak1.jpg" alt="card image"></p>
+                                            <h4 class="card-title">to 김 승 목 길 이 맞  </h4>
+                                            <p class="card-text">집에가고싶다.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <h4 class="card-title">My class</h4>
+                                            <p class="card-text">머리 몇시간쨰만지는중.</p>
+                                            <ul class="list-inline">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
+                                            <h4 class="card-title">to 최 병 찬 길 이 맞   </h4>
+                                            <p class="card-text">?????????</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <h4 class="card-title">My class</h4>
+                                            <p class="card-text">병찬이 갈리는소리골골  .</p>
+                                            <ul class="list-inline">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/LlQi7HQ.jpg" alt="card image"></p>
+                                            <h4 class="card-title">to 시 뮤 림 레 기 다</h4>
+                                            <p class="card-text">집에가고싶다.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <h4 class="card-title">My class</h4>
+                                            <p class="card-text">마인크래프트보는초딩 ㅇㅈ?.</p>
+                                            <ul class="list-inline">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                            <div class="mainflip">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/7FoPGzz.jpg" alt="card image"></p>
+                                            <h4 class="card-title">to안준휘(김하온)</h4>
+                                            <p class="card-text">집에가고싶다.</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <div class="card-body text-center mt-4">
+                                            <h4 class="card-title">My class</h4>
+                                            <p class="card-text">사랑해.</p>
+                                            <ul class="list-inline">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </main>
             </div>
-
-   
-
-           
+        </div>
 
         </div>
     </div>
 </div>
-<!--
 
-<div
-    class="wrapper row4 bgded"
-    style="background-image:url('images/demo/backgrounds/02.png');">
-    <div class="lrspace overlay">
-        <footer id="footer" class="clear">
-         
-        </footer>
-    </div>
-</div>
+
 
 <div class="wrapper row5">
     <div class="lrspace">
         <div id="copyright" class="clear">
-            <!--
-            ################################################################################################
-            -->
+
             <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
                 <a href="#">캡스톤 십자인대</a>
             </p>
@@ -302,7 +447,11 @@ window.onclick = function(event) {
 }
 
 </script>
-<?php if(isset($response)){echo $response['check']  ;} if(isset($response) && $response['check']==false){ echo "실패"; } 
+<?php
+if(isset($response))
+        {echo $response['check']  ;}
+if(isset($response) && $response['check']==false)
+        { echo "실패"; }
 
 
 

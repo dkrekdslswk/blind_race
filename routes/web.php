@@ -60,6 +60,11 @@ Route::get('/race_result', function(){
     return view('Race/race_result');
 });
 
+/* 2-4 Blind Race : Race_student */
+Route::get('/race_student', function(){
+    return view('Race/race_student');
+});
+
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
@@ -139,7 +144,7 @@ Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList'
 Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
 Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
-//Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+Route::post('/recordBoxController/getRecordData','RecordBoxController@getRecordData');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');

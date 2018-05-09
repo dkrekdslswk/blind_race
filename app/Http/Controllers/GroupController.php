@@ -264,9 +264,12 @@ class GroupController extends Controller{
 
                     // 권한 확인
                     if ($groupData) {
-                        // 그룹에 가입된 유저들 검색
+                        // 그룹에 이미 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
-                            ->where('u.classification', 'LIKE', '%student')
+                            ->where(function ($query){
+                                $query->where('classification', '=', 'student')
+                                    ->orWhere('classification', '=', 'sleepStudent');
+                            })
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
@@ -274,20 +277,22 @@ class GroupController extends Controller{
                             ->toArray();
 
                         // 그룹에 가입안된 학생 검색
+                        $noGroupStudents = array_diff($postData['students'], $groupUsers);
                         $studentData = DB::table('users')
                             ->select(
-                                'number           as id',
-                                'name             as name'
+                                'number as id',
+                                'name'
                             )
-                            ->where('classification', 'LIKE', '%student')
-                            ->whereNotIn('number', $groupUsers)
-                            ->whereIn('number', $postData['students'])
-                            ->orderBy('number', 'desc')
+                            ->whereIn('number', $noGroupStudents)
+                            ->where(function ($query){
+                                $query->where('classification', '=', 'student')
+                                    ->orWhere('classification', '=', 'sleepStudent');
+                            })
                             ->get();
 
                         $studentIds = array();
                         foreach ($studentData as $student) {
-                            array($studentIds, array(
+                            array_push($studentIds, array(
                                 'groupNumber' => $groupData->groupId,
                                 'userNumber' => $student->id
                             ));
@@ -297,7 +302,7 @@ class GroupController extends Controller{
                         DB::table('groupStudents')
                             ->insert($studentIds);
 
-                        // 등록 실패한 학생 처리하기
+                        // 등록 안된 학생 처리하기
                         // 미구현
 
                         // 반납하는 값
@@ -309,7 +314,7 @@ class GroupController extends Controller{
                             ));
                         }
                         $returnValue = array(
-                            'students' => $students,
+                            'students' => $studentIds,
                             'check' => true
                         );
                     } else {
@@ -349,76 +354,86 @@ class GroupController extends Controller{
         // 세션정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 권한 확인
-        switch ($userData['classification']) {
-            // 검색방식 설정
-            // 1. 미등록 학생
-            // 해당 그룹에 미등록된 학생만 검색
-            // 이름, 학번에 해당 문자가 포감되는지 확인
-            // 학생만 검색
-            case 'teacher':
-            case 'root':
-                // 그룹에 포함된 학생 검색
-                $groupUsers = DB::table('users as u')
-                    ->where([
-                        ['u.classification', 'LIKE', '%' . 'student']
-                    ])
-                    ->where(function ($query) use ($postData){
-                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
-                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
-                    })
-                    ->where('gs.groupNumber', '=', $postData['groupId'])
-                    ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
-                    ->pluck('u.number')
-                    ->toArray();
+        // 로그인 확인
+        if ($userData['check']) {
 
-                // 그룹에 포함안된 학생 검색
-                $users = DB::table('users')
-                    ->select(
-                        'number           as id',
-                        'name             as name',
-                        'classification   as classification'
-                    )
-                    ->where([
-                        ['classification', 'LIKE', '%' . 'student']
-                    ])
-                    ->whereNotIn('number', $groupUsers)
-                    ->where(function ($query) use ($postData){
-                        $query->where('number', 'LIKE', '%' . $postData['search'] . '%')
-                            ->orWhere('name', 'LIKE', '%' . $postData['search'] . '%');
-                    })
-                    ->orderBy('number', 'desc')
-                    ->get();
-                break;
+            // 권한 확인
+            switch ($userData['classification']) {
+                // 검색방식 설정
+                // 1. 미등록 학생
+                // 해당 그룹에 미등록된 학생만 검색
+                // 이름, 학번에 해당 문자가 포감되는지 확인
+                // 학생만 검색
+                case 'teacher':
+                case 'root':
+                    // 그룹에 포함된 학생 검색
+                    $groupUsers = DB::table('users as u')
+                        ->where(function ($query){
+                            $query->where('classification', '=', 'student')
+                                ->orWhere('classification', '=', 'sleepStudent');
+                        })
+                        ->where(function ($query) use ($postData) {
+                            $query->where('u.number', 'like', '%' . $postData['search'] . '%')
+                                ->orWhere('u.name', 'like', '%' . $postData['search'] . '%');
+                        })
+                        ->where('gs.groupNumber', '=', $postData['groupId'])
+                        ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
+                        ->pluck('u.number')
+                        ->toArray();
 
-            // 2. 루트의 검색
-            // 이름, 학번에 해당 문자가 포감되는지 확인
-            // 교사등 모든학생 검색
-            // 미구현
+                    // 그룹에 포함안된 학생 검색
+                    $users = DB::table('users')
+                        ->select(
+                            'number           as id',
+                            'name             as name',
+                            'classification   as classification'
+                        )
+                        ->where(function ($query){
+                            $query->where('classification', '=', 'student')
+                                ->orWhere('classification', '=', 'sleepStudent');
+                        })
+                        ->whereNotIn('number', $groupUsers)
+                        ->where(function ($query) use ($postData) {
+                            $query->where('number', 'like', '%' . $postData['search'] . '%')
+                                ->orWhere('name', 'like', '%' . $postData['search'] . '%');
+                        })
+                        ->orderBy('number', 'desc')
+                        ->get();
+                    break;
+
+                // 2. 루트의 검색
+                // 이름, 학번에 해당 문자가 포감되는지 확인
+                // 교사등 모든학생 검색
+                // 미구현
 //            case 'root':
 //                break;
 
-            // 3. 권한 외
-            default:
-                $users = false;
-                break;
-        }
-
-        // 반납하는 값
-        if ($users) {
-            $userArr = array();
-            foreach ($users as $user){
-                array_push($userArr, array(
-                    'id'                => $user->id,
-                    'name'              => $user->name,
-                    'classification'    => $user->classification
-                ));
+                // 3. 권한 외
+                default:
+                    $users = false;
+                    break;
             }
 
-            $returnValue = array(
-                'users' => $userArr,
-                'check' => true
-            );
+            // 반납하는 값
+            if ($users) {
+                $userArr = array();
+                foreach ($users as $user) {
+                    array_push($userArr, array(
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'classification' => $user->classification
+                    ));
+                }
+
+                $returnValue = array(
+                    'users' => $userArr,
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check' => false

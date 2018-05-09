@@ -45,8 +45,6 @@ class BlindDummyTableSeeder extends Seeder
             DB::table('groupStudents')->insert([
                 'groupNumber'           => $groupId,
                 'userNumber'            => $users[$number][0],
-//                'userName'              => $users[$number][2],
-//                'accessionState'        => 'enrollment'
             ]);
         }
 
@@ -177,7 +175,8 @@ class BlindDummyTableSeeder extends Seeder
                     ->insert([
                         'raceNumber'    => $raceId,
                         'userNumber'    => $users[$number][0],
-                        'retestState'   => 'not'
+                        'retestState'   => 'not',
+                        'wrongState'   => 'not'
                     ]);
             }
 

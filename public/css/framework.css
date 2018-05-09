@@ -65,7 +65,7 @@ address{font-style:normal; font-weight:normal;}
 hr{display:block; width:100%; height:1px; border:solid; border-width:1px 0 0 0;}
 
 .wrapper{display:block; position:relative; margin:0 auto; padding:0; text-align:left; word-wrap:break-word;}
-#header, #breadcrumb, #pageintro, .container, #latest, #cta, #footer, #copyright{display:block; width:100%;}
+#header, #breadcrumb, #pageintro, .container, #latest, #cta, #footer, #copyright{display:inline-block; width:100%;}
 .lrspace{display:block; padding:0 30px;}
 
 

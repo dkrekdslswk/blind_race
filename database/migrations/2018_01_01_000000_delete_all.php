@@ -36,6 +36,9 @@ class DeleteAll extends Migration
         Schema::dropIfExists('race_results');
         // update 18.04.24
         Schema::dropIfExists('raceUsers');
+        // update 18.05.09
+        Schema::dropIfExists('raceUserStates');
+        // delete 18.05.09
         Schema::dropIfExists('retestStates');
 
         //delete 18.04.24

@@ -2,22 +2,6 @@
 
     <main>
         <div>
-            <!-- START NAV -->
-            <div class="navbar is-white">
-                <div>
-                    <div class="navbar-brand">
-
-                        <div class="navbar-burger burger" data-target="navMenu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <!-- END NAV -->
-
             <div class="Main">
                 <section class="hero is-info welcome is-small">
                     <div class="hero-body">
@@ -37,13 +21,13 @@
                                 <p class="title" id="0_nick" ></p>
                                 <p class="subtitle" id="0_point"></p>
                                 <img id="0_character" src="#" width="250px">
-                                <b-progress
-                                        height="30px"
-                                        :value="98"
-                                        variant="warning"
-                                        striped="striped"
-                                        :animated="animate"
-                                        class="mb-2 w-100 "></b-progress>
+                                <b-progress id="b-progress1"
+                                            height="30px"
+                                            :value="10"
+                                            variant="warning"
+                                            striped="striped"
+                                            :animated="animate"
+                                            class="mb-2 w-100 "></b-progress>
                             </article>
                         </div>
                         <div class="tile is-parent">
@@ -159,24 +143,6 @@
                             </footer>
                         </div>
                     </div>
-
-                    <!-- <div class="column is-6"> <div class="card"> <header class="card-header">
-                    <p class="card-header-title"> Inventory Search </p> <a href="#"
-                    class="card-header-icon" aria-label="more options"> <span class="icon"> <i
-                    class="fa fa-angle-down" aria-hidden="true"></i> </span> </a> </header> <div
-                    class="card-content"> <div class="content"> <div class="control has-icons-left
-                    has-icons-right"> <input class="input is-large" type="text" placeholder="">
-                    <span class="icon is-medium is-left"> <i class="fa fa-search"></i> </span> <span
-                    class="icon is-medium is-right"> <i class="fa fa-check"></i> </span> </div>
-                    </div> </div> </div> -->
-                    <!-- <div class="card"> <header class="card-header"> <p
-                    class="card-header-title"> User Search </p> <a href="#" class="card-header-icon"
-                    aria-label="more options"> <span class="icon"> <i class="fa fa-angle-down"
-                    aria-hidden="true"></i> </span> </a> </header> <div class="card-content"> <div
-                    class="content"> <div class="control has-icons-left has-icons-right"> <input
-                    class="input is-large" type="text" placeholder=""> <span class="icon is-medium
-                    is-left"> <i class="fa fa-search"></i> </span> <span class="icon is-medium
-                    is-right"> <i class="fa fa-check"></i> </span> </div> </div> </div> </div> -->
                 </div>
             </div>
         </div>
