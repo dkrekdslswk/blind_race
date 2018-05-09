@@ -175,7 +175,8 @@ class BlindDummyTableSeeder extends Seeder
                     ->insert([
                         'raceNumber'    => $raceId,
                         'userNumber'    => $users[$number][0],
-                        'retestState'   => 'not'
+                        'retestState'   => 'not',
+                        'wrongState'   => 'not'
                     ]);
             }
 
