@@ -89,7 +89,17 @@
                         </li>
                     
                     <li>
-                            <a class="mt-green" href="{{ url('race_list') }}">
+                            {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
+
+                             <?php if(isset($response['classification'])){
+                                  if($response['classification'] == "teacher" )
+                                    echo "<a class='mt-green' href='/race_list'>";
+                                  else if($response['classification'] == "student")
+                                      echo "<a class='mt-green' href='/race_student'>";
+                                 }else{
+                                      echo "<a class='mt-green' >";
+                                 } ?>
+
                                 <i class="fa fa-5x fa-gamepad"></i>
                                 <em>Race</em>
                             </a>
@@ -387,7 +397,11 @@ window.onclick = function(event) {
 }
 
 </script>
-<?php if(isset($response)){echo $response['check']  ;} if(isset($response) && $response['check']==false){ echo "실패"; } 
+<?php
+if(isset($response))
+        {echo $response['check']  ;}
+if(isset($response) && $response['check']==false)
+        { echo "실패"; }
 
 
 

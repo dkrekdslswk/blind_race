@@ -148,7 +148,11 @@
 
     </style>
     <script>
+        var pub_groupId;
         $(document).ready(function () {
+
+            pub_groupId=1;
+
 
 
             var params = {
@@ -214,9 +218,9 @@
                         
                         student_list +='<tr><td>'
                         +search_studentJSON[i].name
-                        +'</td><td>'
+                        +'</td><td id="'+"st"+i+'">'
                         +search_studentJSON[i].id
-                        +'</td><td><button>+</button></td></tr>'
+                        +'</td><td><button onclick="add_student(' +i+ ')" >+</button></td></tr>'
                     }          
 
                     $('#myTable').html(student_list);
@@ -226,7 +230,6 @@
                     alert("검색에러");
                 }
         });
-
 
             
             
@@ -285,7 +288,7 @@
         }
 
         function getAnothergroup(groupId) {
-
+            pub_groupId = groupId;
             $.ajax({
                 type: 'POST',
                 url: "{{url('/groupController/groupDataGet')}}",

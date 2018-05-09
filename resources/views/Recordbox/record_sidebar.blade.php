@@ -70,10 +70,6 @@
         }
     </style>
 
-    <script src="text/javascript">
-
-    </script>
-
 </head>
 
 <div id="navigation" style="min-height: 600px;">
