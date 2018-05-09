@@ -144,7 +144,7 @@ Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList'
 Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
 Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
-//Route::post('/recordBoxController/totalScoreGet','RecordBoxController@totalScoreGet');
+Route::post('/recordBoxController/getRecordData','RecordBoxController@getRecordData');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
