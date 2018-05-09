@@ -60,6 +60,11 @@ Route::get('/race_result', function(){
     return view('Race/race_result');
 });
 
+/* 2-4 Blind Race : Race_student */
+Route::get('/race_student', function(){
+    return view('Race/race_student');
+});
+
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
