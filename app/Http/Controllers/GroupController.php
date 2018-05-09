@@ -314,7 +314,7 @@ class GroupController extends Controller{
                             ));
                         }
                         $returnValue = array(
-                            'students' => $students,
+                            'students' => $studentIds,
                             'check' => true
                         );
                     } else {
