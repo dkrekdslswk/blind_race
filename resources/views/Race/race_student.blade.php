@@ -18,30 +18,12 @@
         var socket = io(':8890');
         window.onload = function() {
 
-            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
-                //유저정보를 DB세션에 추가함
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('/raceController/studentSet')}}",
-                    dataType: 'json',
-                    async: false ,
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
-                    success: function (result) {
-                        console.log(result['nickCheck']);
-                        if( result['nickCheck'] && result['characterCheck'] )
-                        {
-                            //유저한테 다시보내줌 result['characterId'];
-                            socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
-                        }
-                        else{
-                        }
-
-                    },
-                    error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
-                    }
-                });
+            socket.on('web_enter_room',function(roomPin,nick,sessionId,characterId,enter_check){
+                if(enter_check == true){
+                    alert('입장성공');
+                }else{
+                    alert('입장실패');
+                }
             });
 
         };
@@ -50,9 +32,6 @@
             roomPin = document.getElementById('roomPin').value;
 
             var characters='<span style="font-size:40px; margin: 5% 0px 0px 40%;"> 캐릭터 선택</span><br>';
-
-
-
 
             $.ajax({
                 type: 'POST',
@@ -146,7 +125,7 @@
         <div id="entranceInfo_nickname_page" style="display:none;">
             <span style="font-size:35px;">닉네임:</span>
             <input class="entrance_input" id="nickname" type="text"><br>
-            <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px;">Enter Room</button>
+            <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
         </div>
 
     <footer style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">

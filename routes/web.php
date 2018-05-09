@@ -65,6 +65,11 @@ Route::get('/race_student', function(){
     return view('Race/race_student');
 });
 
+Route::get('/r_content', function(){
+    return view('Race/race_student_content');
+});
+
+
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
