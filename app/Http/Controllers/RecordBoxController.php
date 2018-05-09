@@ -120,7 +120,7 @@ class RecordBoxController extends Controller{
                 DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = O  THEN 1 END) as grammarRightAnswerCount')
             )
             ->where([
-                ['re.retest' => 0],
+                're.retest' => 0,
                 'r.groupNumber' => $groupId,
                 DB::raw('date(r.create_at) >= date('.$startDate.')'),
                 DB::raw('date(r.create_at) <= date('.$endDate.')')
