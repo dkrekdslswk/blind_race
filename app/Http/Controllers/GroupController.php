@@ -281,7 +281,7 @@ class GroupController extends Controller{
                             )
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
-                            ->where('classification', 'LIKE', '%student')
+                            ->where(db::raw('classification LIKE "%student"'))
                             ->orderBy('number', 'desc')
                             ->get();
 
