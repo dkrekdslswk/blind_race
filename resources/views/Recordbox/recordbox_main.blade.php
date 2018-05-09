@@ -70,10 +70,14 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="js/moment.min.js"></script>
-    <script src="js/combodate.js"></script>
 
     <script type="text/javascript">
+
+        window.onload = function() {
+            getValue();
+            makingChart(id,DateType);
+            makingDropdown();
+        };
 
         function recordControl(id){
             switch (id){
@@ -97,8 +101,8 @@
                     break;
                 case "feedback" :
                     $('#record_feedback').attr('class','');
-                    $('#record_students').attr('class','hidden');
                     $('#group_chart').attr('class','hidden');
+                    $('#record_students').attr('class','hidden');
                     $('#record_history').attr('class','hidden');
                     break;
             }
@@ -116,6 +120,57 @@
             $('#wrapper').hide();
         });
 
+
+        function getValue() {
+
+            var groupId = 1;
+            var groupData = "";
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: "groupId=" + groupId,
+                success: function (data) {
+                    groupData = data;
+
+                    alert("Asdasd");
+
+                    console.log(groupData['teacher']['name']);
+                    console.log(groupData['group']['name']);
+                    console.log(groupData['students']);
+
+                    /*$('#teacher').html(teacher);
+                    $('#group').html(group);
+
+                    var student_list = '';
+
+                    for (var i = 0; i < student.length; i++) {
+
+                        student_list += '<tr><td>'
+
+                            + student[i].name
+                            + '</td><td>'
+                            + student[i].id
+                            + '</td><td>' +
+                            '<button>학생 정보 수정</button>' +
+                            '</td><td>' +
+                            '<button>삭제하기</button>' +
+                            '</td></tr>'
+                    }
+
+                    $('#student').html(student_list);
+*/
+                },
+                error: function(request, status, error) {
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                }
+            });
+        }
 
 
     </script>
