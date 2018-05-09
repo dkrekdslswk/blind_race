@@ -122,8 +122,8 @@ class RecordBoxController extends Controller{
             ->where([
                 're.retest' => 0,
                 'r.groupNumber' => $groupId,
-                DB::raw('date(r.create_at) >= date('.$startDate.')'),
-                DB::raw('date(r.create_at) <= date('.$endDate.')')
+                [DB::raw('date(r.create_at) >= date('.$startDate.')')],
+                [DB::raw('date(r.create_at) <= date('.$endDate.')')]
             ])
             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
             ->join('records as re', function ($join){
