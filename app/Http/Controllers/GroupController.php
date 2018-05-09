@@ -279,9 +279,9 @@ class GroupController extends Controller{
                                 'number           as id',
                                 'name             as name'
                             )
-                            ->where('classification', 'LIKE', '%student')
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
+                            ->where('classification', 'LIKE', '%student')
                             ->orderBy('number', 'desc')
                             ->get();
 
@@ -349,76 +349,84 @@ class GroupController extends Controller{
         // 세션정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 권한 확인
-        switch ($userData['classification']) {
-            // 검색방식 설정
-            // 1. 미등록 학생
-            // 해당 그룹에 미등록된 학생만 검색
-            // 이름, 학번에 해당 문자가 포감되는지 확인
-            // 학생만 검색
-            case 'teacher':
-            case 'root':
-                // 그룹에 포함된 학생 검색
-                $groupUsers = DB::table('users as u')
-                    ->where([
-                        ['u.classification', 'LIKE', '%' . 'student']
-                    ])
-                    ->where(function ($query) use ($postData){
-                        $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
-                            ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
-                    })
-                    ->where('gs.groupNumber', '=', $postData['groupId'])
-                    ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
-                    ->pluck('u.number')
-                    ->toArray();
+        // 로그인 확인
+        if ($userData['check']) {
 
-                // 그룹에 포함안된 학생 검색
-                $users = DB::table('users')
-                    ->select(
-                        'number           as id',
-                        'name             as name',
-                        'classification   as classification'
-                    )
-                    ->where([
-                        ['classification', 'LIKE', '%' . 'student']
-                    ])
-                    ->whereNotIn('number', $groupUsers)
-                    ->where(function ($query) use ($postData){
-                        $query->where('number', 'LIKE', '%' . $postData['search'] . '%')
-                            ->orWhere('name', 'LIKE', '%' . $postData['search'] . '%');
-                    })
-                    ->orderBy('number', 'desc')
-                    ->get();
-                break;
+            // 권한 확인
+            switch ($userData['classification']) {
+                // 검색방식 설정
+                // 1. 미등록 학생
+                // 해당 그룹에 미등록된 학생만 검색
+                // 이름, 학번에 해당 문자가 포감되는지 확인
+                // 학생만 검색
+                case 'teacher':
+                case 'root':
+                    // 그룹에 포함된 학생 검색
+                    $groupUsers = DB::table('users as u')
+                        ->where([
+                            ['u.classification', 'LIKE', '%' . 'student']
+                        ])
+                        ->where(function ($query) use ($postData) {
+                            $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
+                                ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+                        })
+                        ->where('gs.groupNumber', '=', $postData['groupId'])
+                        ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
+                        ->pluck('u.number')
+                        ->toArray();
 
-            // 2. 루트의 검색
-            // 이름, 학번에 해당 문자가 포감되는지 확인
-            // 교사등 모든학생 검색
-            // 미구현
+                    // 그룹에 포함안된 학생 검색
+                    $users = DB::table('users')
+                        ->select(
+                            'number           as id',
+                            'name             as name',
+                            'classification   as classification'
+                        )
+                        ->where([
+                            ['classification', 'LIKE', '%' . 'student']
+                        ])
+                        ->whereNotIn('number', $groupUsers)
+                        ->where(function ($query) use ($postData) {
+                            $query->where('number', 'LIKE', '%' . $postData['search'] . '%')
+                                ->orWhere('name', 'LIKE', '%' . $postData['search'] . '%');
+                        })
+                        ->orderBy('number', 'desc')
+                        ->get();
+                    break;
+
+                // 2. 루트의 검색
+                // 이름, 학번에 해당 문자가 포감되는지 확인
+                // 교사등 모든학생 검색
+                // 미구현
 //            case 'root':
 //                break;
 
-            // 3. 권한 외
-            default:
-                $users = false;
-                break;
-        }
-
-        // 반납하는 값
-        if ($users) {
-            $userArr = array();
-            foreach ($users as $user){
-                array_push($userArr, array(
-                    'id'                => $user->id,
-                    'name'              => $user->name,
-                    'classification'    => $user->classification
-                ));
+                // 3. 권한 외
+                default:
+                    $users = false;
+                    break;
             }
 
-            $returnValue = array(
-                'users' => $userArr,
-                'check' => true
-            );
+            // 반납하는 값
+            if ($users) {
+                $userArr = array();
+                foreach ($users as $user) {
+                    array_push($userArr, array(
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'classification' => $user->classification
+                    ));
+                }
+
+                $returnValue = array(
+                    'users' => $userArr,
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check' => false
