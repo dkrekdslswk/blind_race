@@ -130,7 +130,7 @@ class RecordBoxController extends Controller{
                 $join->on('re.raceNo', '=', 'ru.raceNumber');
                 $join->on('re.userNo', '=', 'ru.userNumber');
             })
-            ->join('quizBanks as q', 'q.number', '=', 'ru.quizNumber')
+            ->join('quizBanks as q', 'q.number', '=', 're.quizNo')
             ->groupBy('r.number')
             ->orderBy('r.number')
             ->get();
