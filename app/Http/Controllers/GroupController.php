@@ -266,7 +266,7 @@ class GroupController extends Controller{
                     if ($groupData) {
                         // 그룹에 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
-                            ->where('u.classification', 'LIKE', '%student')
+                            ->where('u.classification', 'LIKE', '%tudent')
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
@@ -281,7 +281,7 @@ class GroupController extends Controller{
                             )
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
-                            ->where(db::raw('classification LIKE \'%student\''))
+                            ->where('classification', 'LIKE', '%tudent')
                             ->orderBy('number', 'desc')
                             ->get();
 
@@ -364,7 +364,7 @@ class GroupController extends Controller{
                     // 그룹에 포함된 학생 검색
                     $groupUsers = DB::table('users as u')
                         ->where([
-                            ['u.classification', 'LIKE', '%' . 'student']
+                            ['u.classification', 'LIKE', '%' . 'tudent']
                         ])
                         ->where(function ($query) use ($postData) {
                             $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
@@ -383,7 +383,7 @@ class GroupController extends Controller{
                             'classification   as classification'
                         )
                         ->where([
-                            ['classification', 'LIKE', '%' . 'student']
+                            ['classification', 'LIKE', '%' . 'tudent']
                         ])
                         ->whereNotIn('number', $groupUsers)
                         ->where(function ($query) use ($postData) {
