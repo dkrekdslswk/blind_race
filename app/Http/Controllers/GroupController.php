@@ -288,7 +288,7 @@ class GroupController extends Controller{
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->orderBy('number', 'desc')
+                            ->orderBy('id', 'desc')
                             ->get();
 
                         $studentIds = array();
@@ -315,9 +315,7 @@ class GroupController extends Controller{
                             ));
                         }
                         $returnValue = array(
-                            'students' => $noGroupStudents,
-                            'students1' => $postData['students'],
-                            'students2' => $groupUsers,
+                            'students' => $students,
                             'check' => true
                         );
                     } else {
