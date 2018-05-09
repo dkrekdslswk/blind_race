@@ -171,7 +171,7 @@
                                 <div class="frontside">
                                     <div class="card">
                                         <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/baXiQ1M.jpg" alt="card image"></p>
                                             <h4 class="card-title">to 성 형 석 길 이 맞  </h4>
                                             <p class="card-text">집에가고싶다.</p>
 
@@ -198,7 +198,7 @@
                                 <div class="frontside">
                                     <div class="card">
                                         <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/QUJ0Ak1.jpg" alt="card image"></p>
                                             <h4 class="card-title">to 김 승 목 길 이 맞  </h4>
                                             <p class="card-text">집에가고싶다.</p>
 
@@ -252,7 +252,7 @@
                                 <div class="frontside">
                                     <div class="card">
                                         <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/LlQi7HQ.jpg" alt="card image"></p>
                                             <h4 class="card-title">to 시 뮤 림 레 기 다</h4>
                                             <p class="card-text">집에가고싶다.</p>
 
@@ -279,7 +279,7 @@
                                 <div class="frontside">
                                     <div class="card">
                                         <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
+                                            <p><img class=" img-fluid" src="https://i.imgur.com/7FoPGzz.jpg" alt="card image"></p>
                                             <h4 class="card-title">to안준휘(김하온)</h4>
                                             <p class="card-text">집에가고싶다.</p>
 
