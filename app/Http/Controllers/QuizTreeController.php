@@ -525,11 +525,10 @@ class QuizTreeController extends Controller
     private function deleteListQuiz($listId){
         // 문제 리스트 받아오기
         $listQuizs = DB::table('listQuizs')
-            ->select('quizNumber as number')
             ->where([
                 'listNumber' => $listId
             ])
-            ->get()
+            ->pluck('quizNumber')
             ->toArray();
 
         // 문제 리스트 삭제
@@ -541,9 +540,7 @@ class QuizTreeController extends Controller
 
         // 문제 삭제
         DB::table('quizBanks')
-            ->where([
-                'number' => $listQuizs
-            ])
+            ->whereIn('number', $listQuizs)
             ->delete();
     }
 
