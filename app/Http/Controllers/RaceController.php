@@ -163,7 +163,12 @@ class RaceController extends Controller{
         // 반납값 디폴트
         $sessionCheck   = false;
 
-        $userData = UserController::sessionDataGet($postData['sessionId']);
+        // 앱 로그인인지 웹 로그인인지 확인
+        if ($postData['sessionId'] == 0){
+            $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        } else {
+            $userData = UserController::sessionDataGet($postData['sessionId']);
+        }
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
         $data = DB::table('races as r')
@@ -213,7 +218,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 학생이 소켓에 들어올 때
+    // 학생이 닉네임과 캐릭터를 설정할 때
     public function studentSet(Request $request){
         // 받아야하는 값
 //        $postData = array(

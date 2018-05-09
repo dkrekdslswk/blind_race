@@ -79,16 +79,27 @@ class RecordBoxController extends Controller{
     // 오답노트 재출 명령하기기
 
     // 기간내의 정보 읽어오기
-    private function selectGroupRecords($groupId, $type, $startDate, $endDate){
-        // 그룹 선택
-
-        // 타입별 설정
-        // 날자 쿼리 생성
-
-        // 일별
-        // 월별
-
-
+    private function selectGroupRecords($groupId, $startDate, $endDate){
+        $recordDatas = DB::table('races as r')
+            ->select(
+                'r.number                               as raceId',
+                DB::raw('year(r.created_at)             as year'),
+                DB::raw('month(r.created_at)            as month'),
+                DB::raw('dayofmonth(r.created_at)       as day'),
+                DB::raw('count(distinct ru.userNumber)  as userCount')
+            )
+            ->where([
+                ['re.retest' => 0]
+            ])
+            ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
+            ->join('records as re', function ($join){
+                $join->on('re.raceNumber', '=', 'ru.raceNumber');
+                $join->on('re.userNumber', '=', 'ru.userNumber');
+            })
+            ->join('quizBanks as q', 'q.number', '=', 'ru.quizNumber')
+            ->groupBy('r.number')
+            ->orderBy('r.number')
+            ->get();
         // 반납할 값 정리
     }
 
