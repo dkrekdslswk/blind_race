@@ -111,7 +111,7 @@ class RecordBoxController extends Controller{
                 DB::raw('dayofmonth(r.created_at) as day'),
                 DB::raw('count(distinct ru.userNumber) as userCount'),
                 DB::raw('count(distinct re.quizNo) as quizCount'),
-                DB::raw('count(CASE WHEN re.answerCheck = O THEN 1 END) as rightAnswerCount'),
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount'),
                 DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
                 DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = O  THEN 1 END) as vocabularyRightAnswerCount'),
                 DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
@@ -121,10 +121,10 @@ class RecordBoxController extends Controller{
             )
             ->where([
                 're.retest' => 0,
-                'r.groupNumber' => $groupId,
-                [DB::raw('date(r.create_at) >= date('.$startDate.')')],
-                [DB::raw('date(r.create_at) <= date('.$endDate.')')]
+                'r.groupNumber' => $groupId
             ])
+            ->where(DB::raw('date(r.create_at) >= date('.$startDate.')'))
+            ->where(DB::raw('date(r.create_at) <= date('.$endDate.')'))
             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
             ->join('records as re', function ($join){
                 $join->on('re.raceNo', '=', 'ru.raceNumber');
