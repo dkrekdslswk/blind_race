@@ -280,7 +280,7 @@ class GroupController extends Controller{
                         $noGroupStudents = array_diff($postData['students'], $groupUsers);
                         $studentData = DB::table('users')
                             ->select(
-                                'number',
+                                'number as id',
                                 'name'
                             )
                             ->whereIn('number', $noGroupStudents)
