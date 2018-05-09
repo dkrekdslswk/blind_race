@@ -113,11 +113,11 @@ class RecordBoxController extends Controller{
                 DB::raw('count(distinct re.quizNo) as quizCount'),
                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount'),
                 DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
-                DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = O  THEN 1 END) as vocabularyRightAnswerCount'),
+                DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
                 DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
-                DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = O  THEN 1 END) as wordRightAnswerCount'),
+                DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
                 DB::raw('count(CASE WHEN q.type like "grammar%" THEN 1 END) as grammarCount'),
-                DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = O  THEN 1 END) as grammarRightAnswerCount')
+                DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
             )
             ->where([
                 're.retest' => 0,
