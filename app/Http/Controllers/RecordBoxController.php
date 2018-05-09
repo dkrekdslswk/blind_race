@@ -10,33 +10,12 @@ class RecordBoxController extends Controller{
     // 그룹에서 친 모든 레이스 정보 가져오기
     public function getRecordData(Request $request){
         // 요구하는 값
-        $postData = array(
-            'groupId'   => 1
-        );
 //        $postData = array(
-//            'groupId'   => $request->input('groupId')
+//            'groupId'   => 1
 //        );
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-         $userData = DB::table('users as u')
-             ->select([
-                 'u.number   as userId',
-                 's.number   as sessionId'
-             ])
-             ->where('u.number', '=', 123456789)
-             ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-             ->first();
-
-         if(!isset($userData->sessionId)){
-             $request->session()->put('sessionId', DB::table('sessionDatas')
-                 ->insertGetId([
-                     'userNumber' => $userData->userId
-                 ], 'number'));
-         }else{
-             $request->session()->put('sessionId', $userData->sessionId);
-         }
-        // test
+        $postData = array(
+            'groupId'   => $request->input('groupId')
+        );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
