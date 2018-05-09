@@ -393,10 +393,10 @@ class QuizTreeController extends Controller
             ->first();
 
         if($listUserCheck) {
-            foreach ($postData['quizs'] as $quiz) {
-                // 문제들 삭제
-                $this->deleteListQuiz($listUserCheck->listId);
+            // 문제들 삭제
+            $this->deleteListQuiz($listUserCheck->listId);
 
+            foreach ($postData['quizs'] as $quiz) {
                 // 문제를 저장
                 // 주관식 객관식 구분
                 if($quiz['makeType'] == 'obj') {
