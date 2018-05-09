@@ -270,7 +270,7 @@ class GroupController extends Controller{
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->where('gs.groupNumber', '<>', $postData['groupId'])
+                            ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
@@ -280,8 +280,8 @@ class GroupController extends Controller{
                         $noGroupStudents = array_diff($postData['students'], $groupUsers);
                         $studentData = DB::table('users')
                             ->select(
-                                'number           as id',
-                                'name             as name'
+                                'number',
+                                'name'
                             )
                             ->whereIn('number', $noGroupStudents)
                             ->where(function ($query){
@@ -292,7 +292,7 @@ class GroupController extends Controller{
 
                         $studentIds = array();
                         foreach ($studentData as $student) {
-                            array($studentIds, array(
+                            array_push($studentIds, array(
                                 'groupNumber' => $groupData->groupId,
                                 'userNumber' => $student->id
                             ));
