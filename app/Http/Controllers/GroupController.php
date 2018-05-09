@@ -266,7 +266,7 @@ class GroupController extends Controller{
                     if ($groupData) {
                         // 그룹에 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
-                            ->where('u.classification', 'LIKE', "'%tudent'")
+                            ->where('u.classification', 'like', '%tudent')
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
@@ -281,7 +281,7 @@ class GroupController extends Controller{
                             )
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
-                            ->where('classification', 'LIKE', "'%tudent'")
+                            ->where('classification', 'like', '%tudent')
                             ->orderBy('number', 'desc')
                             ->get();
 
@@ -364,11 +364,11 @@ class GroupController extends Controller{
                     // 그룹에 포함된 학생 검색
                     $groupUsers = DB::table('users as u')
                         ->where([
-                            ['u.classification', 'LIKE', "'%tudent'"]
+                            ['u.classification', 'like', '%tudent']
                         ])
                         ->where(function ($query) use ($postData) {
-                            $query->where('u.number', 'LIKE', '%' . $postData['search'] . '%')
-                                ->orWhere('u.name', 'LIKE', '%' . $postData['search'] . '%');
+                            $query->where('u.number', 'like', '%' . $postData['search'] . '%')
+                                ->orWhere('u.name', 'like', '%' . $postData['search'] . '%');
                         })
                         ->where('gs.groupNumber', '=', $postData['groupId'])
                         ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
@@ -383,12 +383,12 @@ class GroupController extends Controller{
                             'classification   as classification'
                         )
                         ->where([
-                            ['classification', 'LIKE', "'%tudent'"]
+                            ['classification', 'like', '%tudent']
                         ])
                         ->whereNotIn('number', $groupUsers)
                         ->where(function ($query) use ($postData) {
-                            $query->where('number', 'LIKE', '%' . $postData['search'] . '%')
-                                ->orWhere('name', 'LIKE', '%' . $postData['search'] . '%');
+                            $query->where('number', 'like', '%' . $postData['search'] . '%')
+                                ->orWhere('name', 'like', '%' . $postData['search'] . '%');
                         })
                         ->orderBy('number', 'desc')
                         ->get();
