@@ -60,7 +60,7 @@ class RecordBoxController extends Controller{
                         ->first();
 
                     if($groupData){
-                        $test = $this->selectGroupRecords($groupData->groupId, 'subdate(now(), INTERVAL 14 DAY)', 'subdate(now(), INTERVAL 0 DAY)');
+                        $test = $this->selectGroupRecords($groupData->groupId, 'subdate(now(), INTERVAL 0 DAY)', 'subdate(now(), INTERVAL 14 DAY)');
                     }
                     break;
 //                case 'student':
