@@ -270,7 +270,7 @@ class GroupController extends Controller{
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->where('gs.groupNumber', '=', $postData['groupId'])
+                            ->where('gs.groupNumber', '<>', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
