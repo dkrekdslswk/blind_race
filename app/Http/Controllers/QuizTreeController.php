@@ -524,12 +524,12 @@ class QuizTreeController extends Controller
     // 문제들 삭제
     private function deleteListQuiz($listId){
         // 문제 리스트 받아오기
-        $quizs = DB::table('listQuizs')
+        $listQuizs = DB::table('listQuizs')
             ->where([
                 'listNumber' => $listId
             ])
             ->pluck('quizNumber')
-            ->array();
+            ->toArray();
 
         // 문제 리스트 삭제
         DB::table('listQuizs')
@@ -541,7 +541,7 @@ class QuizTreeController extends Controller
         // 문제 삭제
         DB::table('quizBanks')
             ->where([
-                'number' => $quizs
+                'number' => $listQuizs
             ])
             ->delete();
     }
