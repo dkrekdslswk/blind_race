@@ -38,7 +38,7 @@
                     </div> -->
                     <p id ="teacher">김민수 선생님</p>
                     <h1  id ="group" >A반</h1>
-
+                <button id="close" class="btn btn-link" ><img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px  ;" ></button>
                 
                     <!-- <button
                         type="submit"

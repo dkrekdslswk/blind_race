@@ -355,9 +355,7 @@
                 <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
                 w3-button""="w3-button""">미등록 학생</a> -->
             </button>
-            <button class="w3-bar-item w3-button">
-                <a href="#" class="class=" w3-bar-item="w3-bar-item" w3-button""="w3-button" "">엑셀로 불러오기</a>
-            </button>
+
             <button
                 type="button"
                 class="w3-bar-item w3-button"

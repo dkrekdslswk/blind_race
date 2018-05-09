@@ -132,57 +132,142 @@
                 </div>
             </div>
            
-            <div class="wrapper row3">
-                <div class="lrspace">
-                    <main class="container clear">
-                        <!-- main body -->
-                       
-                        <figure class="group">
-                            <div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>
-                            <figcaption class="one_half">
-                                <h1 class="xxl">十分十分
-                                </h1>
-                                <h1 class="xxl">
-                                    Free download Now!</h1>
-                                <p></p>
+            {{--<div class="wrapper row3">--}}
+                {{--<div class="lrspace">--}}
+                    {{--<main class="container clear">--}}
+                        {{--<!-- main body -->--}}
 
-                            </figcaption>
-                        </figure>
+                        {{--<figure class="group">--}}
+                            {{--<div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>--}}
+                            {{--<figcaption class="one_half">--}}
+                                {{--<h1 class="xxl">十分十分--}}
+                                {{--</h1>--}}
+                                {{--<h1 class="xxl">--}}
+                                    {{--Free download Now!</h1>--}}
+                                {{--<p></p>--}}
 
-                        <!--
-                        ################################################################################################
-                        -->
-                        <!-- / main body -->
-                        <div class="clear"></div>
-                    </main>
-                </div>
+                            {{--</figcaption>--}}
+                        {{--</figure>--}}
+
+                        {{--<!----}}
+                        {{--################################################################################################--}}
+                        {{---->--}}
+                        {{--<!-- / main body -->--}}
+                        {{--<div class="clear"></div>--}}
+                    {{--</main>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+
+
+        <div class="wrapper row3">
+            <div class="lrspace">
+                <main class="container clear ssize"  >
+                   <div class="haha">
+                                <!-- Team member -->
+                                <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                                    <div class="inli image-flip" ontouchstart="this.classList.toggle('hover');">
+                                        <div class="mainflip">
+                                            <div class="frontside inli">
+                                                <div class="card inli">
+                                                    <div class="card-body text-center mt-4 inli">
+                                                        <p><img class="inli img-fluid" src="https://i.imgur.com/4FMEdvh.jpg" alt="card image"></p>
+                                                        <h4 class="card-title">김민수 </h4>
+                                                        <p class="card-text">얼탱이가 없데</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="backside">
+                                                <div class="card">
+                                                    <div class="card-body text-center mt-4">
+                                                        <h4 class="card-title">My class</h4>
+                                                        <p class="card-text">결국해냈네 오웬 좀 못 미더웠는데.</p>
+                                                        <ul class="list-inline">
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                       <!-- Team member -->
+                       <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                           <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                               <div class="mainflip">
+                                   <div class="frontside">
+                                       <div class="card">
+                                           <div class="card-body text-center mt-4">
+                                               <p><img class=" img-fluid" src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_01.png" alt="card image"></p>
+                                               <h4 class="card-title">심유림 공부안하고 영화봄</h4>
+                                               <p class="card-text">쥬라기 공원보고있음</p>
+
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="backside">
+                                       <div class="card">
+                                           <div class="card-body text-center mt-4">
+                                               <h4 class="card-title">My class</h4>
+                                               <p class="card-text">결국해냈네 오웬 좀 못 미더웠는데.</p>
+                                               <ul class="list-inline">
+
+                                               </ul>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- Team member -->
+                       <div class="col-xs-12 col-sm-6 col-md-4 inli">
+                           <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                               <div class="mainflip">
+                                   <div class="frontside">
+                                       <div class="card">
+                                           <div class="card-body text-center mt-4">
+                                               <p><img class=" img-fluid" src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_01.png" alt="card image"></p>
+                                               <h4 class="card-title">심유림 공부안하고 영화봄</h4>
+                                               <p class="card-text">쥬라기 공원보고있음</p>
+
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="backside">
+                                       <div class="card">
+                                           <div class="card-body text-center mt-4">
+                                               <h4 class="card-title">My class</h4>
+                                               <p class="card-text">결국해냈네 오웬 좀 못 미더웠는데.</p>
+                                               <ul class="list-inline">
+
+                                               </ul>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+
+
+
             </div>
-
-   
-
-           
+        </div>
 
         </div>
     </div>
 </div>
-<!--
 
-<div
-    class="wrapper row4 bgded"
-    style="background-image:url('images/demo/backgrounds/02.png');">
-    <div class="lrspace overlay">
-        <footer id="footer" class="clear">
-         
-        </footer>
-    </div>
-</div>
+
 
 <div class="wrapper row5">
     <div class="lrspace">
         <div id="copyright" class="clear">
-            <!--
-            ################################################################################################
-            -->
+
             <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
                 <a href="#">캡스톤 십자인대</a>
             </p>
