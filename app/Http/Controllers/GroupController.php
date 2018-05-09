@@ -288,7 +288,6 @@ class GroupController extends Controller{
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->orderBy('id', 'desc')
                             ->get();
 
                         $studentIds = array();
