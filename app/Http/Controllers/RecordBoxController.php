@@ -60,40 +60,42 @@ class RecordBoxController extends Controller{
                         ->first();
 
                     if($groupData){
-                        $test = $this->selectGroupRecords($groupData->groupId, '2018-05-01', '2018-05-10');
+                        $time = time();
+                        $endDate = date('Y-m-d', $time);
+                        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
+                        $races = $this->selectGroupRecords($groupData->groupId, $startDate, $endDate);
+
+                        // 반납하는값
+                        $returnValue = array(
+                            'group' => array(
+                                'id' => $groupData->groupId,
+                                'name' => $groupData->groupName
+                            ),
+                            'races' => $races,
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
                     }
                     break;
 //                case 'student':
                 default:
-                    $test = false;
+                    $returnValue = array(
+                        'check' => false
+                    );
                     break;
             }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
         }
 
         // 해당그룹의 레이스 정보 가져오기
 
-        // 반납하는값
-        $returnValue = array(
-            'group' => array(
-                'id',
-                'name'
-            ),
-            'races' => array(
-                0 => array(
-                    'id',
-                    'name',
-                    'all',
-                    'vocabulary',
-                    'word',
-                    'grammar',
-                    'year',
-                    'month',
-                    'day'
-                )
-            ),
-            'check'
-        );
-        return $test;
+        return $returnValue;
     }
 
     // 모든 레이스 정보 가져오기
