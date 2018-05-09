@@ -264,9 +264,12 @@ class GroupController extends Controller{
 
                     // 권한 확인
                     if ($groupData) {
-                        // 그룹에 가입된 유저들 검색
+                        // 그룹에 이미 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
-                            ->where('u.classification', 'like', '%tudent')
+                            ->where(function ($query){
+                                $query->where('classification', '=', 'student')
+                                    ->orWhere('classification', '=', 'sleepStudent');
+                            })
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
@@ -281,7 +284,10 @@ class GroupController extends Controller{
                             )
                             ->whereNotIn('number', $groupUsers)
                             ->whereIn('number', $postData['students'])
-                            ->where('classification', 'like', '%tudent')
+                            ->where(function ($query){
+                                $query->where('classification', '=', 'student')
+                                    ->orWhere('classification', '=', 'sleepStudent');
+                            })
                             ->orderBy('number', 'desc')
                             ->get();
 
@@ -363,9 +369,10 @@ class GroupController extends Controller{
                 case 'root':
                     // 그룹에 포함된 학생 검색
                     $groupUsers = DB::table('users as u')
-                        ->where([
-                            ['u.classification', 'like', '%tudent']
-                        ])
+                        ->where(function ($query){
+                            $query->where('classification', '=', 'student')
+                                ->orWhere('classification', '=', 'sleepStudent');
+                        })
                         ->where(function ($query) use ($postData) {
                             $query->where('u.number', 'like', '%' . $postData['search'] . '%')
                                 ->orWhere('u.name', 'like', '%' . $postData['search'] . '%');
@@ -382,9 +389,10 @@ class GroupController extends Controller{
                             'name             as name',
                             'classification   as classification'
                         )
-                        ->where([
-                            ['classification', 'like', '%tudent']
-                        ])
+                        ->where(function ($query){
+                            $query->where('classification', '=', 'student')
+                                ->orWhere('classification', '=', 'sleepStudent');
+                        })
                         ->whereNotIn('number', $groupUsers)
                         ->where(function ($query) use ($postData) {
                             $query->where('number', 'like', '%' . $postData['search'] . '%')
