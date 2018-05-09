@@ -223,7 +223,7 @@ class RaceController extends Controller{
 //            'characterId'   => 1
 //        );
         $postData = array(
-            'sessionId'     => $request->input('sessionId'),
+            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
             'nick'          => $request->input('nick'),
             'characterId'   => $request->input('characterId')
         );
@@ -344,7 +344,7 @@ class RaceController extends Controller{
 //            'answer'    => 1
 //        );
         $postData     = array(
-            'sessionId' => $request->input('sessionId'),
+            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
             'roomPin'   => $request->input('roomPin'),
             'quizId'    => $request->input('quizId'),
             'answer'    => $request->input('answer')
