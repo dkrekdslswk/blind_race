@@ -275,7 +275,7 @@ class GroupController extends Controller{
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
                             ->toArray();
-                        
+
                         // 그룹에 가입안된 학생 검색
                         $noGroupStudents = array_diff($postData['students'], $groupUsers);
                         $studentData = DB::table('users')
@@ -315,7 +315,9 @@ class GroupController extends Controller{
                             ));
                         }
                         $returnValue = array(
-                            'students' => $students,
+                            'students' => $noGroupStudents,
+                            'students1' => $postData['students'],
+                            'students2' => $groupUsers,
                             'check' => true
                         );
                     } else {
