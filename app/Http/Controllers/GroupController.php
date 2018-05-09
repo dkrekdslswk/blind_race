@@ -383,7 +383,7 @@ class GroupController extends Controller{
                             'classification   as classification'
                         )
                         ->where([
-                            ['classification', 'LIKE', '%' . "'%tudent'"]
+                            ['classification', 'LIKE', "'%tudent'"]
                         ])
                         ->whereNotIn('number', $groupUsers)
                         ->where(function ($query) use ($postData) {
