@@ -46,7 +46,7 @@ class RecordBoxController extends Controller{
             $where = array();
             switch ($userData['classification']){
                 case 'teacher':
-                    $where = array('teacherId' => $userData['userId']);
+                    $where = array('teacherNumber' => $userData['userId']);
                 case 'root':
                     $groupData = DB::table('groups')
                         ->select(
