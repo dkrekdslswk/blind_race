@@ -199,7 +199,8 @@ class RaceController extends Controller{
                     ->insert([
                         'raceNumber'    => $data->raceId,
                         'userNumber'    => $userData['userId'],
-                        'retestState'   => 'not'
+                        'retestState'   => 'not',
+                        'wrongState'   => 'not'
                     ]);
             }
         }
