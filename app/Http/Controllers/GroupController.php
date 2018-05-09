@@ -275,15 +275,15 @@ class GroupController extends Controller{
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
                             ->toArray();
-
+                        
                         // 그룹에 가입안된 학생 검색
+                        $noGroupStudents = array_diff($postData['students'], $groupUsers);
                         $studentData = DB::table('users')
                             ->select(
                                 'number           as id',
                                 'name             as name'
                             )
-                            ->whereNotIn('number', $groupUsers)
-                            ->whereIn('number', $postData['students'])
+                            ->whereIn('number', $noGroupStudents)
                             ->where(function ($query){
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
