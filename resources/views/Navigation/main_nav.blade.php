@@ -97,10 +97,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="{{ asset('img/logo.png') }}" style="width:125px; height:50px; position:absolute; left:0;"/>
+                <img src="{{ asset('img/logo.png') }}" style="width:125px; height:50px; "/>
             </div>
 
-            <div class="collapse navbar-collapse" id="navbar-collapse-2">
+            <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="/">Home</a>

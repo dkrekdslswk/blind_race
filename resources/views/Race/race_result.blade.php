@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>레이스 결과 </title>
-    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
@@ -25,30 +24,30 @@
             socket.on('race_ending',function(data){
                 $('#b-progress1').attr(":value",80);
 
-                {{--$.ajax({--}}
-                    {{--type: 'POST',--}}
-                    {{--url: "{{url('/raceController/raceEnd')}}",--}}
-                    {{--dataType: 'json',--}}
-                    {{--// async:false,--}}
-                    {{--headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },--}}
-                    {{--//data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quizId,--}}
-                    {{--success: function (result) {--}}
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/raceEnd')}}",
+                    dataType: 'json',
+                    // async:false,
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    //data:"roomPin="+roomPin+"&answer="+answer+"&sessionId="+sessionId+"&quizId="+quizId,
+                    success: function (result) {
 
-                        {{--// //var r_result = JSON.parse(data);--}}
-                        {{--var r_result = result['students'];--}}
-                        {{--for(var i=0;  i <r_result.length; i++){--}}
-                            {{--// changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';--}}
-                            {{--$('#'+i+'_nick').text(r_result[i].nick);--}}
-                            {{--$('#'+i+'_point').text(r_result[i].rightCount);--}}
-                            {{--$('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].characterId+".png");--}}
+                        // //var r_result = JSON.parse(data);
+                        var r_result = result['students'];
+                        for(var i=0;  i <r_result.length; i++){
+                            // changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';
+                            $('#'+i+'_nick').text(r_result[i].nick);
+                            $('#'+i+'_point').text(r_result[i].rightCount);
+                            $('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].characterId+".png");
 
-                        {{--}--}}
-                    {{--},--}}
-                    {{--error: function(request, status, error) {--}}
-                        {{--alert("AJAX 에러입니다. ");--}}
-                    {{--}--}}
-                {{--});--}}
-            {{--});--}}
+                        }
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+            });
 
         };
 
