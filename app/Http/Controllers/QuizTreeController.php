@@ -118,8 +118,8 @@ class QuizTreeController extends Controller
                     'l.number                       as listId',
                     'l.name                         as listName',
                     DB::raw('COUNT(lq.quizNumber)   as quizCount'),
-                    'created_at                     as createdDate',
-                    'openState                      as openState'
+                    'l.created_at                   as createdDate',
+                    'l.openState                    as openState'
                 )
                 ->where([
                     'l.openState' => self::OPEN_STATE
@@ -136,8 +136,8 @@ class QuizTreeController extends Controller
                     'l.number                       as listId',
                     'l.name                         as listName',
                     DB::raw('COUNT(lq.quizNumber)   as quizCount'),
-                    'created_at                     as createdDate',
-                    'openState                      as openState'
+                    'l.created_at                   as createdDate',
+                    'l.openState                    as openState'
                 )
                 ->where([
                     's.number' => $sessionId,
