@@ -540,21 +540,17 @@
 
 <div id="wait_room_nav" class="inline-class">
     <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
-
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
     <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:20px" > 문제수 </span>
     <span  id="group_name" style="font-size:20px;"> 그룹이름 </span>
     <span id="group_student_count" style="font-size:20px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
-
 </div>
 
 <div id="wait_room">
     <div class="student">
 
-
-        <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-        <!--</form>-->
+
 
         <div id="room_Pin" class="counting">
         </div>
