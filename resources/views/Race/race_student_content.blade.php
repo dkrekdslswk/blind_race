@@ -130,27 +130,30 @@
         <div class="obj" style="display:none;">
 
                 <!-- 1번 -->
-                <button class="column btn-success">
+                <button class="column btn-success" onclick="web_answer(1);">
                     <!-- style="background-color:#1bbc9b;" -->
                     <p class="answer_font" id="answer1">A</p>
                 </button>
+
                 <!-- 2번 -->
-                <button class="column btn-primary">
+                <button class="column btn-primary" onclick="web_answer(2);">
                     <p class="answer_font" id="answer2">B</p>
                 </button>
+
                 <!-- 3번 -->
-                <button class="column btn-warning">
+                <button class="column btn-warning" onclick="web_answer(3);">
                     <p class="answer_font" id="answer3">C</p>
                 </button>
+
                 <!-- 4번 -->
-                <button class="column btn-danger">
+                <button class="column btn-danger" onclick="web_answer(4);">
                     <p class="answer_font" id="answer4">D</p>
                 </button>
         </div>
 
         <div  id="sub" style="display:none;">
             <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
-                <input type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
+                <input id="subanswer" type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
                 <button onclick="user_in();" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
         </div>
 

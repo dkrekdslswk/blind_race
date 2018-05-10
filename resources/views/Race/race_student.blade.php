@@ -16,9 +16,14 @@
         var roomPin;
         var sessionId = 0;
         var socket = io(':8890');
+
         var nick;
+        var web_ranking;
+        var web_point;
 
         var web_quizId ="";
+        var web_makeType;
+
         window.onload = function() {
 
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
@@ -67,7 +72,35 @@
                 $('.contents').show();
             });
 
+            socket.on('android_mid_result',function(quizId, makeType, ranking){
+                $('.contents').show();
+                web_quizId = quizId;
+                web_makeType = makeType;
+
+                for(var i; i < ranking.length; i++){
+                    //고쳐야되는 구문임
+                    if(ranking[i].nick == null) {
+                        web_ranking = i + 1;
+                        web_point = ranking[i].rightCount*100;
+                    }
+                }
+            });
+
         };
+
+        function web_answer(answer_num){
+            switch(web_makeType){
+                case "obj":
+                    socket.emit('answer',roomPin , answer_num , sessionId , nick , web_quizId);
+                    break;
+
+                case "sub":
+                    var sub_answer = document.getElementById('subanswer').value;
+                    socket.emit('answer',roomPin , sub_answer , sessionId , nick , web_quizId);
+                    break;
+            }
+
+        }
 
         function web_student_join(){
             roomPin = document.getElementById('roomPin').value;
