@@ -39,6 +39,7 @@ class RecordBoxController extends Controller{
                         ->first();
 
                     if($groupData){
+                        // 일주일 조회
                         $time = time();
                         $endDate = date('Y-m-d', $time);
                         $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
@@ -71,8 +72,6 @@ class RecordBoxController extends Controller{
                 'check' => false
             );
         }
-
-        // 해당그룹의 레이스 정보 가져오기
 
         return $returnValue;
     }
