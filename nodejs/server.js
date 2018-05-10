@@ -137,7 +137,7 @@ io.on('connection', function (socket){
     socket.on('answer', function(roomPin , answer_num , student_num , nickname , quizId){
 
         io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num ,quizId);
-        console.log("quizId =",quizId);
+        console.log("답한 퀴즈  =",quizId+":"+answer_num);
     });
 
 
