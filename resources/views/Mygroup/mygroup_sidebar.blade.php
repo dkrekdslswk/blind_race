@@ -1,5 +1,5 @@
 <head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         .page-small .learn-small,
@@ -148,105 +148,58 @@
 
     </style>
     <script>
-        var pub_groupId;
-        $(document).ready(function () {
-            pub_groupId=1;
-            var params = {
-                groupId: 1
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/groupsGet')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: params,
-                success: function (data) {
-                    GroupData = data;
-//                 alert(JSON.stringify(GroupData['groups']));
 
 
-                    Myclass = GroupData['groups'];
+            function getAnothergroup(groupId) {
 
-                    var class_list = '';
-
-                    for( var i = 0 ; i < Myclass.length; i++){
-
-                        buttonGroupID = Myclass[i].groupId;
-//                        class_list +=Myclass[i].groupName
-                            class_list
-                                +='<tr><td>'
-                                +'<button class="btn btn-link" id="'+buttonGroupID+'" onclick="getAnothergroup(this.id)">'+Myclass[i].groupName+'</button>'
-                                +'</td><tr>'
-
-
-                    }
-
-                    $('#myclass').html(class_list);
-                },
-                error: function (data) {
-                    alert("클래스찾기 에러");
-                }
-            });
-
-
-
-
-        });
-
-
-
-        function getAnothergroup(groupId) {
-            pub_groupId = groupId;
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/groupDataGet')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: "groupId="+groupId,
-                success: function (data) {
-                    GroupData = data;
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/groupController/groupDataGet')}}",
+                    //processData: false,
+                    //contentType: false,
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    //data: {_token: CSRF_TOKEN, 'post':params},
+                    data: "groupId=" + groupId,
+                    success: function (data) {
+                        GroupData = data;
 //                        alert(JSON.stringify(GroupData['students']));
 
-                    teacher = GroupData['teacher']['name'];
-                    group = GroupData['group']['name'];
-                    student = GroupData['students'];
+                        teacher = GroupData['teacher']['name'];
+                        group = GroupData['group']['name'];
+                        student = GroupData['students'];
 
-                    $('#teacher').html(teacher);
-                    $('#group').html(group);
+                        $('#teacher').html(teacher);
+                        $('#group').html(group);
 
-                    var student_list = '';
+                        var student_list = '';
 
-                    for( var i = 0 ; i < student.length; i++){
+                        for (var i = 0; i < student.length; i++) {
 
-                        student_list +='<tr><td>'
+                            student_list += '<tr><td>'
 
-                            +student[i].name
-                            +'</td><td>'
-                            +student[i].id
-                            +'</td><td>'+
-                            '<button>학생 정보 수정</button>' +
-                            '</td><td>'+
-                            '<button>삭제하기</button>'+
-                            '</td></tr>'
+                                + student[i].name
+                                + '</td><td>'
+                                + student[i].id
+                                + '</td><td>' +
+                                '<button>학생 정보 수정</button>' +
+                                '</td><td>' +
+                                '<button>삭제하기</button>' +
+                                '</td></tr>'
+                        }
+
+                        $('#student').html(student_list);
+
+
+                    },
+                    error: function (data) {
+                        alert("에러");
                     }
+                });
+            }
 
-                    $('#student').html(student_list);
 
 
-                },
-                error: function (data) {
-                    alert("에러");
-                }
-            });
-
-        }
     </script>
 </head>
 <body>
@@ -254,40 +207,41 @@
 
     <!--네비바 위부분 공백-->
     <div
-        class="page-small"
-        style="text-align: center; margin-top: 10px; margin-bottom:10px;"></div>
+            class="page-small"
+            style="text-align: center; margin-top: 10px; margin-bottom:10px;"></div>
 
-   
+
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card">
         <!-- <form> -->
-            <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
-            -->
+        <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
+        -->
 
-            <button class="w3-bar-item w3-button">
-                <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
-                w3-button""="w3-button""">미등록 학생</a> -->
-            </button>
+        <button class="w3-bar-item w3-button">
+            <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
+            w3-button""="w3-button""">미등록 학생</a> -->
+        </button>
 
-            <button
+        <button
                 type="button"
                 class="w3-bar-item w3-button"
                 data-toggle="modal"
                 data-target="#create">
-                클래스 생성
-            </button>
+            클래스 생성
+        </button>
 
-            <div class="w3-dropdown-hover">
-                <h2>나의 클래스</h2>
-
-
-                <table id="myclass">
-                </table>
+        <div class="w3-dropdown-hover">
+            <h2>나의 클래스</h2>
 
 
-            </div>
+            <table id="Myclass">
+            </table>
+
+
+        </div>
+
+
+
+
     </div>
 
-
-            </div>
-
-            </body>
+</body>

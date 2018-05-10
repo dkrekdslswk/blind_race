@@ -135,4 +135,269 @@
 </div>
 
 </body>
+<script>
+
+
+
+    $(document).ready(function () {
+
+        var params = {
+            groupId: 1
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/groupsGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+                GroupData = data;
+//                alert(JSON.stringify(GroupData['groups']));
+
+
+                Myclass = GroupData['groups'];
+
+                var class_list = '';
+
+                for (var i = 0; i < Myclass.length; i++) {
+
+                    buttonGroupID = Myclass[i].groupId;
+//                        class_list +=Myclass[i].groupName
+                    class_list
+                        += '<tr><td>'
+                        + '<button class="btn btn-link" id="' + buttonGroupID + '" onclick="getAnothergroup(this.id)">' + Myclass[i].groupName + '</button>'
+                        + '</td><tr>'
+
+
+                }
+
+                $('#Myclass').html(class_list);
+            },
+            error: function (data) {
+                alert("클래스찾기 에러");
+            }
+        });
+
+
+        // 검색하기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/selectUser')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data: "search=&groupId=1",
+            success: function (data) {
+                GroupData = data;
+
+                search_studentJSON = GroupData['users'];
+
+                var student_list = '';
+
+                for( var i = 0 ; i < search_studentJSON.length; i++){
+
+                    student_list +='<tr><td>'
+                        +search_studentJSON[i].name
+                        +'</td><td>'
+                        +search_studentJSON[i].id
+                        +'</td><td><button>+</button></td></tr>'
+                }
+
+                $('#myTable').html(student_list);
+
+            },
+            error: function (data) {
+                alert("검색에러");
+            }
+        });
+
+
+
+
+
+        $('#chkParent').click(function () {
+            var isChecked = $(this).prop("checked");
+            $('#tblData tr:has(td)')
+                .find('input[type="checkbox"]')
+                .prop('checked', isChecked);
+        });
+
+        $('#tblData tr:has(td)')
+            .find('input[type="checkbox"]')
+            .click(function () {
+                var isChecked = $(this).prop("checked");
+                var isHeaderChecked = $("#chkParent").prop("checked");
+                if (isChecked == false && isHeaderChecked)
+                    $("#chkParent").prop('checked', isChecked);
+                else {
+                    $('#tblData tr:has(td)')
+                        .find('input[type="checkbox"]')
+                        .each(function () {
+                                if ($(this).prop("checked") == false)
+                                    isChecked = false;
+                            }
+                        );
+                    console.log(isChecked);
+                    $("#chkParent").prop('checked', isChecked);
+                }
+            });
+    });
+
+    function myFunction() {
+        var input,
+            filter,
+            table,
+            tr,
+            td,
+            i;
+        input = document.getElementById("myInput");
+        filter = input
+            .value
+            .toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+    }
+
+    function getValue() {
+        var groupId = 1;
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/groupDataGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: "groupId="+groupId,
+            success: function (data) {
+                GroupData = data;
+//                        alert(JSON.stringify(GroupData['students']));
+
+                teacher = GroupData['teacher']['name'];
+                group = GroupData['group']['name'];
+                student = GroupData['students'];
+
+                $('#teacher').html(teacher);
+                $('#group').html(group);
+
+                var student_list = '';
+
+                for( var i = 0 ; i < student.length; i++){
+
+                    student_list +='<tr><td>'
+
+                        +student[i].name
+                        +'</td><td>'
+                        +student[i].id
+                        +'</td><td>'+
+                        '<button>학생 정보 수정</button>' +
+                        '</td><td>'+
+                        '<button>삭제하기</button>'+
+                        '</td></tr>'
+                }
+
+                $('#student').html(student_list);
+
+
+            },
+            error: function (data) {
+                alert("에러");
+            }
+        });
+        function getAnothergroup(groupId) {
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: "groupId=" + groupId,
+                success: function (data) {
+                    GroupData = data;
+//                        alert(JSON.stringify(GroupData['students']));
+
+                    teacher = GroupData['teacher']['name'];
+                    group = GroupData['group']['name'];
+                    student = GroupData['students'];
+
+                    $('#teacher').html(teacher);
+                    $('#group').html(group);
+
+                    var student_list = '';
+
+                    for (var i = 0; i < student.length; i++) {
+
+                        student_list += '<tr><td>'
+
+                            + student[i].name
+                            + '</td><td>'
+                            + student[i].id
+                            + '</td><td>' +
+                            '<button>학생 정보 수정</button>' +
+                            '</td><td>' +
+                            '<button>삭제하기</button>' +
+                            '</td></tr>'
+                    }
+
+                    $('#student').html(student_list);
+
+
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+        }
+
+        function enterTabTable(obj,obj2) {
+            var i, k, ftag, str="";
+            var text = document.getElementById(obj).value;
+            var arr = text.split("\n"); // 엔터키로 분리
+            if(text.length > 2) {
+                str += "<table border='1' cellpadding='3' cellspacing='1'>\n";
+                str += "<tbody>\n";
+                for(i=0; i < arr.length; i++) {
+                    ftag = (document.getElementById("firstChk").checked == true) ? (i == 0) ? "No" : i : (i+1);
+                    str += "<tr>\n";
+                    str += "<td>"+ftag+"</td>\n";
+                    var sub_arr = arr[i].split("\t"); // 탭키로 분리
+                    for(k=0; k < sub_arr.length; k++) {
+                        str += "<td>"+sub_arr[k]+"</td>\n";
+                    }
+                }
+                str += "</tbody>\n";
+                str += "</table>\n";
+            }
+            document.getElementById(obj2).innerHTML = str;
+        }
+
+
+
+
+
+
+    }
+
+
+</script>
 </html>
