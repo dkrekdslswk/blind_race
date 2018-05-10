@@ -48,11 +48,13 @@ class RecordBoxController extends Controller{
                         // 반납하는값
                         $returnValue = array(
                             'group' => array(
-                                'id' => $groupData->groupId,
-                                'name' => $groupData->groupName
+                                'id'    => $groupData->groupId,
+                                'name'  => $groupData->groupName
                             ),
-                            'races' => $races,
-                            'check' => true
+                            'races'     => $races,
+                            'startDate' => $startDate,
+                            'endDate'   => $endDate,
+                            'check'     => true
                         );
                     } else {
                         $returnValue = array(
@@ -76,7 +78,75 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 모든 레이스 정보 가져오기
+    // 원하는 날짜의 레이스 정보들을 가져오기
+    public function getRaceRecords(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'groupId'   => 1
+//        );
+        $postData = array(
+            'groupId'   => $request->input('groupId'),
+            'startDate' => $request->input('groupId'),
+            'endDate'   => $request->input('groupId')
+        );
+
+        // 유저정보가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인
+        if ($userData['check']){
+            $where = array();
+            switch ($userData['classification']){
+                case 'teacher':
+                    $where = array('teacherNumber' => $userData['userId']);
+                case 'root':
+                    $groupData = DB::table('groups')
+                        ->select(
+                            'number as groupId',
+                            'name   as groupName'
+                        )
+                        ->where([
+                            'number' => $postData['groupId']
+                        ])
+                        ->where($where)
+                        ->first();
+
+                    if($groupData){
+                        $races = $this->selectGroupRecords($groupData->groupId, $postData['startDate'], $postData['endDate']);
+
+                        // 반납하는값
+                        $returnValue = array(
+                            'group' => array(
+                                'id'    => $groupData->groupId,
+                                'name'  => $groupData->groupName
+                            ),
+                            'races'     => $races,
+                            'startDate' => $postData['startDate'],
+                            'endDate'   => $postData['endDate'],
+                            'check'     => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
+                    break;
+//                case 'student':
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
     // 재시험 상태(실시, 미실시 전채 인원 포함) 및 오답노트 상태
 
     // 오답노트 재출 명령하기기

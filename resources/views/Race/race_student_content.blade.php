@@ -7,7 +7,16 @@
         background-color:whitesmoke;
     }
 
-
+    #wait_room_nav{
+        box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        /*background-color: rgba(255,255,255,.84);*/
+        background-color:white;
+        width: 100%;
+        height: 100px;
+        border-radius: 10px;
+        font-weight:bold;
+        font-size:50px;
+    }
     .main {
         /* Same width as the sidebar + left position in px */
         font-size: 28px;
@@ -16,12 +25,8 @@
     }
 
     .column {
-        float: left;
-        width: 15%;
-        padding: 20px;
-        height: 20%;
-        margin-left:50px;
-        margin-top:10%;
+        width: 24%;
+        height: 200px;
         border-radius: 10px;
         border-right:5px solid #DCDCDC;
         border-bottom:5px solid #DCDCDC;
@@ -36,47 +41,41 @@
         }
     }
     #counter{
-
-        margin-top:50px;
-        color:black;
-        width:150px;
-        height:150px;
-        font-size:40px;
-        font-weight:bold;
-        line-height:100px;
-        border: 20px solid purple;
-        border-radius: 50%;
-        background-color: rgba(255,255,255,.84);
-        position:absolute;
-        left:5%;
-        top:10%;
-    }
-    #mondai {
-        top: 10%;
-        position: absolute;
-        left: 25%;
         box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
         background-color: rgba(255,255,255,.84);
-        width: 55%;
-        height: 35%;
+        width: 150px;
+        height: 150px;
+        border-radius: 20px;
+        font-size: 30px;
+        position: absolute;
+        left: 5%;
+        top: 15%;
+    }
+    #mondai {
+        margin-top: 3%;
+        margin-left:3%;
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        background-color: rgba(255,255,255,.84);
+        width: 95%;
+        height: 125px;
         border-radius: 20px;
         font-weight: bold;
         font-size: 40px;
     }
     .obj{
-        margin-top:12%;
+        margin-top:2%;
+        margin-left:50px;
     }
     #sub{
-        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
 
-        width: 55%;
-        height: 35%;
-        border-radius: 20px;
+
+        width: 80%;
+        height: 30%;
         font-weight: bold;
         font-size: 30px;
         position: absolute;
-        left: 25%;
-        top: 50%;
+        left: 10%;
+        top: 40%;
     }
     .inline-class{
         display:inline-block;
@@ -92,28 +91,14 @@
         right: 5%;
         top: 15%;
     }
-    progress {
-        text-align:left;
-        width: 300px;
-        padding: 4px;
-        border: 0 none;
-
-        background: silver;
-        border-radius: 14px;
-        box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
-    }
-    progress::-webkit-progress-bar {
-        background: transparent;
-    }
-    progress::-webkit-progress-value {
-        border-radius: 12px;
-        background: #4CAF50;
-        box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
-    }
     .answer_font{
         font-size:45px;
         text-align:center;
         line-height:100px;
+    }
+    .user_info{
+        margin-right:10%;
+        color:gold;
     }
 </style>
 
@@ -122,40 +107,54 @@
 </script>
 
 <div class="main" style="">
+    <!-- 후에 인클루드 -->
+    <div id="wait_room_nav" class="inline-class">
+        <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
+        <span>Race</span>
+        <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
+        <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
+        <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
+        <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
+    </div>
+
     <div id='content'>
 
-            <progress style="width:100%;  height:30px;"  value="0" max="30" id="progressBar"></progress>
-            <div id="questions" style="height:250px;">
-
-                <div class="inline-class" id="counter"></div>
-
-                <div class="inline-class" id="mondai"><br><span id="mondai-content"></span></div>
-
-                <div class="inline-class" id="my_character"><img src="#" alt=""></div>
-
-            </div>
-
-
-        <!--문제 번호-->
-        <div class="obj" style="margin-left:4%; display:none; ">
-            <!-- style="margin-left:10%;" -->
-            <div class="column" style="background-color:#1bbc9b; ">
-                <p class="answer_font" id="answer1">A</p>
-            </div>
-            <div class="column" style="background-color:#3598db;">
-                <p class="answer_font" id="answer2">B</p>
-            </div>
-            <div class="column" style="background-color:#f1c40f;">
-                <p class="answer_font" id="answer3">C</p>
-            </div>
-            <div class="column" style="background-color:#e84c3d;">
-                <p class="answer_font" id="answer4">D</p>
-            </div>
+        <div class="inline-class" id="mondai">
+            <img  id="character_info" src="/img/character/char1.png" style="width:125px; height:100%;" alt="">
+            <span class="user_info"  id="nickname_info">닉네임 </span>
+            <span class="user_info"  id="ranking_info"> 11등 </span>
+            <span class="user_info"  id="point_info">200point </span>
         </div>
 
-        <div class="btn-primary" id="sub" ">
-        <input type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
-        <button onclick="user_in();" class="btn-primary" style="width:100%; height:40%; border:none;">확인</button>
+        <!-- 객관식 문제 -->
+        <div class="obj" style="display:none;">
+
+                <!-- 1번 -->
+                <button class="column btn-success" onclick="web_answer(1);">
+                    <!-- style="background-color:#1bbc9b;" -->
+                    <p class="answer_font" id="answer1">A</p>
+                </button>
+
+                <!-- 2번 -->
+                <button class="column btn-primary" onclick="web_answer(2);">
+                    <p class="answer_font" id="answer2">B</p>
+                </button>
+
+                <!-- 3번 -->
+                <button class="column btn-warning" onclick="web_answer(3);">
+                    <p class="answer_font" id="answer3">C</p>
+                </button>
+
+                <!-- 4번 -->
+                <button class="column btn-danger" onclick="web_answer(4);">
+                    <p class="answer_font" id="answer4">D</p>
+                </button>
+        </div>
+
+        <div  id="sub" style="display:none;">
+            <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
+                <input id="subanswer" type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
+                <button onclick="user_in();" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
         </div>
 
     </div>
