@@ -154,7 +154,7 @@
     </div>
 
     <div class="hidden" id="record_feedback">
-        @include('Recordbox.feedback')
+        @include('Recordbox.record_feedback')
     </div>
 
 </div>

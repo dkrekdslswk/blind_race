@@ -151,9 +151,12 @@
                             quiz_member++;
                             $('#student_count').html(quiz_member);
                             //유저한테 다시보내줌 result['characterId'];
+
+                            socket.emit('web_enter_room',roomPin,nick,sessionId,characterId,true);
                             socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
                         }
                         else{
+                            socket.emit('web_enter_room',roomPin,nick,sessionId,characterId,false);
                             //닉네임이나 캐릭터가 문제있음
                             socket.emit('android_enter_room',roomPin, false, sessionId);
                         }

@@ -1,10 +1,7 @@
-<!DOCTYPE HTML>
-<html>
-<head>
 
+<head>
     <script>
         var id = "chartContainer";
-        var id2 = "chartContainer2";
         var DateType = "DD MMM";
 
         function makingDropdown() {
@@ -22,6 +19,7 @@
             }
         }
 
+        //날짜 단위를 조회해서 차트를 표시
         function printingChart(){
             var checked_type = $("input[type=radio][name=optradio]:checked").val();
             var changed_DateType = "";
@@ -43,12 +41,20 @@
             makingChart(id,changed_DateType);
         }
 
+        //기간을 설정하여 차트를 표시
+        function printingChart2(){
+            var startDate = document.querySelector('input[id="startDay"]');
+            var endDate = document.querySelector('input[id="endDate"]');
+
+        }
+
+        //차트 만들 데이터
         function makingChart(id,axisXType){
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 theme: "light2",
                 width: 1000,
-                height: 600,
+                height: 500,
                 title:{},
                 axisX:{
                     labelFontSize: 15,
@@ -211,54 +217,20 @@
         <label><input type="radio" id="radio_3" name="optradio" value='3' onclick="printingChart()">년도</label>
     </div>
 
-    <div class="radio" >
+    <div class="chooseDate" style="margin-bottom: 30px;">
         <h3>기간</h3>
 
-        <div class="select1_year" style="display: inline;">
-            <select id='year1'>
-                <option value=''>year</option>
-            </select>
-        </div>
+        <input type="date" name="chooseday" id="startDay">
 
-        <div class="select1_month" style="display: inline;">
-            <select id='month1'>
-                <option value=''>Month</option>
-            </select>
-        </div>
+        <input type="date" name="chooseday" id="endDay">
 
-        <div class="select1_date" style="display: inline;">
-            <select id='date1'>
-                <option value=''>date</option>
-            </select>
-        </div>
-
-        ~
-
-        <div class="select1_year" style="display: inline;">
-            <select id='year2'>
-                <option value=''>year</option>
-            </select>
-        </div>
-
-        <div class="select1_month" style="display: inline;">
-            <select id='month2'>
-                <option value=''>Month</option>
-            </select>
-        </div>
-
-        <div class="select1_date" style="display: inline;">
-            <select id='date2'>
-                <option value=''>date</option>
-            </select>
-        </div>
+        <button class="btn btn-default" onclick="printingChart2()">
+            조회
+        </button>
     </div>
 
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-
-    <div id="chartContainer2" style="height: 600px;margin-top: 30px;"></div>
+    <div id="chartContainer" style="height: 500px; width: 100%;"></div>
 
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 </body>
-
-</html>
