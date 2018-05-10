@@ -25,7 +25,7 @@
             <header id="header" class="clear">
              
                 <div id="logo" class="fl_left">
-                    <h1>s
+                    <h1>
                         <a href="#">
                             <em>十</em>分<em>十</em>分</a>
                     </h1>
@@ -162,145 +162,199 @@
 
         <div class="wrapper row3">
             <div class="lrspace">
-                <main class="container clear ssize"  >
+
 
                     <!-- Team member -->
-                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/baXiQ1M.jpg" alt="card image"></p>
-                                            <h4 class="card-title">to 성 형 석 길 이 맞  </h4>
-                                            <p class="card-text">집에가고싶다.</p>
+                    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
+                        {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
+                            {{--<div class="mainflip">--}}
+                                {{--<div class="frontside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<p><img class=" img-fluid" src="https://i.imgur.com/baXiQ1M.jpg" alt="card image"></p>--}}
+                                            {{--<h4 class="card-title">to 성 형 석 길 이 맞  </h4>--}}
+                                            {{--<p class="card-text">집에가고싶다.</p>--}}
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <h4 class="card-title">My class</h4>
-                                            <p class="card-text">영어로 se..brother suck.</p>
-                                            <ul class="list-inline">
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="backside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<h4 class="card-title">My class</h4>--}}
+                                            {{--<p class="card-text">영어로 se..brother suck.</p>--}}
+                                            {{--<ul class="list-inline">--}}
 
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                            {{--</ul>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
+                        {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
+                            {{--<div class="mainflip">--}}
+                                {{--<div class="frontside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<p><img class=" img-fluid" src="https://i.imgur.com/QUJ0Ak1.jpg" alt="card image"></p>--}}
+                                            {{--<h4 class="card-title">to 김 승 목 길 이 맞  </h4>--}}
+                                            {{--<p class="card-text">집에가고싶다.</p>--}}
+
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="backside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<h4 class="card-title">My class</h4>--}}
+                                            {{--<p class="card-text">머리 몇시간쨰만지는중.</p>--}}
+                                            {{--<ul class="list-inline">--}}
+
+                                            {{--</ul>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
+                        {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
+                            {{--<div class="mainflip">--}}
+                                {{--<div class="frontside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>--}}
+                                            {{--<h4 class="card-title">to 최 병 찬 길 이 맞   </h4>--}}
+                                            {{--<p class="card-text">?????????</p>--}}
+
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="backside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<h4 class="card-title">My class</h4>--}}
+                                            {{--<p class="card-text">병찬이 갈리는소리골골  .</p>--}}
+                                            {{--<ul class="list-inline">--}}
+
+                                            {{--</ul>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
+                        {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
+                            {{--<div class="mainflip">--}}
+                                {{--<div class="frontside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<p><img class=" img-fluid" src="https://i.imgur.com/LlQi7HQ.jpg" alt="card image"></p>--}}
+                                            {{--<h4 class="card-title">to 시 뮤 림 레 기 다</h4>--}}
+                                            {{--<p class="card-text">집에가고싶다.</p>--}}
+
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="backside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<h4 class="card-title">My class</h4>--}}
+                                            {{--<p class="card-text">마인크래프트보는초딩 ㅇㅈ?.</p>--}}
+                                            {{--<ul class="list-inline">--}}
+
+                                            {{--</ul>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
+                        {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
+                            {{--<div class="mainflip">--}}
+                                {{--<div class="frontside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<p><img class=" img-fluid" src="https://i.imgur.com/7FoPGzz.jpg" alt="card image"></p>--}}
+                                            {{--<h4 class="card-title">to안준휘(김하온)</h4>--}}
+                                            {{--<p class="card-text">집에가고싶다.</p>--}}
+
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="backside">--}}
+                                    {{--<div class="card">--}}
+                                        {{--<div class="card-body text-center mt-4">--}}
+                                            {{--<h4 class="card-title">My class</h4>--}}
+                                            {{--<p class="card-text">사랑해.</p>--}}
+                                            {{--<ul class="list-inline">--}}
+
+                                            {{--</ul>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+
+
+                            <!-- main body -->
+                            <!-- ################################################################################################ -->
+                            <div class="center btmspace-80">
+                                <h3 class="heading">My Class</h3>
+                                <p class="nospace">Cras dapibus ipsum vel eleifend commodo eros tortor imperdiet elit eget molestie nisi lectus.</p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/QUJ0Ak1.jpg" alt="card image"></p>
-                                            <h4 class="card-title">to 김 승 목 길 이 맞  </h4>
-                                            <p class="card-text">집에가고싶다.</p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <h4 class="card-title">My class</h4>
-                                            <p class="card-text">머리 몇시간쨰만지는중.</p>
-                                            <ul class="list-inline">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>
-                                            <h4 class="card-title">to 최 병 찬 길 이 맞   </h4>
-                                            <p class="card-text">?????????</p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <h4 class="card-title">My class</h4>
-                                            <p class="card-text">병찬이 갈리는소리골골  .</p>
-                                            <ul class="list-inline">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/LlQi7HQ.jpg" alt="card image"></p>
-                                            <h4 class="card-title">to 시 뮤 림 레 기 다</h4>
-                                            <p class="card-text">집에가고싶다.</p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <h4 class="card-title">My class</h4>
-                                            <p class="card-text">마인크래프트보는초딩 ㅇㅈ?.</p>
-                                            <ul class="list-inline">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 inli">
-                        <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                            <div class="mainflip">
-                                <div class="frontside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <p><img class=" img-fluid" src="https://i.imgur.com/7FoPGzz.jpg" alt="card image"></p>
-                                            <h4 class="card-title">to안준휘(김하온)</h4>
-                                            <p class="card-text">집에가고싶다.</p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="backside">
-                                    <div class="card">
-                                        <div class="card-body text-center mt-4">
-                                            <h4 class="card-title">My class</h4>
-                                            <p class="card-text">사랑해.</p>
-                                            <ul class="list-inline">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                            <ul class="nospace group services">
+                                <li class="one_third first">
+                                    <article><a href="#"><i class="fa fa-object-group"></i></a>
+                                        <h6 class="heading">Race</h6>
+                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
+                                        <footer><a href="#">이동하기 &raquo;</a></footer>
+                                    </article>
+                                </li>
+                                <li class="one_third">
+                                    <article><a href="#"><i class="fa fa-fighter-jet"></i></a>
+                                        <h6 class="heading">Record Box</h6>
+                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
+                                        <footer><a href="#">이동하기 &raquo;</a></footer>
+                                    </article>
+                                </li>
+                                <li class="one_third">
+                                    <article><a href="#"><i class="fa fa-pagelines"></i></a>
+                                        <h6 class="heading">Quiz Tree</h6>
+                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
+                                        <footer><a href="#">이동하기 &raquo;</a></footer>
+                                    </article>
+                                </li>
+                                <li class="one_third first">
+                                    <article><a href="#"><i class="fa fa-cubes"></i></a>
+                                        <h6 class="heading">Feedback</h6>
+                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
+                                        <footer><a href="#">이동하기 &raquo;</a></footer>
+                                    </article>
+                                </li>
+                                <li class="one_third">
+                                    <article><a href="#"><i class="fa fa-universal-access"></i></a>
+                                        <h6 class="heading">My Class</h6>
+                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
+                                        <footer><a href="#">이동하기 &raquo;</a></footer>
+                                    </article>
+                                </li>
+                                <li class="one_third">
+                                    <article><a href="#"><i class="fa fa-fort-awesome"></i></a>
+                                        <h6 class="heading">Mauris proin venenatis</h6>
+                                        <p>Arcu dignissim interdum quis vel est aenean hendrerit lacus non nisl iaculis sed suscipit&hellip;</p>
+                                        <footer><a href="#">Read More &raquo;</a></footer>
+                                    </article>
+                                </li>
+                            </ul>
+                            <!-- ################################################################################################ -->
+                            <!-- / main body -->
+                            <div class="clear"></div>
 
 
 
