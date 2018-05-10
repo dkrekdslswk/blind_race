@@ -150,11 +150,7 @@
     <script>
         var pub_groupId;
         $(document).ready(function () {
-
             pub_groupId=1;
-
-
-
             var params = {
                 groupId: 1
             };
@@ -198,94 +194,10 @@
 
 
 
-            // 검색하기
-        $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/selectUser')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: "search=&groupId=1",
-                success: function (data) {
-                    GroupData = data;
-                    
-                    search_studentJSON = GroupData['users'];
 
-                    var student_list = '';
-
-                    for( var i = 0 ; i < search_studentJSON.length; i++){
-                        
-                        student_list +='<tr><td>'
-                        +search_studentJSON[i].name
-                        +'</td><td id="'+"st"+i+'">'
-                        +search_studentJSON[i].id
-                        +'</td><td><button onclick="add_student(' +i+ ')" >+</button></td></tr>'
-                    }          
-
-                    $('#myTable').html(student_list);
-                
-                },
-                error: function (data) {
-                    alert("검색에러");
-                }
         });
 
-            
-            
-            
-            $('#chkParent').click(function () {
-                var isChecked = $(this).prop("checked");
-                $('#tblData tr:has(td)')
-                    .find('input[type="checkbox"]')
-                    .prop('checked', isChecked);
-            });
 
-            $('#tblData tr:has(td)')
-                .find('input[type="checkbox"]')
-                .click(function () {
-                    var isChecked = $(this).prop("checked");
-                    var isHeaderChecked = $("#chkParent").prop("checked");
-                    if (isChecked == false && isHeaderChecked) 
-                        $("#chkParent").prop('checked', isChecked);
-                    else {
-                        $('#tblData tr:has(td)')
-                            .find('input[type="checkbox"]')
-                            .each(function () {
-                                if ($(this).prop("checked") == false) 
-                                    isChecked = false;
-                                }
-                            );
-                        console.log(isChecked);
-                        $("#chkParent").prop('checked', isChecked);
-                    }
-                });
-        });
-
-        function myFunction() {
-            var input,
-                filter,
-                table,
-                tr,
-                td,
-                i;
-            input = document.getElementById("myInput");
-            filter = input
-                .value
-                .toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
 
         function getAnothergroup(groupId) {
             pub_groupId = groupId;
@@ -373,23 +285,7 @@
 
 
             </div>
-            <input
-                class="margins"
-                type="text"
-                id="myInput"
-                onkeyup="myFunction()"
-                placeholder="학생 찾기"
-                title="Type in a name"
-                value=" ">
-                <table>
-                    <tr class="header">
-                        <th style="width:25%;">이름</th>
-                        <th style="width:35%;">학번</th>
-                        <th style="width:20%;">추가</th>
-                    </tr>
-                </table>
-                <table id="myTable">
-                </table>
+    </div>
 
 
             </div>
