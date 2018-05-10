@@ -1,5 +1,24 @@
 
 <head>
+
+    <style>
+
+        .chart_total {
+            color: #f08080;
+        }
+        .chart_vocabulary {
+            color: #51cda0;
+        }
+        .chart_grammer {
+            color: #df7970;
+        }
+        .chart_word {
+            color: #4c9ca0;
+        }
+
+
+    </style>
+
     <script>
         var id = "chartContainer";
         var DateType = "DD MMM";
@@ -50,6 +69,101 @@
 
         //차트 만들 데이터
         function makingChart(id,axisXType){
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                width: 1000,
+                height: 500,
+                title:{},
+                axisX:{
+                    labelFontSize: 15,
+                    valueFormatString: axisXType,
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    crosshair: {
+                        enabled: false,
+                        includeZero: false
+                    }
+                },
+                toolTip:{
+                    shared: true,
+                },
+                legend:{
+                    cursor:"pointer",
+                    verticalAlign: "bottom",
+                    horizontalAlign: "left",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                    type: "line",
+                    name: "전체 평균 점수",
+                    markerType: "square",
+                    toolTipContent: "{label}" + "<br>" + "<span class='chart_total'>{name}:</span> {y}",
+                    color: "#F08080",
+                    dataPoints: [
+                        { x: new Date(2017, 1, 14), y: 86 , label: "문제 : 스쿠스쿠1"  },
+                        { x: new Date(2017, 1, 15), y: 89 , label: "문제 : 스쿠스쿠1" },
+                        { x: new Date(2017, 1, 16), y: 93 , label: "문제 : 스쿠스쿠1"  }
+                    ]
+                },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "어학 점수",
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_vocabulary'>{name}:</span> {y}",
+                        dataPoints: [
+                            { x: new Date(2017, 1, 14), y: 32 , label: "문제 : 스쿠스쿠1" },
+                            { x: new Date(2017, 1, 15), y: 30  , label: "문제 : 스쿠스쿠1" },
+                            { x: new Date(2017, 1, 16), y: 32 , label: "문제 : 스쿠스쿠1" }
+                        ]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "문법 점수",
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_grammer'>{name}:</span> {y}",
+                        dataPoints: [
+                            { x: new Date(2017, 1, 14), y: 28 , label: "문제 : 스쿠스쿠1" },
+                            { x: new Date(2017, 1, 15), y: 32 , label: "문제 : 스쿠스쿠1"  },
+                            { x: new Date(2017, 1, 16), y: 30 , label: "문제 : 스쿠스쿠1" }
+                        ]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "독해 점수",
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_word'>{name}:</span> {y}",
+                        dataPoints: [
+                            { x: new Date(2017, 1, 14), y: 31 , label: "문제 : 스쿠스쿠1" },
+                            { x: new Date(2017, 1, 15), y: 32 , label: "문제 : 스쿠스쿠1" },
+                            { x: new Date(2017, 1, 16), y: 33 , label: "문제 : 스쿠스쿠1"  }
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+
+            function toogleDataSeries(e){
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else{
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+        }
+
+
+        //차트 만들기 원본
+        /*function makingChart(id,axisXType){
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 theme: "light2",
@@ -203,7 +317,7 @@
                 }
                 chart.render();
             }
-        }
+        }*/
 
     </script>
 </head>

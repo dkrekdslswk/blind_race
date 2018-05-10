@@ -44,17 +44,17 @@
 
                     var all_grade = [grade1,grade2,grade3,grade4,grade5];
 
-                    for(var i = 0 ; i < grade1.length + 1 ; i++){
-                        $('#student_list').append($('<tr id="student_list_'+all_grade[i][0]+'">'));
+                    for(var i = 0 ; i < all_grade.length; i++){
+                        $('#student_list').append($('<tr id="student_list_'+i+'">'));
 
                         for(var j = 0 ; j < all_grade[0].length ; j++ ) {
 
                             if( j == 0){
-                                $('#student_list_' + all_grade[i][0]).append($('<td>').text(i+1));
-                                $('#student_list_' + all_grade[i][0]).append($('<td>').append($('<a href="#">').text(all_grade[i][j])));
+                                $('#student_list_' + i).append($('<td>').text(i+1));
+                                $('#student_list_' + i).append($('<td>').append($('<a href="#">').text(all_grade[i][j])));
 
                             }else{
-                                $('#student_list_' + all_grade[i][0]).append($('<td>').text(all_grade[i][j]));
+                                $('#student_list_' + i).append($('<td>').text(all_grade[i][j]));
                             }
                         }
                     }

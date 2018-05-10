@@ -87,7 +87,11 @@
 
             /*part.2 메인 페이지*/
             //페이지 전부 불러오기
-            pageLoad(group_id);
+            pageChartLoad(group_id);
+
+
+            /*test*/
+            check();
 
         };
 
@@ -98,33 +102,116 @@
             var reqGroupName = $(this).attr('name');
 
             //레코드 네비바 클래스 이름 바꾸기
-            $('#nav_group_name').text(reqGroupName).css("width","150px");
+            $('#nav_group_name').text(reqGroupName);
 
             //메인 페이지 불러오기
-            pageLoad(reqGroupId);
+            pageChartLoad(reqGroupId);
 
         });
 
 
-        //전체 페이지 로드
-        function pageLoad(groupId){
+        //차트 페이지 로드
+        function pageChartLoad(groupId){
 
             /*part.1 차트화면*/
             //차트 만들기 실행 -> record_chart.blade.php
             makingChart(id,DateType);
 
-            /*part.2 최근 기록*/
-            //최근 레이스 목록들 불러오기 -> record_history.blade.php
-
-
-            /*part.3 학생 관리*/
-
-
-            /*part.4 피드백*/
-
-
         }
 
+        function check() {
+
+            var groupId = {"groupId" : "1"};
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getRecordData')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: groupId,
+                success: function (data) {
+
+                    /*
+                    * data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:9
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+
+                                                quizCount:6
+                                                rightAnswerCount:4.2
+
+                                                grammarCount:2
+                                                grammarRightAnswerCount:1.6
+
+                                                vocabularyCount:2
+                                                vocabularyRightAnswerCount:1.6
+
+                                                wordCount:2
+                                                wordRightAnswerCount:1
+                    */
+
+                    /* data.group == data.group */
+
+                    var group_data = data['group'];
+                    console.log(group_data);
+
+                    var races_data = data['races'];
+
+                    var total_data_Points = [];
+                    var grammer_data_Points = [];
+                    var vocabulary_Points = [];
+                    var word_data_Points = [];
+
+                    for(var i = 0 ; i < races_data.length ; i++){
+
+                        //총점 구하기
+                        var total_grade = ((100 / 6).toFixed(1) *  data['races'][i]['rightAnswerCount']).toFixed(0);
+
+                        //문법 총점 구하기
+                        var grammer_grade = ((33 / data['races'][0]['grammarCount']).toFixed(1) *  data['races'][i]['grammarRightAnswerCount']).toFixed(0);
+
+                        //어휘 총점 구하기
+                        var vocabulary_grade = ((33 / data['races'][0]['vocabularyCount']).toFixed(1) *  data['races'][i]['vocabularyRightAnswerCount']).toFixed(0);
+
+                        //단어 총점 구하기
+                        var word_grade = ((33 / data['races'][0]['wordCount']).toFixed(1) *  data['races'][i]['wordRightAnswerCount']).toFixed(0);
+
+                        //차트 데이터 배열 만들기
+                        total_data_Points.push({ x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
+                                                 y : total_grade ,
+                                                 label : races_data[i]['listName']});
+
+                        grammer_data_Points.push({  x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
+                                                    y : grammer_grade ,
+                                                    label : races_data[i]['listName']});
+
+                        vocabulary_Points.push({ x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
+                                                 y : vocabulary_grade ,
+                                                 label : races_data[i]['listName']});
+
+                        word_data_Points.push({ x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
+                                                y : word_grade ,
+                                                label : races_data[i]['listName']});
+                    }
+
+                    console.log(total_data_Points);
+                    console.log(grammer_data_Points);
+                    console.log(vocabulary_Points);
+                    console.log(word_data_Points);
+
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+        }
 
 
 
@@ -159,7 +246,6 @@
             });
 
         }
-
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
@@ -239,7 +325,7 @@
     </div>
 
     <div class="hidden" id="record_students">
-        @include('Recordbox.record_students_list')
+        @include('Recordbox.record_studentslist')
     </div>
 
     <div class="hidden" id="record_homework">

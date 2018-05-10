@@ -150,7 +150,7 @@
     </div>
 
     <div class="hidden" id="record_students">
-        @include('Recordbox.record_students_list')
+        @include('Recordbox.record_studentslist')
     </div>
 
     <div class="hidden" id="record_feedback">
