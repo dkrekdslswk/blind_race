@@ -205,11 +205,16 @@
                 </div>
                 <div class="modal-body" style="text-align: center">
                     {{--Dropdowns--}}
-                    <select id="groupSelect" class="form-control">
-                        <option>그룹명</option>
-                        <option value="1">특강 A반</option>
-                        <option value="2">특강 B반</option>
-                    </select>
+                    <div class="select" style="margin: 0 auto; width: 50%">
+                        <select id="groupSelect" class="form-control">
+                            <option>그룹명</option>
+                            <option value="1">특강 A반</option>
+                            <option value="2">특강 B반</option>
+                        </select>
+                    </div>
+                    <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em">
+                        <input id="cutLineScore" name="passingMark" type="text" placeholder="커트라인" class="form-control" style="width: 100%;">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">선택하기</button>

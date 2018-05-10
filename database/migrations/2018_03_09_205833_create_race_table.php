@@ -39,6 +39,8 @@ class CreateRaceTable extends Migration
 	        $table->char('type', 20);
 	        $table->foreign('type')->references('name')->on('raceTypes');
 
+	        $table->unsignedTinyInteger('passingMark')->default(60);
+
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }

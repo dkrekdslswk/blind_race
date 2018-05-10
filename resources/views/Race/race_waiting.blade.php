@@ -95,16 +95,20 @@
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
+        var listName = '<?php echo $response['list']['listName']; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
+        var groupName = '<?php echo $response['group']['groupName']; ?>';
+        var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
         window.onload = function() {
 
 
 
             var socket = io(':8890');
 
-            $('#race_name').html('<?php echo $response['list']['listName']; ?>');
-            $('#race_count').html('<?php echo $response['list']['quizCount']; echo "문제"; ?>');
-            $('#group_name').html('<?php echo $response['group']['groupName']; ?>');
-            $('#group_student_count').html('<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>');
+            $('#race_name').html(listName);
+            $('#race_count').html(quizCount);
+            $('#group_name').html(groupName);
+            $('#group_student_count').html(groupStudentCount);
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
@@ -152,7 +156,7 @@
                             $('#student_count').html(quiz_member);
                             //유저한테 다시보내줌 result['characterId'];
 
-                            socket.emit('web_enter_room',roomPin,nick,sessionId,characterId,true);
+                            socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
                             socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
                         }
                         else{
@@ -537,24 +541,20 @@
 </head>
 <body>
 
-
 <div id="wait_room_nav" class="inline-class">
     <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
-
+    <span>Race</span>
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-    <span  id="race_count" style="position: absolute;  right:15%; top:4%; font-size:20px" > 문제수 </span>
-    <span  id="group_name" style="font-size:20px;"> 그룹이름 </span>
-    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 0; top:4%;">학생 총 수</span>
-
+    <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
+    <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
+    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
 </div>
 
 <div id="wait_room">
     <div class="student">
 
-
-        <!--<form action="">-->
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-        <!--</form>-->
+
 
         <div id="room_Pin" class="counting">
         </div>
