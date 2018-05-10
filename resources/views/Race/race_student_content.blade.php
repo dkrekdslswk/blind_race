@@ -26,7 +26,7 @@
 
     .column {
         width: 24%;
-        height: 40%;
+        height: 200px;
         border-radius: 10px;
         border-right:5px solid #DCDCDC;
         border-bottom:5px solid #DCDCDC;
@@ -120,7 +120,7 @@
     <div id='content'>
 
         <div class="inline-class" id="mondai">
-            <img  src="/img/character/char1.png" style="width:125px; height:100%;" alt="">
+            <img  id="character_info" src="/img/character/char1.png" style="width:125px; height:100%;" alt="">
             <span class="user_info"  id="nickname_info">닉네임 </span>
             <span class="user_info"  id="ranking_info"> 11등 </span>
             <span class="user_info"  id="point_info">200point </span>

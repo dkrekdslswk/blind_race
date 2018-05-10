@@ -114,15 +114,9 @@
             <div class="modal-header">
                 <h4 class="modal-title" id="ModalLabel">피드백</h4>
                 <br><br>
-                <div class="request_data" style="display: block">
-                    <div class="request_student" style="float: left;">
-                        작성자 : 김똘똘
-                    </div>
-                    <div class="request_date" style="float: right;">
-                        날짜 : 2018-04-17
-                    </div>
+                <div class="request_date" style="float: right;">
+                    날짜 : 2018-04-17
                 </div>
-
             </div>
 
             <div class="modal-body" style="margin: 0; padding:0;">

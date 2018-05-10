@@ -1,8 +1,6 @@
 
 <head>
-
     <style>
-
         .chart_total {
             color: #f08080;
         }
@@ -16,151 +14,9 @@
             color: #4c9ca0;
         }
 
-
     </style>
 
     <script>
-        var id = "chartContainer";
-        var DateType = "DD MMM";
-
-        function makingDropdown() {
-            for (var i = 2017 ; i <= 2017 ; i++) {
-                $('#year1').append("<option value='"+i+"'>"+ i);
-                $('#year2').append("<option value='"+i+"'>"+ i);
-            }
-            for (var i = 1 ; i <= 12 ; i++) {
-                $('#month1').append("<option value='"+i+"'>"+ i);
-                $('#month2').append("<option value='"+i+"'>"+ i);
-            }
-            for (var i = 1 ; i <= 31 ; i++) {
-                $('#date1').append("<option value='"+i+"'>"+ i);
-                $('#date2').append("<option value='"+i+"'>"+ i);
-            }
-        }
-
-        //날짜 단위를 조회해서 차트를 표시
-        function printingChart(){
-            var checked_type = $("input[type=radio][name=optradio]:checked").val();
-            var changed_DateType = "";
-
-            switch (checked_type) {
-                case "1":
-                    changed_DateType = "DD";
-                    break;
-
-                case "2":
-                    changed_DateType = "DD MMM";
-                    break;
-
-                case "3":
-                    changed_DateType = "YYYY";
-                    break;
-            }
-
-            makingChart(id,changed_DateType);
-        }
-
-        //기간을 설정하여 차트를 표시
-        function printingChart2(){
-            var startDate = document.querySelector('input[id="startDay"]');
-            var endDate = document.querySelector('input[id="endDate"]');
-
-        }
-
-        //차트 만들 데이터
-        function makingChart(id,axisXType){
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                theme: "light2",
-                width: 1000,
-                height: 500,
-                title:{},
-                axisX:{
-                    labelFontSize: 15,
-                    valueFormatString: axisXType,
-                    crosshair: {
-                        enabled: true,
-                        snapToDataPoint: true
-                    }
-                },
-                axisY: {
-                    crosshair: {
-                        enabled: false,
-                        includeZero: false
-                    }
-                },
-                toolTip:{
-                    shared: true,
-                },
-                legend:{
-                    cursor:"pointer",
-                    verticalAlign: "bottom",
-                    horizontalAlign: "left",
-                    dockInsidePlotArea: true,
-                    itemclick: toogleDataSeries
-                },
-                data: [{
-                    type: "line",
-                    name: "전체 평균 점수",
-                    markerType: "square",
-                    toolTipContent: "{label}" + "<br>" + "<span class='chart_total'>{name}:</span> {y}",
-                    color: "#F08080",
-                    dataPoints: [
-                        { x: new Date(2017, 1, 14), y: 86 , label: "문제 : 스쿠스쿠1"  },
-                        { x: new Date(2017, 1, 15), y: 89 , label: "문제 : 스쿠스쿠1" },
-                        { x: new Date(2017, 1, 16), y: 93 , label: "문제 : 스쿠스쿠1"  }
-                    ]
-                },
-                    {
-                        type: "line",
-                        showInLegend: true,
-                        name: "어학 점수",
-                        lineDashType: "dash",
-                        toolTipContent: "<span class='chart_vocabulary'>{name}:</span> {y}",
-                        dataPoints: [
-                            { x: new Date(2017, 1, 14), y: 32 , label: "문제 : 스쿠스쿠1" },
-                            { x: new Date(2017, 1, 15), y: 30  , label: "문제 : 스쿠스쿠1" },
-                            { x: new Date(2017, 1, 16), y: 32 , label: "문제 : 스쿠스쿠1" }
-                        ]
-                    },
-                    {
-                        type: "line",
-                        showInLegend: true,
-                        name: "문법 점수",
-                        lineDashType: "dash",
-                        toolTipContent: "<span class='chart_grammer'>{name}:</span> {y}",
-                        dataPoints: [
-                            { x: new Date(2017, 1, 14), y: 28 , label: "문제 : 스쿠스쿠1" },
-                            { x: new Date(2017, 1, 15), y: 32 , label: "문제 : 스쿠스쿠1"  },
-                            { x: new Date(2017, 1, 16), y: 30 , label: "문제 : 스쿠스쿠1" }
-                        ]
-                    },
-                    {
-                        type: "line",
-                        showInLegend: true,
-                        name: "독해 점수",
-                        lineDashType: "dash",
-                        toolTipContent: "<span class='chart_word'>{name}:</span> {y}",
-                        dataPoints: [
-                            { x: new Date(2017, 1, 14), y: 31 , label: "문제 : 스쿠스쿠1" },
-                            { x: new Date(2017, 1, 15), y: 32 , label: "문제 : 스쿠스쿠1" },
-                            { x: new Date(2017, 1, 16), y: 33 , label: "문제 : 스쿠스쿠1"  }
-                        ]
-                    }
-                ]
-            });
-            chart.render();
-
-            function toogleDataSeries(e){
-                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                    e.dataSeries.visible = false;
-                } else{
-                    e.dataSeries.visible = true;
-                }
-                chart.render();
-            }
-        }
-
 
         //차트 만들기 원본
         /*function makingChart(id,axisXType){
@@ -326,19 +182,19 @@
 
     <div class="radio">
         <h3>보기</h3>
-        <label><input type="radio" checked="checked" id="radio_1" name="optradio" value='1' onclick="printingChart()">일</label>
-        <label><input type="radio" id="radio_2" name="optradio" value='2' onclick="printingChart()">월</label>
-        <label><input type="radio" id="radio_3" name="optradio" value='3' onclick="printingChart()">년도</label>
+        <label><input type="radio" checked="checked" id="radio_1" name="optradio" onclick="changeDateType()" value='1'>일</label>
+        <label><input type="radio" id="radio_2" name="optradio" onclick="changeDateType()" value='2' >월</label>
+        <label><input type="radio" id="radio_3" name="optradio" onclick="changeDateType()" value='3' >년도</label>
     </div>
 
     <div class="chooseDate" style="margin-bottom: 30px;">
         <h3>기간</h3>
 
-        <input type="date" name="chooseday" id="startDay">
+        <input type="date" name="chooseday" id="startDate"></input>
 
-        <input type="date" name="chooseday" id="endDay">
+        <input type="date" name="chooseday" id="endDate"></input>
 
-        <button class="btn btn-default" onclick="printingChart2()">
+        <button class="btn btn-default" onclick="changeDateTypeToChart()">
             조회
         </button>
     </div>
