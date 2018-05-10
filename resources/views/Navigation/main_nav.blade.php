@@ -128,7 +128,7 @@
                     </li>
                 </ul>
                 <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse2">
-                    <form class="navbar-form navbar-right form-inline" role="form">
+                    <!--<form class="navbar-form navbar-right form-inline" role="form">
                         <div class="form-group">
                             <label class="sr-only" for="Email">Email</label>
                             <input
@@ -149,7 +149,7 @@
                                     required="required"/>
                         </div>
                         <button type="submit" class="btn btn-success">Sign in</button>
-                    </form>
+                    </form>-->>
                 </div>
             </div>
         </div>
