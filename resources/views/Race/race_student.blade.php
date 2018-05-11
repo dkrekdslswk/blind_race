@@ -24,12 +24,18 @@
         var web_quizId ="";
         var web_makeType;
         var web_alright;
-
+        var web_answer_check;
+        var web_correct_answer;
+        
+        var web_quiz_count;
+        
         window.onload = function() {
 
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
-
+                    
+                    web_quiz_count = quizCount;
+                    
                     $('#entranceInfo_character_page').hide();
                     $('#entranceInfo_nickname_page').hide();
 
@@ -84,6 +90,9 @@
                 
             });
             
+            socket.on('race_mid_correct',function(correct){
+                web_correct_answer = correct;
+            });
             
             socket.on('android_mid_result',function(quizId, makeType, ranking){
 
@@ -93,29 +102,25 @@
                 web_quizId = quizId;
                 web_makeType = makeType;
 
-                var ranking_json = ranking;
+                var ranking_json = JSON.parse(ranking);
 
-                // for(var i=0; i < ranking_json.length; i++){
-                //     //고쳐야되는 구문임
-                //     // if(ranking_json[i].nick == null) {
-                //         web_ranking = i + 1;
-                //         web_point = ranking_json[i].rightCount;
-                //         web_alright = ranking_json[i].answerCheck;
-                //     // }
-                // }
-                web_ranking = 1;
-                web_point = ranking_json[0].rightCount;
-                web_alright = ranking_json[0].answerCheck;
-
-
-                alert(ranking_json[0].answerCheck+","+ranking_json[1].answerCheck);
-
+                for(var i=0; i < ranking_json.length; i++){
+                    //고쳐야되는 구문임
+                    if(ranking_json[i].nick == nick) {
+                        web_ranking = i + 1;
+                        web_point = ranking_json[i].rightCount;
+                        web_alright = ranking_json[i].answer;
+                        web_answer_check = ranking_json[i].answerCheck;
+                    }
+                }
 
                 $('#ranking_info').html(web_ranking+"등");
-                $('#point_info').html(web_point+"point");
-                $('#answer_content').html("아직미구현");
-
-
+                $('#point_info').html(web_point*100+"point");
+                $('#answer_content').html(web_correct_answer);
+                
+                if(web_answer_check == "X")
+                    web_alright = "X";
+                
                 switch(web_alright){
                     case "O": $('#answer_check_img').attr("src","/img/right_circle.png");
                         $('#answer_check').html("정답");
@@ -136,6 +141,7 @@
         };
 
         function web_answer(answer_num){
+            
             switch(web_makeType){
                 case "obj":
                     socket.emit('answer',roomPin , answer_num , sessionId , nick , web_quizId);
@@ -143,6 +149,7 @@
 
                 case "sub":
                     var sub_answer = document.getElementById('subanswer').value;
+                    alert(sub_answer);
                     socket.emit('answer',roomPin , sub_answer , sessionId , nick , web_quizId);
                     break;
             }
@@ -204,7 +211,13 @@
             nick = document.getElementById('nickname').value;
             socket.emit('user_in',roomPin,nick,sessionId,characterId);
         }
-
+        
+        socket.on('race_ending',function(data){
+            $('body').css("background-color","mediumslateblue");
+            $('#web_race_midresult').hide();
+            $('#race_result').show();
+            
+        });
 
     </script>
     <script>

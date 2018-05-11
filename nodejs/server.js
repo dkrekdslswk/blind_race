@@ -95,6 +95,10 @@ io.on('connection', function (socket){
         io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType, ranking);
         console.log("안드 중간결과 ", quizId +","+ makeType+","+ranking);
     });
+    
+    socket.on('race_mid_correct',function(roomPin,correct){
+        io.sockets.in(roomPin).emit('race_mid_correct',correct);    
+    });
 
     socket.on('android_next_quiz',function(roomPin){
         io.sockets.in(roomPin).emit('android_next_quiz',roomPin);
