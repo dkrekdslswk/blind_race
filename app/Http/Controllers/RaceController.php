@@ -242,8 +242,11 @@ class RaceController extends Controller{
             ->where([
                 's1.number'         => $postData['sessionId'],
                 's2.nick'           => '',
-                ['s1.nick', '<>', '']
             ])
+            ->where(function ($query){
+                $query->where('s1.nick', '<>', '')
+                    ->orWhereNull('s1.nick');
+            })
             ->join('sessionDatas as s2', function ($join){
                 $join->on('s2.PIN', '=', 's1.PIN');
                 $join->on('s2.raceNumber', '=', 's1.raceNumber');
