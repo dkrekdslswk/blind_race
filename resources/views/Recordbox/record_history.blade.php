@@ -1,4 +1,4 @@
-<div id="history_list">
+<div id="history_list" style="width: 1000px;float: left;margin-left: 100px;">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -16,10 +16,10 @@
             <td>스쿠스쿠3</td>
             <td>2018년 1월 16일</td>
             <td>
-                <button class="btn btn-default" id="btn_retest" > 0 / 4</button>
+                0 / 4
             </td>
             <td>
-                <button class="btn btn-default" id="btn_notebook"> 0 / 4</button>
+                 0 / 4
             </td>
             <td>
                 <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
@@ -47,6 +47,101 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div style="float: left;margin-top: 50px;margin-left: 50px;margin-right: 50px;">
+    >
+</div>
+
+{{--과제 목록 보기--}}
+<div class="raceListDetail" style="width: 400px;float: left;">
+    <table class="table table-hover table-bordered table-striped" >
+        <thead>
+        <tr>
+            <th width="50px">
+                번호
+            </th>
+            <th>
+                학생
+            </th>
+            <th width="110px">
+                재시험
+            </th>
+            <th width="110px">
+                오답노트
+            </th>
+        </tr>
+        </thead>
+
+        {{--getStudent()로 학생들 불러오기--}}
+        <tbody>
+        <tr>
+            <td width="50px">
+                1
+            </td>
+            <td>
+                최천재
+            </td>
+            <td width="90px">
+                <button class="btn btn-primary"> 응시</button>
+            </td>
+            <td width="90px">
+                <button class="btn btn-primary"> 제출</button>
+            </td>
+        </tr>
+        <tr>
+            <td width="50px">
+                2
+            </td>
+            <td>
+                안예민
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미응시</button>
+
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미제출</button>
+
+            </td>
+        </tr>
+        <tr>
+            <td width="50px">
+                3
+            </td>
+            <td>
+                심사쵸
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미응시</button>
+
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미제출</button>
+
+            </td>
+        </tr>
+        <tr>
+            <td width="50px">
+                4
+            </td>
+            <td>
+                사라다
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미응시</button>
+
+            </td>
+            <td width="90px">
+                <button class="btn btn-warning"> 미제출</button>
+
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
 </div>
 
 
@@ -341,7 +436,6 @@
                         </div>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
