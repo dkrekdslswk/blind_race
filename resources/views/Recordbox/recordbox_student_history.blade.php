@@ -1,157 +1,135 @@
-<style>
-    .privacyStudentChart {
-        position: relative;
-        width: 500px;
-        height: 300px;
-        /*overflow-x: scroll;
-        overflow-y: hidden;*/
-    }
-    .privacyStudentChartArea {
-        margin: 0;
-        width: 500px;
-    }
+<div class="history">
 
-    .canvaschart_privacy_student{
-        position: relative;
-        width: 0px;
-        height: 0px;
-        margin-left: 350px;
-    }
+    <div style="width: 100%;height: 80px;">
+        <div class="radio" style="float: left;">
+            <h3 style="float: left;margin: 0;">보기</h3>
+            <label><input type="radio" checked="checked" id="radio_1" name="optradio" onclick="changeDateType()" value='1'>일</label>
+            <label><input type="radio" id="radio_2" name="optradio" onclick="changeDateType()" value='2' >월</label>
+            <label><input type="radio" id="radio_3" name="optradio" onclick="changeDateType()" value='3' >년도</label>
+        </div>
 
-</style>
+        <div class="chooseDate" style="margin-left: 20px;float: left;">
+            <h3 style="margin: 0;">기간</h3>
 
+            <input type="date" name="chooseday" id="startDate"></input>
 
-<div>
-    <div class="canvaschart_privacy_student" id="chartContainer_privacy_student"></div>
-</div>
+            <input type="date" name="chooseday" id="endDate"></input>
 
-<div class="stdAllList_scroll" style="margin-bottom: 70px;overflow-y: scroll;margin-left: 60px;width: 250px;height: 500px;border: 1px solid #e5e6e8;">
-    <div id="stdAllList">
-        <table class="table table-hover table-bordered" style="width: 250px;height: 0;">
-            <thead>
-            <tr>
-                <th width="50px">
-                    번호
-                </th>
-                <th>
-                    이름
-                </th>
-            </tr>
-            </thead>
-
-            {{--getStudent()로 학생들 불러오기--}}
-            <tbody id="student_list">
-
-            </tbody>
-
-        </table>
-    </div>
-</div>
-
-<div class="student_grade">
-
-    <div id="std_grade_list_table">
-        <table class="table table-hover table-bordered" style="width: 1600px;">
-            <thead>
-            <tr>
-                <th width="50px" style=" text-align: center;">
-                    번호
-                </th>
-                <th width="200px" style=" text-align: center;">
-                    날짜
-                </th>
-                <th style=" text-align: center;">
-                    문제 이름
-                </th>
-                <th width="150px" style=" text-align: center;">
-                    총 점수
-                </th>
-                <th width="100px" style=" text-align: center;">
-                    어휘
-                </th>
-                <th width="100px" style=" text-align: center;">
-                    독해
-                </th>
-                <th width="100px" style=" text-align: center;">
-                    단어
-                </th>
-                <th width="110px" style=" text-align: center;">
-                    재시험
-                </th>
-                <th width="110px" style=" text-align: center;">
-                    오답노트
-                </th>
-                <th width="110px" style=" text-align: center;">
-                    성적표
-                </th>
-            </tr>
-            </thead>
-
-            <tbody id="student_grade_list" class="">
-
-            <tr>
-                <td width="50px" style=" text-align: center;">
-                    1
-                </td>
-                <td width="200px" style=" text-align: center;">
-                    2018년 04월 24일
-                </td>
-                <td style=" text-align: center;">
-                    스쿠스쿠 문법 풀이
-                </td>
-                <td width="150px" style=" text-align: center;">
-                    55
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    20
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    20
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    15
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    미응시
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    미제출
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentGradeCard">성적표</button>
-                </td>
-            </tr>
-            </tbody>
-
-        </table>
+            <button class="btn btn-default" onclick="changeDateTypeToChart()">
+                조회
+            </button>
+        </div>
     </div>
 
+    <div style="width: 100%;">
+
+    <div class="student_race_chart" style="width: 100%;height: 300px;margin: 10px;border: 1px solid #e5e6e8;">
+        <div class="canvaschart_privacy_student" id="chartContainer_privacy_student"></div>
+    </div>
+
+    <div class="student_grade" >
+
+
+        <div id="std_grade_list_table" style="margin: 20px;margin-bottom: 0;">
+            <table class="table table-hover table-bordered" style="width: 100%;margin: 0;">
+                <thead>
+                <tr>
+                    <th width="50px" style=" text-align: center;">
+                        번호
+                    </th>
+                    <th width="200px" style=" text-align: center;">
+                        날짜
+                    </th>
+                    <th style=" text-align: center;">
+                        문제 이름
+                    </th>
+                    <th width="150px" style=" text-align: center;">
+                        총 점수
+                    </th>
+                    <th width="100px" style=" text-align: center;">
+                        어휘
+                    </th>
+                    <th width="100px" style=" text-align: center;">
+                        독해
+                    </th>
+                    <th width="100px" style=" text-align: center;">
+                        단어
+                    </th>
+                    <th width="110px" style=" text-align: center;">
+                        재시험
+                    </th>
+                    <th width="110px" style=" text-align: center;">
+                        오답노트
+                    </th>
+                    <th width="110px" style=" text-align: center;">
+                        성적표
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody id="student_race_list" class="">
+
+                <tr>
+                    <td width="50px" style=" text-align: center;">
+                        1
+                    </td>
+                    <td width="200px" style=" text-align: center;">
+                        2018년 04월 24일
+                    </td>
+                    <td style=" text-align: center;">
+                        스쿠스쿠 문법 풀이
+                    </td>
+                    <td width="150px" style=" text-align: center;">
+                        55
+                    </td>
+                    <td width="100px" style=" text-align: center;">
+                        20
+                    </td>
+                    <td width="100px" style=" text-align: center;">
+                        20
+                    </td>
+                    <td width="100px" style=" text-align: center;">
+                        15
+                    </td>
+                    <td width="110px" style=" text-align: center;">
+                        <button class="btn btn-warning">미응시</button>
+                    </td>
+                    <td width="110px" style=" text-align: center;">
+                        <button class="btn btn-primary">제출</button>
+                    </td>
+                    <td width="110px" style=" text-align: center;">
+                        <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentGradeCard">성적표</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="panel-footer" style="height: 80px;">
+                <div class="row">
+                    <div class="col col-xs-4">Page 1 of 5
+                    </div>
+                    <div class="col col-xs-8">
+                        <ul class="pagination hidden-xs pull-right">
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                        <ul class="pagination visible-xs pull-right">
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    </div>
 </div>
-
-<script>
-    $('#raceAllList').attr('class','hidden');
-    $('#race_grade_list').attr('class','hidden');
-
-    function sothat(){
-        var selectedradio = $("input[type=radio][name=studentGrade]:checked").val();
-
-        if(selectedradio == 0){
-            $('#stdAllList').attr('class','');
-            $('#std_grade_list_table').attr('class','');
-            $('#raceAllList').attr('class','hidden');
-            $('#race_grade_list').attr('class','hidden');
-        }else{
-            $('#raceAllList').attr('class','');
-            $('#race_grade_list').attr('class','');
-            $('#stdAllList').attr('class','hidden');
-            $('#std_grade_list_table').attr('class','hidden');
-        }
-    }
-
-</script>
-
-
-
 {{--Modal : make quiz--}}
 <div class="modal fade" id="modal_studentGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="width: 1200px">
@@ -190,7 +168,7 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody id="studentGradeCard">
+                    <tbody id="student_grade_list">
 
                     </tbody>
                 </table>
@@ -203,7 +181,7 @@
                 var all_grade = [grade1];
 
                 for(var i = 0 ; i < all_grade.length ; i++){
-                    $('#studentGradeCard').append($('<tr id="studentGrade_'+all_grade[i][0]+'">'));
+                    $('#student_grade_list').append($('<tr id="studentGrade_'+all_grade[i][0]+'">'));
 
                     for(var j = 0 ; j < all_grade[0].length ; j++ ) {
 
@@ -235,7 +213,7 @@
                 <div class="race_and_teacher" style="width: 100%;">
                     <h5 style="margin: 0;text-align:center">
                         <div class="" style="display: inline;margin-right: 10px;">
-                            스쿠스쿠 문법 풀이
+                            스쿠스쿠3
                         </div>
                         /
                         <div class="" style="display: inline;margin-left: 10px;">

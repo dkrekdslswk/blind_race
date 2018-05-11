@@ -63,7 +63,6 @@
             min-height: 700px;
             min-width: 700px;
             display: block;
-
         }
     </style>
 
@@ -86,7 +85,44 @@
             //getGroups_and_loadChart(group_id);
 
             /*getStudents(group_id);*/
+            getHistory(group_id);
+            getStudents(group_id);
         };
+
+        //메인 페이지 로드
+        function pageMainLoad(){
+
+            /*part.4 과제관리 화면*/
+            //차트 만들기 실행 -> record_chart.blade.php
+
+        }
+
+        //최근기록 페이지 로드
+        function pageHistoryLoad(){
+
+            /*part.2 최근기록 화면*/
+            //최근 목록 불러오기
+
+            var group_id = 1;
+
+            getHistory(group_id);
+        }
+
+        //학생관리 페이지 로드
+        function pageStudentListLoad(){
+
+            /*part.3 학생관리 화면*/
+            //차트 만들기 실행 -> record_chart.blade.php
+
+        }
+
+        //피드백 페이지 로드
+        function pageFeedbackLoad(){
+
+            /*part.5 피드백 화면*/
+            //차트 만들기 실행 -> record_chart.blade.php
+
+        }
 
         //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
         $(document).on('click','.groups',function () {
@@ -111,8 +147,8 @@
 
         //조회를 누르면 날짜를 가져와서 조회
         function changeDateTypeToChart(){
-            var startDate = document.querySelector('input[id="startDate"]');
-            var endDate = document.querySelector('input[id="endDate"]');
+            var startDate = document.querySelector('input[id="startDate"]').value;
+            var endDate = document.querySelector('input[id="endDate"]').value;
             var dateType = selectedDateType();
 
             // 매우중요!!!! 그룹컨트롤러 복귀되면 다시 가동시키기 -> var reqGroupId = $('#nav_group_name').id;
@@ -121,14 +157,11 @@
 
             var requestData = {"groupId" : group_id , "startDate" : startDate , "endDate" : endDate};
 
-            console.log(requestData);
             /*var group_Id = {"groupId" : groupId , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
 
             $.ajax({
                 type: 'POST',
                 url: "{{url('/recordBoxController/getChart')}}",
-                //processData: false,
-                //contentType: false,
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 //data: {_token: CSRF_TOKEN, 'post':params},
@@ -139,65 +172,38 @@
                     * data = { group : {id : 1 , name : "3WDJ"} ,
                                races : { 0 : {  year:2018
                                                 month:5
-                                                day:9
+                                                day:11
 
                                                 raceId:2
                                                 listName:"테스트용 리스트1"
                                                 userCount:5
 
                                                 quizCount:6
-                                                rightAnswerCount:4.2
+                                                rightAnswerCount:4
 
                                                 grammarCount:2
-                                                grammarRightAnswerCount:1.6
+                                                grammarRightAnswerCount:1.4
 
                                                 vocabularyCount:2
-                                                vocabularyRightAnswerCount:1.6
+                                                vocabularyRightAnswerCount:1.2
 
                                                 wordCount:2
-                                                wordRightAnswerCount:1
+                                                wordRightAnswerCount:1.4
                                               }
                                         }
                     */
 
-                    console.log(data);
+                    var raceData = data['races'];
+                    var AllChartData = makingChartData(raceData);
+
+                    //차트 생성
+                    makingChart(AllChartData);
+
                 },
                 error: function (data) {
                     alert("날짜 조회 에러");
                 }
             });
-
-        }
-
-        //최근기록 페이지 로드
-        function pageHistoryLoad(groupId){
-
-            /*part.2 최근기록 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
-
-        }
-
-        //학생관리 페이지 로드
-        function pageStudentListLoad(groupId){
-
-            /*part.3 학생관리 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
-
-        }
-
-        //과제관리 페이지 로드
-        function pageHomeworkLoad(groupId){
-
-            /*part.4 과제관리 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
-
-        }
-
-        //피드백 페이지 로드
-        function pageFeedbackLoad(groupId){
-
-            /*part.5 피드백 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
 
         }
 
@@ -310,7 +316,6 @@
                 //contentType: false,
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                //data: {_token: CSRF_TOKEN, 'post':params},
                 data: group_Id,
                 success: function (data) {
 
@@ -344,49 +349,8 @@
                     var group_data = data['group'];
                     var races_data = data['races'];
 
-                    var total_data_Points = [];
-                    var grammer_data_Points = [];
-                    var vocabulary_Points = [];
-                    var word_data_Points = [];
-
-                    for(var i = 0 ; i < races_data.length ; i++){
-
-                        //총점 구하기
-                        var total_grade = ((100 / data['races'][i]['quizCount']).toFixed(1) *  data['races'][i]['rightAnswerCount']).toFixed(0);
-
-                        //문법 총점 구하기
-                        var grammer_grade = ((33 / data['races'][i]['grammarCount']).toFixed(1) *  data['races'][i]['grammarRightAnswerCount']).toFixed(0);
-
-                        //어휘 총점 구하기
-                        var vocabulary_grade = ((33 / data['races'][i]['vocabularyCount']).toFixed(1) *  data['races'][i]['vocabularyRightAnswerCount']).toFixed(0);
-
-                        //단어 총점 구하기
-                        var word_grade = ((33 / data['races'][i]['wordCount']).toFixed(1) *  data['races'][i]['wordRightAnswerCount']).toFixed(0);
-
-                        //차트 데이터 배열 만들기
-                        total_data_Points.push({ x : new Date(2018,5,9),
-                                                 y : parseInt(total_grade) ,
-                                                 label : races_data[i]['listName']});
-
-                        grammer_data_Points.push({  x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
-                                                    y : parseInt(grammer_grade) ,
-                                                    label : races_data[i]['listName']});
-
-                        vocabulary_Points.push({ x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
-                                                 y : parseInt(vocabulary_grade) ,
-                                                 label : races_data[i]['listName']});
-
-                        word_data_Points.push({ x : new Date(races_data[i]['year'],races_data[i]['month'],races_data[i]['day']),
-                                                y : parseInt(word_grade) ,
-                                                label : races_data[i]['listName']});
-                    }
-
-                    //차트 데이터 합치기
-                    var AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
-                                        "voca_data" : ["어학 점수", vocabulary_Points] ,
-                                        "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-                                        "word_data" : ["단어 점수" , word_data_Points]
-                                    };
+                    //차트 데이터 생성
+                    var AllChartData = makingChartData(races_data);
 
                     //차트 생성
                     makingChart(AllChartData,axisXType);
@@ -400,6 +364,140 @@
                     alert("그룹 아이디로 디폴트 차트 불러오기 에러");
                 }
             });
+        }
+
+        function getHistory(group_id){
+            // 요구하는 값
+            // $postData = array( 'groupId'   => 1 );
+
+            var reqData = {"groupId" : group_id};
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getRaces')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                    console.log(data);
+
+                    /*
+                    data =
+                    */
+
+                },
+                error: function (data) {
+                    alert("최근 기록 불러오기 실패");
+                }
+            });
+        }
+
+        function getStudents(group_id) {
+            // 요구하는 값
+            //$postData = array('groupId'   => 1,
+            //                 'dateType'  => 'week' // month, quarter
+            //                 );
+
+            var reqData = {'groupId' : group_id , 'dateType' :  'week' };
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getStudents')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                    console.log(data);
+
+                    /*
+                    data =
+                    */
+
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+            });
+        }
+
+        function makingChartData(raceData){
+
+            /*
+            raceData = { 0 : {    year:2018
+                                    month:5
+                                    day:9
+
+                                    raceId:2
+                                    listName:"테스트용 리스트1"
+                                    userCount:5
+
+                                    quizCount:6
+                                    rightAnswerCount:4.2
+
+                                    grammarCount:2
+                                    grammarRightAnswerCount:1.6
+
+                                    vocabularyCount:2
+                                    vocabularyRightAnswerCount:1.6
+
+                                    wordCount:2
+                                    wordRightAnswerCount:1
+                                  }
+                            }
+            */
+
+            var total_data_Points = [];
+            var grammer_data_Points = [];
+            var vocabulary_Points = [];
+            var word_data_Points = [];
+            var AllChartData = [];
+
+            for(var i = 0 ; i < raceData.length ; i++){
+
+                //총점 구하기
+                var total_grade = ((100 / raceData[i]['quizCount']).toFixed(1) *  raceData[i]['rightAnswerCount']).toFixed(0);
+
+                //문법 총점 구하기
+                var grammer_grade = ((33 / raceData[i]['grammarCount']).toFixed(1) *  raceData[i]['grammarRightAnswerCount']).toFixed(0);
+
+                //어휘 총점 구하기
+                var vocabulary_grade = ((33 / raceData[i]['vocabularyCount']).toFixed(1) *  raceData[i]['vocabularyRightAnswerCount']).toFixed(0);
+
+                //단어 총점 구하기
+                var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightAnswerCount']).toFixed(0);
+
+                //차트 데이터 배열 만들기
+                total_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                                         y : parseInt(total_grade) ,
+                                         label : raceData[i]['listName']});
+
+                grammer_data_Points.push({  x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                                            y : parseInt(grammer_grade) ,
+                                            label : raceData[i]['listName']});
+
+                vocabulary_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                                         y : parseInt(vocabulary_grade) ,
+                                         label : raceData[i]['listName']});
+
+                word_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                                        y : parseInt(word_grade) ,
+                                        label : raceData[i]['listName']});
+            }
+
+            //차트 데이터 합치기
+            AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
+                "voca_data" : ["어학 점수", vocabulary_Points] ,
+                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
+                "word_data" : ["단어 점수" , word_data_Points]
+            };
+
+            return AllChartData;
         }
 
         //차트 만들 데이터
@@ -620,8 +718,9 @@
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
+
             switch (id){
-                case "nav_group_name" :
+                case "chart" :
                     $('#group_chart').attr('class','');
                     $('#record_history').attr('class','hidden');
                     $('#record_students').attr('class','hidden');
@@ -634,6 +733,10 @@
                     $('#record_students').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
+
+                    //최근기록 페이지에 필요한 데이터들 다 불러오기
+                    pageHistoryLoad();
+
                     break;
                 case "students" :
                     $('#record_students').attr('class','');
@@ -641,6 +744,9 @@
                     $('#record_history').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
+
+                    pageStudentListLoad();
+
                     break;
                 case "homework" :
                     $('#record_homework').attr('class','');
@@ -684,8 +790,6 @@
     <div id="main-recordnav" style="margin-bottom: 20px;">
         @include('Recordbox.record_recordnav')
     </div>
-
-
 
     <div id="group_chart">
         @include('Recordbox.record_chart')
