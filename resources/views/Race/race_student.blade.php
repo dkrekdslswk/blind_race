@@ -76,7 +76,15 @@
                 }
                 $('.contents').show();
             });
-
+            
+            socket.on('android_next_quiz',function(roomPin){
+                 
+                $('#makeTypes').show();
+                $('#web_race_midresult').hide();
+                
+            });
+            
+            
             socket.on('android_mid_result',function(quizId, makeType, ranking){
 
                 $('body').css("background-color","whitesmoke");
@@ -116,10 +124,11 @@
                         $('#answer_check').html("오답");
                         break;
                 }
-                $('#makeTypes').hide();
+                
                 $('#race_room_nav').show();
                 $('#mondai').show();
-
+                
+                $('#makeTypes').hide();
                 $('#web_race_midresult').show();
 
             });
@@ -155,13 +164,14 @@
                 type: 'POST',
                 url: "{{url('/raceController/studentIn')}}",
                 dataType: 'json',
+                async:false,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:"roomPin="+roomPin+"&sessionId=0",
                 success: function (result) {
                     if(result['check'] == true) {
 
-
-
+                        sessionId = result['sessionId'];
+                    
                         socket.emit('join', roomPin);
                         characters +='<form href="#">';
                         for(var char_num =1; char_num <=28; char_num++){

@@ -14,6 +14,26 @@
             color: #4c9ca0;
         }
 
+        .chartWrapper {
+            position: relative;
+            max-width: 1400px;
+            height: 550px;
+            overflow-x: scroll;
+            overflow-y: hidden;
+        }
+        .chartAreaWrapper {
+            margin: 0;
+            width: 600px;
+        }
+        .canvaschart{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 500px;
+            margin: 0;
+        }
+
     </style>
 
     <script>
@@ -199,7 +219,11 @@
         </button>
     </div>
 
-    <div id="chartContainer" style="height: 500px; width: 100%;"></div>
+    <div class="chartWrapper">
+        <div class="chartAreaWrapper">
+            <div class="canvaschart" id="chartContainer"></div>
+        </div>
+    </div>
 
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 

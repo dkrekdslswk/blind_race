@@ -35,7 +35,6 @@
         #wrapper {
             margin: 0 0 0 220px;
             padding: 0;
-            transition: all 0.4s ease 0s;
             position: relative;
             /*     min-height: 100% */
             min-height: 705px;
@@ -86,6 +85,7 @@
             //클래스 불러오기 and 차트 로드하기
             getGroups_and_loadChart(group_id);
 
+            getStudents(group_id);
         };
 
         //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
@@ -95,8 +95,8 @@
             var reqGroupName = $(this).attr('name');
             var dateType = selectedDateType();
 
-            //레코드 네비바 클래스 이름 바꾸기
-            $('#nav_group_name').text(reqGroupName);
+            //레코드 네비바 클래스 이름과 아이디와 내용 바꾸기
+            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId).attr('name',reqGroupName);
 
             reqChartData_and_makingChart(reqGroupId , dateType);
 
@@ -114,6 +114,7 @@
             var startDate = document.querySelector('input[id="startDate"]');
             var endDate = document.querySelector('input[id="endDate"]');
             var dateType = selectedDateType();
+            var reqGroupId = $('#nav_group_name').id;
 
             var requestData = {"groupId" : group_id , "startDate" : startDate , "endDate" : endDate};
 
@@ -185,6 +186,52 @@
 
                     //가장 상단에 있는 클래스 ID값으로 차트 만들기
                     reqChartData_and_makingChart(firstGroup.attr('id') , dateType);
+
+                },
+                error: function (data) {
+                    alert("에러");
+                }
+            });
+
+        }
+
+        //그룹에 속한 학생들 가져오기
+        function getStudents(groupId){
+
+            var reqData ={"groupId" : groupId};
+
+            var some = "";
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupDataGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: reqData,
+                success: function (data) {
+                    /*
+                    data = {group : { id: 1, name: "#WDJ", studentCount : 5}
+                            student : { 0: { id: 1300000, name: "김똘똘"}
+                                        1: { id: 1300000, name: "최천재"}
+                                       }
+                            teacher : { id: 123456789, name: "이OO교수"}
+                    */
+
+                    var student = data['students'];
+
+                    for(var i = 0 ; i < student.length; i++){
+                        $('#student_list').append($('<tr id="student_list_'+i+'">'));
+
+                        for(var j = 0 ; j < 1 ; j++ ) {
+
+                            $('#student_list_' + i).append($('<td>').text(i+1));
+                            $('#student_list_' + i).append($('<td>').append($('<a href="#">').text(student[i]['name'])));
+                        }
+                    }
+
 
                 },
                 error: function (data) {
@@ -288,6 +335,7 @@
 
                     //차트 생성
                     makingChart(AllChartData,axisXType);
+                    makingStudentChart(AllChartData,axisXType);
 
                     //차트 데이터 변수에 데이터 넣기
                     chartData = AllChartData;
@@ -307,12 +355,9 @@
             //data['total_data'][0]     ==  "전체 평균 점수"
             //data['total_data'][1]     == {x , y , label}
 
-
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 theme: "light2",
-                width: 1000,
-                height: 500,
                 title:{},
                 axisX:{
                     labelFontSize: 15,
@@ -341,6 +386,7 @@
                 data: [{
                     type: "line",
                     showInLegend: true,
+                    xValueFormatString: "DD, DD MMM, YYYY",
 
                     // name: "전체 평균 점수",
                     name: data['total_data'][0],
@@ -397,6 +443,105 @@
             }
         }
 
+        //학생 개인 차트 만들 데이터
+        function makingStudentChart(data,axisXType){
+
+            //data = { "total_data" : [ "전체 평균 점수" , { x: new Date(0,0,0) , y: 80 , label: "문제 : 스쿠스쿠"}]}
+            //data['total_data'] , data['voca_data'] , data['grammer_data'] , data['word_data']
+            //data['total_data'][0]     ==  "전체 평균 점수"
+            //data['total_data'][1]     == {x , y , label}
+
+            var chart = new CanvasJS.Chart("chartContainer_privacy_student", {
+                animationEnabled: true,
+                theme: "light2",
+                title:{},
+                width:1300,
+                height:500,
+                axisX:{
+                    labelFontSize: 15,
+                    valueFormatString: axisXType,
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    maximum: 100,
+                    crosshair: {
+                        enabled: true,
+                    }
+                },
+                toolTip:{
+                    shared: true,
+                },
+                legend:{
+                    cursor:"pointer",
+                    verticalAlign: "bottom",
+                    horizontalAlign: "left",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                    type: "line",
+                    showInLegend: true,
+                    xValueFormatString: "DD, DD MMM, YYYY",
+
+                    // name: "전체 평균 점수",
+                    name: data['total_data'][0],
+
+                    markerType: "square",
+                    toolTipContent: "{label}" + "<br>" + "<span class='chart_total'>{name}:</span> {y}",
+                    color: "#F08080",
+                    dataPoints: data['total_data'][1]
+                },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "어학 점수",
+                        name: data['voca_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_vocabulary'>{name}:</span> {y}",
+                        dataPoints: data['voca_data'][1]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "독해 점수",
+                        name: data['grammer_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_grammer'>{name}:</span> {y}",
+                        dataPoints: data['grammer_data'][1]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "단어 점수",
+                        name: data['word_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_word'>{name}:</span> {y}",
+                        dataPoints: data['word_data'][1]
+                    }
+                ]
+            });
+            chart.render();
+
+            function toogleDataSeries(e){
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else{
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+        }
+
+        //날짜 타입 구하기
         function selectedDateType(){
             var selectedradio = $("input[type=radio][name=optradio]:checked").val();
             var date_Type = "";
@@ -491,19 +636,15 @@
         @include('Recordbox.record_chart')
     </div>
 
-    <div class="hidden" id="record_history">
+    <div class="" id="record_history">
         @include('Recordbox.record_history')
     </div>
 
-    <div class="hidden" id="record_students">
+    <div class="" id="record_students">
         @include('Recordbox.record_studentslist')
     </div>
 
-    <div class="hidden" id="record_homework">
-        @include('Recordbox.record_homework')
-    </div>
-
-    <div class="hidden" id="record_feedback">
+    <div class="" id="record_feedback">
         @include('Recordbox.record_feedback')
     </div>
 
