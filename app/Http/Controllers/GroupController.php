@@ -231,7 +231,7 @@ class GroupController extends Controller{
 //        $postData = array(
 //            'groupId',
 //            'students' => array(
-//                0 => 'id'
+//                0 => array('id', 'name')
 //            )
 //        );
         $postData = array(
@@ -290,6 +290,10 @@ class GroupController extends Controller{
                             })
                             ->get();
 
+                        // 등록 안된 학생 처리하기
+                        // 미구현
+
+
                         $studentIds = array();
                         foreach ($studentData as $student) {
                             array_push($studentIds, array(
@@ -301,9 +305,6 @@ class GroupController extends Controller{
                         // 학생 등록하기
                         DB::table('groupStudents')
                             ->insert($studentIds);
-
-                        // 등록 안된 학생 처리하기
-                        // 미구현
 
                         // 반납하는 값
                         $students = array();

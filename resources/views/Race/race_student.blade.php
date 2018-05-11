@@ -23,6 +23,7 @@
 
         var web_quizId ="";
         var web_makeType;
+        var web_alright;
 
         window.onload = function() {
 
@@ -42,6 +43,7 @@
                     $('body').css("background-color","mediumslateblue");
 
                     $(".loading_page").show();
+
                 }else{
                     alert('입장에실패했습니다. 입력정보를 확인해보십시오');
                 }
@@ -49,12 +51,15 @@
 
             socket.on('android_game_start',function(quizId , makeType){
                 web_quizId = quizId;
+                web_makeType = makeType;
                 $('#entrance_page').hide();
+                $('.loading_page').hide();
                 $('#student_guide').text('로딩중');
 
                 $('body').css("background-color","whitesmoke");
 
-                $('#character_info').css("src","/img/character/char'+ characterId +'.png");
+                $('#character_info').attr("src","/img/character/char"+ characterId +".png");
+
                 $('#nickname_info').html(nick);
                 $('#ranking_info').html('0등');
                 $('#point_info').html('0point');
@@ -73,17 +78,50 @@
             });
 
             socket.on('android_mid_result',function(quizId, makeType, ranking){
-                $('.contents').show();
+
+                $('body').css("background-color","whitesmoke");
+                $(".loading_page").hide();
+
                 web_quizId = quizId;
                 web_makeType = makeType;
 
-                for(var i; i < ranking.length; i++){
-                    //고쳐야되는 구문임
-                    if(ranking[i].nick == null) {
-                        web_ranking = i + 1;
-                        web_point = ranking[i].rightCount*100;
-                    }
+                var ranking_json = ranking;
+
+                // for(var i=0; i < ranking_json.length; i++){
+                //     //고쳐야되는 구문임
+                //     // if(ranking_json[i].nick == null) {
+                //         web_ranking = i + 1;
+                //         web_point = ranking_json[i].rightCount;
+                //         web_alright = ranking_json[i].answerCheck;
+                //     // }
+                // }
+                web_ranking = 1;
+                web_point = ranking_json[0].rightCount;
+                web_alright = ranking_json[0].answerCheck;
+
+
+                alert(ranking_json[0].answerCheck+","+ranking_json[1].answerCheck);
+
+
+                $('#ranking_info').html(web_ranking+"등");
+                $('#point_info').html(web_point+"point");
+                $('#answer_content').html("아직미구현");
+
+
+                switch(web_alright){
+                    case "O": $('#answer_check_img').attr("src","/img/right_circle.png");
+                        $('#answer_check').html("정답");
+                        break;
+                    case "X": $('#answer_check_img').attr("src","/img/wrong.png");
+                        $('#answer_check').html("오답");
+                        break;
                 }
+                $('#makeTypes').hide();
+                $('#race_room_nav').show();
+                $('#mondai').show();
+
+                $('#web_race_midresult').show();
+
             });
 
         };
@@ -100,6 +138,12 @@
                     break;
             }
 
+            $('#makeTypes').hide();
+            $('#mondai').hide();
+
+            $('body').css("background-color","mediumslateblue");
+            $(".loading_page").show();
+
         }
 
         function web_student_join(){
@@ -115,6 +159,9 @@
                 data:"roomPin="+roomPin+"&sessionId=0",
                 success: function (result) {
                     if(result['check'] == true) {
+
+
+
                         socket.emit('join', roomPin);
                         characters +='<form href="#">';
                         for(var char_num =1; char_num <=28; char_num++){
@@ -131,7 +178,7 @@
                         $('#entranceInfo_character_page').show();
                         $('#entranceInfo_nickname_page').show();
 
-                         $('#student_guide').text('자신의 캐릭터와 닉네임을 입력하세요');
+                        $('#student_guide').text('자신의 캐릭터와 닉네임을 입력하세요');
                     }
                     else{
 
@@ -203,15 +250,9 @@
 
     <!-- 닉네임 입력 화면-->
     <div id="entranceInfo_nickname_page" style="display:none;">
-         <span style="font-size:35px;">닉네임:</span>
-         <input class="entrance_input" id="nickname" type="text"><br>
-         <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
-    </div>
-
-    <!-- 입장성공시 로딩화면 -->
-    <div class="loading_page" style="display:none;">
-        <div class="loader"></div>
-        <span id="loading_guide" style=" color:white; font-size:50px; position: absolute; left: 35%; top: 30%;  ">게임 시작 로딩중</span>
+        <span style="font-size:35px;">닉네임:</span>
+        <input class="entrance_input" id="nickname" type="text"><br>
+        <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
     </div>
 
     <footer style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
@@ -220,6 +261,14 @@
     </footer>
 </div>
 
-    <div class="contents" style="display:none;">@include('race.race_student_content')</div>
+
+<!-- 입장성공시 로딩화면 -->
+<div class="loading_page" style="display:none;">
+    <div class="loader"></div>
+    <span id="loading_guide" style=" color:white; font-size:50px; position: absolute; left: 35%; top: 30%;  ">게임 시작 로딩중</span>
+</div>
+
+
+<div class="contents" style="display:none;">@include('Race.race_student_content')</div>
 </body>
 </html>
