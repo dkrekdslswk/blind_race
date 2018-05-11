@@ -83,9 +83,9 @@
 
             /*part.1 사이드바*/
             //클래스 불러오기 and 차트 로드하기
-            getGroups_and_loadChart(group_id);
+            //getGroups_and_loadChart(group_id);
 
-            getStudents(group_id);
+            /*getStudents(group_id);*/
         };
 
         //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
@@ -114,9 +114,58 @@
             var startDate = document.querySelector('input[id="startDate"]');
             var endDate = document.querySelector('input[id="endDate"]');
             var dateType = selectedDateType();
-            var reqGroupId = $('#nav_group_name').id;
+
+            // 매우중요!!!! 그룹컨트롤러 복귀되면 다시 가동시키기 -> var reqGroupId = $('#nav_group_name').id;
+            //임시로 그룹아이디 사용
+            var group_id = 1;
 
             var requestData = {"groupId" : group_id , "startDate" : startDate , "endDate" : endDate};
+
+            console.log(requestData);
+            /*var group_Id = {"groupId" : groupId , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getChart')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: requestData,
+                success: function (data) {
+
+                    /*
+                    * data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:9
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+
+                                                quizCount:6
+                                                rightAnswerCount:4.2
+
+                                                grammarCount:2
+                                                grammarRightAnswerCount:1.6
+
+                                                vocabularyCount:2
+                                                vocabularyRightAnswerCount:1.6
+
+                                                wordCount:2
+                                                wordRightAnswerCount:1
+                                              }
+                                        }
+                    */
+
+                    console.log(data);
+                },
+                error: function (data) {
+                    alert("날짜 조회 에러");
+                }
+            });
 
         }
 
@@ -153,11 +202,15 @@
         }
 
         //클래스 가져오기
-        function getGroups_and_loadChart(groupId) {
+        /*function getGroups_and_loadChart(groupId) {
 
             $.ajax({
                 type: 'POST',
-                url: "{{url('/groupController/groupsGet')}}",
+
+
+                반드시 url양쪽에 {} 달아주기 ->  { {url('/groupController/groupsGet')} }
+
+                url: "{url('/groupController/groupsGet')}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -189,14 +242,14 @@
 
                 },
                 error: function (data) {
-                    alert("에러");
+                    alert("그룹겟 에러");
                 }
             });
 
-        }
+        }*/
 
         //그룹에 속한 학생들 가져오기
-        function getStudents(groupId){
+        /*function getStudents(groupId){
 
             var reqData ={"groupId" : groupId};
 
@@ -204,7 +257,10 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{url('/groupController/groupDataGet')}}",
+
+                반드시 url양쪽에 {} 달아주기 ->  { {url('/groupController/groupsGet')} }
+
+                url: "{url('/groupController/groupDataGet')}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -212,13 +268,13 @@
                 //data: {_token: CSRF_TOKEN, 'post':params},
                 data: reqData,
                 success: function (data) {
-                    /*
+                    /!*
                     data = {group : { id: 1, name: "#WDJ", studentCount : 5}
                             student : { 0: { id: 1300000, name: "김똘똘"}
                                         1: { id: 1300000, name: "최천재"}
                                        }
                             teacher : { id: 123456789, name: "이OO교수"}
-                    */
+                    *!/
 
                     var student = data['students'];
 
@@ -235,22 +291,21 @@
 
                 },
                 error: function (data) {
-                    alert("에러");
+                    alert("그룹에 속한 학생 에러");
                 }
             });
 
-        }
+        }*/
 
         //ajax로 그룹에 대한 차트 정보 가져와서 차트를 만듬
         //request : 그룹아이디(groupId) , X축 차트(날짜) 데이터 타입 (axisXType)
         function reqChartData_and_makingChart(groupId,axisXType) {
 
             var group_Id = {"groupId" : groupId };
-            /*var group_Id = {"groupId" : groupId , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
 
             $.ajax({
                 type: 'POST',
-                url: "{{url('/recordBoxController/getRecordData')}}",
+                url: "{{url('/recordBoxController/getDefaultChart')}}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -342,7 +397,7 @@
 
                 },
                 error: function (data) {
-                    alert("에러");
+                    alert("그룹 아이디로 디폴트 차트 불러오기 에러");
                 }
             });
         }
@@ -636,15 +691,15 @@
         @include('Recordbox.record_chart')
     </div>
 
-    <div class="" id="record_history">
+    <div class="hidden" id="record_history">
         @include('Recordbox.record_history')
     </div>
 
-    <div class="" id="record_students">
+    <div class="hidden" id="record_students">
         @include('Recordbox.record_studentslist')
     </div>
 
-    <div class="" id="record_feedback">
+    <div class="hidden" id="record_feedback">
         @include('Recordbox.record_feedback')
     </div>
 
