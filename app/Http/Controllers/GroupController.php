@@ -278,27 +278,39 @@ class GroupController extends Controller{
 
                         // 그룹에 가입안된 학생 검색
                         $noGroupStudents = array_diff($postData['students'], $groupUsers);
-                        $studentData = DB::table('users')
-                            ->select(
-                                'number as id',
-                                'name'
-                            )
+                        $memberStudents = DB::table('users')
                             ->whereIn('number', $noGroupStudents)
                             ->where(function ($query){
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->get();
+                            ->pluck('number')
+                            ->toArray();
 
-                        // 등록 안된 학생 처리하기
-                        // 미구현
+                        // 회원가입 안된 학생 처리하기
+                        $noMemberStudents = array_diff($noGroupStudents, $memberStudents);
+                        $i = 0;
+                        foreach ($noMemberStudents as $studentId){
+                            for (; $i < count($postData['students']) ; $i++){
+                                if ($postData['students'][$i]['id'] == $studentId){
+                                    DB::table('users')
+                                        ->insert([
+                                            'number'            => $studentId,
+                                            'name'              => $postData['students'][$i]['name'],
+                                            'pw'                => $studentId,
+                                            'classification'    => 'student'
+                                        ]);
+                                    break;
+                                }
+                            }
+                        }
 
-
+                        // 등록할 학생들 처리
                         $studentIds = array();
-                        foreach ($studentData as $student) {
+                        foreach ($noGroupStudents as $studentId) {
                             array_push($studentIds, array(
                                 'groupNumber' => $groupData->groupId,
-                                'userNumber' => $student->id
+                                'userNumber' => $studentId
                             ));
                         }
 
@@ -306,12 +318,27 @@ class GroupController extends Controller{
                         DB::table('groupStudents')
                             ->insert($studentIds);
 
+                        // 방금 등록된 학생 검색
+                        $newInStudents = DB::table('users as u')
+                            ->select(
+                                'u.number   as userId',
+                                'u.name     as userName'
+                            )
+                            ->where(function ($query){
+                                $query->where('classification', '=', 'student')
+                                    ->orWhere('classification', '=', 'sleepStudent');
+                            })
+                            ->where('gs.groupNumber', '=', $postData['groupId'])
+                            ->whereIn('u.number', $noGroupStudents)
+                            ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
+                            ->get();
+
                         // 반납하는 값
                         $students = array();
-                        foreach ($studentData as $student) {
+                        foreach ($newInStudents as $student) {
                             array($students, array(
-                                'id' => $student->id,
-                                'name' => $student->name
+                                'id' => $student->userId,
+                                'name' => $student->userName
                             ));
                         }
                         $returnValue = array(
