@@ -100,6 +100,8 @@
                 web_alright = ranking_json[0].answerCheck;
 
 
+                alert(ranking_json[0].answerCheck+","+ranking_json[1].answerCheck);
+
 
                 $('#ranking_info').html(web_ranking+"등");
                 $('#point_info').html(web_point+"point");
@@ -114,8 +116,10 @@
                         $('#answer_check').html("오답");
                         break;
                 }
+                $('#makeTypes').hide();
+                $('#race_room_nav').show();
+                $('#mondai').show();
 
-                $('#content').show();
                 $('#web_race_midresult').show();
 
             });
@@ -133,7 +137,9 @@
                     socket.emit('answer',roomPin , sub_answer , sessionId , nick , web_quizId);
                     break;
             }
-            $('#content').hide();
+
+            $('#makeTypes').hide();
+            $('#mondai').hide();
 
             $('body').css("background-color","mediumslateblue");
             $(".loading_page").show();
@@ -153,6 +159,9 @@
                 data:"roomPin="+roomPin+"&sessionId=0",
                 success: function (result) {
                     if(result['check'] == true) {
+
+
+
                         socket.emit('join', roomPin);
                         characters +='<form href="#">';
                         for(var char_num =1; char_num <=28; char_num++){
