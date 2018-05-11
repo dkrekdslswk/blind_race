@@ -1,88 +1,161 @@
-<div class="col-xs-6" style="padding: 6px 15px;">
-    총 학생 5명
+<style>
+    .privacyStudentChart {
+        position: relative;
+        width: 500px;
+        height: 300px;
+        /*overflow-x: scroll;
+        overflow-y: hidden;*/
+    }
+    .privacyStudentChartArea {
+        margin: 0;
+        width: 500px;
+    }
+    .radioStudentGrade {
+        margin-bottom: 20px;
+    }
+    .canvaschart_privacy_student{
+        position: relative;
+        width: 0px;
+        height: 0px;
+        margin-left: 350px;
+    }
+    .student_grade {
+        margin-top: 300px;
+    }
+
+</style>
+
+<div class="radioStudentGrade">
+    <input type="radio" checked="checked" name="studentGrade" value="0" onclick="sothat()">학생
+    <input type="radio" name="studentGrade" value="1" onclick="sothat()">레이스
+
 </div>
-<br>
 
+<div>
+    <div class="canvaschart_privacy_student" id="chartContainer_privacy_student"></div>
+</div>
 
-<div class="list_box" >
-    <div class="list_container" style="max-width: 1180px; margin-left: 10px;margin-right: 10px;">
+<div class="stdAllList_scroll" style="margin-bottom: 70px;overflow-y: scroll;float: left;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
+    <div id="stdAllList">
+        <table class="table table-hover table-bordered" style="width: 250px;height: 0;">
+            <thead>
+            <tr>
+                <th width="50px">
+                    번호
+                </th>
+                <th>
+                    이름
+                </th>
+            </tr>
+            </thead>
 
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th width="50px">
-                            번호
-                        </th>
-                        <th>
-                            이름
-                        </th>
-                        <th>
-                            전체 성적
-                        </th>
-                        <th>
-                            어휘
-                        </th>
-                        <th>
-                            문법
-                        </th>
-                        <th>
-                            단어
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="student_list">
+            {{--getStudent()로 학생들 불러오기--}}
+            <tbody id="student_list">
 
-                </tbody>
+            </tbody>
 
-                <script>
-
-                    var grade1 = ["김똘똘",95,32,30,33];
-                    var grade2 = ["최천재",75,20,28,27];
-                    var grade3 = ["심사쵸",55,15,14,15];
-                    var grade4 = ["안예민",55,15,14,15];
-                    var grade5 = ["사라다",55,15,14,15];
-
-                    var all_grade = [grade1,grade2,grade3,grade4,grade5];
-
-                    for(var i = 0 ; i < all_grade.length; i++){
-                        $('#student_list').append($('<tr id="student_list_'+i+'">'));
-
-                        for(var j = 0 ; j < all_grade[0].length ; j++ ) {
-
-                            if( j == 0){
-                                $('#student_list_' + i).append($('<td>').text(i+1));
-                                $('#student_list_' + i).append($('<td>').append($('<a href="#">').text(all_grade[i][j])));
-
-                            }else{
-                                $('#student_list_' + i).append($('<td>').text(all_grade[i][j]));
-                            }
-                        }
-                    }
-
-                </script>
-
-            </table>
-
-        <div class="panel-footer" style="height: 80px;">
-            <div class="row">
-                <div class="col col-xs-4">Page 1 of 5
-                </div>
-                <div class="col col-xs-8">
-                    <ul class="pagination hidden-xs pull-right">
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                    </ul>
-                    <ul class="pagination visible-xs pull-right">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">»</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+        </table>
     </div>
 </div>
 
+<div class="student_grade" style="display: block;">
+
+    <div id="std_grade_list_table">
+        <table class="table table-hover table-bordered" style="width: 1600px;">
+            <thead>
+            <tr>
+                <th width="50px" style=" text-align: center;">
+                    번호
+                </th>
+                <th width="200px" style=" text-align: center;">
+                    날짜
+                </th>
+                <th style=" text-align: center;">
+                    문제 이름
+                </th>
+                <th width="150px" style=" text-align: center;">
+                    총 점수
+                </th>
+                <th width="100px" style=" text-align: center;">
+                    어휘
+                </th>
+                <th width="100px" style=" text-align: center;">
+                    독해
+                </th>
+                <th width="100px" style=" text-align: center;">
+                    단어
+                </th>
+                <th width="110px" style=" text-align: center;">
+                    재시험
+                </th>
+                <th width="110px" style=" text-align: center;">
+                    오답노트
+                </th>
+                <th width="110px" style=" text-align: center;">
+                    성적표
+                </th>
+            </tr>
+            </thead>
+
+            <tbody id="student_grade_list" class="">
+
+            <tr>
+                <td width="50px" style=" text-align: center;">
+                    1
+                </td>
+                <td width="200px" style=" text-align: center;">
+                    2018년 04월 24일
+                </td>
+                <td style=" text-align: center;">
+                    스쿠스쿠 문법 풀이
+                </td>
+                <td width="150px" style=" text-align: center;">
+                    55
+                </td>
+                <td width="100px" style=" text-align: center;">
+                    20
+                </td>
+                <td width="100px" style=" text-align: center;">
+                    20
+                </td>
+                <td width="100px" style=" text-align: center;">
+                    15
+                </td>
+                <td width="110px" style=" text-align: center;">
+                    미응시
+                </td>
+                <td width="110px" style=" text-align: center;">
+                    미제출
+                </td>
+                <td width="110px" style=" text-align: center;">
+                    <button class="btn btn-info">성적표</button>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<script>
+    $('#raceAllList').attr('class','hidden');
+    $('#race_grade_list').attr('class','hidden');
+
+    function sothat(){
+        var selectedradio = $("input[type=radio][name=studentGrade]:checked").val();
+
+        if(selectedradio == 0){
+            $('#stdAllList').attr('class','');
+            $('#std_grade_list_table').attr('class','');
+            $('#raceAllList').attr('class','hidden');
+            $('#race_grade_list').attr('class','hidden');
+        }else{
+            $('#raceAllList').attr('class','');
+            $('#race_grade_list').attr('class','');
+            $('#stdAllList').attr('class','hidden');
+            $('#std_grade_list_table').attr('class','hidden');
+        }
+    }
+
+</script>
