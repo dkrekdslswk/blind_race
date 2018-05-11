@@ -241,13 +241,12 @@ class RaceController extends Controller{
             ->where([
                 's1.number'         => $postData['sessionId'],
                 's2.nick'           => '',
-                'u.classification'  => 'student'
+                ['s1.nick', '<>', '']
             ])
             ->join('sessionDatas as s2', function ($join){
                 $join->on('s2.PIN', '=', 's1.PIN');
                 $join->on('s2.raceNumber', '=', 's1.raceNumber');
             })
-            ->join('users as u', 'u.number', '=', 's1.userNumber')
             ->first();
 
         if ($Data) {
