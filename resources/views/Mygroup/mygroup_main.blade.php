@@ -149,6 +149,7 @@
 
 
 
+
     function add_student(st_made_number){
         var student_number = $("#st"+st_made_number).text();
 
@@ -328,11 +329,12 @@
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
+                groupIds = GroupData['group']['id'];
                 student = GroupData['students'];
 
                 $('#teacher').html(teacher);
                 $('#group').html(group);
-
+                $('#groupIds').val(groupIds);
                 var student_list = '';
 
                 for( var i = 0 ; i < student.length; i++){
