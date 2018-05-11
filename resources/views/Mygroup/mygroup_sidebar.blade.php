@@ -167,10 +167,12 @@
 
                         teacher = GroupData['teacher']['name'];
                         group = GroupData['group']['name'];
+                        groupnumber = GroupData['group']['id'];
                         student = GroupData['students'];
 
                         $('#teacher').html(teacher);
                         $('#group').html(group);
+                        $('#groupnumber').html(groupnumber);
 
                         var student_list = '';
 

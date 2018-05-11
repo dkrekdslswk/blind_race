@@ -28,6 +28,40 @@
 
         <div class="container">
             <div class="jumbotron">
+                <!-- Button trigger modal -->
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="studnetchange" tabindex="-1" role="dialog" aria-labelledby="studnetchange1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="studnetchange1">학생 정보 수정</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="studentnumber"><b>학번</b></label>
+                                <input type="text"  name="studentnumber"  id="studentnumbers"  required>
+                                <p></p>
+
+
+                                <label for="name"><b>이름</b></label>
+                                <input type="text"  name="name" id="studentnames" required>
+                                <input type="hidden">
+                                <p></p>
+
+                                <label for="psw"><b>비밀번호</b></label>
+                                <input type="text" placeholder="Enter Password" name="psw" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-primary">변경하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <form class="form-inline">
                     <div class="form-group"></div>
@@ -39,6 +73,7 @@
                     <p id ="teacher">김민수 선생님</p>
                     <h1  id ="group" >A반</h1>
 
+
                 <!-- Button trigger modal -->
                 <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px  ;"  data-toggle="modal" data-target="#exampleModal">
 
@@ -48,14 +83,15 @@
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div >
                                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                                 <textarea id="cmemo" cols="30" rows="10"></textarea>
                                 <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
                                 <button type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
                                 <button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>
-
+                                <button type="button" onclick="excel('cview')">저장</button>
                                 <div id="cview"></div>
+
                             </div>
                             <div class="modal-body">
 
@@ -276,6 +312,13 @@
             </style>
 
     <script>
+
+
+
+
+
+
+
         function expBasicData(obj,obj2) {
             var sampleData = "1301036\t 김민수\n";
             sampleData += "1301032\t 박민수\n";
@@ -294,19 +337,75 @@
                 str += "<table border='1' cellpadding='3' cellspacing='1'>\n";
                 str += "<tbody>\n";
                 for(i=0; i < arr.length; i++) {
-                    ftag = (document.getElementById("firstChk").checked == true) ? (i == 0) ? "No" : i : (i+1);
-                    str += "<tr>\n";
-                    str += "<td>"+ftag+"</td>\n";
                     var sub_arr = arr[i].split("\t"); // 탭키로 분리
-                    for(k=0; k < sub_arr.length; k++) {
-                        str += "<td>"+sub_arr[k]+"</td>\n";
+                    if(sub_arr.length==2) {
+                        ftag = (document.getElementById("firstChk").checked == true) ? (i == 0) ? "No" : i : (i + 1);
+                        str += "<tr>\n";
+                        str += "</td>\n";
+
+
+                        for (k = 0; k < sub_arr.length; k++) {
+
+                            str += "<td>" + sub_arr[k] + "</td>\n";
+
+                        }
                     }
                 }
+
                 str += "</tbody>\n";
                 str += "</table>\n";
+
             }
             document.getElementById(obj2).innerHTML = str;
+
         }
+
+        function excel() {
+
+            var text = document.getElementById('cmemo').value;
+            var arr = text.split("\n"); // 엔터키로 분리
+            var studentlist =new Array();
+
+            if(text.length > 0) {
+                for (var i = 0; i < arr.length; i++) {
+                    var sub_arr = arr[i].split("\t"); // 탭키로 분리
+                    if (sub_arr.length == 2) {
+                        studentlist.push({
+                            id:sub_arr[0],
+                            name:sub_arr[1]
+                        }) ;
+                    }
+                }
+            }
+
+
+            var excelstudent = document.getElementById("cview").value;
+
+            var params = {
+                groupId : groupIds,
+                students :JSON.stringify(studentlist)
+            };
+            alert(JSON.stringify(studentlist))
+            jQuery.ajaxSettings.traditional = true;
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/pushInvitation')}}",
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data:params,
+                success: function (data) {
+
+//                    alert(JSON.stringify(data));
+
+                },
+                error: function (data) {
+                    alert("엑셀등록 에러");
+                }
+            });
+        }
+
     </script>
         </body>
     </html>

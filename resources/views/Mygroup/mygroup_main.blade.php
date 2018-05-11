@@ -6,6 +6,7 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Document</title>
 
     <!-- Bootstrap CSS CDN -->
@@ -40,6 +41,7 @@
                 }
             });
         }
+
     </script>
     <style>
         body {
@@ -111,6 +113,8 @@
 
 <input type="hidden" name="_token" value="{{csrf_token()}}">
 
+
+
 <nav>
     @include('Navigation.main_nav')
 </nav>
@@ -136,6 +140,16 @@
 
 </body>
 <script>
+    function setting(settingNumber){
+        $('#studentnumbers').val(student[settingNumber].name);
+        $('#studentnames').val(student[settingNumber].id);
+//
+
+    }
+
+
+
+
     function add_student(st_made_number){
         var student_number = $("#st"+st_made_number).text();
 
@@ -228,7 +242,7 @@
                         +search_studentJSON[i].name
                         +'</td><td>'
                         +search_studentJSON[i].id
-                        +'</td><td><button>+</button></td></tr>'
+                        +'</td><td><button onclick="add_student()">+</button></td></tr>'
                 }
 
                 $('#myTable').html(student_list);
@@ -311,15 +325,16 @@
             data: "groupId="+groupId,
             success: function (data) {
                 GroupData = data;
-//                        alert(JSON.stringify(GroupData['students']));
+//                     alert(JSON.stringify(GroupData['students']));
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
+                groupIds = GroupData['group']['id'];
                 student = GroupData['students'];
 
                 $('#teacher').html(teacher);
                 $('#group').html(group);
-
+                $('#groupIds').val(groupIds);
                 var student_list = '';
 
                 for( var i = 0 ; i < student.length; i++){
@@ -330,7 +345,10 @@
                         +'</td><td>'
                         +student[i].id
                         +'</td><td>'+
-                        '<button>학생 정보 수정</button>' +
+                        ' <button type="button"  data-toggle="modal" ' +
+                        '   data-target="#studnetchange" onclick="setting('+i+');">\n' +
+                        ' 학생 정보 수정\n' +
+                        ' </button>' +
                         '</td><td>'+
                         '<button>삭제하기</button>'+
                         '</td></tr>'
@@ -344,6 +362,10 @@
                 alert("에러");
             }
         });
+
+
+
+
         function getAnothergroup(groupId) {
 
             $.ajax({
@@ -376,7 +398,7 @@
                             + '</td><td>'
                             + student[i].id
                             + '</td><td>' +
-                            '<button>학생 정보 수정</button>' +
+                            '<button data-toggle="modal" data-target="#">학생 정보 수정</button>' +
                             '</td><td>' +
                             '<button>삭제하기</button>' +
                             '</td></tr>'
