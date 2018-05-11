@@ -38,29 +38,48 @@
                     </div> -->
                     <p id ="teacher">김민수 선생님</p>
                     <h1  id ="group" >A반</h1>
-                <button id="close" class="btn btn-link" ><img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px  ;" ></button>
 
-                    <!-- <button
-                        type="submit"
-                        class="btn btn-default"
-                        data-toggle="modal"
-                        data-target="#exampleModal">초대하기</button> -->
+                <!-- Button trigger modal -->
+                <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px  ;"  data-toggle="modal" data-target="#exampleModal">
+
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <textarea id="cmemo" cols="30" rows="10"></textarea>
+                                <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
+                                <button type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
+                                <button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>
+
+                                <div id="cview"></div>
+                            </div>
+                            <div class="modal-body">
 
 
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
+            </div>
+
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-5">
             <input
                     class="margins"
                     type="text"
                     id="myInput"
                     onkeyup="myFunction()"
-                    placeholder="학생 찾기"
+                    placeholder="미소속 학생 찾기"
                     title="Type in a name"
-                    value=" ">
+                    value="">
             <table>
                 <tr class="header">
                     <th style="width:25%;">이름</th>
@@ -71,7 +90,7 @@
             <table id="myTable">
             </table>
         </div>
-        <div class="col-xs-6">>
+        <div class="col-xs-7">>
             <table>
                 <tr class="header">
                     <th style="width:15%;">이름</th>
@@ -100,6 +119,7 @@
 
             </table>
         </div>
+
     </div>
 
 
@@ -255,60 +275,38 @@
                 }
             </style>
 
-            <script>
+    <script>
+        function expBasicData(obj,obj2) {
+            var sampleData = "1301036\t 김민수\n";
+            sampleData += "1301032\t 박민수\n";
+            sampleData += "1301033\t 최민수\n";
+            sampleData += "1301030\t 공민수\n";
+            document.getElementById(obj).value = sampleData;
 
+            enterTabTable(obj,obj2);
+        }
 
-
-                function getValue() {
-                    var groupId = 1;
-
-                      $.ajax({
-                    type: 'POST',
-                    url: "{{url('/groupController/groupDataGet')}}",
-                    //processData: false,
-                    //contentType: false,
-                    dataType: 'json',
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    //data: {_token: CSRF_TOKEN, 'post':params},
-                    data: "groupId="+groupId,
-                    success: function (data) {
-                        GroupData = data;
-//                        alert(JSON.stringify(GroupData['students']));
-
-                        teacher = GroupData['teacher']['name'];
-                        group = GroupData['group']['name'];
-                        student = GroupData['students'];
-
-                        $('#teacher').html(teacher);
-                        $('#group').html(group);
-
-                        var student_list = '';
-
-                        for( var i = 0 ; i < student.length; i++){
-
-                            student_list +='<tr><td>'
-
-                                +student[i].name
-                                +'</td><td>'
-                                +student[i].id
-                                +'</td><td>'+
-                                '<button>학생 정보 수정</button>' +
-                                '</td><td>'+
-                                '<button>삭제하기</button>'+
-                                '</td></tr>'
-                        }
-
-                        $('#student').html(student_list);
-
-
-                    },
-                    error: function (data) {
-                        alert("에러");
+        function enterTabTable(obj,obj2) {
+            var i, k, ftag, str="";
+            var text = document.getElementById(obj).value;
+            var arr = text.split("\n"); // 엔터키로 분리
+            if(text.length > 2) {
+                str += "<table border='1' cellpadding='3' cellspacing='1'>\n";
+                str += "<tbody>\n";
+                for(i=0; i < arr.length; i++) {
+                    ftag = (document.getElementById("firstChk").checked == true) ? (i == 0) ? "No" : i : (i+1);
+                    str += "<tr>\n";
+                    str += "<td>"+ftag+"</td>\n";
+                    var sub_arr = arr[i].split("\t"); // 탭키로 분리
+                    for(k=0; k < sub_arr.length; k++) {
+                        str += "<td>"+sub_arr[k]+"</td>\n";
                     }
-                });
-
                 }
-
-            </script>
+                str += "</tbody>\n";
+                str += "</table>\n";
+            }
+            document.getElementById(obj2).innerHTML = str;
+        }
+    </script>
         </body>
     </html>

@@ -526,6 +526,8 @@
                             break;
 
                         case "sub" :
+                            if(quiz_JSON[data].hint==null)
+                                quiz_JSON[data].hint = "없음";
 
                             $('#sub').html('주관식문제 <br>Hint : '+quiz_JSON[data].hint);
 

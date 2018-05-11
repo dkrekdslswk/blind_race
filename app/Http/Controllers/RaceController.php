@@ -213,6 +213,7 @@ class RaceController extends Controller{
 
         // 반납값 정리
         $returnValue = array(
+            'sessionId'     => $postData['sessionId'],
             'check'         => $sessionCheck,
         );
 
@@ -228,12 +229,10 @@ class RaceController extends Controller{
 //            'characterId'   => 1
 //        );
         $postData = array(
-            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
+            'sessionId'     => $request->input('sessionId'),
             'nick'          => $request->input('nick'),
             'characterId'   => $request->input('characterId')
         );
-
-        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 해당 학생이 레이스에 참가중인지 확인
         $Data = DB::table('sessionDatas as s1')
@@ -241,9 +240,13 @@ class RaceController extends Controller{
                 's2.raceNumber as raceId'
             )
             ->where([
-                's1.number'   => $postData['sessionId'],
-                's2.nick'   => '',
+                's1.number'         => $postData['sessionId'],
+                's2.nick'           => '',
             ])
+            ->where(function ($query){
+                $query->where('s1.nick', '<>', '')
+                    ->orWhereNull('s1.nick');
+            })
             ->join('sessionDatas as s2', function ($join){
                 $join->on('s2.PIN', '=', 's1.PIN');
                 $join->on('s2.raceNumber', '=', 's1.raceNumber');
@@ -349,7 +352,7 @@ class RaceController extends Controller{
 //            'answer'    => 1
 //        );
         $postData     = array(
-            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
+            'sessionId'     => $request->input('sessionId'),
             'roomPin'   => $request->input('roomPin'),
             'quizId'    => $request->input('quizId'),
             'answer'    => $request->input('answer')
@@ -478,6 +481,7 @@ class RaceController extends Controller{
                 ->where([
                     'ru.raceNumber' => $raceData->raceId
                 ])
+                ->whereNotNull('s.nick')
                 ->leftJoin('records as r', function ($join){
                     $join->on('r.raceNo', '=', 'ru.raceNumber');
                     $join->on('r.userNo', '=', 'ru.userNumber');

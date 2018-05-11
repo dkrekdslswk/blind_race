@@ -100,6 +100,19 @@
         margin-right:10%;
         color:gold;
     }
+
+    #web_race_midresult {
+        top: 40%;
+        position: absolute;
+        left: 5%;
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        background-color: rgba(255,255,255,.84);
+        width: 90%;
+        height: 35%;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 40px;
+    }
 </style>
 
 <script>
@@ -120,38 +133,54 @@
     <div id='content'>
 
         <div class="inline-class" id="mondai">
-            <img  id="character_info" src="/img/character/char1.png" style="width:125px; height:100%;" alt="">
-            <span class="user_info"  id="nickname_info">닉네임 </span>
-            <span class="user_info"  id="ranking_info"> 11등 </span>
-            <span class="user_info"  id="point_info">200point </span>
+            <img  id="character_info" src="#" style="width:125px; height:100%;" alt="">
+            <span class="user_info"  id="nickname_info"> </span>
+            <span class="user_info"  id="ranking_info">  </span>
+            <span class="user_info"  id="point_info"> </span>
         </div>
 
-        <!-- 객관식 문제 -->
-        <div class="obj" style="display:none;">
+        <div id="makeTypes">
+            <!-- 객관식 문제 -->
+            <div class="obj" style="display:none;">
 
                 <!-- 1번 -->
-                <button class="column btn-success">
+                <button class="column btn-success" onclick="web_answer(1);">
                     <!-- style="background-color:#1bbc9b;" -->
                     <p class="answer_font" id="answer1">A</p>
                 </button>
+
                 <!-- 2번 -->
-                <button class="column btn-primary">
+                <button class="column btn-primary" onclick="web_answer(2);">
                     <p class="answer_font" id="answer2">B</p>
                 </button>
+
                 <!-- 3번 -->
-                <button class="column btn-warning">
+                <button class="column btn-warning" onclick="web_answer(3);">
                     <p class="answer_font" id="answer3">C</p>
                 </button>
+
                 <!-- 4번 -->
-                <button class="column btn-danger">
+                <button class="column btn-danger" onclick="web_answer(4);">
                     <p class="answer_font" id="answer4">D</p>
                 </button>
+            </div>
+
+            <div  id="sub" style="display:none;">
+                <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
+                <input id="subanswer" type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
+                <button onclick="user_in();" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
+            </div>
         </div>
 
-        <div  id="sub" style="display:none;">
-            <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
-                <input type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
-                <button onclick="user_in();" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
+        <div id="web_race_midresult" style="display:none;">
+            <!-- 정답이나 오답 이미지  -->
+            <img id="answer_check_img" src="#" style="width:200px; height:200px;"></img>
+            <!-- 정답내용 -->
+            <span id="answer_content" style="margin-left:100px; font-size:100px;" ></span>
+            <br>
+            <!-- "정답" OR "오답" -->
+            <span id="answer_check" style="margin-left:60px; font-size:30px;"></span>
+
         </div>
 
     </div>

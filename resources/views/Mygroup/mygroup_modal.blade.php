@@ -31,8 +31,6 @@
                         </div>
 
 
-                    </div>
-
             <!-- teacher modal -->
             <div
                 class="modal fade"
