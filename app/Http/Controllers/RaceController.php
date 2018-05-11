@@ -233,16 +233,15 @@ class RaceController extends Controller{
             'characterId'   => $request->input('characterId')
         );
 
-        $userData = UserController::sessionDataGet($postData['sessionId']);
-
         // 해당 학생이 레이스에 참가중인지 확인
         $Data = DB::table('sessionDatas as s1')
             ->select(
                 's2.raceNumber as raceId'
             )
             ->where([
-                's1.number'   => $postData['sessionId'],
-                's2.nick'   => '',
+                's1.number'         => $postData['sessionId'],
+                's2.nick'           => '',
+                ['s1.nick', '<>', '']
             ])
             ->join('sessionDatas as s2', function ($join){
                 $join->on('s2.PIN', '=', 's1.PIN');
@@ -478,6 +477,7 @@ class RaceController extends Controller{
                 ->where([
                     'ru.raceNumber' => $raceData->raceId
                 ])
+                ->whereNotNull('s.nick')
                 ->leftJoin('records as r', function ($join){
                     $join->on('r.raceNo', '=', 'ru.raceNumber');
                     $join->on('r.userNo', '=', 'ru.userNumber');

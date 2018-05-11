@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-    // 그룹에서 친 모든 레이스 정보 가져오기
-    public function getRecordData(Request $request){
+    // 기본 그룹정보 및 디폴트 차트
+    public function getDefaultChart(Request $request){
         // 요구하는 값
 //        $postData = array(
 //            'groupId'   => 1
@@ -19,9 +19,9 @@ class RecordBoxController extends Controller{
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-
-        // 권한확인
         if ($userData['check']){
+
+            // 그룹권한 확인
             $where = array();
             switch ($userData['classification']){
                 case 'teacher':
@@ -78,11 +78,13 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 원하는 날짜의 레이스 정보들을 가져오기
-    public function getRaceRecords(Request $request){
+    // 사용자 설정 차트정보 가져오기
+    public function getChart(Request $request){
         // 요구하는 값
 //        $postData = array(
-//            'groupId'   => 1
+//            'groupId'   => 1,
+//            'startDate' => '2018-05-01',
+//            'endDate'   => '2018-05-10'
 //        );
         $postData = array(
             'groupId'   => $request->input('groupId'),
@@ -92,9 +94,9 @@ class RecordBoxController extends Controller{
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-
-        // 권한확인
         if ($userData['check']){
+
+            // 그룹권한 확인
             $where = array();
             switch ($userData['classification']){
                 case 'teacher':
@@ -147,11 +149,162 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 상태(실시, 미실시 전채 인원 포함) 및 오답노트 상태
+    // 최근출제된 레이스 목록 받아오기
+    public function getRaces(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'groupId'   => 1
+//        );
+        $postData = array(
+            'groupId'   => $request->input('groupId')
+        );
+
+        // 유저정보가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        if ($userData['check']) {
+
+            // 그룹권한 확인
+            $where = array();
+            switch ($userData['classification']) {
+                case 'teacher':
+                    $where = array('teacherNumber' => $userData['userId']);
+                case 'root':
+                    $groupData = DB::table('groups')
+                        ->select(
+                            'number as groupId'
+                        )
+                        ->where([
+                            'number' => $postData['groupId']
+                        ])
+                        ->where($where)
+                        ->first();
+
+                    if($groupData){
+                        // 레이스 정보 읽어오기
+                        $raceData = DB::table('races as r')
+                            ->select(
+                                'r.number as raceId',
+                                'l.name as listName',
+                                DB::raw('year(r.created_at) as year'),
+                                DB::raw('month(r.created_at) as month'),
+                                DB::raw('dayofmonth(r.created_at) as day'),
+                                DB::raw('count(distinct ru.userNumber) as studentCount'),
+                                DB::raw('count(CASE WHEN ru.retestState = "order" THEN 1 END) as retestOrderCount'),
+                                DB::raw('count(CASE WHEN ru.retestState = "clear" THEN 1 END) as retestClearCount'),
+                                DB::raw('count(CASE WHEN ru.wrongState = "order" THEN 1 END) as wrongOrderCount'),
+                                DB::raw('count(CASE WHEN ru.wrongState = "clear" THEN 1 END) as wrongClearCount')
+                            )
+                            ->where('r.groupNumber', '=', $groupData->groupId)
+                            ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
+                            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                            ->groupBy('r.number')
+                            ->orderBy('r.created_at', 'desc')
+                            ->get();
+
+                        // 레이스 정보 정리
+                        $races = array();
+                        foreach ($raceData as $race){
+                            array_push($races, array(
+                                'raceId' => $race->raceId,
+                                'listName' => $race->listName,
+                                'date' => $race->year . '년 ' . $race->month . '월 ' . $race->day . '일',
+                                'studentCount' => $race->studentCount,
+                                'retestClearCount' => $race->retestClearCount,
+                                'retestCount' => $race->retestOrderCount + $race->retestClearCount,
+                                'wrongClearCount' => $race->wrongClearCount,
+                                'wrongCount' => $race->wrongOrderCount + $race->wrongClearCount
+                            ));
+                        }
+                        
+                        // 반납하는값
+                        $returnValue = array(
+                            'races'  => $races,
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 학생들의 최근기록 조회회
+    public function getStudents(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'groupId'   => 1,
+//            'dateType'  => 'week' // month, quarter
+//        );
+        $postData = array(
+            'groupId'   => $request->input('groupId'),
+            'dateType'  => $request->input('dateType')
+        );
+
+        // 유저정보가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        if ($userData['check']) {
+
+            // 그룹권한 확인
+            $where = array();
+            switch ($userData['classification']) {
+                case 'teacher':
+                    $where = array('teacherNumber' => $userData['userId']);
+                case 'root':
+                    $groupData = DB::table('groups')
+                        ->select(
+                            'number as groupId'
+                        )
+                        ->where([
+                            'number' => $postData['groupId']
+                        ])
+                        ->where($where)
+                        ->first();
+
+                    if ($groupData) {
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // 반납할 값 정리
+       $returnValue = array(
+            'students' => array(
+                0 => array(
+                    'id',
+                    'name',
+                    'all',
+                    'vocabulary',
+                    'word',
+                    'grammar'
+                )
+            ),
+            'check'
+        );
+
+        return $returnValue;
+    }
+
+   // 재시험 상태(실시, 미실시 전채 인원 포함) 및 오답노트 상태
 
     // 오답노트 재출 명령하기기
 
-    // 기간내의 정보 읽어오기
+    // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){
         $recordDatas = DB::table('races as r')
             ->select(
@@ -210,15 +363,6 @@ class RecordBoxController extends Controller{
 
         return $records;
     }
-
-    // 한 개의 레이스 정보 읽어오기
-    private function selectOneRaceRecords(){}
-
-    // 각 학생별 성적을 읽어오기
-    private function selectStudensRecords(){}
-
-    // 한 명의 레이스 성적 읽어오기
-    private function selectOneStudentRecords(){}
 }
 
 ?>
