@@ -266,8 +266,8 @@ class GroupController extends Controller{
                         // 그룹에 이미 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
                             ->where(function ($query){
-                                $query->where('classification', '=', 'student')
-                                    ->orWhere('classification', '=', 'sleepStudent');
+                                $query->where('u.classification', '=', 'student')
+                                    ->orWhere('u.classification', '=', 'sleepStudent');
                             })
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
