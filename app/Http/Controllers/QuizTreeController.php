@@ -553,7 +553,7 @@ class QuizTreeController extends Controller
             ->where([
                 'listNumber' => $listId
             ])
-            ->value('quizNumber')
+            ->pluck('quizNumber')
             ->toArray();
 
         // 문제 리스트 삭제
