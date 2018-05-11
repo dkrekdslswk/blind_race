@@ -52,12 +52,13 @@
                                 <input type="hidden">
                                 <p></p>
 
-                                <label for="psw"><b>비밀번호</b></label>
-                                <input type="text" placeholder="Enter Password" name="psw" required>
+                                <input id="checkBox" type="checkbox">
+                                <label for="psw"><b>비밀번호 바꾸기</b></label>
+                                <input type="text" placeholder="새로운 비밀번호 변경" id="psw" required>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                                <button type="button" class="btn btn-primary">변경하기</button>
+                                <button type="button" onclick="update('#')">변경하기</button>
                             </div>
                         </div>
                     </div>
@@ -93,7 +94,6 @@
                                 <div id="cview"></div>
 
                             </div>
-                            <div class="modal-body">
 
 
                             </div>
@@ -313,6 +313,49 @@
 
     <script>
 
+        //학생 정보 수정
+        function update() {
+
+
+            var userId = document.getElementById("studentnumbers").value;
+            var userName = document.getElementById("studentnames").value;
+            var passwordState = document.getElementById("checkBox").value;
+            var password = document.getElementById("psw").value;
+
+            if(passwordState == 'on'){
+                passwordState = true;
+            }
+
+
+
+            var postData =
+            {
+                userId :    userId ,
+                userName :  userName,
+                password :  password,
+                passwordState  :passwordState
+
+            }
+
+
+
+            alert(JSON.stringify(postData));
+
+//            studentnumbers studentnames checkBox psw
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/studentModify')}}",
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: postData ,
+                success: function (data) {
+                    alert(JSON.stringify(postData))
+                },
+                error: function (data) {
+                    alert("수정 실패");
+                }
+            });
+        }
 
 
 
