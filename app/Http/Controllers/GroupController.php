@@ -225,7 +225,6 @@ class GroupController extends Controller{
     }
 
     // 학생 등록하기 root, teacher
-    // 구현중
     public function pushInvitation(Request $request){
         // 요구하는 값
 //        $postData = array(
@@ -267,8 +266,8 @@ class GroupController extends Controller{
                         // 그룹에 이미 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
                             ->where(function ($query){
-                                $query->where('classification', '=', 'student')
-                                    ->orWhere('classification', '=', 'sleepStudent');
+                                $query->where('u.classification', '=', 'student')
+                                    ->orWhere('u.classification', '=', 'sleepStudent');
                             })
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
@@ -472,42 +471,114 @@ class GroupController extends Controller{
     }
 
     // 학생 정보수정 root, teacher
-    // 미구현
     public function studentModify(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'userId'        => 1300000,
+//            'userName'      => '뽀로로',
+//            'password'      => 1230000,
+//            'passwordState' => true
+//        );
         $postData = array(
-            'userId',
-            'userName',
-            'password',
-            'passwordState'
+            'userId'        => $request->input('userId'),
+            'userName'      => $request->input('userName'),
+            'password'      => $request->input('password'),
+            'passwordState' => $request->input('passwordState')
         );
 
-        // 반납하는 값
-        $returnValue = array(
-            'userName',
-            'check'
-        );
+        // 유저정보 가져오기기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인
+        if ($userData['check']){
+            switch ($userData['classification']){
+                case 'student':
+                    // 권한이 학생일 경우 자기자신 것만 변경가능
+                    if ($postData['userId'] != $userData['userId']) {
+                        // 반납할 값 정리 1
+                        $returnValue = array(
+                            'check' => false
+                        );
+                        break;
+                    }
+                case 'root':
+                case 'teacher':
+                    // 변경할 정보 정리
+                    $update = array('name' => $postData['userName']);
+                    if ($postData['passwordState']){
+                        $update['pw'] = $postData['password'];
+                    }
+
+                    // 유저정보 변경하기
+                    $updateState = DB::table('users')
+                        ->where('number', '=', $postData['userId'])
+                        ->update($update);
+
+                    // 업데이트 성공 실패 확인
+                    $updateState = ($updateState == 1);
+
+                    // 반납할 값 정리 2
+                    $returnValue = array(
+                        'check' => $updateState
+                    );
+                    break;
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
 
     // 학생 그룹에서 제외 root, teacher
-    // 미구현
     public function studentGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
             'userId',
-            'groupIdBefore',
-            'groupIdAfter'
+            'groupId'
         );
 
-        // 반납하는 값
-        $returnValue = array(
-            'userId',
-            'groupIdBefore',
-            'groupIdAfter',
-            'check'
-        );
+        // 유저정보 가져오기기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 권한확인
+        if ($userData['check']) {
+            $where = array();
+            switch ($userData['classification']) {
+                case 'teacher':
+                    $where = array('g.teacherNumber' => $userData['userId']);
+                case 'root':
+                    // 학생조회
+                    $deleteState = DB::table('groupStudents as gu')
+                        ->where('gu.userNumber', '=', $postData['userId'])
+                        ->where($where)
+                        ->join('groups as g', 'g.number', '=', 'gu.groupNumber')
+                        ->delete();
+
+                    $deleteState = ($deleteState == 1);
+
+                    $returnValue = array(
+                        'check' => $deleteState
+                    );
+                    break;
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }

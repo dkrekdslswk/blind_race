@@ -158,7 +158,8 @@ Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
 Route::post('/groupController/createGroup','GroupController@createGroup');
 Route::post('/groupController/pushInvitation','GroupController@pushInvitation');
 Route::post('/groupController/selectUser','GroupController@selectUser');
-
+Route::post('/groupController/studentModify','GroupController@studentModify');
+Route::post('/groupController/studentGroupExchange','GroupController@studentGroupExchange');
 ?>
 
 

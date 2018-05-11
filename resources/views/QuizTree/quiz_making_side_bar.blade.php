@@ -267,8 +267,8 @@
         <table class="table table-bordered table-striped">
             <thead id="theadStyle">
             <tr>
-                <th style="text-align: center">번호</th>
-                <th style="text-align: center">예문</th>
+                <th style="text-align: center; width: 10%;">#</th>
+                <th style="text-align: center; width: 90%;">예문</th>
             </tr>
             </thead>
 
