@@ -28,6 +28,40 @@
 
         <div class="container">
             <div class="jumbotron">
+                <!-- Button trigger modal -->
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="studnetchange" tabindex="-1" role="dialog" aria-labelledby="studnetchange1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="studnetchange1">학생 정보 수정</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="studentnumber"><b>학번</b></label>
+                                <input type="text"  name="studentnumber" value=student[i].id required>
+                                <p></p>
+
+
+                                <label for="name"><b>이름</b></label>
+                                <input type="text"  name="name" value=student[i].name required>
+                                <input type="hidden">
+                                <p></p>
+
+                                <label for="psw"><b>비밀번호</b></label>
+                                <input type="text" placeholder="Enter Password" name="psw" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-primary">변경하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <form class="form-inline">
                     <div class="form-group"></div>
@@ -48,7 +82,7 @@
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div >
                                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                                 <textarea id="cmemo" cols="30" rows="10"></textarea>
                                 <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>

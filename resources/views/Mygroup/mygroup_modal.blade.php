@@ -156,62 +156,32 @@
                         </div>
                     </div>
                 </div>
+            </div>
+                    </div>
+
+
+
 
                 <script>
-                    // Get the modal
-                    var modal = document.getElementById('myModal');
 
-                    // Get the button that opens the modal
-                    var btn = document.getElementById("myBtn");
 
-                    // Get the <span> element that closes the modal
-                    var span = document.getElementsByClassName("close")[0];
-
-                    // When the user clicks the button, open the modal
-                    btn.onclick = function () {
-                        modal.style.display = "block";
-                    }
-
-                    // When the user clicks on <span> (x), close the modal
-                    span.onclick = function () {
-                        modal.style.display = "none";
-                    }
-
-                    // When the user clicks anywhere outside of the modal, close it
-                    window.onclick = function (event) {
-                        if (event.target == modal) {
-                            modal.style.display = "none";
-                        }
-                    }
-
-                    // Get the modal
-                    var modal = document.getElementById('id01');
-
-                    // When the user clicks anywhere outside of the modal, close it
-                    window.onclick = function (event) {
-                        if (event.target == modal) {
-                            modal.style.display = "none";
-                        }
-                    }
-
-                    function createGroup(){
+                    function createGroup() {
                         var groupNameValue = document.getElementById("groupNameValue").value;
                         $.ajax({
                             type: 'POST',
                             url: "{{url('/groupController/createGroup')}}",
                             dataType: 'json',
-                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                            data: "groupName="+groupNameValue,
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            data: "groupName=" + groupNameValue,
                             success: function (data) {
-                                if(data['check'])
+                                if (data['check'])
                                     alert('그룹생성이 완료되었습니다.');
 
-                                window.location.href="{{url('mygroup')}}";
+                                window.location.href = "{{url('mygroup')}}";
                             },
                             error: function (data) {
                                 alert("클래스찾기 에러");
                             }
                         });
                     }
-
                 </script>
