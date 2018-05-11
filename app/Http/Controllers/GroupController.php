@@ -272,7 +272,7 @@ class GroupController extends Controller{
                             ->where('gs.groupNumber', '=', $postData['groupId'])
                             ->whereIn('u.number', $postData['students'])
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
-                            ->pluck('u.number')
+                            ->value('u.number')
                             ->toArray();
 
                         // 그룹에 가입안된 학생 검색
@@ -283,7 +283,7 @@ class GroupController extends Controller{
                                 $query->where('classification', '=', 'student')
                                     ->orWhere('classification', '=', 'sleepStudent');
                             })
-                            ->pluck('number')
+                            ->value('number')
                             ->toArray();
 
                         // 회원가입 안된 학생 처리하기
@@ -405,7 +405,7 @@ class GroupController extends Controller{
                         })
                         ->where('gs.groupNumber', '=', $postData['groupId'])
                         ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
-                        ->pluck('u.number')
+                        ->value('u.number')
                         ->toArray();
 
                     // 그룹에 포함안된 학생 검색
