@@ -43,12 +43,12 @@
                             </div>
                             <div class="modal-body">
                                 <label for="studentnumber"><b>학번</b></label>
-                                <input type="text"  name="studentnumber" value=student[i].id required>
+                                <input type="text"  name="studentnumber"  id="studentnumbers"  required>
                                 <p></p>
 
 
                                 <label for="name"><b>이름</b></label>
-                                <input type="text"  name="name" value=student[i].name required>
+                                <input type="text"  name="name" id="studentnames" required>
                                 <input type="hidden">
                                 <p></p>
 
@@ -310,6 +310,14 @@
             </style>
 
     <script>
+        function setting() {
+
+
+        }
+
+
+
+
         function expBasicData(obj,obj2) {
             var sampleData = "1301036\t 김민수\n";
             sampleData += "1301032\t 박민수\n";

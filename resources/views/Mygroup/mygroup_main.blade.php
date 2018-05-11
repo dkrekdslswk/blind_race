@@ -140,6 +140,15 @@
 
 </body>
 <script>
+    function setting(settingNumber){
+        $('#studentnumbers').val(student[settingNumber].name);
+        $('#studentnames').val(student[settingNumber].id);
+//
+
+    }
+
+
+
     function add_student(st_made_number){
         var student_number = $("#st"+st_made_number).text();
 
@@ -315,7 +324,7 @@
             data: "groupId="+groupId,
             success: function (data) {
                 GroupData = data;
-                     alert(JSON.stringify(GroupData['students']));
+//                     alert(JSON.stringify(GroupData['students']));
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
@@ -334,9 +343,10 @@
                         +'</td><td>'
                         +student[i].id
                         +'</td><td>'+
-                        ' <button type="button"  data-toggle="modal" data-target="#studnetchange">\n' +
-                        '                    학생 정보 수정\n' +
-                        '                </button>' +
+                        ' <button type="button"  data-toggle="modal" ' +
+                        '   data-target="#studnetchange" onclick="setting('+i+');">\n' +
+                        ' 학생 정보 수정\n' +
+                        ' </button>' +
                         '</td><td>'+
                         '<button>삭제하기</button>'+
                         '</td></tr>'
@@ -350,6 +360,10 @@
                 alert("에러");
             }
         });
+
+
+
+
         function getAnothergroup(groupId) {
 
             $.ajax({
