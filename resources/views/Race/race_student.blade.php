@@ -12,6 +12,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
     <script>
+        var active_mode;
+
         var characterId;
         var roomPin;
         var sessionId = 0;
@@ -149,7 +151,6 @@
 
                 case "sub":
                     var sub_answer = document.getElementById('subanswer').value;
-                    alert(sub_answer);
                     socket.emit('answer',roomPin , sub_answer , sessionId , nick , web_quizId);
                     break;
             }
@@ -164,48 +165,60 @@
 
         function web_student_join(){
             roomPin = document.getElementById('roomPin').value;
+            switch( active_mode ){
+                case "Race":
+                    var characters='<span style="font-size:40px; margin: 5% 0px 0px 40%;"> 캐릭터 선택</span><br>';
 
-            var characters='<span style="font-size:40px; margin: 5% 0px 0px 40%;"> 캐릭터 선택</span><br>';
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('/raceController/studentIn')}}",
+                        dataType: 'json',
+                        async:false,
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        data:"roomPin="+roomPin+"&sessionId=0",
+                        success: function (result) {
+                            if(result['check'] == true) {
 
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/raceController/studentIn')}}",
-                dataType: 'json',
-                async:false,
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data:"roomPin="+roomPin+"&sessionId=0",
-                success: function (result) {
-                    if(result['check'] == true) {
+                                sessionId = result['sessionId'];
 
-                        sessionId = result['sessionId'];
-                    
-                        socket.emit('join', roomPin);
-                        characters +='<form href="#">';
-                        for(var char_num =1; char_num <=28; char_num++){
-                            characters += '<label>';
-                            characters += '<input style="display:none;" name="character" id="'+char_num+'" type="radio" value="'+char_num+'" />';
-                            characters += '<img class="character_select" id="char_img'+char_num+'"  src="/img/character/char'+char_num+'.png" >'
-                            characters += '</label>';
+                                socket.emit('join', roomPin);
+                                characters +='<form href="#">';
+                                for(var char_num =1; char_num <=28; char_num++){
+                                    characters += '<label>';
+                                    characters += '<input style="display:none;" name="character" id="'+char_num+'" type="radio" value="'+char_num+'" />';
+                                    characters += '<img class="character_select" id="char_img'+char_num+'"  src="/img/character/char'+char_num+'.png" >'
+                                    characters += '</label>';
 
+                                }
+                                characters +='</form>';
+
+                                $('#race_menu').hide();
+                                $('#roomPin_page').hide();
+                                $('#entranceInfo_character_page').html(characters);
+                                $('#entranceInfo_character_page').show();
+                                $('#entranceInfo_nickname_page').show();
+
+                                $('#student_guide').text('자신의 캐릭터와 닉네임을 입력하세요');
+                            }
+                            else{
+                                alert("존재하지 않는 방입니다. 다시입력해주세요");
+                            }
+
+                        },
+                        error: function(request, status, error) {
+                            console.log("안드로이드 join 실패"+roomPin);
                         }
-                        characters +='</form>';
+                    });
+                    //ajax끝
 
-                        $('#roomPin_page').hide();
-                        $('#entranceInfo_character_page').html(characters);
-                        $('#entranceInfo_character_page').show();
-                        $('#entranceInfo_nickname_page').show();
+                    break;
 
-                        $('#student_guide').text('자신의 캐릭터와 닉네임을 입력하세요');
-                    }
-                    else{
+                case "Exam":
+                    alert("쪽지시험은 미구현");
+                    break;
 
-                    }
+            }
 
-                },
-                error: function(request, status, error) {
-                    console.log("안드로이드 join 실패"+roomPin);
-                }
-            });
         }
         function user_in(){
             nick = document.getElementById('nickname').value;
@@ -222,6 +235,50 @@
     </script>
     <script>
         $(document).ready(function(){
+            //모드에서 재시험 클릭
+            $('#Re-Test').click(function(){
+
+                //다른 버튼들은 원래 색으로 돌려놓는 부분
+                $('#Race').css("background","#03A9F4");
+                $('#Exam').css("background","#9b59b6");
+                //눌렸을떄의 색상
+                $('#Re-Test').css("background","#9A0A35");
+
+                $('#student_guide').text("재시험을 칠 레이스를 선택해주세요");
+                $('#roomPin_page').hide();
+            });
+
+            //모드에서 레이스 클릭
+            $('#Race').click(function(){
+                active_mode = "Race";
+
+                //다른 버튼들은 원래 색으로 돌려놓는 부분
+                $('#Re-Test').css("background","#ff69b4");
+                $('#Exam').css("background","#9b59b6");
+
+                //눌렸을떄의 색상
+                $('#Race').css("background","#00008B");
+
+                $('#student_guide').text("들어갈 방의 PIN번호 6자리를 입력해주세요");
+                $('#roomPin_page').show();
+            });
+
+            //모드에서 쪽지시험 클릭
+            $('#Exam').click(function(){
+                active_mode = "Exam";
+
+                //다른 버튼들은 원래 색으로 돌려놓는 부분
+                $('#Re-Test').css("background","#ff69b4");
+                $('#Race').css("background","#03A9F4");
+                //눌렸을떄의 색상
+                $('#Exam').css("background","#800080");
+
+                $('#student_guide').text("쪽지시험을 칠 방의 PIN번호 6자리를 입력해주세요");
+                $('#roomPin_page').show();
+            });
+
+
+
             $(document).on("change","input[type=radio][name=character]",function(event){
                 $('.character_select').css("background-color","white");
                 $('#char_img'+this.value).css("background-color","yellow");
@@ -250,6 +307,93 @@
         @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        #race_menu{
+            margin-top:10%;
+            margin-left:14%;
+        }
+
+        .race_menu_button{
+            width:300px;
+            height:300px;
+            display:inline-block;
+
+            transition: margin-top 0.3s ease,
+            margin-left 0.3s ease,
+            box-shadow 0.3s ease;
+
+            margin-right:1%;
+        }
+        #Re-Test{
+            background:#ff69b4;
+            border: solid 1px #ff1493;
+
+            box-shadow: 1px 0px 0px #ff1493,0px 1px 0px #ff1493,
+            2px 1px 0px #ff1493,1px 2px 0px #ff1493,
+            3px 2px 0px #ff1493,2px 3px 0px #ff1493,
+            4px 3px 0px #ff1493,3px 4px 0px #ff1493,
+            5px 4px 0px #ff1493,4px 5px 0px #ff1493,
+            6px 5px 0px #ff1493,5px 6px 0px #ff1493,
+            7px 6px 0px #ff1493,6px 7px 0px #ff1493,
+            8px 7px 0px #ff1493,7px 8px 0px #ff1493,
+            9px 8px 0px #ff1493,8px 9px 0px #ff1493;
+        }
+        #Re-Test:hover , #Re-Test:active ,#Re-Test:active:focus{
+            background:#9A0A35;
+        }
+        #Race{
+            background:#03A9F4;
+            border: solid 1px #1976D2;
+
+            box-shadow: 1px 0px 0px #1976D2,0px 1px 0px #1976D2,
+            2px 1px 0px #1976D2,1px 2px 0px #1976D2,
+            3px 2px 0px #1976D2,2px 3px 0px #1976D2,
+            4px 3px 0px #1976D2,3px 4px 0px #1976D2,
+            5px 4px 0px #1976D2,4px 5px 0px #1976D2,
+            6px 5px 0px #1976D2,5px 6px 0px #1976D2,
+            7px 6px 0px #1976D2,6px 7px 0px #1976D2,
+            8px 7px 0px #1976D2,7px 8px 0px #1976D2,
+            9px 8px 0px #1976D2,8px 9px 0px #1976D2;
+        }
+        #Race:hover, #Race:active, #Race:active:focus{
+            background:#00008B;
+        }
+        #Exam{
+            background:#9b59b6;
+            border: solid 1px #8e44ad;
+
+            box-shadow: 1px 0px 0px #8e44ad,0px 1px 0px #8e44ad,
+            2px 1px 0px #8e44ad,1px 2px 0px #8e44ad,
+            3px 2px 0px #8e44ad,2px 3px 0px #8e44ad,
+            4px 3px 0px #8e44ad,3px 4px 0px #8e44ad,
+            5px 4px 0px #8e44ad,4px 5px 0px #8e44ad,
+            6px 5px 0px #8e44ad,5px 6px 0px #8e44ad,
+            7px 6px 0px #8e44ad,6px 7px 0px #8e44ad,
+            8px 7px 0px #8e44ad,7px 8px 0px #8e44ad,
+            9px 8px 0px #8e44ad,8px 9px 0px #8e44ad;
+        }
+        #Exam:hover , #Exam:active, #Exam:active:focus{
+            background: #800080;
+        }
+        .race_menu_button:active{
+            transition: margin-top 0.3s ease;
+
+            margin-left:9px;
+            margin-top:9px;
+            box-shadow: 0px 0px 0px #1976D2;
+        }
+
+        .race_menu_img{
+            width:150px;
+            height:150px;
+        }
+        .menu_time_img{
+            width:100px;
+            heihgt:50px;
+        }
+        .race_menu_span{
+            font-size:40px;
+            color:white;
+        }
     </style>
 </head>
 <body>
@@ -260,8 +404,27 @@
         @include('Navigation.main_nav')
     </div>
 
+    <div id="race_menu">
+        <button class="race_menu_button" id="Re-Test">
+            <img class="menu_time_img" src="/img/race_student/freetime.png" alt=""><br>
+            <img class="race_menu_img" src="/img/race_student/exam2.png" alt=""><br>
+            <span class="race_menu_span">Re-Test</span>
+        </button>
+        <button class="race_menu_button" id="Race">
+            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
+            <span class="race_menu_span">Race</span>
+        </button>
+        <!-- 부가기능이므로 아직은 미구현상태  -->
+        <button class="race_menu_button" id="Exam" style="display:none;">
+            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
+            <span class="race_menu_span">Exam</span>
+        </button>
+    </div>
+
     <!-- 방의 핀번호 입력부분 -->
-    <div id="roomPin_page" style="position:absolute; top:35%; left:40%;">
+    <div id="roomPin_page" style="position:absolute; top:60%; left:40%;  display:none;">
         <br>
         <span >PIN</span>
         <input name="roomPin" id="roomPin" type="text"><button class="btn-primary" onclick="web_student_join();">확인</button>
@@ -280,7 +443,7 @@
 
     <footer style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
         <img src="/img/info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
-        <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">들어갈 방의 PIN번호 6자리를 입력해주세요</span>
+        <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">레이스의 모드를 선택해주세요 </span>
     </footer>
 </div>
 
