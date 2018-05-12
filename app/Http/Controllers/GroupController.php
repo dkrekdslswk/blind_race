@@ -541,8 +541,8 @@ class GroupController extends Controller{
     public function studentGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
-            'userId',
-            'groupId'
+            'userId'        => $request->input('userId'),
+            'groupId'       => $request->input('groupId')
         );
 
         // 유저정보 가져오기기

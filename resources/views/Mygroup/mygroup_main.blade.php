@@ -118,15 +118,35 @@
 
     }
 
+    function Delete(deleteId) {
+
+
+        var userId = $('#delete'+deleteId).text();
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/studentGroupExchange')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: "groupId=" + groupIds+"&userId="+userId,
+            success: function (data) {
+                alert("성공적으로 삭제했습니다.");
+                window.location.href = "{{url('mygroup')}}";
+            },
+            error: function (data) {
+                alert("삭제에러");
+            }
+        });
+    }
+
+
     //그룹ID
+    function add_student(st_made_number){
 
-    function add_student(){
-        alert('시발');
-        var userId = document.getElementById("GroupData['users']").value;
-        var userName = document.getElementById("studentnames").value;
-        alert('시발');
+
         var student_number = $("#st"+st_made_number).text();
-
         var student_number_zip = new Array();
 
         //배열을 push 할 경우는 [["13","14","15"],"19","18"] 이런식으로 2차원으로 들어가 처리가 더필요함
@@ -140,7 +160,7 @@
             url: "{{url('/groupController/pushInvitation')}}",
             dataType: 'json',
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data: "groupId="+pub_groupId+"&students="+student_number_zip,
+            data: "groupId="+groupIds+"&students="+student_number_zip,
             success: function (data) {
                 alert("성공");
             },
@@ -217,9 +237,9 @@
 
                     student_list +='<tr><td>'
                         +search_studentJSON[i].name
-                        +'</td><td>'
+                        +'</td><td id="st'+i+'">'
                         +search_studentJSON[i].id
-                        +'</td><td><button onclick="add_student()">+</button></td></tr>'
+                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
                 }
 
                 $('#myTable').html(student_list);
@@ -319,7 +339,7 @@
                     student_list +='<tr><td>'
 
                         +student[i].name
-                        +'</td><td>'
+                        + '</td><td id="delete'+i+'">'
                         +student[i].id
                         +'</td><td>'+
                         ' <button type="button"  data-toggle="modal" ' +
@@ -327,7 +347,7 @@
                         ' 학생 정보 수정\n' +
                         ' </button>' +
                         '</td><td>'+
-                        '<button>삭제하기</button>'+
+                        '<button onclick="Delete('+i+')">삭제하기</button>' +
                         '</td></tr>'
                 }
 
