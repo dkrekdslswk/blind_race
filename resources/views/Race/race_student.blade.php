@@ -245,6 +245,7 @@
                 $('#Re-Test').css("background","#9A0A35");
 
                 $('#student_guide').text("재시험을 칠 레이스를 선택해주세요");
+                $('#Re-Test_list').show();
                 $('#roomPin_page').hide();
             });
 
@@ -261,6 +262,7 @@
 
                 $('#student_guide').text("들어갈 방의 PIN번호 6자리를 입력해주세요");
                 $('#roomPin_page').show();
+                $('#Re-Test_list').hide();
             });
 
             //모드에서 쪽지시험 클릭
@@ -275,6 +277,7 @@
 
                 $('#student_guide').text("쪽지시험을 칠 방의 PIN번호 6자리를 입력해주세요");
                 $('#roomPin_page').show();
+                $('#Re-Test_list').hide();
             });
 
 
@@ -422,6 +425,57 @@
             <span class="race_menu_span">Exam</span>
         </button>
     </div>
+
+    <div id="Re-Test_list" class="row" style="display:none; margin-top:2%;">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">퀴즈 리스트</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th class="hidden-xs">#</th>
+                            <th style="text-align: center">퀴즈명</th>
+                            <th style="text-align: center">문항수</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
+
+                        {{--list 공간--}}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 방의 핀번호 입력부분 -->
     <div id="roomPin_page" style="position:absolute; top:60%; left:40%;  display:none;">
