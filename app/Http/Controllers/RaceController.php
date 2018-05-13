@@ -646,8 +646,8 @@ class RaceController extends Controller{
                         'nick' => $student->nick,
                         'characterId' => $student->characterId,
                         'rightCount' => $student->rightCount,
-                        'retestState' => in_array($retestTargets, $student->userId),
-                        'wrongState' => in_array($wrongTargets, $student->userId)
+                        'retestState' => in_array( $student->userId , $retestTargets),
+                        'wrongState' => in_array(  $student->userId , $wrongTargets)
                     ));
                 }
                 $returnValue = array(

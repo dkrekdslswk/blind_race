@@ -237,19 +237,28 @@
             socket.emit('user_in',roomPin,nick,sessionId,characterId);
         }
 
+        socket.on('race_result',function(race_result){
+                var race_result = JSON.parse(race_result);
+                
+                for(var i=0;  i <race_result.length; i++){
+                    if(race_result[i].nick == nick){
+                        
+                        if(race_result[i].retestState == true)
+                            $('#race_result').html('FAIL 재시험치세요');
+                        else if(race_result[i].retestState == false)
+                            $('#race_result').html('PASS 완벽합니다');
+                            
+                    }
+                }
+                $('<a href="/">돌아가기</a>').appendTo('#race_result');
+
+        });
+        
         socket.on('race_ending',function(data){
-
-            socket.on('race_result',function(race_result){
-                alert(race_result);
-            });
-
 
             $('body').css("background-color","mediumslateblue");
             $('#web_race_midresult').hide();
             $('#race_result').show();
-
-
-
         });
 
     </script>
