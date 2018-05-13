@@ -7,79 +7,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-    // 기본 그룹정보 및 디폴트 차트
-    public function getDefaultChart(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1
-//        );
-        $postData = array(
-            'groupId'   => $request->input('groupId')
-        );
-
-        // 유저정보가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        if ($userData['check']){
-
-            // 그룹권한 확인
-            $where = array();
-            switch ($userData['classification']){
-                case 'teacher':
-                    $where = array('teacherNumber' => $userData['userId']);
-                case 'root':
-                    $groupData = DB::table('groups')
-                        ->select(
-                            'number as groupId',
-                            'name   as groupName'
-                        )
-                        ->where([
-                            'number' => $postData['groupId']
-                        ])
-                        ->where($where)
-                        ->first();
-
-                    if($groupData){
-                        // 일주일 조회
-                        $time = time();
-                        $endDate = date('Y-m-d', $time);
-                        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
-                        $races = $this->selectGroupRecords($groupData->groupId, $startDate, $endDate);
-
-                        // 반납하는값
-                        $returnValue = array(
-                            'group' => array(
-                                'id'    => $groupData->groupId,
-                                'name'  => $groupData->groupName
-                            ),
-                            'races'     => $races,
-                            'startDate' => $startDate,
-                            'endDate'   => $endDate,
-                            'check'     => true
-                        );
-                    } else {
-                        $returnValue = array(
-                            'check' => false
-                        );
-                    }
-                    break;
-//                case 'student':
-                default:
-                    $returnValue = array(
-                        'check' => false
-                    );
-                    break;
-            }
-        } else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
-
-        return $returnValue;
-    }
-
-    // 사용자 설정 차트정보 가져오기
+    // 차트정보 가져오기
     public function getChart(Request $request){
+        // 현재 시간가져오기 기본값 가져오기
+        $time = time();
+        $endDate = date('Y-m-d', $time);
+        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
+
         // 요구하는 값
 //        $postData = array(
 //            'groupId'   => 1,
@@ -88,8 +22,8 @@ class RecordBoxController extends Controller{
 //        );
         $postData = array(
             'groupId'   => $request->input('groupId'),
-            'startDate' => $request->input('groupId'),
-            'endDate'   => $request->input('groupId')
+            'startDate' => $request->has('startDate') ? $request->input('startDate') : $startDate,
+            'endDate'   => $request->has('endDate') ? $request->input('endDate') : $endDate
         );
 
         // 유저정보가져오기
@@ -241,16 +175,11 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생들의 최근기록 조회회
+    // 학생들의 최근기록 조회
     public function getStudents(Request $request){
         // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1,
-//            'dateType'  => 'week' // month, quarter
-//        );
         $postData = array(
-            'groupId'   => $request->input('groupId'),
-            'dateType'  => $request->input('dateType')
+            'userId'    => 1300000
         );
 
         // 유저정보가져오기
@@ -260,15 +189,16 @@ class RecordBoxController extends Controller{
             // 그룹권한 확인
             $where = array();
             switch ($userData['classification']) {
+                case 'student':
+                case 'sleepStudent':
+                    $where = array('u.number', '=', $userData['userId']);
                 case 'teacher':
-                    $where = array('teacherNumber' => $userData['userId']);
                 case 'root':
-                    $groupData = DB::table('groups')
+                    $groupData = DB::table('user as u')
                         ->select(
-                            'number as groupId'
                         )
                         ->where([
-                            'number' => $postData['groupId']
+
                         ])
                         ->where($where)
                         ->first();

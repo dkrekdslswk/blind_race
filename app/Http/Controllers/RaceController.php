@@ -570,9 +570,9 @@ class RaceController extends Controller{
             // 시험정보 가져오기
             $raceData = DB::table('races as r')
                 ->select(
-                    'l.name                 as listName',
-                    'r.passingMark          as passingMark',
-                    'count(lq.quizCount)    as quizCount'
+                    'l.name as listName',
+                    'r.passingMark as passingMark',
+                    DB::raw('count(lq.quizNumber) as quizCount')
                 )
                 ->where([
                     'r.number' => $userData['raceId']

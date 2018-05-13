@@ -149,7 +149,6 @@ Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList'
 Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
 Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
-Route::post('/recordBoxController/getDefaultChart','RecordBoxController@getDefaultChart');
 Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
 Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
 
