@@ -147,10 +147,18 @@
 
 
         var student_number = $("#st"+st_made_number).text();
-        var student_number_zip = new Array();
+
+        var student_number_zip = new Array(0);
+
+        var student_number_zip = [{
+         "id":""+student_number
+        }];
+
+//        student_number_zip.insert("id",student_number);
+
 
         //배열을 push 할 경우는 [["13","14","15"],"19","18"] 이런식으로 2차원으로 들어가 처리가 더필요함
-        student_number_zip.push(student_number);
+//        student_number_zip.push(student_number);
 
 
         student_number_zip = JSON.stringify(student_number_zip);
