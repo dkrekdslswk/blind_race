@@ -580,7 +580,7 @@ class RaceController extends Controller{
                 ->join('lists as l', 'l.number', '=', 'r.listNumber')
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->groupBy('r.number')
-                ->get();
+                ->first();
 
             // 최종 성적 정보 가져오기
             $students = DB::table('records as r')
@@ -602,55 +602,61 @@ class RaceController extends Controller{
             // 재시험 여부 확인하기
             $retestTargets = array();
             $wrongTargets = array();
-            foreach ($students as $student){
-                if ($raceData->passingMark > (($student->rightCount / $raceData->quizCount) * 100)) {
-                    array_push($retestTargets, $student->userId);
+            if ($raceData) {
+                foreach ($students as $student) {
+                    if ($raceData->passingMark > (($student->rightCount / $raceData->quizCount) * 100)) {
+                        array_push($retestTargets, $student->userId);
+                    }
+                    if ($student->rightCount < $raceData->quizCount) {
+                        array_push($wrongTargets, $student->userId);
+                    }
                 }
-                if ($student->rightCount < $raceData->quizCount) {
-                    array_push($wrongTargets, $student->userId);
+                // 재시험 상태 등록
+                DB::table('raceUsers')
+                    ->where('raceNumber', '=', $userData['raceId'])
+                    ->whereIn('userNumber', $retestTargets)
+                    ->update([
+                        'retestState' => 'order'
+                    ]);
+                // 오답노트 상태 등록
+                DB::table('raceUsers')
+                    ->where('raceNumber', '=', $userData['raceId'])
+                    ->whereIn('userNumber', $wrongTargets)
+                    ->update([
+                        'wrongState' => 'order'
+                    ]);
+
+                // 세션 초기화
+                DB::table('sessionDatas')
+                    ->where([
+                        'PIN' => $userData['roomPin']
+                    ])
+                    ->update([
+                        'nick' => null,
+                        'PIN' => null,
+                        'characterNumber' => null,
+                        'raceNumber' => null
+                    ]);
+
+                // 반납값 정리
+                $studentData = array();
+                foreach ($students as $student) {
+                    array_push($studentData, array(
+                        'sessionId' => $student->sessionId,
+                        'nick' => $student->nick,
+                        'characterId' => $student->characterId,
+                        'rightCount' => $student->rightCount
+                    ));
                 }
+                $returnValue = array(
+                    'students' => $studentData,
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
             }
-            // 재시험 상태 등록
-            DB::table('raceUsers')
-                ->where('raceNumber', '=', $userData['raceId'])
-                ->whereIn('userNumber', $retestTargets)
-                ->update([
-                    'retestState' => 'order'
-                ]);
-            // 오답노트 상태 등록
-            DB::table('raceUsers')
-                ->where('raceNumber', '=', $userData['raceId'])
-                ->whereIn('userNumber', $wrongTargets)
-                ->update([
-                    'wrongState' => 'order'
-                ]);
-
-            // 세션 초기화
-            DB::table('sessionDatas')
-                ->where([
-                    'PIN' => $userData['roomPin']
-                ])
-                ->update([
-                    'nick'              => null,
-                    'PIN'               => null,
-                    'characterNumber'   => null,
-                    'raceNumber'        => null
-                ]);
-
-            // 반납값 정리
-            $studentData = array();
-            foreach ($students as $student) {
-                array_push($studentData, array(
-                    'sessionId'     => $student->sessionId,
-                    'nick'          => $student->nick,
-                    'characterId'   => $student->characterId,
-                    'rightCount'    => $student->rightCount
-                ));
-            }
-            $returnValue = array(
-                'students' => $studentData,
-                'check' => true
-            );
         } else {
             $returnValue = array(
                 'check' => false
