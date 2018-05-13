@@ -90,27 +90,31 @@
         }
 
         // 날짜의 포맷을 ( YYYY-mm-dd ) 형태로 만들어줍니다.
-
         var defaultEndDate = loadDt.getFullYear() + '-' + fn_leadingZeros(loadDt.getMonth() + 1, 2) + '-' + fn_leadingZeros(loadDt.getDate(), 2);
         var tempdate = new Date(defaultEndDate);
             tempdate.setMonth(tempdate.getMonth()-1);
         var defaultStartDate = tempdate.getFullYear() + '-' + fn_leadingZeros(tempdate.getMonth() + 1, 2) + '-' + fn_leadingZeros(tempdate.getDate(), 2);
 
+
+
+
+
+
         //처음 화면 로드
         window.onload = function() {
 
-            /*part.1 사이드바*/
             //클래스 불러오기 and 차트 로드하기
-            getGroups_and_loadChart(group_id);
-
+            pageMainLoad();
+            pageHistoryLoad();
 
         };
 
         //메인 페이지 로드
         function pageMainLoad(){
 
-            /*part.4 과제관리 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
+            /*part.1 사이드바*/
+            //클래스 불러오기 and 차트 로드하기 -> record_chart.blade.php
+            getGroups_and_loadChart(group_id);
 
         }
 
@@ -119,8 +123,6 @@
 
             /*part.2 최근기록 화면*/
             //최근 목록 불러오기
-
-            var group_id = 1;
 
             getHistory(group_id);
         }
@@ -148,11 +150,9 @@
             var reqGroupName = $(this).attr('name');
 
             //레코드 네비바 클래스 이름과 아이디와 내용 바꾸기
-            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId).attr('name',reqGroupName);
+            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId);
 
-            var reqData = getChartData(reqGroupId,defaultStartDate,defaultEndDate);
-            var ChartData = getChartData(reqData);
-            makingChart(ChartData);
+            var reqData = getChartData_and_loadChart(reqGroupId,defaultStartDate,defaultEndDate);
 
         });
 
@@ -193,35 +193,36 @@
                     break;
 
                 case "3":
-                    startDate = caldate(183);
+                    startDate = caldate(90);
                     break;
 
                 case "4":
+                    startDate = caldate(180);
+                    break;
+
+                case "5":
                     startDate = caldate(365);
                     break;
             }
 
-            var reqData = getChartData(group_id,startDate,defaultEndDate);
-            var ChartData = getChartData(reqData);
-            makingChart(ChartData);
+            var reqData = getChartData_and_loadChart(group_id,startDate,defaultEndDate);
         }
 
         function orderChart(){
             var startDate = document.querySelector('input[id="startDate"]').value;
             var endDate = document.querySelector('input[id="endDate"]').value;
 
-            var reqData = getChartData(group_id,startDate,endDate);
-            var ChartData = getChartData(reqData);
-            makingChart(ChartData);
+            var reqData = getChartData_and_loadChart(group_id,startDate,endDate);
         }
 
-        //조회를 누르면 날짜를 가져와서 조회
-        function getChartData(groupId,startDate,endDate){
+        //날짜를 가져와서 조회 및 차트 그리기
+        function getChartData_and_loadChart(groupId,startDate,endDate){
+
+            $('#'+groupId).css('background-color','#d9edf7');
 
             var requestData = {"groupId" : groupId , "startDate" : startDate , "endDate" : endDate};
             /*var group_Id = {"groupId" : 1 , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
 
-            var resRaceData = "";
             $.ajax({
                 type: 'POST',
                 url: "{{url('/recordBoxController/getChart')}}",
@@ -256,14 +257,16 @@
                                         }
                     */
 
-                    resRaceData = data['races'];
+                    var resRaceData = data['races'];
+                    var ChartData = makingChartData(resRaceData);
+                    makingChart(ChartData);
 
                 },
                 error: function (data) {
                     alert("날짜 조회 에러");
                 }
             });
-            return resRaceData;
+
         }
 
         //클래스 가져오기
@@ -282,8 +285,6 @@
                 success: function (data) {
                     var GroupData = data;
 
-                    console.log(GroupData);
-
                     for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
 
                         $('#group_names').append($('<a href="#">')
@@ -299,9 +300,7 @@
                     $('#nav_group_name').text(firstGroup.text());
 
                     //가장 상단에 있는 클래스 ID값으로 차트 만들기
-                    var reqData = getChartData(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
-                    var ChartData = getChartData(reqData);
-                    makingChart(ChartData);
+                    var reqData = getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
                 },
                 error: function (data) {
                     alert("그룹겟 에러");
@@ -355,68 +354,6 @@
                 }
             });
 
-        }
-
-        //ajax로 그룹에 대한 차트 정보 가져와서 차트를 만듬
-        //request : 그룹아이디(groupId) , X축 차트(날짜) 데이터 타입 (axisXType)
-        function reqChartData_and_makingChart(groupId) {
-
-            var group_Id = {"groupId" : groupId };
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/recordBoxController/getChart')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: group_Id,
-                success: function (data) {
-
-                    /*
-                    * data = { group : {id : 1 , name : "3WDJ"} ,
-                               races : { 0 : {  year:2018
-                                                month:5
-                                                day:9
-
-                                                raceId:2
-                                                listName:"테스트용 리스트1"
-                                                userCount:5
-
-                                                quizCount:6
-                                                rightAnswerCount:4.2
-
-                                                grammarCount:2
-                                                grammarRightAnswerCount:1.6
-
-                                                vocabularyCount:2
-                                                vocabularyRightAnswerCount:1.6
-
-                                                wordCount:2
-                                                wordRightAnswerCount:1
-                                              }
-                                        }
-                    */
-
-                    /* data.group == data.group */
-
-                    var group_data = data['group'];
-                    var races_data = data['races'];
-
-                    //차트 데이터 생성
-                    var AllChartData = makingChartData(races_data);
-
-                    //차트 생성
-                    makingChart(defaultStartDate,defaultEndDate);
-
-                    //차트 데이터 변수에 데이터 넣기
-                    chartData = AllChartData;
-
-                },
-                error: function (data) {
-                    alert("그룹 아이디로 디폴트 차트 불러오기 에러");
-                }
-            });
         }
 
         function getHistory(group_id){
@@ -765,10 +702,6 @@
                     $('#record_students').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
-
-                    //최근기록 페이지에 필요한 데이터들 다 불러오기
-                    pageHistoryLoad();
-
                     break;
                 case "students" :
                     $('#record_students').attr('class','');
@@ -776,9 +709,6 @@
                     $('#record_history').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
-
-                    pageStudentListLoad();
-
                     break;
                 case "homework" :
                     $('#record_homework').attr('class','');
