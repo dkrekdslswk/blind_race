@@ -265,7 +265,7 @@ class GroupController extends Controller{
                     if ($groupData) {
                         $inputStudentIds = array();
                         foreach ($postData['students'] as $student){
-                            array_push($inputStudentIds, $student['id']);
+                            array_push($inputStudentIds, $student->id);
                         }
 
                         // 그룹에 이미 가입된 유저들 검색
@@ -296,11 +296,11 @@ class GroupController extends Controller{
                         $i = 0;
                         foreach ($noMemberStudents as $studentId){
                             for (; $i < count($postData['students']) ; $i++){
-                                if ($postData['students'][$i]['id'] == $studentId){
+                                if ($postData['students'][$i]->id == $studentId){
                                     DB::table('users')
                                         ->insert([
                                             'number'            => $studentId,
-                                            'name'              => $postData['students'][$i]['name'],
+                                            'name'              => $postData['students'][$i]->name,
                                             'pw'                => $studentId,
                                             'classification'    => 'student'
                                         ]);
