@@ -534,7 +534,7 @@ class GroupController extends Controller{
             );
         }
 
-        return $update;
+        return $returnValue;
     }
 
     // 학생 그룹에서 제외 root, teacher
