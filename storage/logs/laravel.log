@@ -3000,6 +3000,7 @@
 #56 /var/www/html/laravelvuejstutorial/server.php(21): require_once('/var/www/html/l...')
 #57 {main}
 "} 
+<<<<<<< HEAD
 [2018-05-13 09:00:37] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'answer' cannot be null (SQL: insert into `records` (`raceNo`, `userNo`, `listNo`, `quizNo`, `answerCheck`, `answer`) values (67, 1300002, 4, 16, X, )) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'answer' cannot be null (SQL: insert into `records` (`raceNo`, `userNo`, `listNo`, `quizNo`, `answerCheck`, `answer`) values (67, 1300002, 4, 16, X, )) at /var/www/html/laravelvuejstutorial/vendor/laravel/framework/src/Illuminate/Database/Connection.php:664, PDOException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'answer' cannot be null at /var/www/html/laravelvuejstutorial/vendor/laravel/framework/src/Illuminate/Database/Connection.php:458)
 [stacktrace]
 #0 /var/www/html/laravelvuejstutorial/vendor/laravel/framework/src/Illuminate/Database/Connection.php(624): Illuminate\\Database\\Connection->runQueryCallback('insert into `re...', Array, Object(Closure))
@@ -3703,3 +3704,5 @@
 #53 /var/www/html/laravelvuejstutorial/server.php(21): require_once('/var/www/html/l...')
 #54 {main}
 "} 
+=======
+>>>>>>> 1da4c47e0d04c302c1c56d47b6c94319c6260942
