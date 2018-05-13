@@ -202,9 +202,11 @@
 
     <div class="radio">
         <h3>보기</h3>
-        <label><input type="radio" checked="checked" id="radio_1" name="optradio" onclick="changeDateType()" value='1'>일</label>
-        <label><input type="radio" id="radio_2" name="optradio" onclick="changeDateType()" value='2' >월</label>
-        <label><input type="radio" id="radio_3" name="optradio" onclick="changeDateType()" value='3' >년도</label>
+        <label><input type="radio" checked="checked" id="radio_1" name="optradio" onclick="changeDateToChart()" value='1'>일주일</label>
+        <label><input type="radio" id="radio_2" name="optradio" onclick="changeDateToChart()" value='2' >한달</label>
+        <label><input type="radio" id="radio_3" name="optradio" onclick="changeDateToChart()" value='3' >3개월</label>
+        <label><input type="radio" id="radio_4" name="optradio" onclick="changeDateToChart()" value='4' >6개월</label>
+        <label><input type="radio" id="radio_5" name="optradio" onclick="changeDateToChart()" value='5' >12개월</label>
     </div>
 
     <div class="chooseDate" style="margin-bottom: 30px;">
@@ -214,7 +216,7 @@
 
         <input type="date" name="chooseday" id="endDate"></input>
 
-        <button class="btn btn-default" onclick="changeDateTypeToChart()">
+        <button class="btn btn-default" onclick="orderChart()">
             조회
         </button>
     </div>

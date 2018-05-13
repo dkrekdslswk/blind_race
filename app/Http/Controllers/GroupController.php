@@ -263,6 +263,11 @@ class GroupController extends Controller{
 
                     // 권한 확인
                     if ($groupData) {
+                        $inputStudentIds = array();
+                        foreach ($postData['students'] as $student){
+                            array_push($inputStudentIds, $student->id);
+                        }
+
                         // 그룹에 이미 가입된 유저들 검색
                         $groupUsers = DB::table('users as u')
                             ->where(function ($query){
@@ -270,13 +275,13 @@ class GroupController extends Controller{
                                     ->orWhere('u.classification', '=', 'sleepStudent');
                             })
                             ->where('gs.groupNumber', '=', $postData['groupId'])
-                            ->whereIn('u.number', $postData['students'])
+                            ->whereIn('u.number', $inputStudentIds)
                             ->leftJoin('groupStudents as gs', 'gs.userNumber', '=', 'u.number')
                             ->pluck('u.number')
                             ->toArray();
 
                         // 그룹에 가입안된 학생 검색
-                        $noGroupStudents = array_diff($postData['students'], $groupUsers);
+                        $noGroupStudents = array_diff($inputStudentIds, $groupUsers);
                         $memberStudents = DB::table('users')
                             ->whereIn('number', $noGroupStudents)
                             ->where(function ($query){
@@ -291,11 +296,11 @@ class GroupController extends Controller{
                         $i = 0;
                         foreach ($noMemberStudents as $studentId){
                             for (; $i < count($postData['students']) ; $i++){
-                                if ($postData['students'][$i]['id'] == $studentId){
+                                if ($postData['students'][$i]->id == $studentId){
                                     DB::table('users')
                                         ->insert([
                                             'number'            => $studentId,
-                                            'name'              => $postData['students'][$i]['name'],
+                                            'name'              => $postData['students'][$i]->name,
                                             'pw'                => $studentId,
                                             'classification'    => 'student'
                                         ]);
@@ -555,7 +560,7 @@ class GroupController extends Controller{
                 case 'teacher':
                     $where = array('g.teacherNumber' => $userData['userId']);
                 case 'root':
-                    // 학생조회
+                    // 학생 제외
                     $deleteState = DB::table('groupStudents as gu')
                         ->where('gu.userNumber', '=', $postData['userId'])
                         ->where($where)

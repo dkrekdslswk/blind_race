@@ -1,85 +1,20 @@
 <?php
 namespace app\Http\Controllers;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-    // 기본 그룹정보 및 디폴트 차트
-    public function getDefaultChart(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1
-//        );
-        $postData = array(
-            'groupId'   => $request->input('groupId')
-        );
-
-        // 유저정보가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        if ($userData['check']){
-
-            // 그룹권한 확인
-            $where = array();
-            switch ($userData['classification']){
-                case 'teacher':
-                    $where = array('teacherNumber' => $userData['userId']);
-                case 'root':
-                    $groupData = DB::table('groups')
-                        ->select(
-                            'number as groupId',
-                            'name   as groupName'
-                        )
-                        ->where([
-                            'number' => $postData['groupId']
-                        ])
-                        ->where($where)
-                        ->first();
-
-                    if($groupData){
-                        // 일주일 조회
-                        $time = time();
-                        $endDate = date('Y-m-d', $time);
-                        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
-                        $races = $this->selectGroupRecords($groupData->groupId, $startDate, $endDate);
-
-                        // 반납하는값
-                        $returnValue = array(
-                            'group' => array(
-                                'id'    => $groupData->groupId,
-                                'name'  => $groupData->groupName
-                            ),
-                            'races'     => $races,
-                            'startDate' => $startDate,
-                            'endDate'   => $endDate,
-                            'check'     => true
-                        );
-                    } else {
-                        $returnValue = array(
-                            'check' => false
-                        );
-                    }
-                    break;
-//                case 'student':
-                default:
-                    $returnValue = array(
-                        'check' => false
-                    );
-                    break;
-            }
-        } else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
-
-        return $returnValue;
-    }
-
-    // 사용자 설정 차트정보 가져오기
+    // 차트정보 가져오기
     public function getChart(Request $request){
+        // 현재 시간가져오기 기본값 가져오기
+        $time = time();
+        $endDate = date('Y-m-d', $time);
+        $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
+
         // 요구하는 값
 //        $postData = array(
 //            'groupId'   => 1,
@@ -88,8 +23,8 @@ class RecordBoxController extends Controller{
 //        );
         $postData = array(
             'groupId'   => $request->input('groupId'),
-            'startDate' => $request->input('groupId'),
-            'endDate'   => $request->input('groupId')
+            'startDate' => $request->has('startDate') ? $request->input('startDate') : $startDate,
+            'endDate'   => $request->has('endDate') ? $request->input('endDate') : $endDate
         );
 
         // 유저정보가져오기
@@ -241,16 +176,11 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생들의 최근기록 조회회
-    public function getStudents(Request $request){
+    // 과제 미출제 학생 조회
+    public function homeworkCheck(Request $request){
         // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1,
-//            'dateType'  => 'week' // month, quarter
-//        );
         $postData = array(
-            'groupId'   => $request->input('groupId'),
-            'dateType'  => $request->input('dateType')
+            'raceId'    => 1
         );
 
         // 유저정보가져오기
@@ -261,48 +191,155 @@ class RecordBoxController extends Controller{
             $where = array();
             switch ($userData['classification']) {
                 case 'teacher':
-                    $where = array('teacherNumber' => $userData['userId']);
                 case 'root':
-                    $groupData = DB::table('groups')
+
+                    // 레이스 정보 읽어오기
+                    $raceData = DB::table('users as u')
                         ->select(
-                            'number as groupId'
+                            'u.number as userId',
+                            'u.name as userName',
+                            'ru.retestState as retestState',
+                            'ru.wrongState as wrongState'
                         )
-                        ->where([
-                            'number' => $postData['groupId']
-                        ])
-                        ->where($where)
-                        ->first();
+                        ->where('ru.number', '=', $postData['raceId'])
+                        ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
+                        ->groupBy('u.number')
+                        ->orderBy('u.number', 'desc')
+                        ->get();
 
-                    if ($groupData) {
-
+                    // 레이스 정보 정리
+                    $races = array();
+                    foreach ($raceData as $race) {
+                        array_push($races, array(
+                            'userId' => $race->userId,
+                            'userName' => $race->userName,
+                            'retestState' => $race->retestState,
+                            'wrongState' => $race->wrongState
+                        ));
                     }
+
+                    // 반납하는값
+                    $returnValue = array(
+                        'races'  => $races,
+                        'check' => true
+                    );
                     break;
                 default:
+                    $returnValue = array(
+                        'check' => false
+                    );
                     break;
             }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
         }
-
-        // 반납할 값 정리
-       $returnValue = array(
-            'students' => array(
-                0 => array(
-                    'id',
-                    'name',
-                    'all',
-                    'vocabulary',
-                    'word',
-                    'grammar'
-                )
-            ),
-            'check'
-        );
 
         return $returnValue;
     }
 
-   // 재시험 상태(실시, 미실시 전채 인원 포함) 및 오답노트 상태
+    // 학생들의 최근기록 조회
+    public function getStudents(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'userId'    => 1300000
+//        );
+        // 요구하는 값
+        $postData = array(
+            'userId'    => $request->input('userId')
+        );
 
-    // 오답노트 재출 명령하기기
+        // 유저정보가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        if ($userData['check']) {
+
+            // 그룹권한 확인
+            $where = array();
+            switch ($userData['classification']) {
+                // 학생은 자기것만 볼 수 있음.
+                case 'student':
+                case 'sleepStudent':
+                    $where = array('ru.userNumber' => $userData['userId']);
+                // 선생은 모든 학생을 볼 수 있음.
+                case 'teacher':
+                case 'root':
+                    // 학생 정보 조회
+                    $raceData = DB::table('raceUsers as ru')
+                        ->select(
+                            'r.number as raceId',
+                            'l.name as listName',
+                            DB::raw('year(r.created_at) as year'),
+                            DB::raw('month(r.created_at) as month'),
+                            DB::raw('dayofmonth(r.created_at) as day'),
+                            DB::raw('count(re.quizNo) as allCount'),
+                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
+                            DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                            DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                            DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
+                            DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                            DB::raw('count(CASE WHEN q.type like "grammar%" THEN 1 END) as grammarCount'),
+                            DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
+                            'ru.retestState as retestState',
+                            'ru.wrongState as wrongState'
+                        )
+                        ->where([
+                            'ru.userNumber' => $postData['userId'],
+                            're.retest' => 0
+                        ])
+                        ->where($where)
+                        ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+                        ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                        ->join('records as re', function ($join){
+                            $join->on('re.raceNo', '=', 'ru.raceNumber');
+                            $join->on('re.userNo', '=', 'ru.userNumber');
+                        })
+                        ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                        ->groupBy('ru.raceNumber')
+                        ->orderBy('ru.raceNumber', 'desc')
+                        ->get();
+
+                        // 반납할 정보 정리
+                        $races = array();
+                        foreach ($raceData as $race){
+                            array_push($races, array(
+                                'raceId' => $race->raceId,
+                                'listName' => $race->listName,
+                                'year' => $race->year,
+                                'month' => $race->month,
+                                'day' => $race->day,
+                                'allCount' => $race->allCount,
+                                'allRightCount' => $race->allRightAnswerCount,
+                                'vocabularyCount' => $race->vocabularyCount,
+                                'vocabularyRightCount' => $race->vocabularyRightAnswerCount,
+                                'wordCount' => $race->wordCount,
+                                'wordRightCount' => $race->wordRightAnswerCount,
+                                'grammarCount' => $race->grammarCount,
+                                'grammarRightCount' => $race->grammarRightAnswerCount,
+                                'retestState' => $race->retestState,
+                                'wrongState' => $race->wrongState
+                            ));
+                        }
+
+                    $returnValue = array(
+                        'races' => $races,
+                        'check' => true
+                    );
+                    break;
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
 
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){
