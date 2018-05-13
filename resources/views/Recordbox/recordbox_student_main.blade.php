@@ -1,8 +1,3 @@
-<?php
-
-    $getName = $_GET('student');
-?>
-
 <html>
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -80,31 +75,124 @@
 
     <script type="text/javascript">
 
+
+        //학생 개인 차트 만들 데이터
+        function makingStudentChart(data,axisXType){
+
+            //data = { "total_data" : [ "전체 평균 점수" , { x: new Date(0,0,0) , y: 80 , label: "문제 : 스쿠스쿠"}]}
+            //data['total_data'] , data['voca_data'] , data['grammer_data'] , data['word_data']
+            //data['total_data'][0]     ==  "전체 평균 점수"
+            //data['total_data'][1]     == {x , y , label}
+
+            var chart = new CanvasJS.Chart("chartContainer_privacy_student", {
+                animationEnabled: true,
+                theme: "light2",
+                title:{},
+                width:1300,
+                height:500,
+                axisX:{
+                    labelFontSize: 15,
+                    valueFormatString: axisXType,
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisY: {
+                    maximum: 100,
+                    crosshair: {
+                        enabled: true,
+                    }
+                },
+                toolTip:{
+                    shared: true,
+                },
+                legend:{
+                    cursor:"pointer",
+                    verticalAlign: "bottom",
+                    horizontalAlign: "left",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                    type: "line",
+                    showInLegend: true,
+                    xValueFormatString: "DD, DD MMM, YYYY",
+
+                    // name: "전체 평균 점수",
+                    name: data['total_data'][0],
+
+                    markerType: "square",
+                    toolTipContent: "{label}" + "<br>" + "<span class='chart_total'>{name}:</span> {y}",
+                    color: "#F08080",
+                    dataPoints: data['total_data'][1]
+                },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "어학 점수",
+                        name: data['voca_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_vocabulary'>{name}:</span> {y}",
+                        dataPoints: data['voca_data'][1]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "독해 점수",
+                        name: data['grammer_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_grammer'>{name}:</span> {y}",
+                        dataPoints: data['grammer_data'][1]
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+
+                        // name: "단어 점수",
+                        name: data['word_data'][0],
+
+                        lineDashType: "dash",
+                        toolTipContent: "<span class='chart_word'>{name}:</span> {y}",
+                        dataPoints: data['word_data'][1]
+                    }
+                ]
+            });
+            chart.render();
+
+            function toogleDataSeries(e){
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else{
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+        }
+
+
+
         function recordControl(id){
             switch (id){
                 case "nav_group_name" :
-                    $('#group_chart').attr('class','');
                     $('#record_history').attr('class','hidden');
-                    $('#record_students').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
                     break;
                 case "history" :
                     $('#record_history').attr('class','');
-                    $('#group_chart').attr('class','hidden');
-                    $('#record_students').attr('class','hidden');
-                    $('#record_feedback').attr('class','hidden');
-                    break;
-                case "students" :
-                    $('#record_students').attr('class','');
-                    $('#group_chart').attr('class','hidden');
-                    $('#record_history').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
                     break;
                 case "feedback" :
                     $('#record_feedback').attr('class','');
-                    $('#record_students').attr('class','hidden');
-                    $('#group_chart').attr('class','hidden');
+                    $('#record_homework').attr('class','hidden');
                     $('#record_history').attr('class','hidden');
+
+                    $('#feedbackCheck').attr('class','hidden');
+                    $('#feedbackCheckIcon').attr('class','hidden');
                     break;
             }
         }
@@ -142,15 +230,11 @@
 
     {{--메인 네비바 불러오기--}}
     <div id="main-recordnav" style="margin-bottom: 20px;">
-        @include('Recordbox.recordnav_student')
+        @include('Recordbox.recordbox_student_recordnav')
     </div>
 
-    <div id="group_chart">
-        @include('Recordbox.record_chart')
-    </div>
-
-    <div class="hidden" id="record_students">
-        @include('Recordbox.record_studentslist')
+    <div class="" id="record_history">
+        @include('Recordbox.recordbox_student_history')
     </div>
 
     <div class="hidden" id="record_feedback">

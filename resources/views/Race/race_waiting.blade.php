@@ -252,12 +252,16 @@
 
 
             socket.on('answer-sum', function(answer ,sessionId , quizId){
-
-                if( answer == rightAnswer)
-                    answer = 1;
-                else{
-                    answer = real_A[ answer ];
+                if(answer == 1 || answer == 2||answer == 3 || answer == 4)
+                {
+                    if( answer == rightAnswer)
+                        answer = 1;
+                    // real_A[rightAnswer]; 변경시에넣을 값 
+                    else{
+                        answer = real_A[answer];
+                    }
                 }
+
 
 
 
@@ -281,12 +285,15 @@
 
                 console.log('답변자수 ' , answer_count);
                 console.log('입장플레이어수 ', quiz_member);
+
                 if(answer_count == quiz_member)
                 {
                     if( quiz_numbar == quiz_JSON.length )
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
                     else
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
+
+
 
                     document.getElementById('answer_c').innerText="Answers";
                 }
@@ -311,6 +318,9 @@
                     success: function (result) {
                         if(result['check'] == true) {
                             console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
+
+                            //학생들에게 정답이 뭐였었는지 전달 
+                            socket.emit('race_mid_correct',roomPin,quiz_JSON[quizId-1].right);
 
                             var correct_count = result['rightAnswer'];
                             var incorrect_count =result['wrongAnswer'];
@@ -526,6 +536,7 @@
                             break;
 
                         case "sub" :
+
                             if(quiz_JSON[data].hint==null)
                                 quiz_JSON[data].hint = "없음";
 

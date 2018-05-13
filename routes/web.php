@@ -85,35 +85,16 @@ Route::get('/recordbox', function(){
     return view('Recordbox/recordbox_main');
 });
 
-/* 4. Record Box : Record List */
+/* 4-1. Record Box : test */
+Route::get('/recordbox_main', function(){
+    return view('Recordbox/recordbox_main');
+});
+
+/* 4-2. Record Box : Record List */
 Route::get('/recordbox_student', function(){
     return view('Recordbox/recordbox_student_main');
 });
 
-/* 4-1. Record Box : Feedback */
-Route::get('/feedback', function(){
-    return view('Recordbox/feedback');
-});
-
-/* 4-2. Record Box : test */
-Route::get('/test', function(){
-    return view('Recordbox/test');
-});
-
-/* 4-2. Record Box : test */
-Route::get('/test_sidebar', function(){
-    return view('Recordbox/test_sidebar');
-});
-
-/* 4-2. Record Box : test */
-Route::get('/test_record', function(){
-    return view('Recordbox/test_record');
-});
-
-/* 4-2. Record Box : test */
-Route::get('/recordbox_main', function(){
-    return view('Recordbox/recordbox_main');
-});
 
 
 
@@ -151,6 +132,7 @@ Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
 Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
 Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
+Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');

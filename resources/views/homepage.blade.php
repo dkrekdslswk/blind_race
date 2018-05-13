@@ -14,7 +14,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link href="{{url('css/homemain.css')}}" rel="stylesheet" type="text/css" media="all">
-      
+
     </head>
     <body
         id="top"
@@ -23,7 +23,7 @@
 
         <div class="wrapper row1">
             <header id="header" class="clear">
-             
+
                 <div id="logo" class="fl_left">
                     <h1>
                         <a href="#">
@@ -40,9 +40,9 @@
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('race_list') }}">레이스
-                         
+
                         </li>
-                       
+
 
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('recirdbox') }}">레코드박스
@@ -64,22 +64,22 @@
                         </li>
                         <li>
 
-                        <button  onclick="document.getElementById('id01').style.display='block'" class="mainbtn"><?php if(isset($response['check'] )){echo "logout"; } else { echo "login" ;}; ?>  </button> 
+                        <button  onclick="document.getElementById('id01').style.display='block'" class="mainbtn"><?php if(isset($response['check'] )){echo "logout"; } else { echo "login" ;}; ?>  </button>
                         </li>
                         <li>
-                       
-                        <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>  
+
+                        <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
                         </li>
                         <ul></ul>
                     </nav>
-                  
+
                 </header>
             </div>
-         
+
 
             <div class="wrapper row2">
                 <div id="pageintro" class="clear">
-                  
+
                     <ul class="nospace group">
                     <li>
                             <a class="mt-purple" href="/mygroup">
@@ -87,7 +87,7 @@
                                 <em>My Class</em>
                             </a>
                         </li>
-                    
+
                     <li>
                             {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
 
@@ -116,22 +116,22 @@
                                 <em>Quiz Tree</em>
                             </a>
                         </li>
-               
-               
+
+
                         <li>
                             <a class="mt-orange" href="/raid">
                                 <i class="fa fa-5x fa-comments"></i>
                                 <em>Feedback</em>
                             </a>
                         </li>
-                  
-               
-                   
+
+
+
                     </ul>
-                   
+
                 </div>
             </div>
-           
+
             {{--<div class="wrapper row3">--}}
                 {{--<div class="lrspace">--}}
                     {{--<main class="container clear">--}}
@@ -304,53 +304,52 @@
 
                             <!-- main body -->
                             <!-- ################################################################################################ -->
-                            <div class="center btmspace-80">
-                                <h3 class="heading">My Class</h3>
-                                <p class="nospace">Cras dapibus ipsum vel eleifend commodo eros tortor imperdiet elit eget molestie nisi lectus.</p>
-                            </div>
+
                             <ul class="nospace group services">
-                                <li class="one_third first">
-                                    <article><a href="#"><i class="fa fa-object-group"></i></a>
-                                        <h6 class="heading">Race</h6>
-                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
-                                        <footer><a href="#">이동하기 &raquo;</a></footer>
-                                    </article>
-                                </li>
-                                <li class="one_third">
-                                    <article><a href="#"><i class="fa fa-fighter-jet"></i></a>
-                                        <h6 class="heading">Record Box</h6>
-                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
-                                        <footer><a href="#">이동하기 &raquo;</a></footer>
-                                    </article>
-                                </li>
-                                <li class="one_third">
-                                    <article><a href="#"><i class="fa fa-pagelines"></i></a>
-                                        <h6 class="heading">Quiz Tree</h6>
-                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
-                                        <footer><a href="#">이동하기 &raquo;</a></footer>
-                                    </article>
-                                </li>
-                                <li class="one_third first">
-                                    <article><a href="#"><i class="fa fa-cubes"></i></a>
-                                        <h6 class="heading">Feedback</h6>
-                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
-                                        <footer><a href="#">이동하기 &raquo;</a></footer>
-                                    </article>
-                                </li>
-                                <li class="one_third">
-                                    <article><a href="#"><i class="fa fa-universal-access"></i></a>
-                                        <h6 class="heading">My Class</h6>
-                                        <p>영준님 대학생때 캠퍼스 잔디밭에서 그냥 방담 하는 분위기 였는데 외국인 교수와 같이 연주하는 거 봤습니다...... 그때 협연주 참 멋있었어요.. 부산 출신 친구가 음악 잘하시는 분이라고 알고 있더라고요.. 아마 고등학교 떄도 유명하셨던 듯.... 그런 기억의 길....</p>
-                                        <footer><a href="#">이동하기 &raquo;</a></footer>
-                                    </article>
-                                </li>
-                                <li class="one_third">
-                                    <article><a href="#"><i class="fa fa-fort-awesome"></i></a>
-                                        <h6 class="heading">Mauris proin venenatis</h6>
-                                        <p>Arcu dignissim interdum quis vel est aenean hendrerit lacus non nisl iaculis sed suscipit&hellip;</p>
-                                        <footer><a href="#">Read More &raquo;</a></footer>
-                                    </article>
-                                </li>
+                                <div class="col-xs-12 col-sm-6 col-md-4 ">
+                                    <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                                        <div class="mainflip">
+                                            <div class="frontside">
+                                                <div class="card">
+                                                    <p>영상으로 설명 예정</p>
+                                                    <div class="card-body text-center mt-4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="backside">
+                                                <div class="card">
+
+                                                    <h1 class="card-title">My class</h1>
+                                                    <h2 class="card-text">  <p><img  src="https://i.imgur.com/Lh3HErN.png" ></p></h2>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-6 col-md-4 ">
+                                    <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                                        <div class="mainflip">
+                                            <div class="frontside">
+                                                <div class="card">
+                                                    <p><img  src="https://i.imgur.com/IeUty5n.png" ></p>
+                                                    <div class="card-body text-center mt-4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="backside">
+                                                <div class="card">
+
+                                                    <h1 class="card-title">My class</h1>
+                                                    <h2 class="card-text">My Class를 이용하여 학생들의 쉽게 관리할수 있으며 원하는 클래스를 생성할수 있습니다.</h2>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </ul>
                             <!-- ################################################################################################ -->
                             <!-- / main body -->
@@ -373,7 +372,7 @@
         <div id="copyright" class="clear">
 
             <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
-                <a href="#">캡스톤 십자인대</a>
+                <a href="#">캡스톤 디자인</a>
             </p>
             <p class="fl_right">Template By
                 <a
@@ -381,7 +380,7 @@
                     href="http://www.os-templates.com/"
                     title="Free Website Templates">WDJ7조</a>
             </p>
-            
+
         </div>
     </div>
 </div>
@@ -394,9 +393,9 @@
 
 <div id="id01" class="modal">
    <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
-  
+
         <div class="imgcontainer">
-        
+
             <span
                 onclick="document.getElementById('id01').style.display='none'"
                 class="close"
@@ -426,15 +425,15 @@
                 required="required"
                 value="sub"
                 >
-        
+
             <button type="submit" style ="color : black">Login</button>
-           
+
 
 
         </div>
 
-   
-    
+
+
     </form>
 </div>
 
@@ -442,11 +441,11 @@
   <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
 
 
-  
+
   <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
     <div class="container">
       <h1>Sign Up</h1>
-      
+
       <hr>
       <label for="text"><b>Student ID</b></label>
       <input type="text" placeholder="Student ID" name="ID" required>
@@ -456,7 +455,7 @@
 
       <label for="psw-repeat"><b>Repeat Password</b></label>
       <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-      
+
 
 
 
@@ -479,12 +478,12 @@
 
 
 <script>
-   
+
 //    alert(JSON.stringify( $returnvalue));
 // alert('<?php //echo $returnvalue; ?>');
     var modal = document.getElementById('id01');
 
-    
+
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";

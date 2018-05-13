@@ -148,7 +148,7 @@
 
     </style>
     <script>
-
+            var groupIds ;
 
             function getAnothergroup(groupId) {
 
@@ -157,6 +157,7 @@
                     url: "{{url('/groupController/groupDataGet')}}",
                     //processData: false,
                     //contentType: false,
+                    async:false,
                     dataType: 'json',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     //data: {_token: CSRF_TOKEN, 'post':params},
@@ -168,6 +169,7 @@
                         teacher = GroupData['teacher']['name'];
                         group = GroupData['group']['name'];
                         groupnumber = GroupData['group']['id'];
+                        groupIds = GroupData['group']['id'];
                         student = GroupData['students'];
 
                         $('#teacher').html(teacher);

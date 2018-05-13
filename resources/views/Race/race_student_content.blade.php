@@ -113,6 +113,18 @@
         font-weight: bold;
         font-size: 40px;
     }
+    #race_result{
+          top: 40%;
+        position: absolute;
+        left: 5%;
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        background-color: rgba(255,255,255,.84);
+        width: 90%;
+        height: 50%;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 40px;
+    }
 </style>
 
 <script>
@@ -168,7 +180,7 @@
             <div  id="sub" style="display:none;">
                 <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
                 <input id="subanswer" type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
-                <button onclick="user_in();" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
+                <button onclick="web_answer('sub');" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
             </div>
         </div>
 
@@ -181,6 +193,10 @@
             <!-- "정답" OR "오답" -->
             <span id="answer_check" style="margin-left:60px; font-size:30px;"></span>
 
+        </div>
+        
+        <div id="race_result" style="display:none;">
+            GAME OVER
         </div>
 
     </div>
