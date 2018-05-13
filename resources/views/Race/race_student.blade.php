@@ -87,7 +87,19 @@
             
             socket.on('android_next_quiz',function(roomPin){
                  
-                $('#makeTypes').show();
+                 switch(web_makeType){
+                    case "obj":
+                        $("#sub").hide();
+                        $(".obj").show();
+                        break;
+
+                    case "sub" :
+                        $(".obj").hide();
+                        $("#sub").show();
+                        break;
+                 }
+                 $('#makeTypes').show();
+                
                 $('#web_race_midresult').hide();
                 
             });

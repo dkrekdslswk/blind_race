@@ -345,7 +345,7 @@
 </nav>
 
 <aside style="display:inline-block; vertical-align:top;">
-    <!--@include('QuizTree.Quiz_list_side_bar')-->
+    <!--@include('QuizTree.quiz_list_side_bar')-->
 </aside>
 
 <div class="btn-process" style="margin-top:50px;"></div>
