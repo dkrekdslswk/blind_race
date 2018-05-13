@@ -339,7 +339,7 @@
 
 
 
-            alert(JSON.stringify(postData));
+//            alert(JSON.stringify(postData));
 
 //            studentnumbers studentnames checkBox psw
             $.ajax({
@@ -349,7 +349,8 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: postData ,
                 success: function (data) {
-                    alert(JSON.stringify(postData))
+//                    alert(JSON.stringify(postData))
+                    window.location.href = "{{url('mygroup')}}";
                 },
                 error: function (data) {
                     alert("수정 실패");
