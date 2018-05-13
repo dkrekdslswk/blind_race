@@ -114,7 +114,7 @@
         font-size: 40px;
     }
     #race_result{
-          top: 40%;
+        top: 40%;
         position: absolute;
         left: 5%;
         box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
@@ -194,10 +194,9 @@
             <span id="answer_check" style="margin-left:60px; font-size:30px;"></span>
 
         </div>
-        
-        <div id="race_result" style="display:none;">
-            GAME OVER
-        </div>
+
+        <!-- 재시험 해야할 여부 -->
+        <div id="race_result" style="display:none;"></div>
 
     </div>
 </div>

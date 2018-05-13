@@ -28,16 +28,16 @@
         var web_alright;
         var web_answer_check;
         var web_correct_answer;
-        
+
         var web_quiz_count;
-        
+
         window.onload = function() {
 
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
-                    
+
                     web_quiz_count = quizCount;
-                    
+
                     $('#entranceInfo_character_page').hide();
                     $('#entranceInfo_nickname_page').hide();
 
@@ -84,10 +84,10 @@
                 }
                 $('.contents').show();
             });
-            
+
             socket.on('android_next_quiz',function(roomPin){
-                 
-                 switch(web_makeType){
+
+                switch(web_makeType){
                     case "obj":
                         $("#sub").hide();
                         $(".obj").show();
@@ -97,17 +97,17 @@
                         $(".obj").hide();
                         $("#sub").show();
                         break;
-                 }
-                 $('#makeTypes').show();
-                
+                }
+                $('#makeTypes').show();
+
                 $('#web_race_midresult').hide();
-                
+
             });
-            
+
             socket.on('race_mid_correct',function(correct){
                 web_correct_answer = correct;
             });
-            
+
             socket.on('android_mid_result',function(quizId, makeType, ranking){
 
                 $('body').css("background-color","whitesmoke");
@@ -131,10 +131,10 @@
                 $('#ranking_info').html(web_ranking+"등");
                 $('#point_info').html(web_point*100+"point");
                 $('#answer_content').html(web_correct_answer);
-                
+
                 if(web_answer_check == "X")
                     web_alright = "X";
-                
+
                 switch(web_alright){
                     case "O": $('#answer_check_img').attr("src","/img/right_circle.png");
                         $('#answer_check').html("정답");
@@ -143,10 +143,10 @@
                         $('#answer_check').html("오답");
                         break;
                 }
-                
+
                 $('#race_room_nav').show();
                 $('#mondai').show();
-                
+
                 $('#makeTypes').hide();
                 $('#web_race_midresult').show();
 
@@ -155,7 +155,7 @@
         };
 
         function web_answer(answer_num){
-            
+
             switch(web_makeType){
                 case "obj":
                     socket.emit('answer',roomPin , answer_num , sessionId , nick , web_quizId);
@@ -236,12 +236,20 @@
             nick = document.getElementById('nickname').value;
             socket.emit('user_in',roomPin,nick,sessionId,characterId);
         }
-        
+
         socket.on('race_ending',function(data){
+
+            socket.on('race_result',function(race_result){
+                alert(race_result);
+            });
+
+
             $('body').css("background-color","mediumslateblue");
             $('#web_race_midresult').hide();
             $('#race_result').show();
-            
+
+
+
         });
 
     </script>
@@ -431,7 +439,7 @@
             <span class="race_menu_span">Race</span>
         </button>
         <!-- 부가기능이므로 아직은 미구현상태  -->
-        <button class="race_menu_button" id="Exam" style="display:none;">
+        <button class="race_menu_button" id="Exam" >
             <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
             <span class="race_menu_span">Exam</span>
