@@ -138,10 +138,10 @@ class RaceController extends Controller{
                     'groupName'         => $groupData->groupName,
                     'groupStudentCount' => $groupData->studentCount
                 ),
-                'sessionId' => $request->session()->get('sessionId'),
-                'check'     => true,
-                'roomPin'   => $roomPin,
-                'quizs'     => $this->quizGet($listData->listId)
+                'sessionId'     => $request->session()->get('sessionId'),
+                'check'         => true,
+                'roomPin'       => $roomPin,
+                'quizs'         => $this->quizGet($listData->listId)
             );
         } else {
             $returnValue = array(
@@ -645,7 +645,9 @@ class RaceController extends Controller{
                         'sessionId' => $student->sessionId,
                         'nick' => $student->nick,
                         'characterId' => $student->characterId,
-                        'rightCount' => $student->rightCount
+                        'rightCount' => $student->rightCount,
+                        'retestState' => in_array($retestTargets, $student->userId),
+                        'wrongState' => in_array($wrongTargets, $student->userId)
                     ));
                 }
                 $returnValue = array(
