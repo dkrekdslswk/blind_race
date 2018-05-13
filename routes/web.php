@@ -132,6 +132,7 @@ Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
 Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
 Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
+Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCheck');
 Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');

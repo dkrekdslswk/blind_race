@@ -555,7 +555,7 @@ class GroupController extends Controller{
                 case 'teacher':
                     $where = array('g.teacherNumber' => $userData['userId']);
                 case 'root':
-                    // 학생조회
+                    // 학생 제외
                     $deleteState = DB::table('groupStudents as gu')
                         ->where('gu.userNumber', '=', $postData['userId'])
                         ->where($where)
