@@ -330,8 +330,8 @@
 
             var postData =
             {
-                userId :    userId ,
-                userName :  userName,
+                userId :    userName,
+                userName :  userId,
                 password :  password,
                 passwordState  :passwordState
 
