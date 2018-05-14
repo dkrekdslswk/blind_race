@@ -181,13 +181,17 @@ class RecordBoxController extends Controller{
     // 과제 미출제 학생 조회
     public function homeworkCheck(Request $request){
         // 요구하는 값
+//        $postData = array(
+//            'raceId'    => 1
+//        );
+        // 요구하는 값
         $postData = array(
-            'raceId'    => 1
+            'raceId'    => $request->input('raceId')
         );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        if ($userData['check']) {
+        if ($userData['check'] && $postData['raceId']) {
 
             // 그룹권한 확인
             $where = array();
