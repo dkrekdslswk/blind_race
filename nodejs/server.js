@@ -48,7 +48,7 @@ var quiz = 0;
 io.on('connection', function (socket){
     var TimerOn = false;
     var Timer ;
-    var countdown = 5000;
+    var countdown = 30000;
     var group_num ="";
 
     //대기방 참가 (인수 room : 참가하려는 방의 이름 )
@@ -128,7 +128,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
 
-        countdown = 5000;
+        countdown = 30000;
         clearInterval(Timer);
 
         io.sockets.in(roomPin).emit('mid_ranking' ,quiz);

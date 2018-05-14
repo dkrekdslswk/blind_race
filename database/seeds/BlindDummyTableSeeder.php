@@ -30,12 +30,22 @@ class BlindDummyTableSeeder extends Seeder
                 'classification'    => array_get($user, 3)
             ]);
         }
-        DB::table('users')->insert([
-            'number'            => 1300009,
-            'pw'                 => '1234',
-            'name'               => '안기부',
-            'classification'    => 'student',
-        ]);
+        $userss = [
+            [1300005,'1234','똘똘','student'],
+            [1300006,'1234','멍청','student'],
+            [1300007,'1234','예민','student'],
+            [1300008,'1234','샤쵸','student'],
+            [1300009,'1234','라다','student']
+        ];
+
+        foreach($userss as $user){
+            DB::table('users')->insert([
+                'number'            => array_get($user, 0),
+                'pw'                => array_get($user, 1),
+                'name'              => array_get($user, 2),
+                'classification'    => array_get($user, 3)
+            ]);
+        }
         $groupId = DB::table('groups')->insertGetId([
             'name'              => '3WDJ',
             'teacherNumber'     => $users[0][0]
@@ -97,7 +107,7 @@ class BlindDummyTableSeeder extends Seeder
             ]);
         }
 
-        for ($char = 1; $char <= 9; $char++) {
+        for ($char = 1; $char <= 28; $char++) {
             DB::table('characters')->insert([
                 'url' => 'img/character/char' . (string)$char
             ]);
