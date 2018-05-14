@@ -209,7 +209,7 @@ class RecordBoxController extends Controller{
                         )
                         ->where('ru.raceNumber', '=', $postData['raceId'])
                         ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
-                        ->groupBy('ru.userNumber')
+                        ->groupBy(['ru.userNumber', 'ru.raceNumber'])
                         ->orderBy('ru.userNumber', 'desc')
                         ->get();
 
@@ -301,7 +301,7 @@ class RecordBoxController extends Controller{
                             $join->on('re.userNo', '=', 'ru.userNumber');
                         })
                         ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                        ->groupBy('ru.raceNumber')
+                        ->groupBy(['ru.userNumber', 'ru.raceNumber'])
                         ->orderBy('ru.raceNumber', 'desc')
                         ->get();
 
