@@ -95,9 +95,9 @@ io.on('connection', function (socket){
         io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType, ranking);
         console.log("안드 중간결과 ", quizId +","+ makeType+","+ranking);
     });
-    
+
     socket.on('race_mid_correct',function(roomPin,correct){
-        io.sockets.in(roomPin).emit('race_mid_correct',correct);    
+        io.sockets.in(roomPin).emit('race_mid_correct',correct);
     });
 
     socket.on('android_next_quiz',function(roomPin){
@@ -147,9 +147,12 @@ io.on('connection', function (socket){
 
     socket.on('race_ending',function(roomPin){
         clearInterval(Timer);
-        io.sockets.emit('race_ending',roomPin);
+        io.sockets.in(roomPin).emit('race_ending',roomPin);
     });
 
+    socket.on('race_result',function(roomPin, race_result){
+        io.sockets.in(roomPin).emit('race_result',race_result);
+    });
 
 });
 

@@ -75,25 +75,46 @@
     <script type="text/javascript">
 
         var group_id = 1;
-        var chartData = "";
+        var loadDt = new Date();
+
+        // 1~9월 1~9일에 앞자리 0추가해주는 함수
+        function fn_leadingZeros(n, digits) {
+
+            var zero = '';
+            n = n.toString();
+
+            if (n.length < digits) {
+                for (var i = 0; i < digits - n.length; i++){ zero += '0'; }
+            }
+            return zero + n;
+        }
+
+        // 날짜의 포맷을 ( YYYY-mm-dd ) 형태로 만들어줍니다.
+        var defaultEndDate = loadDt.getFullYear() + '-' + fn_leadingZeros(loadDt.getMonth() + 1, 2) + '-' + fn_leadingZeros(loadDt.getDate(), 2);
+        var tempdate = new Date(defaultEndDate);
+            tempdate.setMonth(tempdate.getMonth()-1);
+        var defaultStartDate = tempdate.getFullYear() + '-' + fn_leadingZeros(tempdate.getMonth() + 1, 2) + '-' + fn_leadingZeros(tempdate.getDate(), 2);
+
+
+
+
+
 
         //처음 화면 로드
         window.onload = function() {
 
-            /*part.1 사이드바*/
             //클래스 불러오기 and 차트 로드하기
-            //getGroups_and_loadChart(group_id);
+            pageMainLoad();
+            pageHistoryLoad();
 
-            /*getStudents(group_id);*/
-            getHistory(group_id);
-            getStudents(group_id);
         };
 
         //메인 페이지 로드
         function pageMainLoad(){
 
-            /*part.4 과제관리 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
+            /*part.1 사이드바*/
+            //클래스 불러오기 and 차트 로드하기 -> record_chart.blade.php
+            getGroups_and_loadChart(group_id);
 
         }
 
@@ -102,8 +123,6 @@
 
             /*part.2 최근기록 화면*/
             //최근 목록 불러오기
-
-            var group_id = 1;
 
             getHistory(group_id);
         }
@@ -129,35 +148,80 @@
 
             var reqGroupId = $(this).attr('id');
             var reqGroupName = $(this).attr('name');
-            var dateType = selectedDateType();
 
             //레코드 네비바 클래스 이름과 아이디와 내용 바꾸기
-            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId).attr('name',reqGroupName);
+            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId);
 
-            reqChartData_and_makingChart(reqGroupId , dateType);
+            var reqData = getChartData_and_loadChart(reqGroupId,defaultStartDate,defaultEndDate);
 
         });
 
         //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
-        function changeDateType(){
-            var dateType = selectedDateType();
+        function changeDateToChart(){
 
-            makingChart(chartData,dateType);
+            var selectedradio = $("input[type=radio][name=optradio]:checked").val();
+            var startDate = "";
+
+            function caldate(day){
+
+                var caledmonth, caledday, caledYear;
+                var v = new Date(Date.parse(loadDt) - day*1000*60*60*24);
+
+                caledYear = v.getFullYear();
+
+                if( v.getMonth() < 9 ){
+                    caledmonth = '0'+(v.getMonth()+1);
+                }else{
+                    caledmonth = v.getMonth()+1;
+                }
+
+                if( v.getDate() < 9 ){
+                    caledday = '0'+v.getDate();
+                }else{
+                    caledday = v.getDate();
+                }
+                return caledYear+"-"+caledmonth+'-'+caledday;
+            }
+
+            switch (selectedradio) {
+                case "1":
+                    startDate = caldate(7);
+                    break;
+
+                case "2":
+                    startDate = caldate(30);
+                    break;
+
+                case "3":
+                    startDate = caldate(90);
+                    break;
+
+                case "4":
+                    startDate = caldate(180);
+                    break;
+
+                case "5":
+                    startDate = caldate(365);
+                    break;
+            }
+
+            var reqData = getChartData_and_loadChart(group_id,startDate,defaultEndDate);
         }
 
-        //조회를 누르면 날짜를 가져와서 조회
-        function changeDateTypeToChart(){
+        function orderChart(){
             var startDate = document.querySelector('input[id="startDate"]').value;
             var endDate = document.querySelector('input[id="endDate"]').value;
-            var dateType = selectedDateType();
 
-            // 매우중요!!!! 그룹컨트롤러 복귀되면 다시 가동시키기 -> var reqGroupId = $('#nav_group_name').id;
-            //임시로 그룹아이디 사용
-            var group_id = 1;
+            var reqData = getChartData_and_loadChart(group_id,startDate,endDate);
+        }
 
-            var requestData = {"groupId" : group_id , "startDate" : startDate , "endDate" : endDate};
+        //날짜를 가져와서 조회 및 차트 그리기
+        function getChartData_and_loadChart(groupId,startDate,endDate){
 
-            /*var group_Id = {"groupId" : groupId , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
+            $('#'+groupId).css('background-color','#d9edf7');
+
+            var requestData = {"groupId" : groupId , "startDate" : startDate , "endDate" : endDate};
+            /*var group_Id = {"groupId" : 1 , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
 
             $.ajax({
                 type: 'POST',
@@ -193,11 +257,9 @@
                                         }
                     */
 
-                    var raceData = data['races'];
-                    var AllChartData = makingChartData(raceData);
-
-                    //차트 생성
-                    makingChart(AllChartData);
+                    var resRaceData = data['races'];
+                    var ChartData = makingChartData(resRaceData);
+                    makingChart(ChartData);
 
                 },
                 error: function (data) {
@@ -208,15 +270,12 @@
         }
 
         //클래스 가져오기
-        /*function getGroups_and_loadChart(groupId) {
+        function getGroups_and_loadChart(groupId) {
 
             $.ajax({
                 type: 'POST',
 
-
-                반드시 url양쪽에 {} 달아주기 ->  { {url('/groupController/groupsGet')} }
-
-                url: "{url('/groupController/groupsGet')}",
+                url: "{{url('/groupController/groupsGet')}}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -240,22 +299,18 @@
                     //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
                     $('#nav_group_name').text(firstGroup.text());
 
-                    //차트 날짜 타입 가져오기
-                    var dateType = selectedDateType();
-
                     //가장 상단에 있는 클래스 ID값으로 차트 만들기
-                    reqChartData_and_makingChart(firstGroup.attr('id') , dateType);
-
+                    var reqData = getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
                 },
                 error: function (data) {
                     alert("그룹겟 에러");
                 }
             });
 
-        }*/
+        }
 
         //그룹에 속한 학생들 가져오기
-        /*function getStudents(groupId){
+        function getStudents(groupId){
 
             var reqData ={"groupId" : groupId};
 
@@ -264,9 +319,7 @@
             $.ajax({
                 type: 'POST',
 
-                반드시 url양쪽에 {} 달아주기 ->  { {url('/groupController/groupsGet')} }
-
-                url: "{url('/groupController/groupDataGet')}",
+                url: "{{url('/groupController/groupDataGet')}}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -274,13 +327,13 @@
                 //data: {_token: CSRF_TOKEN, 'post':params},
                 data: reqData,
                 success: function (data) {
-                    /!*
+                    /*
                     data = {group : { id: 1, name: "#WDJ", studentCount : 5}
                             student : { 0: { id: 1300000, name: "김똘똘"}
                                         1: { id: 1300000, name: "최천재"}
                                        }
                             teacher : { id: 123456789, name: "이OO교수"}
-                    *!/
+                    */
 
                     var student = data['students'];
 
@@ -301,69 +354,6 @@
                 }
             });
 
-        }*/
-
-        //ajax로 그룹에 대한 차트 정보 가져와서 차트를 만듬
-        //request : 그룹아이디(groupId) , X축 차트(날짜) 데이터 타입 (axisXType)
-        function reqChartData_and_makingChart(groupId,axisXType) {
-
-            var group_Id = {"groupId" : groupId };
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/recordBoxController/getDefaultChart')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: group_Id,
-                success: function (data) {
-
-                    /*
-                    * data = { group : {id : 1 , name : "3WDJ"} ,
-                               races : { 0 : {  year:2018
-                                                month:5
-                                                day:9
-
-                                                raceId:2
-                                                listName:"테스트용 리스트1"
-                                                userCount:5
-
-                                                quizCount:6
-                                                rightAnswerCount:4.2
-
-                                                grammarCount:2
-                                                grammarRightAnswerCount:1.6
-
-                                                vocabularyCount:2
-                                                vocabularyRightAnswerCount:1.6
-
-                                                wordCount:2
-                                                wordRightAnswerCount:1
-                                              }
-                                        }
-                    */
-
-                    /* data.group == data.group */
-
-                    var group_data = data['group'];
-                    var races_data = data['races'];
-
-                    //차트 데이터 생성
-                    var AllChartData = makingChartData(races_data);
-
-                    //차트 생성
-                    makingChart(AllChartData,axisXType);
-                    makingStudentChart(AllChartData,axisXType);
-
-                    //차트 데이터 변수에 데이터 넣기
-                    chartData = AllChartData;
-
-                },
-                error: function (data) {
-                    alert("그룹 아이디로 디폴트 차트 불러오기 에러");
-                }
-            });
         }
 
         function getHistory(group_id){
@@ -501,7 +491,7 @@
         }
 
         //차트 만들 데이터
-        function makingChart(data,axisXType){
+        function makingChart(data){
 
             //data = { "total_data" : [ "전체 평균 점수" , { x: new Date(0,0,0) , y: 80 , label: "문제 : 스쿠스쿠"}]}
             //data['total_data'] , data['voca_data'] , data['grammer_data'] , data['word_data']
@@ -514,7 +504,7 @@
                 title:{},
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: axisXType,
+                    valueFormatString: "YYYY MMM DD",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -597,7 +587,7 @@
         }
 
         //학생 개인 차트 만들 데이터
-        function makingStudentChart(data,axisXType){
+        function makingStudentChart(data){
 
             //data = { "total_data" : [ "전체 평균 점수" , { x: new Date(0,0,0) , y: 80 , label: "문제 : 스쿠스쿠"}]}
             //data['total_data'] , data['voca_data'] , data['grammer_data'] , data['word_data']
@@ -612,7 +602,7 @@
                 height:500,
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: axisXType,
+                    valueFormatString: "YYYY MMM DD",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -694,27 +684,6 @@
             }
         }
 
-        //날짜 타입 구하기
-        function selectedDateType(){
-            var selectedradio = $("input[type=radio][name=optradio]:checked").val();
-            var date_Type = "";
-
-            switch (selectedradio) {
-                case "1":
-                    date_Type = "DD";
-                    break;
-
-                case "2":
-                    date_Type = "DD MMM";
-                    break;
-
-                case "3":
-                    date_Type = "YYYY";
-                    break;
-            }
-
-            return date_Type;
-        }
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
@@ -733,10 +702,6 @@
                     $('#record_students').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
-
-                    //최근기록 페이지에 필요한 데이터들 다 불러오기
-                    pageHistoryLoad();
-
                     break;
                 case "students" :
                     $('#record_students').attr('class','');
@@ -744,9 +709,6 @@
                     $('#record_history').attr('class','hidden');
                     $('#record_homework').attr('class','hidden');
                     $('#record_feedback').attr('class','hidden');
-
-                    pageStudentListLoad();
-
                     break;
                 case "homework" :
                     $('#record_homework').attr('class','');
