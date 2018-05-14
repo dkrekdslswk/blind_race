@@ -170,10 +170,10 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: "groupId="+groupIds+"&students="+student_number_zip,
             success: function (data) {
-                alert("성공");
+                window.location.href = "{{url('mygroup')}}";
             },
             error: function (data) {
-                alert("에러");
+                alert("추가 에러");
             }
         });
     }
