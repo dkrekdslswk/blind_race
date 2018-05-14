@@ -204,7 +204,7 @@ class RecordBoxController extends Controller{
                 case 'root':
 
                     // 레이스 정보 읽어오기
-                    $studentData = DB::table('users as u')
+                    $studentData = DB::table('raceUsers as ru')
                         ->select(
                             'ru.userNumber as userId',
                             'u.name as userName',
@@ -212,7 +212,7 @@ class RecordBoxController extends Controller{
                             'ru.wrongState as wrongState'
                         )
                         ->where('ru.raceNumber', '=', $postData['raceId'])
-                        ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
+                        ->join('users as u', 'u.number', '=', 'ru.userNumber')
                         ->groupBy(['ru.userNumber', 'ru.raceNumber'])
                         ->orderBy('ru.userNumber', 'desc')
                         ->get();
