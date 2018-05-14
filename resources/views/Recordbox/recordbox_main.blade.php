@@ -523,7 +523,79 @@
 
         }
 
-        function checkGradeCard(raceId){
+        function loadGradeCard(value){
+
+            //value = {userId : 1300000}
+            //value = {raceId : 1}
+
+            var reqData = value;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getStudents')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                    /*
+                     data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:11
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+                                                userName:"김똘똘"
+
+                                                allCount:6
+                                                allRightCount:4
+
+                                                grammarCount:2
+                                                grammarRightAnswerCount:1.4
+
+                                                vocabularyCount:2
+                                                vocabularyRightAnswerCount:1.2
+
+                                                wordCount:2
+                                                wordRightAnswerCount:1.4
+
+                                                retestState:not
+                                                wrongState:not
+                                              }
+                                        }
+                    */
+
+                    var ChartData = makingStudentChartData(data);
+                    makingStudentChart(ChartData);
+
+                    $('#studentGradeList').empty();
+                    for( var i = 0 ; i < data['races'].length ; i++ ){
+                        $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
+                    }
+
+                    for( var i = 0 ; i < data['races'].length ; i++ ) {
+                        $('#stdGrade_' + i).append($('<td>').text(i+1));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['year']+"년 "+data['races'][i]['month']+"월 "+data['races'][i]['day']+"일"));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['listName']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['retestState']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['wrongState']));
+                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">').attr('id',data['races'][i]['raceId']).text("성적표")));
+                    }
+
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+            });
+
 
         }
 
@@ -643,12 +715,11 @@
         //학생 성적표 클릭시 성적표 로드
         $(document).on('click','.toggle_openStudentGradeCard',function () {
             //$('.modal-body #hiddenValue').val();
-            var userId = $(this).data('id');
-
+            var userId = $(this).attr('id');
+            alert(userId);
 
 
         });
-
 
 
         //학생 클릭시 해당 학생 개인성적 조회 및 그래프 로드
@@ -717,7 +788,8 @@
                         $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][0]['y']));
                         $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['retestState']));
                         $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['wrongState']));
-                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">').attr('id',data['races'][i]['raceId']).text("성적표")));
+                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">')
+                                                            .attr('id',data['races'][i]['raceId']).text("성적표")));
                     }
 
                     },
@@ -776,19 +848,19 @@
                 var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightAnswerCount']).toFixed(0);
 
                 //차트 데이터 배열 만들기
-                total_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                total_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                          y : parseInt(total_grade) ,
                                          label : raceData[i]['listName']});
 
-                grammer_data_Points.push({  x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                grammer_data_Points.push({  x : new Date(raceData[i]['date'].replace('-','/','g')),
                                             y : parseInt(grammer_grade) ,
                                             label : raceData[i]['listName']});
 
-                vocabulary_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                vocabulary_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                          y : parseInt(vocabulary_grade) ,
                                          label : raceData[i]['listName']});
 
-                word_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                word_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                         y : parseInt(word_grade) ,
                                         label : raceData[i]['listName']});
             }
@@ -811,6 +883,7 @@
                                races : { 0 : {  year:2018
                                                 month:5
                                                 day:11
+                                                date:DateString
 
                                                 raceId:2
                                                 listName:"테스트용 리스트1"
@@ -857,7 +930,7 @@
                 var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
 
                 //차트 데이터 배열 만들기
-                total_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                total_data_Points.push({ x : new Date(raceData[i]['date'],raceData[i]['month'],raceData[i]['day']),
                     y : parseInt(total_grade) ,
                     label : raceData[i]['listName']});
 
@@ -898,7 +971,7 @@
                 title:{},
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: "YYYY MMM DD",
+                    valueFormatString: "MMM DD (HH:ss)",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -923,7 +996,7 @@
                 data: [{
                     type: "line",
                     showInLegend: true,
-                    xValueFormatString: "DD, DD MMM, YYYY",
+                    xValueFormatString: "DD, DD MMM, YYYY, HH, mm ,ss",
 
                     // name: "전체 평균 점수",
                     name: data['total_data'][0],

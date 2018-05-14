@@ -181,8 +181,9 @@
                     <label for="ex_file">
                         파일 첨부
                     </label>
-                    <input type="file" accept="image/*" onchange="loadFile(event)">
-                    <img id="output" style="max-width: 400px;max-height: 400px;"/>
+                    <input type="file" accept="image/*" onchange="loadFile(event)" id="ex_file">
+
+                    <img id="output" style="max-width: 300px;max-height: 300px;"/>
 
                     {{--사진 불러오는 스크립트--}}
                     <script type="text/javascript">
@@ -205,6 +206,7 @@
 
                 <script>
                     function changeCheck(){
+                        alert('정상 등록하였습니다.');
                         $('#1check').attr('class','btn btn-primary').text('확인');
                     }
                 </script>
