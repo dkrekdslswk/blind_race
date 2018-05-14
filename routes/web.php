@@ -60,15 +60,14 @@ Route::get('/race_result', function(){
     return view('Race/race_result');
 });
 
-/* 2-4 Blind Race : Race_student */
+/* 2-4 Blind Race : Race_student  -> 학생 웹 레이스 부분 */
 Route::get('/race_student', function(){
     return view('Race/race_student');
 });
-
-Route::get('/r_content', function(){
-    return view('Race/race_student_content');
+/* 2-5 Blind Race : Race_retest  -> 학생 웹 재시험 부분 */
+Route::get('/race_retest', function(){
+    return view('Race/race_retest');
 });
-
 
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){

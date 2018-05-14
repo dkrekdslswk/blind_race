@@ -255,8 +255,7 @@
                 if(answer == 1 || answer == 2||answer == 3 || answer == 4)
                 {
                     if( answer == rightAnswer)
-                        answer = 1;
-                    // real_A[rightAnswer]; 변경시에넣을 값 
+                        answer = real_A[rightAnswer];
                     else{
                         answer = real_A[answer];
                     }
