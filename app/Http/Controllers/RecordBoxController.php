@@ -547,7 +547,7 @@ class RecordBoxController extends Controller{
     private function selectGroupRecords($groupId, $startDate, $endDate){
         $recordDatas = DB::table('races as r')
             ->select(
-                'l.nam as listName',
+                'l.name as listName',
                 'r.number as raceId',
                 'r.created_at as date',
                 DB::raw('year(r.created_at) as year'),
@@ -567,8 +567,8 @@ class RecordBoxController extends Controller{
                 're.retest' => 0,
                 'r.groupNumber' => $groupId
             ])
-            ->where(DB::raw('date(r.created_at) >= date('.$startDate.')'))
-            ->where(DB::raw('date(r.created_at) <= date('.$endDate.')'))
+            ->where([DB::raw('date(r.created_at) >= date('.$startDate.')')])
+            ->where([DB::raw('date(r.created_at) <= date('.$endDate.')')])
             ->join('lists as l', 'l.number', '=', 'r.listNumber')
             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
             ->join('records as re', function ($join){
