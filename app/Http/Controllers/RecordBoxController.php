@@ -120,6 +120,7 @@ class RecordBoxController extends Controller{
                             ->select(
                                 'r.number as raceId',
                                 'l.name as listName',
+                                'u.name as teacherName',
                                 DB::raw('year(r.created_at) as year'),
                                 DB::raw('month(r.created_at) as month'),
                                 DB::raw('dayofmonth(r.created_at) as day'),
@@ -132,6 +133,8 @@ class RecordBoxController extends Controller{
                             ->where('r.groupNumber', '=', $groupData->groupId)
                             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
                             ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+                            ->join('users as u', 'u.number', '=', 'f.teacherNumber')
                             ->groupBy('r.number')
                             ->orderBy('r.created_at', 'desc')
                             ->get();
@@ -142,6 +145,7 @@ class RecordBoxController extends Controller{
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
+                                'teacherName' => $race->teacherName,
                                 'date' => $race->year . '년 ' . $race->month . '월 ' . $race->day . '일',
                                 'studentCount' => $race->studentCount,
                                 'retestClearCount' => $race->retestClearCount,
@@ -360,6 +364,11 @@ class RecordBoxController extends Controller{
         }
 
         return $returnValue;
+    }
+
+    // 오답문제 조회하기
+    public function getWrongs(Request $request){
+
     }
 
     // 기간내의 차트 읽어오기
