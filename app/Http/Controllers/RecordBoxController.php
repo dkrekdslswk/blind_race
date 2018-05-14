@@ -206,7 +206,7 @@ class RecordBoxController extends Controller{
                     // 레이스 정보 읽어오기
                     $studentData = DB::table('raceUsers as ru')
                         ->select(
-                            'ru.userNumber as userId',
+                            'ru.userNumbe as userId',
                             'u.name as userName',
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
