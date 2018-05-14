@@ -368,7 +368,29 @@ class RecordBoxController extends Controller{
 
     // 오답문제 조회하기
     public function getWrongs(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'userId'    => 1300000
+//            'raceId'    => 1
+//        );
+        // 요구하는 값
+        $postData = array(
+            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'    => $request->input('raceId')
+        );
 
+
+        // 반납하는 값
+        $returnValue = array(
+            'wrongQuizs' => array(
+                0 => array(
+                    'question'
+                )
+            ),
+            'check' => false
+        );
+
+        return $returnValue;
     }
 
     // 기간내의 차트 읽어오기

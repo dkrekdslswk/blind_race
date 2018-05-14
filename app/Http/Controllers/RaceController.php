@@ -391,8 +391,6 @@ class RaceController extends Controller{
                 case 'vocabulary obj':
                 case 'word obj':
                 case 'grammar obj':
-                    $answer = $postData['answer'] == 1 ? 'O' : 'X';
-                    break;
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
