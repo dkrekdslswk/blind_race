@@ -87,40 +87,9 @@
             </tr>
             </thead>
 
-            <tbody id="student_grade_list" class="">
+            <tbody id="studentGradeList" class="">
 
-            <tr>
-                <td width="50px" style=" text-align: center;">
-                    1
-                </td>
-                <td width="200px" style=" text-align: center;">
-                    2018년 04월 24일
-                </td>
-                <td style=" text-align: center;">
-                    스쿠스쿠 문법 풀이
-                </td>
-                <td width="150px" style=" text-align: center;">
-                    55
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    20
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    20
-                </td>
-                <td width="100px" style=" text-align: center;">
-                    15
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    미응시
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    미제출
-                </td>
-                <td width="110px" style=" text-align: center;">
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentGradeCard">성적표</button>
-                </td>
-            </tr>
+
             </tbody>
 
         </table>
@@ -220,6 +189,8 @@
                 }
 
             </script>
+
+            <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
 
             <div class="modal-footer">
             </div>
