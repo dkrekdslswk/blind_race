@@ -427,6 +427,7 @@ class RecordBoxController extends Controller{
                             DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
                         )
                         ->where($typeWhere)
+                        ->where(['re.retest' => 0])
                         ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                         ->groupBy($typeGroupBy)
                         ->orderBy('re.quizNo')
