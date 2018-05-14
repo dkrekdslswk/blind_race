@@ -182,8 +182,7 @@ class BlindDummyTableSeeder extends Seeder
                             'listNo' => $listId,
                             'quizNo' => $quizList[$count - 1],
                             'answerCheck' => (string)(mt_rand(0, 2) == 0 ? 'X' : 'O'),
-                            'answer' => '1',
-                            'created_at' => DB::raw('subdate(now(), INTERVAL ' . $day . ' DAY)')
+                            'answer' => '1'
                         ]);
                     }
                 }
