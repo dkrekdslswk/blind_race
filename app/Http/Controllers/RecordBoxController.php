@@ -245,20 +245,32 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생들의 최근기록 조회
+    // 학생들의 최근기록 조회 'userId'
+    // 레이스를 친 학생들 정보 조회 'raceId'
     public function getStudents(Request $request){
         // 요구하는 값
 //        $postData = array(
 //            'userId'    => 1300000
+//            'raceId'    => 1
 //        );
         // 요구하는 값
         $postData = array(
-            'userId'    => $request->input('userId')
+            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'    => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
         if ($userData['check']) {
+
+            // 조회 구분
+            if($postData['userId']){
+                $typeWhere = array('ru.userNumber' => $postData['userId']);
+            } else if ($postData['raceId']){
+                $typeWhere = array('ru.raceNumber' => $postData['raceId']);
+            } else {
+                $typeWhere = array(1=>2);
+            }
 
             // 그룹권한 확인
             $where = array();
@@ -289,10 +301,8 @@ class RecordBoxController extends Controller{
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
                         )
-                        ->where([
-                            'ru.userNumber' => $postData['userId'],
-                            're.retest' => 0
-                        ])
+                        ->where(['re.retest' => 0])
+                        ->where($typeWhere)
                         ->where($where)
                         ->join('races as r', 'r.number', '=', 'ru.raceNumber')
                         ->join('lists as l', 'l.number', '=', 'r.listNumber')
