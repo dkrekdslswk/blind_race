@@ -202,15 +202,15 @@ class RecordBoxController extends Controller{
                     // 레이스 정보 읽어오기
                     $raceData = DB::table('users as u')
                         ->select(
-                            'u.number as userId',
+                            'ru.userNumber as userId',
                             'u.name as userName',
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
                         )
                         ->where('ru.raceNumber', '=', $postData['raceId'])
                         ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
-                        ->groupBy('u.number')
-                        ->orderBy('u.number', 'desc')
+                        ->groupBy('ru.userNumber')
+                        ->orderBy('ru.userNumber', 'desc')
                         ->get();
 
                     // 레이스 정보 정리
@@ -280,12 +280,12 @@ class RecordBoxController extends Controller{
                             DB::raw('dayofmonth(r.created_at) as day'),
                             DB::raw('count(re.quizNo) as allCount'),
                             DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
-                            DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
-                            DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
-                            DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
-                            DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
-                            DB::raw('count(CASE WHEN q.type like "grammar%" THEN 1 END) as grammarCount'),
-                            DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
+                            DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                            DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                            DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
+                            DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                            DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
+                            DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
                         )
