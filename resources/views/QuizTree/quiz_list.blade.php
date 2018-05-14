@@ -67,9 +67,42 @@
             background-color: white;
         }
 
-        /*td {
-            text-align: center;
-        }*/
+        .main-body {
+            max-width: 1220px;
+            min-width: 955px;
+            /*     overflow: hidden; */
+            margin: 0 auto;
+            position: relative;
+            height: 1024px;
+        }
+        .page-small .main-body {
+            max-width: 768px;
+            min-width: 320px;
+        }
+
+        #menu-main {
+            width: 220px;
+            height:100%;
+            left: 0;
+            bottom: 0;
+            float: left;
+            position: relative;
+            /*     min-height: 1000px; */
+            top: 0px;
+            transition: all 0.4s ease 0s;
+            background-color: #ffffff;
+            border-left: 1px solid #e1e2e3;
+            border-right: 1px solid #e1e2e3;
+            border-bottom: 1px solid #e1e2e3;
+        }
+
+        #wrapper {
+            margin: 0 50px 0 220px;
+            padding: 0;
+            position: relative;
+            min-height: 100%;
+            min-width: 1000px;
+        }
     </style>
 
 </head>
@@ -389,12 +422,13 @@
     @include('Navigation.main_nav')
 </nav>
 
-<aside style="display:inline-block; vertical-align:top;">
-    <!--@include('QuizTree.quiz_list_side_bar')-->>
+<aside id="menu-main">
+    @include('QuizTree.quiz_list_side_bar')
 </aside>
 
 <div class="btn-process" style="margin-top:50px;"></div>
 
+<div id="wrapper">
 <!--Quiz List Table-->
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -484,6 +518,6 @@
 
 <!--Modal : show quiz (수정 불가 리스트)-->
 <div id="showQuizDivFNU"></div>
-
+</div>
 </body>
 </html>

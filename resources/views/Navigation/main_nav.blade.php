@@ -121,36 +121,11 @@
                     <li>
                         <a
                                 class="btn btn-default btn-outline btn-circle"
-                                data-toggle="collapse"
-                                href="#nav-collapse2"
                                 aria-expanded="false"
                                 aria-controls="nav-collapse2">Sign in</a>
                     </li>
                 </ul>
-                <div class="collapse nav navbar-nav nav-collapse" id="nav-collapse2">
-                    <!--<form class="navbar-form navbar-right form-inline" role="form">
-                        <div class="form-group">
-                            <label class="sr-only" for="Email">Email</label>
-                            <input
-                                    type="email"
-                                    class="form-control"
-                                    id="Email"
-                                    placeholder="Email"
-                                    autofocus="autofocus"
-                                    required="required"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="Password">Password</label>
-                            <input
-                                    type="password"
-                                    class="form-control"
-                                    id="Password"
-                                    placeholder="Password"
-                                    required="required"/>
-                        </div>
-                        <button type="submit" class="btn btn-success">Sign in</button>
-                    </form>-->>
-                </div>
+
             </div>
         </div>
     </nav>
