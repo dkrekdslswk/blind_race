@@ -547,7 +547,7 @@ class RecordBoxController extends Controller{
     private function selectGroupRecords($groupId, $startDate, $endDate){
         $recordDatas = DB::table('races as r')
             ->select(
-                'l.name as listName',
+                'l.nam as listName',
                 'r.number as raceId',
                 'r.created_at as date',
                 DB::raw('year(r.created_at) as year'),
