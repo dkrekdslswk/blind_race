@@ -200,7 +200,7 @@ class RecordBoxController extends Controller{
                 case 'root':
 
                     // 레이스 정보 읽어오기
-                    $raceData = DB::table('users as u')
+                    $studentData = DB::table('users as u')
                         ->select(
                             'ru.userNumber as userId',
                             'u.name as userName',
@@ -214,19 +214,19 @@ class RecordBoxController extends Controller{
                         ->get();
 
                     // 레이스 정보 정리
-                    $races = array();
-                    foreach ($raceData as $race) {
-                        array_push($races, array(
-                            'userId' => $race->userId,
-                            'userName' => $race->userName,
-                            'retestState' => $race->retestState,
-                            'wrongState' => $race->wrongState
+                    $students = array();
+                    foreach ($studentData as $student) {
+                        array_push($students, array(
+                            'userId' => $student->userId,
+                            'userName' => $student->userName,
+                            'retestState' => $student->retestState,
+                            'wrongState' => $student->wrongState
                         ));
                     }
 
                     // 반납하는값
                     $returnValue = array(
-                        'races'  => $races,
+                        'students'  => $students,
                         'check' => true
                     );
                     break;
