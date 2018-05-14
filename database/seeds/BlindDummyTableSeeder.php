@@ -103,13 +103,6 @@ class BlindDummyTableSeeder extends Seeder
             ]);
         }
 
-        $raceId = DB::table('races')->insertGetId([
-            'groupNumber'=>$groupId,
-            'teacherNumber'=>$users[0][0],
-            'listNumber'=>$listId,
-            'type'=>'race'
-        ], 'number');
-
         $bookId =DB::table('books')->insertGetId([
             'name'=>"급소공략 N1",
             'maxPage'=>12,
