@@ -161,6 +161,8 @@ class RecordBoxController extends Controller{
                             'check' => false
                         );
                     }
+
+                    break;
                 default:
                     $returnValue = array(
                         'check' => false
