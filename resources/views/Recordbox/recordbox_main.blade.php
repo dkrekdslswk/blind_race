@@ -712,12 +712,11 @@
         });
 
 
-        //학생 성적표 클릭시 성적표 로드
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
         $(document).on('click','.toggle_openStudentGradeCard',function () {
             //$('.modal-body #hiddenValue').val();
             var userId = $(this).attr('id');
-            alert(userId);
-
+            var userName = $(this).attr('name');
 
         });
 
@@ -799,33 +798,56 @@
             });
         }
 
-        function makingChartData(raceData){
+        function makingChartData(raceData) {
 
             var raceData = raceData['races'];
 
-            /*
-            raceData = { 0 : {    year:2018
-                                    month:5
-                                    day:9
+            /*raceData = {
+                            0: {
+                                year: 2018,
+                                month: 5,
+                                day: 9,
 
-                                    raceId:2
-                                    listName:"테스트용 리스트1"
-                                    userCount:5
+                                raceId: 2,
+                                listName: "테스트용 리스트1",
+                                userCount: 5,
 
-                                    quizCount:6
-                                    rightAnswerCount:4.2
+                                quizCount: 6,
+                                rightAnswerCount: 4.2,
 
-                                    grammarCount:2
-                                    grammarRightAnswerCount:1.6
+                                grammarCount: 2,
+                                grammarRightAnswerCount: 1.6,
 
-                                    vocabularyCount:2
-                                    vocabularyRightAnswerCount:1.6
+                                vocabularyCount: 2,
+                                vocabularyRightAnswerCount: 1.6,
 
-                                    wordCount:2
-                                    wordRightAnswerCount:1
-                                  }
+                                wordCount: 2,
+                                wordRightAnswerCount: 1,
+                            },
+
+                            1: {
+                                year: 2018,
+                                month: 5,
+                                day: 9,
+
+                                raceId: 2,
+                                listName: "테스트용 리스트1",
+                                userCount: 5,
+
+                                quizCount: 6,
+                                rightAnswerCount: 4.2,
+
+                                grammarCount: 2,
+                                grammarRightAnswerCount: 1.6,
+
+                                vocabularyCount: 2,
+                                vocabularyRightAnswerCount: 1.6,
+
+                                wordCount: 2,
+                                wordRightAnswerCount: 1,
                             }
-            */
+                        };*/
+
 
             var total_data_Points = [];
             var grammer_data_Points = [];
@@ -852,9 +874,9 @@
                                          y : parseInt(total_grade) ,
                                          label : raceData[i]['listName']});
 
-                grammer_data_Points.push({  x : new Date(raceData[i]['date'].replace('-','/','g')),
-                                            y : parseInt(grammer_grade) ,
-                                            label : raceData[i]['listName']});
+                grammer_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
+                                           y : parseInt(grammer_grade) ,
+                                           label : raceData[i]['listName']});
 
                 vocabulary_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                          y : parseInt(vocabulary_grade) ,
@@ -868,9 +890,12 @@
             //차트 데이터 합치기
             AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
                 "voca_data" : ["어학 점수", vocabulary_Points] ,
-                "grammer_data" : ["독해 점수" , grammer_data_Points[1]] ,
+                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
                 "word_data" : ["단어 점수" , word_data_Points]
             };
+
+
+            console.log(AllChartData);
 
             return AllChartData;
         }
@@ -930,19 +955,19 @@
                 var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
 
                 //차트 데이터 배열 만들기
-                total_data_Points.push({ x : new Date(raceData[i]['date'],raceData[i]['month'],raceData[i]['day']),
+                total_data_Points.push({ x : new Date(raceData[i]['date']),
                     y : parseInt(total_grade) ,
                     label : raceData[i]['listName']});
 
-                grammer_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                grammer_data_Points.push({ x : new Date(raceData[i]['date']),
                     y : parseInt(grammer_grade) ,
                     label : raceData[i]['listName']});
 
-                vocabulary_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                vocabulary_Points.push({ x : new Date(raceData[i]['date']),
                     y : parseInt(vocabulary_grade) ,
                     label : raceData[i]['listName']});
 
-                word_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                word_data_Points.push({ x : new Date(raceData[i]['date']),
                     y : parseInt(word_grade) ,
                     label : raceData[i]['listName']});
             }
@@ -1195,8 +1220,6 @@
         }
 
     </script>
-
-
 
 </head>
 <body>
