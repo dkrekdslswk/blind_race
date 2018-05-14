@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default" style="background: #fff;height: 50px;border: 1px solid #e5e6e8;margin: 0;">
     <div class="container-fluid" style="height: 50px;">
         <div class="navbar-header">
-            <a class="navbar-brand" id="nav_group_name">특강 A반</a>
+            <a class="navbar-brand" id="nav_group_name">클래스 이름</a>
         </div>
         <ul class="nav navbar-nav nav-toggle" id="race_nav">
             <li><a id="chart" href="#" onclick="recordControl(this.id)">통계</a></li>

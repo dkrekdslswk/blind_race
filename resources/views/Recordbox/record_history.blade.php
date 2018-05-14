@@ -1,5 +1,5 @@
 <div class="history">
-    <div id="history_list" style="width: 1000px;margin-left: 50px;float: left;">
+    <div style="width: 1000px;margin-left: 50px;float: left;">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -11,21 +11,7 @@
                 <th>성적표</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>스쿠스쿠3</td>
-                <td>2018년 1월 16일</td>
-                <td>
-                    0 / 4
-                </td>
-                <td>
-                     0 / 4
-                </td>
-                <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-                </td>
-            </tr>
+            <tbody id="history_list">
             </tbody>
         </table>
 
@@ -52,7 +38,7 @@
 
 
     <div style="margin-top: 50px;margin-left: 50px;margin-right: 50px;float: left;">
-        >
+            >
     </div>
 
     {{--과제 목록 보기--}}
@@ -76,69 +62,7 @@
             </thead>
 
             {{--getStudent()로 학생들 불러오기--}}
-            <tbody>
-            <tr>
-                <td width="50px">
-                    1
-                </td>
-                <td>
-                    최천재
-                </td>
-                <td width="90px">
-                    <button class="btn btn-primary"> 응시</button>
-                </td>
-                <td width="90px">
-                    <button class="btn btn-primary"> 제출</button>
-                </td>
-            </tr>
-            <tr>
-                <td width="50px">
-                    2
-                </td>
-                <td>
-                    안예민
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미응시</button>
-
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미제출</button>
-
-                </td>
-            </tr>
-            <tr>
-                <td width="50px">
-                    3
-                </td>
-                <td>
-                    심사쵸
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미응시</button>
-
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미제출</button>
-
-                </td>
-            </tr>
-            <tr>
-                <td width="50px">
-                    4
-                </td>
-                <td>
-                    사라다
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미응시</button>
-
-                </td>
-                <td width="90px">
-                    <button class="btn btn-warning"> 미제출</button>
-
-                </td>
-            </tr>
+            <tbody id="history_homework">
 
             </tbody>
 
@@ -193,10 +117,10 @@
             <script>
 
                 var grade1 = ["김똘똘",95,32,30,33,"19/20","pass","pass"];
-                var grade2 = ["최천재",75,20,28,27,"15/20","pass","pass"];
+                var grade2 = ["최천재",75,20,28,27,"15/20","retest_done","submit_done"];
                 var grade3 = ["심사쵸",55,15,14,15,"11/20","retest_yet","submit_yet"];
-                var grade4 = ["안예민",55,15,14,15,"11/20","retest_done","submit_yet"];
-                var grade5 = ["사라다",55,15,14,15,"11/20","retest_done","submit_done"];
+                var grade4 = ["안예민",55,15,14,15,"11/20","retest_yet","submit_yet"];
+                var grade5 = ["사라다",55,15,14,15,"11/20","retest_yet","submit_yet"];
 
                 var all_grade = [grade1,grade2,grade3,grade4,grade5];
 
@@ -246,68 +170,70 @@
                 <div class="modal_date" style="width: 100%;text-align: right;"> 2018년 1월 16일</div>
 
                 <div>
-                    <input type="radio" checked="checked" name="studentGrade" value="0" onclick="sothat()">학생
-                    <input type="radio" name="studentGrade" value="1" onclick="sothat()">오답 문제
+                    <input type="radio" checked="checked" name="studentOrGrade" value="0" onclick="toggle_detailStudent_and_Wrong(this.value)">학생
+                    <input type="radio" name="studentOrGrade" value="1" onclick="toggle_detailStudent_and_Wrong(this.value)">오답 문제
                 </div>
 
-                <div class="gradeDetail_student" style="height: 550px;width: 100%;">
-                    <div class="modal_date" style="width: 100%;margin-top: 10px;">학생</div>
+                <div id="toggle_only_students">
+                    <div class="gradeDetail_student" style="height: 550px;width: 100%;">
+                        <div class="modal_date" style="width: 100%;margin-top: 10px;">학생</div>
 
-                    <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
-                        <div id="stdAllList" style="width: 250px;">
-                            <table class="table table-hover table-bordered" style="width: 100%px;height: 0;">
-                                <thead>
-                                <tr>
-                                    <th width="50px">
-                                        번호
-                                    </th>
-                                    <th>
-                                        이름
-                                    </th>
-                                </tr>
-                                </thead>
-
-                                {{--getStudent()로 학생들 불러오기--}}
-                                <tbody id="student_list">
-
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 50px;margin-left: 50px;margin-right: 50px;float: left;">
-                        >
-                    </div>
-
-                    <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
-                        <div id="stdAllList" style="width: 600px;">
-                            <table class="table table-hover table-bordered" style="width: 100%;">
-                                <thead>
+                        <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
+                            <div id="stdAllList" style="width: 250px;">
+                                <table class="table table-hover table-bordered" style="width: 100%;height: 0;">
+                                    <thead>
                                     <tr>
                                         <th width="50px">
                                             번호
                                         </th>
                                         <th>
-                                            정답
-                                        </th>
-                                        <th>
-                                            오답
+                                            이름
                                         </th>
                                     </tr>
-                                </thead>
+                                    </thead>
 
-                                {{--getStudent()로 학생들 불러오기--}}
-                                <tbody id="student_list">
+                                    {{--getStudent()로 학생들 불러오기--}}
+                                    <tbody id="toggle_student_list">
 
-                                </tbody>
+                                    </tbody>
 
-                            </table>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 50px;margin-left: 50px;margin-right: 50px;float: left;">
+                            >
+                        </div>
+
+                        <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
+                            <div id="stdAllList" style="width: 600px;">
+                                <table class="table table-hover table-bordered" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th width="50px">
+                                                번호
+                                            </th>
+                                            <th>
+                                                정답
+                                            </th>
+                                            <th>
+                                                오답
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    {{--getStudent()로 학생들 불러오기--}}
+                                    <tbody id="toggle_wrong_answers">
+
+                                    </tbody>
+
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="gradeDetail_quiz" style="width: 100%;clear: left">
+                <div id="toggle_only_wrong_answers" class="hidden" style="width: 100%;clear: left">
 
                     <div class="modal_date" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제 (3개)</div>
 
