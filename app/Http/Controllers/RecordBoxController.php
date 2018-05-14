@@ -203,7 +203,7 @@ class RecordBoxController extends Controller{
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
                         )
-                        ->where('ru.number', '=', $postData['raceId'])
+                        ->where('ru.raceNumber', '=', $postData['raceId'])
                         ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
                         ->groupBy('u.number')
                         ->orderBy('u.number', 'desc')
