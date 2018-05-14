@@ -12,24 +12,6 @@
             </tr>
             </thead>
             <tbody id="history_list">
-            <tr>
-                <td>1</td>
-                <td>
-                    <a href="#" id="1" onclick="checkHomework(this.id)">
-                    스쿠스쿠3
-                    </a>
-                </td>
-                <td>2018년 1월 16일</td>
-                <td>
-                    0 / 4
-                </td>
-                <td>
-                     0 / 4
-                </td>
-                <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">성적표</button>
-                </td>
-            </tr>
             </tbody>
         </table>
 

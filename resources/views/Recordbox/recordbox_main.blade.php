@@ -74,6 +74,7 @@
 
     <script type="text/javascript">
 
+        var chartData = "";
         var group_id = 1;
         var loadDt = new Date();
 
@@ -102,6 +103,9 @@
             pageMainLoad();
             pageHistoryLoad();
             pageStudentListLoad();
+
+            getHistory2();
+            checkHomework2();
         };
 
         //메인 페이지 로드
@@ -119,9 +123,7 @@
             /*part.2 최근기록 화면*/
             //최근 목록 불러오기
 
-            var firstGroup = $('.groups:first-child');
 
-            getHistory(group_id);
         }
 
         //학생관리 페이지 로드
@@ -143,13 +145,14 @@
         $(document).on('click','.groups',function () {
 
             var reqGroupId = $(this).attr('id');
+
+            group_id = reqGroupId;
+
             var reqGroupName = $(this).attr('name');
 
-            //레코드 네비바 클래스 이름과 아이디와 내용 바꾸기
-            $('#nav_group_name').text(reqGroupName).attr('id',reqGroupId);
-
             getChartData_and_loadChart(reqGroupId,defaultStartDate,defaultEndDate);
-
+            getStudents(reqGroupId);
+            getHistory(reqGroupId);
 
         });
 
@@ -254,6 +257,11 @@
                                         }
                     */
 
+                    chartData = data['races'];
+
+                    //레코드 네비바 클래스 이름과 아이디와 내용 바꾸기
+                    $('#nav_group_name').text(data['group']['name']);
+
                     var ChartData = makingChartData(data);
                     makingChart(ChartData);
 
@@ -295,12 +303,13 @@
                     var firstGroup = $('.groups:first-child');
 
                     //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
-                    $('#nav_group_name').text(firstGroup.text());
+                    $('#nav_group_name').text(firstGroup.attr('name'));
 
                     //가장 상단에 있는 클래스 ID값으로 차트 만들기
                     getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
-
                     getStudents(firstGroup.attr('id'));
+
+                    getHistory(firstGroup.attr('id'));
 
                 },
                 error: function (data) {
@@ -328,6 +337,10 @@
                 //data: {_token: CSRF_TOKEN, 'post':params},
                 data: reqData,
                 success: function (data) {
+
+                    $('#student_list').empty();
+                    $('#toggle_student_list').empty();
+
                     /*
                     data = {group : { id: 1, name: "#WDJ", studentCount : 5}
                             student : { 0: { id: 1300000, name: "김똘똘"}
@@ -412,47 +425,15 @@
 
         }
 
-        function getHistory(group_id){
+        function getHistory2(group_id){
             // 요구하는 값
             // $postData = array( 'groupId'   => 1 );
 
-            var reqData = {"groupId" : group_id};
+            var reqData = {'groupId' : 1};
 
-            var data = {
-                "races": {
-                    0 : {
-                        "raceId": 1,
-                        "listName": "스쿠스쿠3",
-                        "date": "2018년 1월 16일",
-                        "studentCount": 5,
-                        "retestClearCount": 0,
-                        "retestCount": 4,
-                        "wrongClearCount": 0,
-                        "wrongCount": 4,
-                    }
-                }
-            };
-
-            for( var i = 0 ; i < 1 ; i++ ){
-                $('#history_list').append($('<tr id="history_"'+ i +'>'));
-            }
-
-            for( var i = 0 ; i < 1 ; i++ ){
-                $('#history_'+i).append($('<td>').text(i+1));
-                $('#history_'+i).append($('<td>').text(data['races'][i]['listName']));
-
-                $('#history_'+i).append($('<td>').text(data['races'][i]['date']));
-                $('#history_'+i).append($('<td>').text(data['races'][i]['retestClearCount']+"/"+data['races'][i]['retestCount']));
-
-                $('#history_'+i).append($('<td>').text(data['races'][i]['wrongClearCount']+"/"+data['races'][i]['wrongCount']));
-
-                $('#history_'+i).append($('<td>').append($('<button id="'+data['races'][i]["raceId"]+'">').text("성적표")));
-
-            }
-
-            /*$.ajax({
+            $.ajax({
                 type: 'POST',
-                url: "{ {url('/recordBoxController/getRaces')}}",
+                url: "{{url('/recordBoxController/getRaces')}}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -460,13 +441,119 @@
                 data: reqData,
                 success: function (data) {
 
-
+                    console.log(data);
 
                 },
                 error: function (data) {
                     alert("최근 기록 불러오기 실패");
                 }
-            });*/
+            });
+        }
+
+        function getHistory(group_id){
+            // 요구하는 값
+            // $postData = array( 'groupId'   => 1 );
+
+            $('#history_list').empty();
+
+            var reqData = {"groupId" : group_id};
+            var raceData = [];
+
+            var data = {
+                "races": {
+                    0 : {
+                        "raceId": 2,
+                        "listName": "스쿠스쿠3",
+                        "date": "2018년 1월 16일",
+                        "studentCount": 5,
+                        "retestClearCount": 0,
+                        "retestCount": 4,
+                        "wrongClearCount": 0,
+                        "wrongCount": 4,
+                    },
+
+                    1 : {
+                        "raceId": 1,
+                        "listName": "스쿠스쿠4",
+                        "date": "2018년 4월 46일",
+                        "studentCount": 5,
+                        "retestClearCount": 0,
+                        "retestCount": 3,
+                        "wrongClearCount": 0,
+                        "wrongCount": 3,
+                    }
+                }
+            };
+
+            for(var i = 0 ; i < 2 ; i++ ){
+                if (group_id == data['races'][i]['raceId']){
+                    raceData = data['races'][i];
+                }else {
+                    raceData = null;
+                }
+            }
+
+            if(raceData != null){
+                for( var i = 0 ; i < 1 ; i++ ){
+                    $('#history_list').append($('<tr>').attr('id','history_list_tr'+i));
+                }
+
+                for( var i = 0 ; i < 1 ; i++ ){
+                    $('#history_list_tr'+i).append($('<td>').text(i+1));
+                    $('#history_list_tr'+i).append($('<td>').append($('<a href="#" onclick="checkHomework()">').text(raceData['listName'])));
+
+                    $('#history_list_tr'+i).append($('<td>').text(raceData['date']));
+                    $('#history_list_tr'+i).append($('<td>').text(raceData['retestClearCount']+"/"+raceData['retestCount']));
+
+                    $('#history_list_tr'+i).append($('<td>').text(raceData['wrongClearCount']+"/"+raceData['wrongCount']));
+
+                    $('#history_list_tr'+i).append($('<td>').append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">').text("성적표")));
+
+                }
+            }
+
+
+        }
+
+        function checkGradeCard(raceId){
+            console.log(chartData);
+        }
+
+        function checkHomework2(raceId){
+            $.ajax({
+                type: 'POST',
+
+                url: "{{url('/recordBoxController/homeworkCheck')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: reqData,
+                success: function (data) {
+
+                    // data = {
+                    //     group: {id: 1, name: "3WDJ"},
+                    //     races: {
+                    //         0: {
+                    //             userId: 1300000
+                    //             userName: 김똘똘
+                    //
+                    //             retestState: "no"
+                    //             wrongState: "no"
+                    //         }
+                    //     }
+                    // }
+
+                    console.log(data);
+
+
+
+                },
+                error: function (data) {
+                    alert("과제 조회 에러");
+                }
+            });
         }
 
         function checkHomework(raceId){
@@ -506,6 +593,8 @@
                 }
             };
 
+            $('#history_homework').empty();
+
             //data['races'].length
             for (var i = 0 ; i < 4 ; i++ ) {
                 $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
@@ -530,39 +619,6 @@
             }
 
 
-            /*$.ajax({
-                type: 'POST',
-
-                url: "{ {url('/recordBoxController/homeworkCheck')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: reqData,
-                success: function (data) {
-
-                    // data = {
-                    //     group: {id: 1, name: "3WDJ"},
-                    //     races: {
-                    //         0: {
-                    //             userId: 1300000
-                    //             userName: 김똘똘
-                    //
-                    //             retestState: "no"
-                    //             wrongState: "no"
-                    //         }
-                    //     }
-                    // }
-
-
-
-                },
-                error: function (data) {
-                    alert("과제 조회 에러");
-                }
-            });*/
-
         }
 
         //학생 한명 클릭하면 개인성적 가져오기
@@ -583,13 +639,15 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{ {url('/recordBoxController/getStudents')}}",
+                url: "{{url('/recordBoxController/getStudents')}}",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: reqData,
                 success: function (data) {
+
+                    console.log(data);
                     /*
                     * data = { group : {id : 1 , name : "3WDJ"} ,
                                races : { 0 : {  year:2018
