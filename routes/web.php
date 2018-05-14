@@ -134,6 +134,7 @@ Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
 Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
 Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCheck');
 Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
+Route::post('/recordBoxController/getWrongs','RecordBoxController@getWrongs');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
