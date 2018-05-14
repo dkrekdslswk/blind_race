@@ -13,56 +13,56 @@ class BlindDummyTableSeeder extends Seeder
     public function run()
     {
         $users = [
-            [123456789,'sub','이OO교수','teacher'],
-            [999999999,'main','s','root'],
-            [1300000,'1234','김똘똘','student'],
-            [1300001,'1234','최천재','student'],
-            [1300002,'1234','안예민','student'],
-            [1300003,'1234','심샤쵸','student'],
-            [1300004,'1234','사라다','student']
+            [123456789, 'sub', '이OO교수', 'teacher'],
+            [999999999, 'main', 's', 'root'],
+            [1300000, '1234', '김똘똘', 'student'],
+            [1300001, '1234', '최천재', 'student'],
+            [1300002, '1234', '안예민', 'student'],
+            [1300003, '1234', '심샤쵸', 'student'],
+            [1300004, '1234', '사라다', 'student']
         ];
 
-        foreach($users as $user){
+        foreach ($users as $user) {
             DB::table('users')->insert([
-                'number'            => array_get($user, 0),
-                'pw'                => array_get($user, 1),
-                'name'              => array_get($user, 2),
-                'classification'    => array_get($user, 3)
+                'number' => array_get($user, 0),
+                'pw' => array_get($user, 1),
+                'name' => array_get($user, 2),
+                'classification' => array_get($user, 3)
             ]);
         }
         DB::table('users')->insert([
-            'number'            => 1300009,
-            'pw'                 => '1234',
-            'name'               => '안기부',
-            'classification'    => 'student',
+            'number' => 1300009,
+            'pw' => '1234',
+            'name' => '안기부',
+            'classification' => 'student',
         ]);
         $groupId = DB::table('groups')->insertGetId([
-            'name'              => '3WDJ',
-            'teacherNumber'     => $users[0][0]
+            'name' => '3WDJ',
+            'teacherNumber' => $users[0][0]
         ], 'number');
 
-        for($number = 2 ; $number < count($users) ; $number++){
+        for ($number = 2; $number < count($users); $number++) {
             DB::table('groupStudents')->insert([
-                'groupNumber'           => $groupId,
-                'userNumber'            => $users[$number][0],
+                'groupNumber' => $groupId,
+                'userNumber' => $users[$number][0],
             ]);
         }
 
         $folderId = DB::table('folders')->insertGetId([
-            'teacherNumber' =>$users[0][0],
-            'name'          =>"테스트용 폴더1",
+            'teacherNumber' => $users[0][0],
+            'name' => "테스트용 폴더1",
         ], 'number');
 
         $listId = DB::table('lists')->insertGetId([
-            'folderNumber'  =>$folderId,
-            'name'          =>"테스트용 리스트1",
-            'openState'     => 1
+            'folderNumber' => $folderId,
+            'name' => "테스트용 리스트1",
+            'openState' => 1
         ], 'number');
 
         $bookId = DB::table('books')->insertGetId([
-            'name'          =>"테스트용 교재1",
-            'maxPage'     => 1,
-            'minPage'     => 6,
+            'name' => "테스트용 교재1",
+            'maxPage' => 1,
+            'minPage' => 6,
         ], 'number');
 
         $quizType = [
@@ -75,7 +75,7 @@ class BlindDummyTableSeeder extends Seeder
         ];
 
         $quizList = array();
-        for($count = 1 ; $count <= 6 ; $count++) {
+        for ($count = 1; $count <= 6; $count++) {
             $quizId = DB::table('quizBanks')->insertGetId([
                 'bookNumber' => $bookId,
                 'page' => $count,
@@ -89,7 +89,7 @@ class BlindDummyTableSeeder extends Seeder
                 'level' => '5'
             ], 'number');
 
-            array_push($quizList,$quizId);
+            array_push($quizList, $quizId);
 
             DB::table('listQuizs')->insert([
                 'listNumber' => $listId,
@@ -103,10 +103,10 @@ class BlindDummyTableSeeder extends Seeder
             ]);
         }
 
-        $bookId =DB::table('books')->insertGetId([
-            'name'=>"급소공략 N1",
-            'maxPage'=>12,
-            'minPage'=>195
+        $bookId = DB::table('books')->insertGetId([
+            'name' => "급소공략 N1",
+            'maxPage' => 12,
+            'minPage' => 195
         ], 'number');
 
         $quizs = [
@@ -139,50 +139,53 @@ class BlindDummyTableSeeder extends Seeder
                 'grammar obj', '1'
             ]];
 
-        foreach ($quizs as $quiz){
+        foreach ($quizs as $quiz) {
             DB::table('quizBanks')
                 ->insert([
-                    'bookNumber'        => $bookId,
-                    'page'              => $quiz[0],
-                    'question'          => $quiz[1],
-                    'rightAnswer'      => $quiz[2],
-                    'example1'          => $quiz[3][0],
-                    'example2'          => $quiz[3][1],
-                    'example3'          => $quiz[3][2],
-                    'type'              => $quiz[4],
-                    'level'             => $quiz[5]
+                    'bookNumber' => $bookId,
+                    'page' => $quiz[0],
+                    'question' => $quiz[1],
+                    'rightAnswer' => $quiz[2],
+                    'example1' => $quiz[3][0],
+                    'example2' => $quiz[3][1],
+                    'example3' => $quiz[3][2],
+                    'type' => $quiz[4],
+                    'level' => $quiz[5]
                 ]);
         }
 
-        for($count = 0 ; $count < 5 ; $count++) {
-            $raceId = DB::table('races')->insertGetId([
-                'groupNumber'   => $groupId,
-                'teacherNumber' => $users[0][0],
-                'listNumber'    => $listId,
-                'type'          => 'race',
-                'created_at'    => DB::raw('subdate(now(), INTERVAL '.($count+1).' DAY)')
-            ], 'number');
+        for ($day = 7 ; $day > 0 ; $day--) {
+            for ($count = 0; $count < 5; $count++) {
+                $raceId = DB::table('races')->insertGetId([
+                    'groupNumber' => $groupId,
+                    'teacherNumber' => $users[0][0],
+                    'listNumber' => $listId,
+                    'type' => 'race',
+                    'created_at' => DB::raw('subdate(now(), INTERVAL ' . $day . ' DAY)')
+                ], 'number');
 
-            for ($number = 2; $number < count($users); $number++) {
-                DB::table('raceUsers')
-                    ->insert([
-                        'raceNumber'    => $raceId,
-                        'userNumber'    => $users[$number][0],
-                        'retestState'   => 'not',
-                        'wrongState'   => 'not'
-                    ]);
-            }
-
-            for ($count = 1; $count <= 6; $count++) {
                 for ($number = 2; $number < count($users); $number++) {
-                    DB::table('records')->insert([
-                        'raceNo'        => $raceId,
-                        'userNo'        => $users[$number][0],
-                        'listNo'        => $listId,
-                        'quizNo'        => $quizList[$count - 1],
-                        'answerCheck'   => (string)(mt_rand(0, 2) == 0 ? 'X' : 'O'),
-                        'answer'        => '1'
-                    ]);
+                    DB::table('raceUsers')
+                        ->insert([
+                            'raceNumber' => $raceId,
+                            'userNumber' => $users[$number][0],
+                            'retestState' => 'not',
+                            'wrongState' => 'not'
+                        ]);
+                }
+
+                for ($count = 1; $count <= 6; $count++) {
+                    for ($number = 2; $number < count($users); $number++) {
+                        DB::table('records')->insert([
+                            'raceNo' => $raceId,
+                            'userNo' => $users[$number][0],
+                            'listNo' => $listId,
+                            'quizNo' => $quizList[$count - 1],
+                            'answerCheck' => (string)(mt_rand(0, 2) == 0 ? 'X' : 'O'),
+                            'answer' => '1',
+                            'created_at' => DB::raw('subdate(now(), INTERVAL ' . $day . ' DAY)')
+                        ]);
+                    }
                 }
             }
         }
