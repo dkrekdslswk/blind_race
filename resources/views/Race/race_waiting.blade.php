@@ -567,7 +567,6 @@
 
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
 
-
         <div id="room_Pin" class="counting">
         </div>
 
