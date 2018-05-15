@@ -18,6 +18,9 @@
     <script type="text/javascript"></script>
 
     <style>
+        body{
+            background: #9370db; !important;
+        }
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             /*background-color: rgba(255,255,255,.84);*/
@@ -91,29 +94,25 @@
         var real_A;
 
         var answer_count = 0;
+        var roomPin ='<?php echo $response['roomPin']; ?>';
+        var t_sessionId = '<?php echo $response['sessionId']; ?>';
+        var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
+
+        var listName = '<?php echo $response['list']['listName']; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
+        var groupName = '<?php echo $response['group']['groupName']; ?>';
+        var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
+        
+
+        var answer_count = 0;
         window.onload = function() {
-            {{--var quiz_answer_list = [1,2,3,4];--}}
-            {{--var rightAnswer;--}}
-            {{--var quiz_member = 0;--}}
-
-            {{--var real_A = new Array();--}}
-
-            {{--var answer_count = 0;--}}
-            {{--var roomPin ='<?php echo $response['roomPin']; ?>';--}}
-            {{--var t_sessionId = '<?php echo $response['sessionId']; ?>';--}}
-            {{--var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');--}}
-
-            {{--var listName = '<?php echo $response['list']['listName']; ?>';--}}
-            {{--var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';--}}
-            {{--var groupName = '<?php echo $response['group']['groupName']; ?>';--}}
-            {{--var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';--}}
 
             var socket = io(':8890');
 
-            // $('#race_name').html(listName);
-            // $('#race_count').html(quizCount);
-            // $('#group_name').html(groupName);
-            // $('#group_student_count').html(groupStudentCount);
+            $('#race_name').html(listName);
+            $('#race_count').html(quizCount);
+            $('#group_name').html(groupName);
+            $('#group_student_count').html(groupStudentCount);
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
@@ -128,9 +127,9 @@
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
                         if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId);
+                            socket.emit('android_join_check',true , sessionId ,"popQuiz");
                         else
-                            socket.emit('android_join_check',false, sessionId);
+                            socket.emit('android_join_check',false, sessionId ,"popQuiz");
                     },
                     error: function(request, status, error) {
                         console.log("안드로이드 join 실패"+roomPin);
@@ -239,6 +238,40 @@
 
         function btn_click(){
 
+            var h1 = document.getElementsByTagName('h1')[0],
+                start = document.getElementById('start'),
+                stop = document.getElementById('stop'),
+                clear = document.getElementById('clear'),
+                seconds = 0, minutes = 0, hours = 0,
+                t;
+
+            function add() {
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+
+                h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+                timer();
+            }
+            function timer() {
+                t = setTimeout(add, 1000);
+            }
+            timer();
+
+
+            /* Start button */
+            start.onclick = timer;
+
+
+
+
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
             $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
@@ -300,7 +333,6 @@
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
                     else
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
-
                 }
             });
 
@@ -344,6 +376,121 @@
 
     <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
         <img src="/img/info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시험시작을 클릭해주세요
+    </div>
+</div>
+
+<div>
+    <style>
+        * {margin: 0; padding: 0;}
+
+        .container {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            padding: 10px;
+            background: linear-gradient(top, #222, #444);
+            overflow: hidden;
+            display: inline-block;
+            border: 7px solid #efefef;
+            border-radius: 5px;
+            position: relative;
+
+            box-shadow:
+                    inset 0 -2px 10px 1px rgba(0, 0, 0, 0.75),
+                    0 5px 20px -10px rgba(0, 0, 0, 1);
+        }
+
+        .cell {
+            /*Should only display 1 digit. Hence height = line height of .numbers
+            and width = width of .numbers*/
+            width: 0.60em;
+            height: 40px;
+            font-size: 50px;
+            overflow: hidden;
+            position: relative;
+            float: left;
+        }
+
+        .numbers {
+            width: 0.6em;
+            line-height: 40px;
+            font-family: digital, arial, verdana;
+            text-align: center;
+            color: #fff;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            /*Glow to the text*/
+            text-shadow: 0 0 5px rgba(255, 255, 255, 1);
+        }
+
+        /*Styles for the controls*/
+        #timer_controls {
+            margin-top: -5px;
+        }
+        #timer_controls label {
+            cursor: pointer;
+            padding: 5px 10px;
+            background: #efefef;
+            font-family: arial, verdana, tahoma;
+            font-size: 11px;
+            border-radius: 0 0 3px 3px;
+        }
+        input[name="controls"] {display: none;}
+
+        /*Control code*/
+        #stop:checked~.timer .numbers {animation-play-state: paused;}
+        #start:checked~.timer .numbers {animation-play-state: running;}
+        #reset:checked~.timer .numbers {animation: none;}
+
+        .moveten {
+            /*The digits move but dont look good. We will use steps now
+            10 digits = 10 steps. You can now see the digits swapping instead of
+            moving pixel-by-pixel*/
+            animation: moveten 1s steps(10, end) infinite;
+            /*By default animation should be paused*/
+            animation-play-state: paused;
+        }
+        .movesix {
+            animation: movesix 1s steps(6, end) infinite;
+            animation-play-state: paused;
+        }
+
+        /*Now we need to sync the animation speed with time speed*/
+        /*One second per digit. 10 digits. Hence 10s*/
+        .second {animation-duration: 10s;}
+        .tensecond {animation-duration: 60s;} /*60 times .second*/
+
+        .milisecond {animation-duration: 1s;} /*1/10th of .second*/
+        .tenmilisecond {animation-duration: 0.1s;}
+        .hundredmilisecond {animation-duration: 0.01s;}
+
+        .minute {animation-duration: 600s;} /*60 times .second*/
+        .tenminute {animation-duration: 3600s;} /*60 times .minute*/
+
+        .hour {animation-duration: 36000s;} /*60 times .minute*/
+        .tenhour {animation-duration: 360000s;} /*10 times .hour*/
+
+        @keyframes moveten {
+            0% {top: 0;}
+            100% {top: -400px;}
+            /*height = 40. digits = 10. hence -400 to move it completely to the top*/
+        }
+
+        @keyframes movesix {
+            0% {top: 0;}
+            100% {top: -240px;}
+            /*height = 40. digits = 6. hence -240 to move it completely to the top*/
+        }
+
+    </style>
+    <div class="container">
+        <h1><time>00:00:00</time></h1>
+        <div>현재학생 / 전체학생 </div>
     </div>
 </div>
 

@@ -63,9 +63,9 @@ io.on('connection', function (socket){
         console.log('안드조인',roomPin+","+sessionId);
     });
 
-    socket.on('android_join_check',function(join_boolean , sessionId){
+    socket.on('android_join_check',function(join_boolean , sessionId ,raceType){
         console.log(join_boolean+","+sessionId);
-        io.sockets.emit('android_join_result',join_boolean,sessionId);
+        io.sockets.emit('android_join_result',join_boolean,sessionId , raceType);
     });
 
     // 대기방 이탈
