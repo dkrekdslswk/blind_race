@@ -621,6 +621,70 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
+    // 재시험 대상 레이스 목록 가져오기 웹 용
+    public function getRetestListWeb(Request $request){
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        if ($userData['check']) {
+            $returnValue = array(
+                'lists' => $this->selectRetestList($userData['userId']),
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => true
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 재시험 대상 레이스 목록 가져오기 어플 용
+    public function getRetestListMobile(Request $request){
+
+    }
+
+    // 재시험 대상 레이스 목록을 검색
+    private function selectRetestList($userId){
+        $retestData = DB::table('raceUsers as ru')
+            ->select(
+                'ru.raceNumber as raceId',
+                'l.name as listName',
+                DB::raw('count(lq.quizNumber) as quizCount'),
+                'r.passingMark as passingMark',
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+            )
+            ->where([
+                'ru.userNumber' => $userId,
+                'ru.retestState' => 'order'
+            ])
+            ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+            ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+            ->join('records as re', function ($join){
+                $join->on('re.raceNo', '=', 'ru.raceNumber');
+                $join->on('re.userNo', '=', 'ru.userNumber');
+            })
+            ->groupBy(['ru.raceNumber', 'ru.userNumber'])
+            ->orderBy('ru.raceNumber')
+            ->get();
+
+        // 레이스번호, 리스트이름, 문항수, 통과점수, 이전점수
+        $retests = array();
+        foreach ($retestData as $retestRace){
+            array_push($retests, array(
+                'raceId' => $retestRace->raceId,
+                'listName' => $retestRace->listName,
+                'quizCount' => $retestRace->quizCount,
+                'passingMark' => $retestRace->passingMark,
+                'rightCount' => $retestRace->rightCount / $retestRace->quizCount * 100
+            ));
+        }
+
+        return $retests;
+    }
+
     // 재시험 준비 웹 전용
     public function retestSet(Request $request){
 //        $postData = array(
