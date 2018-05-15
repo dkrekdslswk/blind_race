@@ -83,10 +83,11 @@
     </style>
     <script>
         var quiz_numbar = 0;
-        var quiz_member = 0;
+
         var quiz_continue = true;
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
+        var quiz_member = 0;
 
         var real_A = new Array();
 
