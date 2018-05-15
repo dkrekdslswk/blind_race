@@ -120,6 +120,8 @@ class RecordBoxController extends Controller{
                             ->select(
                                 'r.number as raceId',
                                 'l.name as listName',
+                                'u.name as teacherName',
+                                'r.created_at as date',
                                 DB::raw('year(r.created_at) as year'),
                                 DB::raw('month(r.created_at) as month'),
                                 DB::raw('dayofmonth(r.created_at) as day'),
@@ -132,6 +134,8 @@ class RecordBoxController extends Controller{
                             ->where('r.groupNumber', '=', $groupData->groupId)
                             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
                             ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+                            ->join('users as u', 'u.number', '=', 'f.teacherNumber')
                             ->groupBy('r.number')
                             ->orderBy('r.created_at', 'desc')
                             ->get();
@@ -142,7 +146,11 @@ class RecordBoxController extends Controller{
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
-                                'date' => $race->year . '년 ' . $race->month . '월 ' . $race->day . '일',
+                                'teacherName' => $race->teacherName,
+                                'date' => $race->date,
+                                'year' => $race->year,
+                                'month' => $race->month,
+                                'day' => $race->day,
                                 'studentCount' => $race->studentCount,
                                 'retestClearCount' => $race->retestClearCount,
                                 'retestCount' => $race->retestOrderCount + $race->retestClearCount,
@@ -200,7 +208,7 @@ class RecordBoxController extends Controller{
                 case 'root':
 
                     // 레이스 정보 읽어오기
-                    $studentData = DB::table('users as u')
+                    $studentData = DB::table('raceUsers as ru')
                         ->select(
                             'ru.userNumber as userId',
                             'u.name as userName',
@@ -208,7 +216,7 @@ class RecordBoxController extends Controller{
                             'ru.wrongState as wrongState'
                         )
                         ->where('ru.raceNumber', '=', $postData['raceId'])
-                        ->join('raceUsers as ru', 'ru.userNumber', '=', 'u.number')
+                        ->join('users as u', 'u.number', '=', 'ru.userNumber')
                         ->groupBy(['ru.userNumber', 'ru.raceNumber'])
                         ->orderBy('ru.userNumber', 'desc')
                         ->get();
@@ -245,20 +253,32 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생들의 최근기록 조회
+    // 학생들의 최근기록 조회 'userId'
+    // 레이스를 친 학생들 정보 조회 'raceId'
     public function getStudents(Request $request){
         // 요구하는 값
 //        $postData = array(
 //            'userId'    => 1300000
+//            'raceId'    => 1
 //        );
         // 요구하는 값
         $postData = array(
-            'userId'    => $request->input('userId')
+            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'    => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
         if ($userData['check']) {
+
+            // 조회 구분
+            if($postData['userId']){
+                $typeWhere = array('ru.userNumber' => $postData['userId']);
+            } else if ($postData['raceId']){
+                $typeWhere = array('ru.raceNumber' => $postData['raceId']);
+            } else {
+                $typeWhere = array(1=>2);
+            }
 
             // 그룹권한 확인
             $where = array();
@@ -275,6 +295,9 @@ class RecordBoxController extends Controller{
                         ->select(
                             'r.number as raceId',
                             'l.name as listName',
+                            'ru.userNumber as userId',
+                            'u.name as userName',
+                            'r.created_at as date',
                             DB::raw('year(r.created_at) as year'),
                             DB::raw('month(r.created_at) as month'),
                             DB::raw('dayofmonth(r.created_at) as day'),
@@ -289,13 +312,12 @@ class RecordBoxController extends Controller{
                             'ru.retestState as retestState',
                             'ru.wrongState as wrongState'
                         )
-                        ->where([
-                            'ru.userNumber' => $postData['userId'],
-                            're.retest' => 0
-                        ])
+                        ->where(['re.retest' => 0])
+                        ->where($typeWhere)
                         ->where($where)
                         ->join('races as r', 'r.number', '=', 'ru.raceNumber')
                         ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                        ->join('users as u', 'u.number', '=', 'ru.userNumber')
                         ->join('records as re', function ($join){
                             $join->on('re.raceNo', '=', 'ru.raceNumber');
                             $join->on('re.userNo', '=', 'ru.userNumber');
@@ -311,6 +333,9 @@ class RecordBoxController extends Controller{
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
+                                'userId' => $race->userId,
+                                'userName' => $race->userName,
+                                'date' => $race->date,
                                 'year' => $race->year,
                                 'month' => $race->month,
                                 'day' => $race->day,
@@ -347,38 +372,207 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
+    // 오답문제 조회하기 학생별 'userId', 'raceId'
+    // 오답문제 조회하기 레이스 전체 'raceId'
+    public function getWrongs(Request $request){
+        // 요구하는 값
+//        $postData = array(
+//            'userId'    => 1300000
+//            'raceId'    => 1
+//        );
+        // 요구하는 값
+        $postData = array(
+            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'    => $request->input('raceId')
+        );
+
+        // 메서드 호출 타입 설정
+        if ($postData['userId']){
+            $typeWhere = array([
+                're.userNo' => $postData['userId'],
+                're.raceNo' => $postData['raceId']
+            ]);
+            $typeGroupBy = array(['re.raceNo', 're.userNo', 're.quizNo']);
+        } else {
+            $typeWhere = array([
+                're.raceNo' => $postData['raceId']
+            ]);
+            $typeGroupBy = array(['re.raceNo', 're.quizNo']);
+        }
+
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 유저권한 확인
+        if ($userData['check']){
+            $where = array();
+            switch ($userData['classification']){
+                case 'student':
+                case 'sleepStudent':
+                    // 반납값 정리1
+                    if ($postData['userId'] == $userData['userId']){
+                        $returnValue = array(
+                            'check' => false
+                        );
+                        break;
+                    }
+                case 'teacher':
+                case 'root':
+                    // 문제 리스트 뽑아오기
+                    $raceQuizs = DB::table('records as re')
+                        ->select(
+                            'qb.number as quizId',
+                            'qb.question as question',
+                            'qb.hint as hint',
+                            'qb.rightAnswer as rightAnswer',
+                            'qb.example1 as example1',
+                            'qb.example2 as example2',
+                            'qb.example3 as example3',
+                            'qb.type as type',
+                            DB::raw('count(distinct re.userNo) as userCount'),
+                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
+                        )
+                        ->where($typeWhere)
+                        ->where(['re.retest' => 0])
+                        ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                        ->groupBy($typeGroupBy)
+                        ->orderBy('re.quizNo')
+                        ->get();
+
+                    // 문제 확인
+                    $wrongs = array();
+                    for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
+                        // 오답 확인
+                        if ($raceQuizs[$i]->userCount != $raceQuizs[$i]->rightAnswerCount) {
+                            if (preg_match('/^[.]+ obj$/', $raceQuizs[$i]->type)) {
+                                // 객관식 처리
+                                $quizData = DB::table('records as re')
+                                    ->select(
+                                        DB::raw('count(CASE WHEN re.answer = qb.rightAnswer THEN 1 END) as rightAnswerCount'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example1 THEN 1 END) as example1Count'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example2 THEN 1 END) as example2Count'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example3 THEN 1 END) as example3Count')
+                                    )
+                                    ->where($typeWhere)
+                                    ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                                    ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                                    ->groupBy($typeGroupBy)
+                                    ->first();
+
+                                if ($quizData->rightAnswerCount < $raceQuizs->userCount) {
+                                    array_push($wrongs, array(
+                                        'number' => $i + 1,
+                                        'id' => $raceQuizs[$i]->quizId,
+                                        'question' => $raceQuizs[$i]->question,
+                                        'hint' => $raceQuizs[$i]->hint,
+                                        'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                                        'rightAnswerCount' => $quizData->rightAnswerCount,
+                                        'example1' => $raceQuizs[$i]->example1,
+                                        'example1Count' => $quizData->example1Count,
+                                        'example2' => $raceQuizs[$i]->example2,
+                                        'example2Count' => $quizData->example2Count,
+                                        'example3' => $raceQuizs[$i]->example3,
+                                        'example3Count' => $quizData->example3Count,
+                                        'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
+                                        'userCount' => $raceQuizs[$i]->userCount
+                                    ));
+                                }
+                            } else if (preg_match('/^[.]+ sub$/', $raceQuizs[$i]->type)) {
+                                // 주관식 처리
+                                $quizData = DB::table('records as re')
+                                    ->select(
+                                        're.answer as answer',
+                                        'u.number as userId',
+                                        'u.name as userName'
+                                    )
+                                    ->where($typeWhere)
+                                    ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                                    ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                                    ->join('users as u', 'u.number', '=', 're.userNo')
+                                    ->get();
+
+                                $wrongData = array();
+                                foreach ($quizData as $quiz) {
+                                    if (preg_match('/[^,]' . $quiz->answer . '[,$]/', $raceQuizs[$i]->rightAnswer)) {
+                                        array_push($wrongData, array(
+                                            'userId' => $quiz->userId,
+                                            'userName' => $quiz->userName,
+                                            'answer' => $quiz->answer
+                                        ));
+                                    }
+                                }
+
+                                if (count($wrongData) > 0) {
+                                    array_push($wrongs, array(
+                                        'number' => $i + 1,
+                                        'id' => $raceQuizs[$i]->quizId,
+                                        'question' => $raceQuizs[$i]->question,
+                                        'hint' => $raceQuizs[$i]->hint,
+                                        'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                                        'rightAnswerCount' => $raceQuizs[$i]->userCount - count($wrongData),
+                                        'wrongs' => $wrongData,
+                                        'wrongCount' => count($wrongData),
+                                        'userCount' => $raceQuizs[$i]->userCount
+                                    ));
+                                }
+                            }
+                        }
+                    }
+
+                    // 반납값 정리2
+                    $returnValue = array(
+                        'wrongs' => $wrongs,
+                        'check' => true
+                    );
+                    break;
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){
         $recordDatas = DB::table('races as r')
             ->select(
                 'l.name as listName',
                 'r.number as raceId',
+                'r.created_at as date',
                 DB::raw('year(r.created_at) as year'),
                 DB::raw('month(r.created_at) as month'),
                 DB::raw('dayofmonth(r.created_at) as day'),
                 DB::raw('count(distinct ru.userNumber) as userCount'),
                 DB::raw('count(distinct re.quizNo) as quizCount'),
                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount'),
-                DB::raw('count(CASE WHEN q.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
-                DB::raw('count(CASE WHEN q.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
-                DB::raw('count(CASE WHEN q.type like "word%" THEN 1 END) as wordCount'),
-                DB::raw('count(CASE WHEN q.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
-                DB::raw('count(CASE WHEN q.type like "grammar%" THEN 1 END) as grammarCount'),
-                DB::raw('count(CASE WHEN q.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
+                DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
+                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
+                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
             )
             ->where([
                 're.retest' => 0,
                 'r.groupNumber' => $groupId
             ])
-            ->where(DB::raw('date(r.created_at) >= date('.$startDate.')'))
-            ->where(DB::raw('date(r.created_at) <= date('.$endDate.')'))
+            ->where(DB::raw('date(r.created_at)'), '>=', $startDate)
+            ->where(DB::raw('date(r.created_at)'), '<=', $endDate)
             ->join('lists as l', 'l.number', '=', 'r.listNumber')
             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
             ->join('records as re', function ($join){
                 $join->on('re.raceNo', '=', 'ru.raceNumber');
                 $join->on('re.userNo', '=', 'ru.userNumber');
             })
-            ->join('quizBanks as q', 'q.number', '=', 're.quizNo')
+            ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
             ->groupBy('r.number')
             ->orderBy('r.number')
             ->get();
@@ -389,6 +583,7 @@ class RecordBoxController extends Controller{
             array_push($records, array(
                 'listName'                      => $record->listName,
                 'raceId'                        => $record->raceId,
+                'date'                          => $record->date,
                 'year'                          => $record->year,
                 'month'                         => $record->month,
                 'day'                           => $record->day,

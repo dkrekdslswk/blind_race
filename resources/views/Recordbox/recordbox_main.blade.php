@@ -104,8 +104,7 @@
             pageHistoryLoad();
             pageStudentListLoad();
 
-            getHistory2();
-            checkHomework2();
+            checkHomework2(1);
         };
 
         //메인 페이지 로드
@@ -289,6 +288,7 @@
                 //data: {_token: CSRF_TOKEN, 'post':params},
                 data: groupId,
                 success: function (data) {
+
                     var GroupData = data;
 
                     for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
@@ -425,11 +425,14 @@
 
         }
 
-        function getHistory2(group_id){
+        function getHistory(group_id){
             // 요구하는 값
             // $postData = array( 'groupId'   => 1 );
 
-            var reqData = {'groupId' : 1};
+            $('#history_list').empty();
+
+            var reqData = {"groupId" : group_id};
+            var raceData = [];
 
             $.ajax({
                 type: 'POST',
@@ -441,25 +444,31 @@
                 data: reqData,
                 success: function (data) {
 
-                    console.log(data);
+                    for( var i = 0 ; i < data['races'].length ; i++ ){
+                        $('#history_list').append($('<tr>').attr('id','history_list_tr'+i));
+                    }
+
+                    for( var i = 0 ; i < data['races'].length ; i++ ){
+                        $('#history_list_tr'+i).append($('<td>').text(i+1));
+                        $('#history_list_tr'+i).append($('<td>').append($('<a href="#" onclick="checkHomework()">').text(data['races'][i]['listName'])));
+
+                        $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['date']));
+                        $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['retestClearCount']+"/"+data['races'][i]['retestCount']));
+
+                        $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['wrongClearCount']+"/"+data['races'][i]['wrongCount']));
+
+                        $('#history_list_tr'+i).append($('<td>').append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">').text("성적표")));
+
+                    }
 
                 },
                 error: function (data) {
                     alert("최근 기록 불러오기 실패");
                 }
             });
-        }
 
-        function getHistory(group_id){
-            // 요구하는 값
-            // $postData = array( 'groupId'   => 1 );
 
-            $('#history_list').empty();
-
-            var reqData = {"groupId" : group_id};
-            var raceData = [];
-
-            var data = {
+            /*var data = {
                 "races": {
                     0 : {
                         "raceId": 2,
@@ -483,17 +492,16 @@
                         "wrongCount": 3,
                     }
                 }
-            };
-
-            for(var i = 0 ; i < 2 ; i++ ){
+            };*/
+            /*for(var i = 0 ; i < 2 ; i++ ){
                 if (group_id == data['races'][i]['raceId']){
                     raceData = data['races'][i];
                 }else {
                     raceData = null;
                 }
-            }
+            }*/
 
-            if(raceData != null){
+            /*if(raceData != null){
                 for( var i = 0 ; i < 1 ; i++ ){
                     $('#history_list').append($('<tr>').attr('id','history_list_tr'+i));
                 }
@@ -510,16 +518,94 @@
                     $('#history_list_tr'+i).append($('<td>').append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">').text("성적표")));
 
                 }
-            }
+            }*/
 
 
         }
 
-        function checkGradeCard(raceId){
-            console.log(chartData);
+        function loadGradeCard(value){
+
+            //value = {userId : 1300000}
+            //value = {raceId : 1}
+
+            var reqData = value;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getStudents')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                    /*
+                     data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:11
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+                                                userName:"김똘똘"
+
+                                                allCount:6
+                                                allRightCount:4
+
+                                                grammarCount:2
+                                                grammarRightAnswerCount:1.4
+
+                                                vocabularyCount:2
+                                                vocabularyRightAnswerCount:1.2
+
+                                                wordCount:2
+                                                wordRightAnswerCount:1.4
+
+                                                retestState:not
+                                                wrongState:not
+                                              }
+                                        }
+                    */
+
+                    var ChartData = makingStudentChartData(data);
+                    makingStudentChart(ChartData);
+
+                    $('#studentGradeList').empty();
+                    for( var i = 0 ; i < data['races'].length ; i++ ){
+                        $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
+                    }
+
+                    for( var i = 0 ; i < data['races'].length ; i++ ) {
+                        $('#stdGrade_' + i).append($('<td>').text(i+1));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['year']+"년 "+data['races'][i]['month']+"월 "+data['races'][i]['day']+"일"));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['listName']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['retestState']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['wrongState']));
+                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">').attr('id',data['races'][i]['raceId']).text("성적표")));
+                    }
+
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+            });
+
+
         }
 
         function checkHomework2(raceId){
+            // 요구하는 값
+            /*            $postData = array(
+                            'raceId'    => 1
+                    );*/
+            var reqData = {'raceId' : raceId};
+
             $.ajax({
                 type: 'POST',
 
@@ -531,6 +617,8 @@
                 //data: {_token: CSRF_TOKEN, 'post':params},
                 data: reqData,
                 success: function (data) {
+
+                    console.log(data);
 
                     // data = {
                     //     group: {id: 1, name: "3WDJ"},
@@ -545,13 +633,9 @@
                     //     }
                     // }
 
-                    console.log(data);
-
-
-
                 },
                 error: function (data) {
-                    alert("과제 조회 에러");
+                    alert("과제 조회 에러2");
                 }
             });
         }
@@ -623,8 +707,19 @@
 
         //학생 한명 클릭하면 개인성적 가져오기
         $(document).on('click','.stdList',function () {
-           getStudentGrade(this.id);
+            getStudentGrade(this.id);
+
         });
+
+
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
+        $(document).on('click','.toggle_openStudentGradeCard',function () {
+            //$('.modal-body #hiddenValue').val();
+            var userId = $(this).attr('id');
+            var userName = $(this).attr('name');
+
+        });
+
 
         //학생 클릭시 해당 학생 개인성적 조회 및 그래프 로드
         function getStudentGrade(userId) {
@@ -632,8 +727,6 @@
 //        $postData = array(
 //            'userId'    => 1300000
 //        );
-
-            makingStudentChart();
 
             var reqData = {'userId' : userId };
 
@@ -647,9 +740,8 @@
                 data: reqData,
                 success: function (data) {
 
-                    console.log(data);
                     /*
-                    * data = { group : {id : 1 , name : "3WDJ"} ,
+                     data = { group : {id : 1 , name : "3WDJ"} ,
                                races : { 0 : {  year:2018
                                                 month:5
                                                 day:11
@@ -657,6 +749,7 @@
                                                 raceId:2
                                                 listName:"테스트용 리스트1"
                                                 userCount:5
+                                                userName:"김똘똘"
 
                                                 allCount:6
                                                 allRightCount:4
@@ -670,29 +763,32 @@
                                                 wordCount:2
                                                 wordRightAnswerCount:1.4
 
-                                                retestState:yes
-                                                wrongState:yes
+                                                retestState:not
+                                                wrongState:not
                                               }
                                         }
                     */
 
-                    var ChartData = makingChartData(data);
+                    var ChartData = makingStudentChartData(data);
                     makingStudentChart(ChartData);
 
+                    $('#studentGradeList').empty();
                     for( var i = 0 ; i < data['races'].length ; i++ ){
-                        $('#student_grade_list').append($('<tr id="stdGrade_"'+ i +'">'));
+                        $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
                     }
 
                     for( var i = 0 ; i < data['races'].length ; i++ ) {
                         $('#stdGrade_' + i).append($('<td>').text(i+1));
-                        $('#stdGrade_' + i).append($('<td>').text(data['races']['year']+"년 "+data['races']['month']+"월 "+data['races']['day']+"일"));
-                        $('#stdGrade_' + i).append($('<td>').text(data['listName']));
-                        $('#stdGrade_' + i).append($('<td>').text(data['total_data'][1][0]['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data_Points']['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['vocabulary_Points']['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data_Points']['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['retestState']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['wrongState']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['year']+"년 "+data['races'][i]['month']+"월 "+data['races'][i]['day']+"일"));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['listName']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][0]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['retestState']));
+                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['wrongState']));
+                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">')
+                                                            .attr('id',data['races'][i]['raceId']).text("성적표")));
                     }
 
                     },
@@ -702,33 +798,56 @@
             });
         }
 
-        function makingChartData(raceData){
+        function makingChartData(raceData) {
 
             var raceData = raceData['races'];
 
-            /*
-            raceData = { 0 : {    year:2018
-                                    month:5
-                                    day:9
+            /*raceData = {
+                            0: {
+                                year: 2018,
+                                month: 5,
+                                day: 9,
 
-                                    raceId:2
-                                    listName:"테스트용 리스트1"
-                                    userCount:5
+                                raceId: 2,
+                                listName: "테스트용 리스트1",
+                                userCount: 5,
 
-                                    quizCount:6
-                                    rightAnswerCount:4.2
+                                quizCount: 6,
+                                rightAnswerCount: 4.2,
 
-                                    grammarCount:2
-                                    grammarRightAnswerCount:1.6
+                                grammarCount: 2,
+                                grammarRightAnswerCount: 1.6,
 
-                                    vocabularyCount:2
-                                    vocabularyRightAnswerCount:1.6
+                                vocabularyCount: 2,
+                                vocabularyRightAnswerCount: 1.6,
 
-                                    wordCount:2
-                                    wordRightAnswerCount:1
-                                  }
+                                wordCount: 2,
+                                wordRightAnswerCount: 1,
+                            },
+
+                            1: {
+                                year: 2018,
+                                month: 5,
+                                day: 9,
+
+                                raceId: 2,
+                                listName: "테스트용 리스트1",
+                                userCount: 5,
+
+                                quizCount: 6,
+                                rightAnswerCount: 4.2,
+
+                                grammarCount: 2,
+                                grammarRightAnswerCount: 1.6,
+
+                                vocabularyCount: 2,
+                                vocabularyRightAnswerCount: 1.6,
+
+                                wordCount: 2,
+                                wordRightAnswerCount: 1,
                             }
-            */
+                        };*/
+
 
             var total_data_Points = [];
             var grammer_data_Points = [];
@@ -751,19 +870,19 @@
                 var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightAnswerCount']).toFixed(0);
 
                 //차트 데이터 배열 만들기
-                total_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                total_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                          y : parseInt(total_grade) ,
                                          label : raceData[i]['listName']});
 
-                grammer_data_Points.push({  x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
-                                            y : parseInt(grammer_grade) ,
-                                            label : raceData[i]['listName']});
+                grammer_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
+                                           y : parseInt(grammer_grade) ,
+                                           label : raceData[i]['listName']});
 
-                vocabulary_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                vocabulary_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                          y : parseInt(vocabulary_grade) ,
                                          label : raceData[i]['listName']});
 
-                word_data_Points.push({ x : new Date(raceData[i]['year'],raceData[i]['month'],raceData[i]['day']),
+                word_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
                                         y : parseInt(word_grade) ,
                                         label : raceData[i]['listName']});
             }
@@ -771,7 +890,92 @@
             //차트 데이터 합치기
             AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
                 "voca_data" : ["어학 점수", vocabulary_Points] ,
-                "grammer_data" : ["독해 점수" , grammer_data_Points[1]] ,
+                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
+                "word_data" : ["단어 점수" , word_data_Points]
+            };
+
+
+            console.log(AllChartData);
+
+            return AllChartData;
+        }
+
+        function makingStudentChartData(data){
+            var raceData = data['races'];
+
+            /*
+                     data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:11
+                                                date:DateString
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+                                                userName:"김똘똘"
+                                                userId:1300000
+
+                                                allCount:6
+                                                allRightCount:4
+
+                                                grammarCount:2
+                                                grammarRightCount:0
+
+                                                vocabularyCount:2
+                                                vocabularyRightCount:1
+
+                                                wordCount:2
+                                                wordRightCount:1
+
+                                                retestState:not
+                                                wrongState:not
+                                              }
+                                        }
+                    */
+
+            var total_data_Points = [];
+            var grammer_data_Points = [];
+            var vocabulary_Points = [];
+            var word_data_Points = [];
+            var AllChartData = [];
+
+            for(var i = 0 ; i < raceData.length ; i++){
+
+                //총점 구하기
+                var total_grade = ((100 / raceData[i]['allCount']).toFixed(1) *  raceData[i]['allRightCount']).toFixed(0);
+
+                //문법 총점 구하기
+                var grammer_grade = ((33 / raceData[i]['grammarCount']).toFixed(1) *  raceData[i]['grammarRightCount']).toFixed(0);
+
+                //어휘 총점 구하기
+                var vocabulary_grade = ((33 / raceData[i]['vocabularyCount']).toFixed(1) *  raceData[i]['vocabularyRightCount']).toFixed(0);
+
+                //단어 총점 구하기
+                var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
+
+                //차트 데이터 배열 만들기
+                total_data_Points.push({ x : new Date(raceData[i]['date']),
+                    y : parseInt(total_grade) ,
+                    label : raceData[i]['listName']});
+
+                grammer_data_Points.push({ x : new Date(raceData[i]['date']),
+                    y : parseInt(grammer_grade) ,
+                    label : raceData[i]['listName']});
+
+                vocabulary_Points.push({ x : new Date(raceData[i]['date']),
+                    y : parseInt(vocabulary_grade) ,
+                    label : raceData[i]['listName']});
+
+                word_data_Points.push({ x : new Date(raceData[i]['date']),
+                    y : parseInt(word_grade) ,
+                    label : raceData[i]['listName']});
+            }
+
+            //차트 데이터 합치기
+            AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
+                "voca_data" : ["어학 점수", vocabulary_Points] ,
+                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
                 "word_data" : ["단어 점수" , word_data_Points]
             };
 
@@ -792,7 +996,7 @@
                 title:{},
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: "YYYY MMM DD",
+                    valueFormatString: "MMM DD (HH:ss)",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -817,7 +1021,7 @@
                 data: [{
                     type: "line",
                     showInLegend: true,
-                    xValueFormatString: "DD, DD MMM, YYYY",
+                    xValueFormatString: "DD, DD MMM, YYYY, HH, mm ,ss",
 
                     // name: "전체 평균 점수",
                     name: data['total_data'][0],
@@ -1016,8 +1220,6 @@
         }
 
     </script>
-
-
 
 </head>
 <body>

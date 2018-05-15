@@ -83,10 +83,11 @@
     </style>
     <script>
         var quiz_numbar = 0;
-        var quiz_member = 0;
+
         var quiz_continue = true;
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
+        var quiz_member = 0;
 
         var real_A = new Array();
 
@@ -255,8 +256,7 @@
                 if(answer == 1 || answer == 2||answer == 3 || answer == 4)
                 {
                     if( answer == rightAnswer)
-                        answer = 1;
-                    // real_A[rightAnswer]; 변경시에넣을 값 
+                        answer = real_A[rightAnswer];
                     else{
                         answer = real_A[answer];
                     }
@@ -567,7 +567,6 @@
     <div class="student">
 
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-
 
         <div id="room_Pin" class="counting">
         </div>

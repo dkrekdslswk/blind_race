@@ -10,6 +10,76 @@
 </head>
 
 <style type="text/css">
+    #Race{
+        background:#00008B;
+        border: solid 1px #1976D2;
+
+        box-shadow: 1px 0px 0px #1976D2,0px 1px 0px #1976D2,
+        2px 1px 0px #1976D2,1px 2px 0px #1976D2,
+        3px 2px 0px #1976D2,2px 3px 0px #1976D2,
+        4px 3px 0px #1976D2,3px 4px 0px #1976D2,
+        5px 4px 0px #1976D2,4px 5px 0px #1976D2,
+        6px 5px 0px #1976D2,5px 6px 0px #1976D2,
+        7px 6px 0px #1976D2,6px 7px 0px #1976D2,
+        8px 7px 0px #1976D2,7px 8px 0px #1976D2,
+        9px 8px 0px #1976D2,8px 9px 0px #1976D2;
+    }
+    #Race:hover, #Race:active, #Race:active:focus{
+        background:#00008B;
+    }
+    #Exam{
+        background:#9b59b6;
+        border: solid 1px #8e44ad;
+
+        box-shadow: 1px 0px 0px #8e44ad,0px 1px 0px #8e44ad,
+        2px 1px 0px #8e44ad,1px 2px 0px #8e44ad,
+        3px 2px 0px #8e44ad,2px 3px 0px #8e44ad,
+        4px 3px 0px #8e44ad,3px 4px 0px #8e44ad,
+        5px 4px 0px #8e44ad,4px 5px 0px #8e44ad,
+        6px 5px 0px #8e44ad,5px 6px 0px #8e44ad,
+        7px 6px 0px #8e44ad,6px 7px 0px #8e44ad,
+        8px 7px 0px #8e44ad,7px 8px 0px #8e44ad,
+        9px 8px 0px #8e44ad,8px 9px 0px #8e44ad;
+    }
+    #Exam:hover , #Exam:active, #Exam:active:focus{
+        background: #800080;
+    }
+
+    .race_menu_button{
+        width:130px;
+        height:130px;
+        display:inline-block;
+
+        transition: margin-top 0.3s ease,
+        margin-left 0.3s ease,
+        box-shadow 0.3s ease;
+
+        margin-top:5%;
+        margin-right:1%;
+    }
+    .race_menu_button:active{
+        transition: margin-top 0.3s ease;
+
+        /*margin-left:9px;*/
+        margin-right:9px;
+        margin-top:9px;
+        box-shadow: 0px 0px 0px #1976D2;
+    }
+
+
+    .menu_time_img{
+        width:50px;
+        heihgt:50px;
+    }
+    .race_menu_img{
+        width:70px;
+        height:70px;
+    }
+    .race_menu_span{
+        font-size:20px;
+        color:white;
+    }
+
 
     .panel-table .panel-body{
         padding:0;
@@ -80,6 +150,29 @@
             var groupIdObj = document.getElementById("groupId");
             groupIdObj.value = selectedText;
         });
+
+        //모드에서 레이스 클릭
+        $('#Race').click(function(){
+            $('#raceType').val("race");
+            //다른 버튼들은 원래 색으로 돌려놓는 부분
+            $('#Re-Test').css("background","#ff69b4");
+            $('#Exam').css("background","#9b59b6");
+
+            //눌렸을떄의 색상
+            $('#Race').css("background","#00008B");
+        });
+
+        //모드에서 쪽지시험 클릭
+        $('#Exam').click(function(){
+            $('#raceType').val("popQuiz");
+            //다른 버튼들은 원래 색으로 돌려놓는 부분
+            $('#Re-Test').css("background","#ff69b4");
+            $('#Race').css("background","#03A9F4");
+            //눌렸을떄의 색상
+            $('#Exam').css("background","#800080");
+        });
+
+
     });
 
     function sendId(listId) {
@@ -203,7 +296,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
                 </div>
-                <div class="modal-body" style="text-align: center">
+                <div class="modal-body" style="text-align: center" >
                     {{--Dropdowns--}}
                     <div class="select" style="margin: 0 auto; width: 50%">
                         <select id="groupSelect" class="form-control">
@@ -212,9 +305,26 @@
                             <option value="2">특강 B반</option>
                         </select>
                     </div>
-                    <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em">
+                    <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em; margin-bottom: 1em;">
                         <input id="cutLineScore" name="passingMark" type="text" placeholder="커트라인" class="form-control" style="width: 100%;">
                     </div>
+
+                    <div id="race_menu">
+                        <span style="text-align: center; display:block;"><b>Mode Select</b></span>
+                        <span style="text-align: center; display:block;">(사용할 모드를 클릭해주세요) </span>
+                        <div class="race_menu_button" id="Race">
+                            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+                            <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
+                            <span class="race_menu_span">Race</span>
+                        </div>
+                        <!-- 부가기능이므로 아직은 미구현상태  -->
+                        <div class="race_menu_button" id="Exam" >
+                            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+                            <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
+                            <span class="race_menu_span">PopQuiz</span>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">선택하기</button>
