@@ -123,7 +123,7 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
 Route::post('/raceController/raceEnd','RaceController@raceEnd');
-Route::post('/raceController/showList','RaceController@getRetestListWeb');
+Route::post('/raceController/getRetestListWeb','RaceController@getRetestListWeb');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
