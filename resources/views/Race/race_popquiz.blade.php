@@ -155,7 +155,7 @@
                         if( result['nickCheck'] && result['characterCheck'] )
                         {
                             //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
+                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4></li>').appendTo('body');
 
                             quiz_member++;
                             $('#student_count').html(quiz_member);
