@@ -395,17 +395,15 @@ class RaceController extends Controller{
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
-                    $rights = explode(',', $quizData->right);
-                    $answer = 'X';
-                    foreach ($rights as $right){
-                        if($postData['answer'] == $right){
-                            $answer = 'O';
-                            break;
-                        }
+                    if (preg_match('/[^,]'.$postData['answer'].'[,$]/', $quizData->right)) {
+                        $answerCheck = 'O';
+                        break;
+                    } else {
+                        $answerCheck = 'X';
                     }
                     break;
                 default:
-                    $answer = 'X';
+                    $answerCheck = 'X';
             }
 
             // 정답을 입력
@@ -415,7 +413,7 @@ class RaceController extends Controller{
                     'userNo'        => $userData['userId'],
                     'listNo'        => $listData->listId,
                     'quizNo'        => $postData['quizId'],
-                    'answerCheck'   => $answer,
+                    'answerCheck'   => $answerCheck,
                     'answer'        => $postData['answer']
                 ]);
 
@@ -666,8 +664,9 @@ class RaceController extends Controller{
 
         return $returnValue;
     }
-/*
-    // 쪽지시험 학생 별 종료 및 세션 정리 웹용
+
+    // 쪽지시험 학생 별 종료 및 세션 정리 웹용 sessionId = 0
+    // 재시험 종료 및 세션 정리 앱 용 sessionId = 1~
     public function testEnd(Request $request){
         // 학생의 세션 아이디 필요
 //        $postData     = array(
@@ -698,8 +697,6 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 종료 및 세션 정리 앱 용
-
     // 쪽지시험 및 재시험 결과정리용
     private function answersIn($userId, $answers, $listId, $raceId, $type){
         // 입력값 저장용
@@ -727,13 +724,11 @@ class RaceController extends Controller{
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
-                    $rights = explode(',', $quizData->right);
-                    $answerCheck = 'X';
-                    foreach ($rights as $right) {
-                        if ($answer['answer'] == $right) {
-                            $answerCheck = 'O';
-                            break;
-                        }
+                    if (preg_match('/[^,]'.$answer['answer'].'[,$]/', $quizData->right)) {
+                        $answerCheck = 'O';
+                        break;
+                    } else {
+                        $answerCheck = 'X';
                     }
                     break;
                 default:
@@ -767,5 +762,5 @@ class RaceController extends Controller{
                 'check' => true
             );
         }
-    }*/
+    }
 }

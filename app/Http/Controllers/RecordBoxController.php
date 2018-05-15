@@ -459,7 +459,7 @@ class RecordBoxController extends Controller{
                                     ->groupBy($typeGroupBy)
                                     ->first();
 
-                                if($quizData->rightAnswerCount < $raceQuizs->userCount) {
+                                if ($quizData->rightAnswerCount < $raceQuizs->userCount) {
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
                                         'id' => $raceQuizs[$i]->quizId,
@@ -492,20 +492,17 @@ class RecordBoxController extends Controller{
                                     ->get();
 
                                 $wrongData = array();
-                                $rights = explode(',', $raceQuizs[$i]->rightAnswer);
-                                foreach ($rights as $right){
-                                    foreach ($quizData as $quiz){
-                                        if($quiz->answer != $right){
-                                            array_push($wrongData, array(
-                                                'userId' => $quiz->userId,
-                                                'userName' => $quiz->userName,
-                                                'answer' => $quiz->answer
-                                            ));
-                                        }
+                                foreach ($quizData as $quiz) {
+                                    if (preg_match('/[^,]' . $quiz->answer . '[,$]/', $raceQuizs[$i]->rightAnswer)) {
+                                        array_push($wrongData, array(
+                                            'userId' => $quiz->userId,
+                                            'userName' => $quiz->userName,
+                                            'answer' => $quiz->answer
+                                        ));
                                     }
                                 }
 
-                                if(count($wrongData) > 0){
+                                if (count($wrongData) > 0) {
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
                                         'id' => $raceQuizs[$i]->quizId,
