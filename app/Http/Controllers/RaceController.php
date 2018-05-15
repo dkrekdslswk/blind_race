@@ -172,9 +172,10 @@ class RaceController extends Controller{
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $data = DB::table('races as r')
+        $raceData = DB::table('races as r')
             ->select([
-                'r.number as raceId'
+                'r.number as raceId',
+                'r.type as raceType'
             ])
             ->where([
                 'gs.userNumber'         => $userData['userId'],
@@ -185,7 +186,7 @@ class RaceController extends Controller{
             ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
             ->first();
 
-        if ($data) {
+        if ($raceData) {
             // 유저 세션 갱신
             $sessionUpdate = DB::table('sessionDatas')
                 ->where([
@@ -193,9 +194,9 @@ class RaceController extends Controller{
                 ])
                 ->update([
                     'PIN'               => $postData['roomPin'],
-                    'raceNumber'        => $data->raceId,
+                    'raceNumber'        => $raceData->raceId,
                     'characterNumber'   => null,
-                    'nick'              => null,
+                    'nick'              => $raceData->raceType == 'race' ? null : $userData['userName'],
                 ]);
             $sessionCheck = ($sessionUpdate == 1);
 
@@ -203,7 +204,7 @@ class RaceController extends Controller{
             if ($sessionCheck){
                 DB::table('raceUsers')
                     ->insert([
-                        'raceNumber'    => $data->raceId,
+                        'raceNumber'    => $raceData->raceId,
                         'userNumber'    => $userData['userId'],
                         'retestState'   => 'not',
                         'wrongState'   => 'not'
@@ -666,67 +667,38 @@ class RaceController extends Controller{
         return $returnValue;
     }
 /*
-    // 쪽지시험 학생 별 종료 및 세션 정리
+    // 쪽지시험 학생 별 종료 및 세션 정리 웹용
     public function testEnd(Request $request){
         // 학생의 세션 아이디 필요
-        $postData     = array(
-            'sessionId' => 2,
-            'roomPin'   => 123456,
-            'answers'    => array(
-                0 => array('quizId' => 1, 'answer' => 1),
-                1 => array('quizId' => 2, 'answer' => 1),
-                2 => array('quizId' => 3, 'answer' => 1),
-                3 => array('quizId' => 4, 'answer' => 1),
-                4 => array('quizId' => 5, 'answer' => 1),
-                5 => array('quizId' => 6, 'answer' => 1)
-            )
-        );
 //        $postData     = array(
-//            'sessionId' => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
-//            'roomPin'   => $request->input('roomPin'),
-//            'answers'    => json_decode($request->input('answers'))
+//            'sessionId' => 0,
+//            'roomPin'   => 123456,
+//            'answers'    => array(
+//                0 => array('quizId' => 1, 'answer' => 1),
+//                1 => array('quizId' => 2, 'answer' => 1),
+//                2 => array('quizId' => 3, 'answer' => 1),
+//                3 => array('quizId' => 4, 'answer' => 1),
+//                4 => array('quizId' => 5, 'answer' => 1),
+//                5 => array('quizId' => 6, 'answer' => 1)
+//            )
 //        );
+        $postData     = array(
+            'sessionId' => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
+            'roomPin'   => $request->input('roomPin'),
+            'answers'    => json_decode($request->input('answers'))
+        );
 
         // 유저 정보 가져오기
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        // 리스트 정보 가져오기
-        $listData = DB::table('races as r')
-            ->select(
-                'r.number as raceId',
-                'r.listNumber as listId'
-            )
-            ->where([
-                's.PIN'     => $postData['roomPin'],
-                's.nick'    => ''
-            ])
-            ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
-            ->first();
-
-        // 레이스가 존재할 경우 값을 입력
-        if($listData){
-
-            // true 값 입력 성공
-            // false 재 시간 이내에 정답 입력실패, 중복입력, 레이스가 없음, 리스트가 없음.
-            if ($quizInsert == 1){
-                $returnValue = array(
-                    'check' => true
-                );
-            } else{
-                $returnValue = array(
-                    'check' => false
-                );
-            }
-        } else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
+        $returnValue = array(
+            'check' => false
+        );
 
         return $returnValue;
     }
 
-    // 재시험 종료 및 세션 정리
+    // 재시험 종료 및 세션 정리 앱 용
 
     // 쪽지시험 및 재시험 결과정리용
     private function answersIn($userId, $answers, $listId, $raceId, $type){
@@ -752,8 +724,6 @@ class RaceController extends Controller{
                 case 'vocabulary obj':
                 case 'word obj':
                 case 'grammar obj':
-                $answerCheck = $answer['answer'] == 1 ? 'O' : 'X';
-                    break;
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
