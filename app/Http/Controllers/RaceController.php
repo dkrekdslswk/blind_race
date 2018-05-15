@@ -349,11 +349,13 @@ class RaceController extends Controller{
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
-                    if (preg_match('/[^,]'.$postData['answer'].'[,$]/', $quizData->right)) {
-                        $answerCheck = 'O';
-                        break;
-                    } else {
-                        $answerCheck = 'X';
+                    $rights = explode(',', $quizData->right);
+                    $answerCheck = 'X';
+                    foreach ($rights as $right){
+                        if ($postData['answer'] == $right){
+                            $answerCheck = 'O';
+                            break;
+                        }
                     }
                     break;
                 default:
@@ -621,19 +623,95 @@ class RaceController extends Controller{
 
     // 재시험 준비 웹 전용
     public function retestSet(Request $request){
+//        $postData = array(
+//            'raceId' => 1
+//        );
         $postData = array(
-            'raceId' => 1
+            'raceId' => $request->input('raceId')
         );
 
         // 유저정보 받아오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        //
+        // 학생일 경우에는 참가했던 레이스만 입장가능
+        // 선생일 경우에는 출제된 레이스에 참가가능
+        if ($userData['check']){
+            switch ($userData['classification']){
+                case 'student':
+                    $raceCheck = DB::table('raceUsers as ru')
+                        ->select(
+                            'ru.retestState as retestState'
+                        )
+                        ->where([
+                            'ru.userNumber' => $userData['userId'],
+                            'ru.raceNumber' => $postData['raceId']
+                        ])
+                        ->first();
+
+                    // 반납할 값 정리
+                    if ($raceCheck && ($raceCheck->retestState == 'order')) {
+                        $returnValue = array(
+                            'sessionId' => $request->session()->get('sessionId'),
+                            'raceId' => $postData['raceId'],
+                            'check' => true
+                        );
+                    } else if ($raceCheck){ // 대상자가 아닐경우
+                        $returnValue = array(
+                            'retestState' => $raceCheck->retestState,
+                            'check' => false
+                        );
+                    } else { // 레이스가 존재하지 않을 경우
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
+                    break;
+//                case 'teacher':
+//                case 'root':
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
     }
 
     // 재시험 문제 받아오기 모바일은 바로 시작 가능
     public function retestStart(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId'),
+            'raceId'    => $request->input('raceId')
+        );
 
+        // 유저 정보 받아오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        $raceCheck = DB::table('raceUsers as ru')
+            ->select(
+                'ru.retestState as retestState',
+                'l.number as listId',
+                'l.name as listName',
+                'g.name as groupName',
+                DB::raw('count(lq.quizNumber) as quizCount'),
+                'r.passingMark as passingMark'
+            )
+            ->where([
+                'ru.userNumber' => $userData['userId'],
+                'ru.raceNumber' => $postData['raceId']
+            ])
+            ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+            ->join('groups as g', 'g.number', '=', 'r.groupNumber')
+            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+            ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+            ->groupBy(['ru.userNumber', 'ru.raceNumber'])
+            ->first();
     }
 
     // 재시험 정답 입력
