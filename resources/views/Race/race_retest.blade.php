@@ -175,13 +175,19 @@
             background:green;
         }
     </style>
+    
+    <script>
+        var sessionId = '<?php echo $response['sessionId']; ?>';
+        var raceId = '<?php echo $response['raceId']; ?>';
+    </script>
+    
 </head>
 <body>
     <div>@include('Navigation.main_nav')</div>
 
     <div id="test_content">
         <div class="card" style=" width: 80%; height: 100px; position:relative;">
-            <div style="width:40%;" class="test_info">시험제목 </div>
+            <div style="width:40%;" class="test_info">문제제목</div>
             <div style="width:20%;" class="test_info">1/30 문제 </div>
             <div style="width:10%;" class="test_info"> 재시험 </div>
             <div style="width:10%;" class="test_info"> 김똘d </div>
