@@ -5,7 +5,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Quiz list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 
     <style type="text/css">
@@ -46,9 +45,6 @@
             margin:0;
         }
 
-        /*
-        used to vertically center elements, may need modification if you're not using default sizes.
-        */
         .panel-table .panel-footer .col{
             line-height: 34px;
             height: 34px;
@@ -67,44 +63,15 @@
             background-color: white;
         }
 
-        .main-body {
-            max-width: 1220px;
-            min-width: 955px;
-            /*     overflow: hidden; */
-            margin: 0 auto;
-            position: relative;
-            height: 1024px;
-        }
-        .page-small .main-body {
-            max-width: 768px;
-            min-width: 320px;
-        }
-
-        #menu-main {
-            width: 220px;
-            height:100%;
-            left: 0;
-            bottom: 0;
-            float: left;
-            position: relative;
-            /*     min-height: 1000px; */
-            top: 0px;
-            transition: all 0.4s ease 0s;
-            background-color: #ffffff;
-            border-left: 1px solid #e1e2e3;
-            border-right: 1px solid #e1e2e3;
-            border-bottom: 1px solid #e1e2e3;
-        }
-
         #wrapper {
-            margin: 0 50px 0 220px;
+            margin: 0 0 0 220px;
             padding: 0;
             position: relative;
-            min-height: 100%;
+            min-height: 705px;
             min-width: 1000px;
         }
-    </style>
 
+    </style>
 </head>
 
 <script>
@@ -144,8 +111,7 @@
             data: params,
             success: function (data) {
                 quizlistData = data;
-
-                listValue();
+                //listValue();
             },
             error: function (data) {
                 alert("error");
@@ -416,64 +382,67 @@
 
 </script>
 
-<body onload="getValue()">
+<body onload="getValue(0)">
 
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
-<aside id="menu-main">
-    @include('QuizTree.quiz_list_side_bar')
-</aside>
-
-<div class="btn-process" style="margin-top:50px;"></div>
-
-<div id="wrapper">
-<!--Quiz List Table-->
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default panel-table">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col col-xs-6">
-                        <h3 class="panel-title">퀴즈 리스트</h3>
-                    </div>
-                    <div class="col col-xs-6 text-right">
-                        <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+    <div class="side-menu">
+        <aside class="navbar navbar-default" role="navigation">
+        @include('QuizTree.quiz_list_side_bar')
+    </aside>
+    </div>
+
+    <div class="btn-process" style="margin-top:50px;"></div>
+
+    <!--Quiz List Table-->
+    <div id="wrapper">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">퀴즈 리스트</h3>
+                        </div>
+                        <div class="col col-xs-6 text-right">
+                            <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped table-bordered table-list">
-                    <thead>
-                    <tr>
-                        <th style="width: 15%;"><em class="fa fa-cog"></em></th>
-                        <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
-                        <th style="text-align: center; width: 50%;">퀴즈명</th>
-                        <th style="text-align: center; width: 15%;">문항수</th>
-                    </tr>
-                    </thead>
-                    <tbody id="list">
-                    {{--list 공간--}}
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col col-xs-4">Page 1 of 5
-                    </div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                        <ul class="pagination visible-xs pull-right">
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%;"><em class="fa fa-cog"></em></th>
+                            <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
+                            <th style="text-align: center; width: 50%;">퀴즈명</th>
+                            <th style="text-align: center; width: 15%;">문항수</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
+                        {{--list 공간--}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -518,6 +487,6 @@
 
 <!--Modal : show quiz (수정 불가 리스트)-->
 <div id="showQuizDivFNU"></div>
-</div>
+
 </body>
 </html>
