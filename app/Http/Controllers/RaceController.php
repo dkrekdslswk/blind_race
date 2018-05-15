@@ -151,10 +151,16 @@ class RaceController extends Controller{
 
         // 값을 반납
         // return $returnValue;
-        return view('Race/race_waiting')->with('response', $returnValue);
+        if ($returnValue['check'] == false){
+            return view('homepage')->with('response', $returnValue);
+        } else if ($postData['raceType'] == 'race') {
+            return view('Race/race_waiting')->with('response', $returnValue);
+        } else if ($postData['raceType'] == 'popQuiz') {
+            return view('Race/race_popquiz')->with('response', $returnValue);
+        }
     }
 
-    // 학생이 소켓에 들어올 때
+    // 레이스 혹은 테스트에서 학생이 방에 입장할 때
     public function studentIn(Request $request){
         // 받아야하는 값
 //        $postData = array(
@@ -221,7 +227,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 학생이 닉네임과 캐릭터를 설정할 때
+    // 레이스 에서 학생이 닉네임과 캐릭터를 설정할 때
     public function studentSet(Request $request){
         // 받아야하는 값
 //        $postData = array(
@@ -291,59 +297,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // get quiz
-    private function quizGet($listId){
-
-        // 문제 가져오기
-        $quizData = DB::table('quizBanks as qb')
-            ->select([
-                'qb.number          as number',
-                'qb.question        as question',
-                'qb.hint            as hint',
-                'qb.rightAnswer     as rightAnswer',
-                'qb.example1        as example1',
-                'qb.example2        as example2',
-                'qb.example3        as example3',
-                'qb.type            as type'
-            ])
-            ->where([
-                'lq.listNumber' => $listId
-            ])
-            ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
-            ->orderBy('qb.number', 'desc')
-            ->get();
-
-        // 다음 문제가 있을 때
-        if($quizData) {
-
-            // 반납값 정리
-            $quizs = array();
-            foreach ($quizData as $quiz) {
-                $type = explode(' ', $quiz->type);
-                array_push($quizs, array(
-                    'quizId'    => $quiz->number,
-                    'question'  => $quiz->question,
-                    'hint'      => $quiz->hint,
-                    'right'     => $quiz->rightAnswer,
-                    'example1'  => $quiz->example1,
-                    'example2'  => $quiz->example2,
-                    'example3'  => $quiz->example3,
-                    'quizType'  => $type[0],
-                    'makeType'  => $type[1]
-                ));
-            }
-            $returnValue = array(
-                'quiz' => $quizs,
-                'check' => true
-            );
-        } else {
-            $returnValue = array('check' => false);
-        }
-
-        return $returnValue;
-    }
-
-    // 학생들의 정답들을 DB에 입력
+    // 레이스 혹은 테스트에서 학생들의 정답들을 DB에 입력
     public function answerIn(Request $request){
         // 학생의 세션 아이디 필요
 //        $postData     = array(
@@ -353,7 +307,7 @@ class RaceController extends Controller{
 //            'answer'    => 1
 //        );
         $postData     = array(
-            'sessionId'     => $request->input('sessionId'),
+            'sessionId' => $request->input('sessionId'),
             'roomPin'   => $request->input('roomPin'),
             'quizId'    => $request->input('quizId'),
             'answer'    => $request->input('answer')
@@ -437,7 +391,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 중간 및 최종 결과용
+    // 레이스에서 중간 및 최종 결과용
     public function result(Request $request)
     {
         // 선생 세션아이디 필요
@@ -558,7 +512,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 종료 후 세션 정리
+    // 레이스 혹은 테스트에서 종료 후 세션 정리
     public function raceEnd(Request $request){
         // 선생정보 가져오기기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -665,102 +619,82 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 쪽지시험 학생 별 종료 및 세션 정리 웹용 sessionId = 0
-    // 재시험 종료 및 세션 정리 앱 용 sessionId = 1~
-    public function testEnd(Request $request){
-        // 학생의 세션 아이디 필요
-//        $postData     = array(
-//            'sessionId' => 0,
-//            'roomPin'   => 123456,
-//            'answers'    => array(
-//                0 => array('quizId' => 1, 'answer' => 1),
-//                1 => array('quizId' => 2, 'answer' => 1),
-//                2 => array('quizId' => 3, 'answer' => 1),
-//                3 => array('quizId' => 4, 'answer' => 1),
-//                4 => array('quizId' => 5, 'answer' => 1),
-//                5 => array('quizId' => 6, 'answer' => 1)
-//            )
-//        );
-        $postData     = array(
-            'sessionId' => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId'),
-            'roomPin'   => $request->input('roomPin'),
-            'answers'    => json_decode($request->input('answers'))
+    // 재시험 준비 웹 전용
+    public function retestSet(Request $request){
+        $postData = array(
+            'raceId' => 1
         );
 
-        // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($postData['sessionId']);
+        // 유저정보 받아오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        $returnValue = array(
-            'check' => false
-        );
-
-        return $returnValue;
+        //
     }
 
-    // 쪽지시험 및 재시험 결과정리용
-    private function answersIn($userId, $answers, $listId, $raceId, $type){
-        // 입력값 저장용
-        $inserts = array();
+    // 재시험 문제 받아오기 모바일은 바로 시작 가능
+    public function retestStart(Request $request){
 
-        foreach ($answers as $answer) {
-            // 정답수 카운트
-            static $rightCount = 0;
+    }
 
-            // 현재 문제정보
-            $quizData = DB::table('quizBanks')
-                ->select(
-                    'rightAnswer as right',
-                    'type'
-                )
-                ->where([
-                    'number' => $answer['quizId']
-                ])
-                ->first();
+    // 재시험 정답 입력
+    public function retestAnswerIn(){
 
-            switch ($quizData->type) {
-                case 'vocabulary obj':
-                case 'word obj':
-                case 'grammar obj':
-                case 'vocabulary sub':
-                case 'word sub':
-                case 'grammar sub':
-                    if (preg_match('/[^,]'.$answer['answer'].'[,$]/', $quizData->right)) {
-                        $answerCheck = 'O';
-                        break;
-                    } else {
-                        $answerCheck = 'X';
-                    }
-                    break;
-                default:
-                    $answerCheck = 'X';
+    }
+
+    // 재시험 종료
+    public function retestEnd(){
+
+    }
+
+    // 해당 리스트에서 모든 문제를 가져오는 구문
+    private function quizGet($listId){
+
+        // 문제 가져오기
+        $quizData = DB::table('quizBanks as qb')
+            ->select([
+                'qb.number          as number',
+                'qb.question        as question',
+                'qb.hint            as hint',
+                'qb.rightAnswer     as rightAnswer',
+                'qb.example1        as example1',
+                'qb.example2        as example2',
+                'qb.example3        as example3',
+                'qb.type            as type'
+            ])
+            ->where([
+                'lq.listNumber' => $listId
+            ])
+            ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+            ->orderBy('qb.number', 'desc')
+            ->get();
+
+        // 다음 문제가 있을 때
+        if($quizData) {
+
+            // 반납값 정리
+            $quizs = array();
+            foreach ($quizData as $quiz) {
+                $type = explode(' ', $quiz->type);
+                array_push($quizs, array(
+                    'quizId'    => $quiz->number,
+                    'question'  => $quiz->question,
+                    'hint'      => $quiz->hint,
+                    'right'     => $quiz->rightAnswer,
+                    'example1'  => $quiz->example1,
+                    'example2'  => $quiz->example2,
+                    'example3'  => $quiz->example3,
+                    'quizType'  => $type[0],
+                    'makeType'  => $type[1]
+                ));
             }
-
-            // 입력값 정리
-            array_push($inserts, array(
-                'raceNo' => $raceId,
-                'userNo' => $userId,
-                'listNo' => $listId,
-                'quizNo' => $answer['quizId'],
-                'answerCheck' => $answerCheck,
-                'answer' => $answer['answer']
-            ));
-
-            // 정답수 세기
-            if ($answerCheck == 'O'){
-                $rightCount++;
-            }
-        }
-
-        if(isset($rightCount)) {
-            // 정답을 입력
-            DB::table('records')
-                ->insert($inserts);
-
-            // 반납값
-            $retrunValue = array(
-                'rightCount' => $rightCount,
+            $returnValue = array(
+                'quiz' => $quizs,
                 'check' => true
             );
+        } else {
+            $returnValue = array('check' => false);
         }
+
+        return $returnValue;
     }
 }
