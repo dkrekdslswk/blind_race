@@ -428,7 +428,47 @@
         }
     </style>
 </head>
-<body>
+<script>
+    function getValue() {
+
+        // list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('raceController/getRetestListWeb')}}",
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function (data) {
+                quizlistData = data;
+                //alert(JSON.stringify(quizlistData["lists"][0]["listName"]));
+
+                listValue();
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    }
+
+    function listValue() {
+
+        for(var i = 0; i < quizlistData['lists'].length; i++) {
+            $("#list").append(
+                "<tr>" +
+                "<td class='hidden-xs' style='text-align: center'>"+ quizlistData[i]['raceId'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData[i]['listName'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData[i]['quizCount'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData[i]['passingMark'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData[i]['rightCount'] + "</td>" +
+                "<td align='center'>" +
+                "<button type='submit' class='btn btn-primary' data-toggle='modal' data-target='#Modal' " +
+                "onclick='sendId("+ quizlistData[i]['raceId'] +")'>시작하기</button>" +
+                "</td>" +
+                "</tr>");
+
+        }
+    }
+</script>
+<body onload="getValue()">
 
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
@@ -472,7 +512,8 @@
                             <th class="hidden-xs">#</th>
                             <th style="text-align: center">퀴즈명</th>
                             <th style="text-align: center">문항수</th>
-                            <th></th>
+                            <th style="text-align: center">합격점</th>
+                            <th style="text-align: center">이전점수</th>
                         </tr>
                         </thead>
                         <tbody id="list">
