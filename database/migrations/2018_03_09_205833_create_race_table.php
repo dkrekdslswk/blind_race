@@ -21,7 +21,7 @@ class CreateRaceTable extends Migration
 
         DB::table('raceTypes')->insert([
             ['name' => 'race'],
-            ['name' => 'test']
+            ['name' => 'popQuiz']
         ]);
 
         Schema::create('races', function (Blueprint $table) {
