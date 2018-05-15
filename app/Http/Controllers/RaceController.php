@@ -851,7 +851,7 @@ class RaceController extends Controller{
                 'listName' => $retestRace->listName,
                 'quizCount' => $retestRace->quizCount,
                 'passingMark' => $retestRace->passingMark,
-                'rightCount' => $retestRace->rightCount / $retestRace->quizCount * 100
+                'rightCount' => (int)($retestRace->rightCount / $retestRace->quizCount * 100)
             ));
         }
 
