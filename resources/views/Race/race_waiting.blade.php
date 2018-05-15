@@ -83,10 +83,11 @@
     </style>
     <script>
         var quiz_numbar = 0;
-        var quiz_member = 0;
+
         var quiz_continue = true;
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
+        var quiz_member = 0;
 
         var real_A = new Array();
 
@@ -123,9 +124,9 @@
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
                         if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId);
+                            socket.emit('android_join_check',true , sessionId ,"race");
                         else
-                            socket.emit('android_join_check',false, sessionId);
+                            socket.emit('android_join_check',false, sessionId ,"race");
                     },
                     error: function(request, status, error) {
                         console.log("안드로이드 join 실패"+roomPin);

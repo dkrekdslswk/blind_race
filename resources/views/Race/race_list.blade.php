@@ -164,7 +164,7 @@
 
         //모드에서 쪽지시험 클릭
         $('#Exam').click(function(){
-            $('#raceType').val("test");
+            $('#raceType').val("popQuiz");
             //다른 버튼들은 원래 색으로 돌려놓는 부분
             $('#Re-Test').css("background","#ff69b4");
             $('#Race').css("background","#03A9F4");
@@ -321,7 +321,7 @@
                         <div class="race_menu_button" id="Exam" >
                             <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
                             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
-                            <span class="race_menu_span">Exam</span>
+                            <span class="race_menu_span">PopQuiz</span>
                         </div>
                     </div>
 
