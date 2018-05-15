@@ -468,8 +468,8 @@
         }
     }
     function send_retest(data){
-        $('#listId').val(data);
-        document.getElementById('create_retest').submit();
+        $('#raceId').val(data);
+       document.getElementById('create_retest').submit();
     }
 
 </script>
@@ -522,7 +522,7 @@
                             <th style="text-align: center"></th>
                         </tr>
                         </thead>
-                        <form id="create_retest" action="{{url('raceController/createRace')}}"  method="Post" enctype="multipart/form-data">
+                        <form id="create_retest" action="{{url('raceController/retestSet')}}"  method="Post" enctype="multipart/form-data">
                             {{csrf_field()}}
 
                             <tbody id="list">
@@ -530,7 +530,7 @@
                             {{--list 공간--}}
 
                             </tbody>
-                            <input id="listId" type="text" name="listId" value="dd"/>
+                            <input id="raceId" type="text" name="raceId" value="dd"/>
                         </form>
 
                     </table>
