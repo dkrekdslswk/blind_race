@@ -85,15 +85,11 @@
 
     </style>
     <script>
-        var quiz_numbar = 0;
         var quiz_member = 0;
-        var quiz_continue = true;
+
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
-
         var real_A;
-
-        var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
@@ -102,10 +98,56 @@
         var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
-        
 
         var answer_count = 0;
         window.onload = function() {
+
+            //정답뒤섞기
+            function shuffle(a) {
+                var j, x, i;
+                for (i = a.length; i; i -= 1) {
+                    j = Math.floor(Math.random() * i);
+                    x = a[i - 1];
+                    a[i - 1] = a[j];
+                    a[j] = x;
+                }
+            }
+            function Create2DArray(rows) {
+                var arr = [];
+
+                for (var i=0;i<rows;i++) {
+                    arr[i] = [];
+                }
+
+                return arr;
+            }
+            real_A = Create2DArray(quiz_JSON.length);
+
+            for(var i = 0; i <quiz_JSON.length; i++){
+                if( quiz_JSON[i].makeType == "obj"){
+                    shuffle(quiz_answer_list);
+
+                    real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
+                    real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
+                    real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
+                    real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
+
+                    for(var j = 0; j<=3; j++){
+                        switch(quiz_answer_list[j]){
+                            case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
+                                break;
+                        }
+                    }
+                }
+            }
+
+            console.log(JSON.stringify(quiz_JSON));
 
             var socket = io(':8890');
 
@@ -123,11 +165,15 @@
                     type: 'POST',
                     url: "{{url('/raceController/studentIn')}}",
                     dataType: 'json',
+                    async: false ,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
-                        if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId ,"popQuiz");
+                        if(result['check'] == true) {
+                            socket.emit('android_join_check', true, sessionId, "popQuiz");
+                            quiz_member++;
+                            socket.emit('popInfo',roomPin, JSON.stringify(quiz_JSON) );
+                        }
                         else
                             socket.emit('android_join_check',false, sessionId ,"popQuiz");
                     },
@@ -138,110 +184,15 @@
 
             });
 
-
-
-            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
-                //유저정보를 DB세션에 추가함
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('/raceController/studentSet')}}",
-                    dataType: 'json',
-                    async: false ,
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
-                    success: function (result) {
-                        console.log(result['nickCheck']);
-                        if( result['nickCheck'] && result['characterCheck'] )
-                        {
-                            //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4></li>').appendTo('body');
-
-                            quiz_member++;
-                            $('#student_count').html(quiz_member);
-                            //유저한테 다시보내줌 result['characterId'];
-
-                            socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
-                            socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
-                        }
-                        else{
-                            socket.emit('web_enter_room',roomPin,nick,sessionId,characterId,false);
-                            //닉네임이나 캐릭터가 문제있음
-                            socket.emit('android_enter_room',roomPin, false, sessionId);
-                        }
-
-                    },
-                    error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
-                    }
-                });
-            });
-
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
             })
         };
-        // var quiz_JSON = [
-        //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
-        //     {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
-        //     {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
-        //     {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
-        //     {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
-        // ];
 
-
-        //정답뒤섞기
-        function shuffle(a) {
-            var j, x, i;
-            for (i = a.length; i; i -= 1) {
-                j = Math.floor(Math.random() * i);
-                x = a[i - 1];
-                a[i - 1] = a[j];
-                a[j] = x;
-            }
-        }
-        function Create2DArray(rows) {
-            var arr = [];
-
-            for (var i=0;i<rows;i++) {
-                arr[i] = [];
-            }
-
-            return arr;
-        }
-        real_A = Create2DArray(quiz_JSON.length);
-
-        for(var i = 0; i <quiz_JSON.length; i++){
-            if( quiz_JSON[i].makeType == "obj"){
-                shuffle(quiz_answer_list);
-
-                real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
-                real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
-                real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
-                real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
-
-                for(var j = 0; j<=3; j++){
-                    switch(quiz_answer_list[j]){
-                        case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
-                            break;
-                    }
-                }
-            }
-        }
-
-        console.log(JSON.stringify(quiz_JSON));
 
         function btn_click(){
 
             var h1 = document.getElementsByTagName('h1')[0],
-                start = document.getElementById('start'),
-                stop = document.getElementById('stop'),
-                clear = document.getElementById('clear'),
                 seconds = 0, minutes = 0, hours = 0,
                 t;
 
@@ -303,7 +254,6 @@
                     //+quiz_JSON[quiz_numbar-1].quizId
                     success: function (result) {
                         answer_count++;
-                        document.getElementById('answer_c').innerText= answer_count;
                     },
                     error: function(request, status, error) {
                         alert("AJAX 에러입니다. ");

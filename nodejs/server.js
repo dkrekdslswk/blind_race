@@ -80,6 +80,11 @@ io.on('connection', function (socket){
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
 
+    socket.on('popInfo',function(roomPin, quizData){
+        console.log('유저참가',roomPin+","+quizData);
+        io.sockets.in(roomPin).emit('popInfo',quizData);
+    });
+
     //웹 학생 접속성공여부
     socket.on('web_enter_room',function(roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
         io.sockets.in(roomPin).emit('web_enter_room',listName,quizCount,groupName,groupStudentCount, sessionId,enter_check);
