@@ -71,7 +71,7 @@
 </div>
 
 {{--Modal : make quiz--}}
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="width: 1200px">
 
         <div class="modal-content" style="padding: 10px 20px 0 20px;">
@@ -113,35 +113,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <script>
-
-                var grade1 = ["김똘똘",95,32,30,33,"19/20","pass","pass"];
-                var grade2 = ["최천재",75,20,28,27,"15/20","retest_done","submit_done"];
-                var grade3 = ["심사쵸",55,15,14,15,"11/20","retest_yet","submit_yet"];
-                var grade4 = ["안예민",55,15,14,15,"11/20","retest_yet","submit_yet"];
-                var grade5 = ["사라다",55,15,14,15,"11/20","retest_yet","submit_yet"];
-
-                var all_grade = [grade1,grade2,grade3,grade4,grade5];
-
-                for(var i = 0 ; i < all_grade.length ; i++){
-                    $('#grade_list').append($('<tr id="grade_'+all_grade[i][0]+'">'));
-
-                    for(var j = 0 ; j < all_grade[0].length ; j++ ) {
-
-                        if( j >= 6){
-                            if (all_grade[i][j] != "pass"){
-                                $('#grade_' + all_grade[i][0]).append($('<td>').append($('<a href="#">').text(all_grade[i][j])));
-                            }else{
-                                $('#grade_' + all_grade[i][0]).append($('<td>').text(all_grade[i][j]));
-                            }
-                        }else{
-                            $('#grade_' + all_grade[i][0]).append($('<td>').text(all_grade[i][j]));
-                        }
-                    }
-                }
-
-            </script>
 
                 <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">학생 점수 인쇄</button>
