@@ -1085,7 +1085,7 @@ class RaceController extends Controller{
             ->where([
                 'r.number' => $raceId
             ])
-            ->join('listQuizs as lq', ' lq.listNumber', '=', 'r.listNumber')
+            ->join('listQuizs as lq', 'lq.listNumber', '=', 'r.listNumber')
             ->leftJoin('records as re', function ($join){
                 $join->on('re.raceNo', '=', 'r.number');
                 $join->on('re.quizNo', '=', 'lq.listNumber');
