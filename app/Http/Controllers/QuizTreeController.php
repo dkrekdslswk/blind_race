@@ -224,7 +224,7 @@ class QuizTreeController extends Controller
             );
         }
 
-        return view('/quizTreeController/createFolder')->with('response', $returnValue);;
+        return $returnValue;
     }
 
     // 리스트 만들기
