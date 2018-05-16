@@ -179,6 +179,8 @@
     <script>
         var sessionId = '<?php echo $response['sessionId']; ?>';
         var raceId = '<?php echo $response['raceId']; ?>';
+
+        var quizId;
         var quizCount;
         var quiz_JSON;
         var retest_quiz_num =0;
@@ -186,6 +188,8 @@
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
         var real_A;
+
+        var selected_answer;
 
         //quizId , sessionId , answer
 
@@ -241,9 +245,6 @@
                 }
             }
 
-
-
-
             $.ajax({
                 type: 'POST',
                 url: "{{url('raceController/retestStart')}}",
@@ -270,17 +271,54 @@
                 }
             });
         };
+        function nextQuiz(){
+
+            quizId = quiz_JSON[retest_quiz_num-1].quizId;
+
+            if(quiz_JSON[retest_quiz_num-1].makeType == "sub")
+                selected_answer = document.getElementById('sub_content').value;
+
+            alert(selected_answer);
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('raceController/retestAnswerIn')}}",
+                dataType: 'json',
+                async:false,
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data:"quizId="+quizId+"&sessionId="+sessionId+"&answer="+selected_answer,
+                success: function (result) {
+                    if(result['check'])
+                        alert('정답입력 성공');
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+
+            quizGet();
+        }
+
         function quizGet(){
             $('#quiz_number').text(retest_quiz_num+1);
             $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
 
             switch(quiz_JSON[retest_quiz_num].makeType){
                 case "obj":
+                    selected_answer = quiz_JSON[retest_quiz_num].right;
                     $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
                     $('#answer1').text(quiz_JSON[retest_quiz_num].right);
+                    $('#answer1_radio').val(quiz_JSON[retest_quiz_num].right);
+
                     $('#answer2').text(quiz_JSON[retest_quiz_num].example1);
+                    $('#answer2_radio').val(quiz_JSON[retest_quiz_num].example1);
+
                     $('#answer3').text(quiz_JSON[retest_quiz_num].example2);
+                    $('#answer3_radio').val(quiz_JSON[retest_quiz_num].example2);
+
                     $('#answer4').text(quiz_JSON[retest_quiz_num].example3);
+                    $('#answer4_radio').val(quiz_JSON[retest_quiz_num].example3);
 
                     $('#obj').show();
                     $('#sub').hide();
@@ -293,6 +331,14 @@
             }
             retest_quiz_num++;
         }
+
+    </script>
+
+    <script>
+
+        $(document).on("change","input[type=radio][name=answer]",function(event){
+            selected_answer = this.value;
+        });
 
     </script>
 
@@ -323,25 +369,25 @@
                     <div id="obj" style="display:none;">
                         <br>
                         <label>
-                            <input name="answer" type="radio">
+                            <input id="answer1_radio" name="answer" type="radio" checked="checked">
                             <span id="answer1" >요로시꾸</span>
                         </label>
                         <br>
 
                         <label>
-                            <input name="answer" type="radio">
+                            <input id="answer2_radio"  name="answer" type="radio">
                             <span id="answer2">요로시꾸</span>
                         </label>
                         <br>
 
                         <label>
-                            <input name="answer" type="radio">
+                            <input id="answer3_radio"  name="answer" type="radio">
                             <span id="answer3">요로시d</span>
                         </label>
                         <br>
 
                         <label>
-                            <input name="answer" type="radio">
+                            <input id="answer4_radio"  name="answer" type="radio">
                             <span id="answer4">요로시꾸</span>
                         </label>
                         <br>
@@ -361,7 +407,7 @@
 
             <tr> <td class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
                 <td class="retest_footer"  style=" text-align: right;">
-                    <button id="Re-Test" onclick="quizGet()"> 다음문제</button>
+                    <button id="Re-Test" onclick="nextQuiz();"> 다음문제</button>
                 </td> </tr>
         </table>
     </div>
