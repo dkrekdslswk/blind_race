@@ -537,6 +537,9 @@ class RaceController extends Controller{
                 ->groupBy('r.number')
                 ->first();
 
+            // 미제출 문제 처리하기
+            $this->omission($userData['userId'], $userData['raceId'], 0);
+
             // 최종 성적 정보 가져오기
             $students = DB::table('records as r')
                 ->select(
@@ -980,19 +983,40 @@ class RaceController extends Controller{
 
     // 재시험 혹은 테스트에서 미제출 문제 처리
     private function omission($userId, $raceId, $type){
-        $lists = DB::table('races as r')
+        $quizs = DB::table('races as r')
             ->select(
-                'lq.quizNumber',
-                'lq.listNumber'
+                'lq.quizNumber as quizId',
+                'lq.listNumber as listId',
+                DB::raw('count(CASE WHEN re.userNo = '.$userId.' THEN 1 END) as omissionCheck')
             )
             ->where([
-                'r.number' => $raceId
+                'r.number' => $raceId,
+                'omissionCheck' => 1
             ])
             ->join('listQuizs as lq', ' lq.listNumber', '=', 'r.listNumber')
             ->leftJoin('records as re', function ($join){
-                $join->on('re.raceNumber', '=', 'r.number');
-                $join->on('re.quizNumber', '=', 'lq.listNumber');
+                $join->on('re.raceNo', '=', 'r.number');
+                $join->on('re.quizNo', '=', 'lq.listNumber');
             })
+            ->groupBy(['r.number', 'lq.quizNumber'])
             ->get();
+
+        $insert = array();
+        foreach ($quizs as $quiz){
+            array_push($insert, array(
+                'userNo' => $userId,
+                'raceNo' => $raceId,
+                'listNo' => $quizs->listId,
+                'quizNo' => $quizs->quizNo,
+                'retest' => $type,
+                'answer' => '',
+                'answerCheck' => 'X'
+            ));
+        }
+
+        if (count($insert) > 0){
+            DB::table('records')
+                ->insert($insert);
+        }
     }
 }
