@@ -537,9 +537,6 @@ class RaceController extends Controller{
                 ->groupBy('r.number')
                 ->first();
 
-            // 미제출 문제 처리하기
-            $this->omission($userData['userId'], $userData['raceId'], 0);
-
             // 최종 성적 정보 가져오기
             $students = DB::table('records as r')
                 ->select(
@@ -556,6 +553,11 @@ class RaceController extends Controller{
                 ->orderBy('rightCount', 's.userNumber')
                 ->groupBy('s.userNumber')
                 ->get();
+
+            // 미제출 문제 처리하기
+            foreach ($students as $student)
+                $this->omission($student->userId, $userData['raceId'], 0);
+            }
 
             // 재시험 여부 확인하기
             $retestTargets = array();
