@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
@@ -175,80 +175,196 @@
             background:green;
         }
     </style>
-    
+
     <script>
         var sessionId = '<?php echo $response['sessionId']; ?>';
         var raceId = '<?php echo $response['raceId']; ?>';
+        var quizCount;
+        var quiz_JSON;
+        var retest_quiz_num =0;
+
+        var quiz_answer_list = [1,2,3,4];
+        var rightAnswer;
+        var real_A;
+
+        //quizId , sessionId , answer
+
+        window.onload = function(){
+            function shuffle(a) {
+
+                var j, x, i;
+                for (i = a.length; i; i -= 1) {
+                    j = Math.floor(Math.random() * i);
+                    x = a[i - 1];
+                    a[i - 1] = a[j];
+                    a[j] = x;
+                }
+            }
+            function Create2DArray(rows) {
+                var arr = [];
+
+                for (var i=0;i<rows;i++) {
+                    arr[i] = [];
+                }
+
+                return arr;
+            }
+
+            function shuffle_quiz(){
+
+                real_A = Create2DArray(quiz_JSON.length);
+
+                for(var i = 0; i <quiz_JSON.length; i++){
+
+                    if( quiz_JSON[i].makeType == "obj"){
+
+                        shuffle(quiz_answer_list);
+
+                        real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
+                        real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
+                        real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
+                        real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
+
+                        for(var j = 0; j<=3; j++){
+                            switch(quiz_answer_list[j]){
+                                case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
+                                    break;
+                                case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
+                                    break;
+                                case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
+                                    break;
+                                case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('raceController/retestStart')}}",
+                dataType: 'json',
+                async:false,
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data:"raceId="+raceId+"&sessionId="+sessionId,
+                success: function (result) {
+                    $('#raceName').text(result['listName']);
+                    $('#quizCount').text(result['quizCount']+"문제");
+                    $('#passingMark').text("합격점:"+result['passingMark']);
+                    $('#groupName').text(result['groupName']);
+                    $('#userName').text(result['userName']);
+
+                    quizCount = result['quizCount'];
+                    quiz_JSON = result['quizs']['quiz'];
+                    shuffle_quiz();
+
+                    quizGet();
+
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        };
+        function quizGet(){
+            $('#quiz_number').text(retest_quiz_num+1);
+            $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
+
+            switch(quiz_JSON[retest_quiz_num].makeType){
+                case "obj":
+                    $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
+                    $('#answer1').text(quiz_JSON[retest_quiz_num].right);
+                    $('#answer2').text(quiz_JSON[retest_quiz_num].example1);
+                    $('#answer3').text(quiz_JSON[retest_quiz_num].example2);
+                    $('#answer4').text(quiz_JSON[retest_quiz_num].example3);
+
+                    $('#obj').show();
+                    $('#sub').hide();
+                    break;
+                case "sub":
+                    $('#quiz_guide').text('괄호  안에 들어갈 답을 입력 해 주세요');
+                    $('#sub').show();
+                    $('#obj').hide();
+                    break;
+            }
+            retest_quiz_num++;
+        }
+
     </script>
-    
+
 </head>
 <body>
-    <div>@include('Navigation.main_nav')</div>
+<div>@include('Navigation.main_nav')</div>
 
-    <div id="test_content">
-        <div class="card" style=" width: 80%; height: 100px; position:relative;">
-            <div style="width:40%;" class="test_info">문제제목</div>
-            <div style="width:20%;" class="test_info">1/30 문제 </div>
-            <div style="width:10%;" class="test_info"> 재시험 </div>
-            <div style="width:10%;" class="test_info"> 김똘d </div>
-        </div>
-
-        <br><br>
-
-        <div id="q_table" style="width:80%; height:60%;" class="card">
-            <table  style="width:100%;" style="height:100%;">
-
-                <tr>
-                    <td colspan="3" style="width:100%; height:400px;" valign="top">
-                        <span id="quiz_number">1.</span>
-                        <span id="quiz_contents">どうぞ（　　　）お願いいたします。</span><br>
-                        <span id="quiz_guide"> 괄호  안에 들어갈 어휘를 선택해주세요</span>
-
-                        <div id="obj" style="display:none;">
-                            <br>
-                            <label>
-                                <input name="answer" type="radio">
-                                <span id="answer1" >요로시꾸</span>
-                            </label>
-                            <br>
-
-                            <label>
-                                <input name="answer" type="radio">
-                                <span id="answer2">요로시꾸</span>
-                            </label>
-                            <br>
-
-                            <label>
-                                <input name="answer" type="radio">
-                                <span id="answer3">요로시d</span>
-                            </label>
-                            <br>
-
-                            <label>
-                                <input name="answer" type="radio">
-                                <span id="answer4">요로시꾸</span>
-                            </label>
-                            <br>
-                      </div>
-
-                        <div id="sub" style="display:none;">
-                            <div class="group">
-                                <input id="sub_content" type="text" required>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label id="sub_guide">주관식답안</label>
-                            </div>
-                        </div>
-
-                    </td>
-                </tr>
-
-                <tr> <td class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
-                    <td class="retest_footer"  style=" text-align: right;">
-                    <button id="Re-Test"> 다음문제</button>
-                    </td> </tr>
-            </table>
-        </div>
+<div id="test_content">
+    <div class="card"         style=" width: 80%; height: 100px; position:relative;">
+        <div id="raceName"    style="width:40%;" class="test_info">문제제목</div>
+        <div id="quizCount"   style="width:20%;" class="test_info">1/30 문제 </div>
+        <div id="passingMark" style="width:10%;" class="test_info"> 합격점 </div>
+        <div id="groupName"   style="width:10%; margin-left:5%;" class="test_info"> 그룹아이디 </div>
+        <div id="userName"    style="width:15%;" class="test_info"> 김똘d </div>
     </div>
+
+    <br><br>
+
+    <div id="q_table" style="width:80%; height:60%;" class="card">
+        <table  style="width:100%;" style="height:100%;">
+
+            <tr>
+                <td colspan="3" style="width:100%; height:400px;" valign="top">
+                    <span id="quiz_number">1.</span>
+                    <span id="quiz_contents">どうぞ（　　　）お願いいたします。</span><br>
+                    <span id="quiz_guide"> 괄호  안에 들어갈 답을 선택해주세요</span>
+
+                    <div id="obj" style="display:none;">
+                        <br>
+                        <label>
+                            <input name="answer" type="radio">
+                            <span id="answer1" >요로시꾸</span>
+                        </label>
+                        <br>
+
+                        <label>
+                            <input name="answer" type="radio">
+                            <span id="answer2">요로시꾸</span>
+                        </label>
+                        <br>
+
+                        <label>
+                            <input name="answer" type="radio">
+                            <span id="answer3">요로시d</span>
+                        </label>
+                        <br>
+
+                        <label>
+                            <input name="answer" type="radio">
+                            <span id="answer4">요로시꾸</span>
+                        </label>
+                        <br>
+                    </div>
+
+                    <div id="sub" style="display:none;">
+                        <div class="group">
+                            <input id="sub_content" type="text" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label id="sub_guide">주관식답안</label>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr> <td class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
+                <td class="retest_footer"  style=" text-align: right;">
+                    <button id="Re-Test" onclick="quizGet()"> 다음문제</button>
+                </td> </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>
