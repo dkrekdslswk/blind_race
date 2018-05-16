@@ -768,7 +768,7 @@ class RaceController extends Controller{
         if($raceCheck){
             DB::table('sessionDatas')
                 ->where([
-                    'sessionId' => $postData['sessionId']
+                    'number' => $postData['sessionId']
                 ])
                 ->update([
                     'raceNumber' => $postData['raceId']
@@ -935,7 +935,6 @@ class RaceController extends Controller{
 
             // 재시험 여부 확인하기
             $retestTargets = array();
-            $wrongTargets = array();
             if ($raceData) {
                 foreach ($students as $student) {
                     if ($raceData->passingMark > (($student->rightCount / $raceData->quizCount) * 100)) {
