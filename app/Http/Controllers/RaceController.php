@@ -1100,7 +1100,7 @@ class RaceController extends Controller{
                     'userNo' => $userId,
                     'raceNo' => $raceId,
                     'listNo' => $quiz->listId,
-                    'quizNo' => $quiz->quizNo,
+                    'quizNo' => $quiz->quizId,
                     'retest' => $type,
                     'answer' => '',
                     'answerCheck' => 'X'
