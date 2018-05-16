@@ -225,6 +225,8 @@
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
+            socket.emit('popQuiz_start',roomPin);
+
             $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
             socket.emit('android_game_start',roomPin, quiz_JSON[0].quizId , quiz_JSON[0].makeType);
 
