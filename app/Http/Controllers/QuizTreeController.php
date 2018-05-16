@@ -193,9 +193,9 @@ class QuizTreeController extends Controller
     // 리스트 폴더 만들기
     public function createFolder(Request $request){
         // 보내진 값 받기
-//        $json     = $request->input('post');
-        $json     = json_encode(array('folderName' => '교통사고칠조'));
-        $postData = json_decode($json);
+        $postData = array(
+            'folderName' => $request->input('folderName')
+        );
 
         // 로그인 되어있는 유저의 정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));

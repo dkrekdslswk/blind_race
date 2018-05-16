@@ -69,13 +69,13 @@ Route::get('/race_retest', function(){
     return view('Race/race_retest');
 });
 /* 2-6 Blind Race : Race_popquiz  -> 교사 쪽지시험 부분 */
-Route::get('/race_retest', function(){
-    return view('Race/race_retest');
+Route::get('/race_popquiz', function(){
+    return view('Race/race_popquiz');
 });
 
 /* 3. Quiz Tree : Quiz List */
-Route::get('/race_popquiz', function(){
-    return view('Race/race_popquiz');
+Route::get('/quiz_list', function(){
+    return view('QuizTree/quiz_list');
 });
 
 /* 3-1. Quiz Tree : Quiz Making */
@@ -123,6 +123,10 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
 Route::post('/raceController/raceEnd','RaceController@raceEnd');
+Route::post('/raceController/getRetestListWeb','RaceController@getRetestListWeb');
+Route::post('/raceController/retestSet','RaceController@retestSet');
+Route::post('/raceController/retestStart','RaceController@retestStart');
+Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');

@@ -5,7 +5,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Quiz list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 
     <style type="text/css">
@@ -46,9 +45,6 @@
             margin:0;
         }
 
-        /*
-        used to vertically center elements, may need modification if you're not using default sizes.
-        */
         .panel-table .panel-footer .col{
             line-height: 34px;
             height: 34px;
@@ -67,67 +63,25 @@
             background-color: white;
         }
 
-        .main-body {
-            max-width: 1220px;
-            min-width: 955px;
-            /*     overflow: hidden; */
-            margin: 0 auto;
-            position: relative;
-            height: 1024px;
-        }
-        .page-small .main-body {
-            max-width: 768px;
-            min-width: 320px;
-        }
-
-        #menu-main {
-            width: 220px;
-            height:100%;
-            left: 0;
-            bottom: 0;
-            float: left;
-            position: relative;
-            /*     min-height: 1000px; */
-            top: 0px;
-            transition: all 0.4s ease 0s;
-            background-color: #ffffff;
-            border-left: 1px solid #e1e2e3;
-            border-right: 1px solid #e1e2e3;
-            border-bottom: 1px solid #e1e2e3;
-        }
-
         #wrapper {
-            margin: 0 50px 0 220px;
+            margin: 0 0 0 220px;
             padding: 0;
             position: relative;
-            min-height: 100%;
+            min-height: 705px;
             min-width: 1000px;
         }
-    </style>
 
+    </style>
 </head>
 
 <script>
 
     // 폴더, 리스트를 저장하기 위한 배열
+    var folderListData = new Array();
     var quizlistData = new Array();
 
-    // <기능 1> 리스트 생성
-    // 입력된 퀴즈명, 폴더 아이디를 컨트롤러로 보내기 위함
-    $(document).ready(function () {
-        $('#quizName').change(function () {
-            var quizName = $("#quizName").val();
-
-            var listNameObj = document.getElementById("listName");
-            listNameObj.value = quizName;
-
-            var folderIdObj = document.getElementById("folderId");
-            folderIdObj.value = quizlistData["selectFolder"];
-        });
-    });
-
-    // BODY ONLOAD : 컨트롤러로부터 폴더, 리스트 정보를 불러오기 위한 AJAX
-    function getValue() {
+    // BODY ONLOAD : 컨트롤러로부터 폴더 정보를 불러오기 위한 AJAX
+    function getFolderValue() {
 
         var params = {
             folderId: 1
@@ -143,8 +97,34 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
-                quizlistData = data;
+                folderListData = data;
+                folderValue();
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
 
+    }
+
+    // 컨트롤러로부터 리스트 정보를 불러오기 위한 AJAX
+    function getListValue(idNum) {
+
+        var params = {
+            folderId: idNum
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/getfolderLists')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+                quizlistData = data;
                 listValue();
             },
             error: function (data) {
@@ -154,8 +134,26 @@
 
     }
 
-    // BODY ONLOAD AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더 정보를 보여줌
+    function folderValue() {
+        for(var i = 0; i < folderListData['folders'].length; i++) {
+            if(folderListData['folders'][i]['folderId'] == 0) {
+                $("#folderList").append(
+                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                );
+            }
+            else {
+                $("#folderList").append(
+                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                );
+            }
+        }
+    }
+
+    // AJAX 통신 성공시 호출되는 메서드 : 리스트 정보를 보여줌
     function listValue() {
+
+        $("#list").empty();
 
         for(var i = 0; i < quizlistData['lists'].length; i++) {
 
@@ -232,6 +230,30 @@
         alert(raceSaveData);
 
     }
+
+    // <기능 1> 리스트 생성
+    // 입력된 퀴즈명, 폴더 아이디를 컨트롤러로 보내기 위함
+    $(document).ready(function () {
+        $('#quizName').change(function () {
+            var quizName = $("#quizName").val();
+
+            var listNameObj = document.getElementById("listName");
+            listNameObj.value = quizName;
+
+            var folderIdObj = document.getElementById("folderId");
+            folderIdObj.value = folderListData["selectFolder"];
+        });
+    });
+
+    // <추가 기능> 폴더 생성
+    $(document).ready(function () {
+        $('#folder').change(function () {
+            var folderName = $("folder").val();
+
+            var folderNameObj = document.getElementById("folderName");
+            folderNameObj.value = folderName;
+        })
+    });
 
     // <기능 2> 리스트 삭제
     function deleteList(idNum) {
@@ -416,64 +438,70 @@
 
 </script>
 
-<body onload="getValue()">
+<!-- 처음에 호출할 때 최신 폴더 + 최신 리스트를 호출해야 하는데...
+     바디 onload로도 가능한지??
+-->
+<body onload="getFolderValue()">
 
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
-<aside id="menu-main">
-    @include('QuizTree.quiz_list_side_bar')
-</aside>
-
-<div class="btn-process" style="margin-top:50px;"></div>
-
-<div id="wrapper">
-<!--Quiz List Table-->
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default panel-table">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col col-xs-6">
-                        <h3 class="panel-title">퀴즈 리스트</h3>
-                    </div>
-                    <div class="col col-xs-6 text-right">
-                        <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+    <div class="side-menu">
+        <aside class="navbar navbar-default" role="navigation">
+        @include('QuizTree.quiz_list_side_bar')
+    </aside>
+    </div>
+
+    <div class="btn-process" style="margin-top:50px;"></div>
+
+    <!--Quiz List Table-->
+    <div id="wrapper">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">퀴즈 리스트</h3>
+                        </div>
+                        <div class="col col-xs-6 text-right">
+                            <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped table-bordered table-list">
-                    <thead>
-                    <tr>
-                        <th style="width: 15%;"><em class="fa fa-cog"></em></th>
-                        <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
-                        <th style="text-align: center; width: 50%;">퀴즈명</th>
-                        <th style="text-align: center; width: 15%;">문항수</th>
-                    </tr>
-                    </thead>
-                    <tbody id="list">
-                    {{--list 공간--}}
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col col-xs-4">Page 1 of 5
-                    </div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                        <ul class="pagination visible-xs pull-right">
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%;"><em class="fa fa-cog"></em></th>
+                            <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
+                            <th style="text-align: center; width: 50%;">퀴즈명</th>
+                            <th style="text-align: center; width: 15%;">문항수</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
+                        {{--list 공간--}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -481,9 +509,8 @@
     </div>
 </div>
 
-<!--Modal : make quiz-->
-<!-- <기능 1> 리스트 생성 -->
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--Modal : create quiz-->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
             {{csrf_field()}}
@@ -518,6 +545,29 @@
 
 <!--Modal : show quiz (수정 불가 리스트)-->
 <div id="showQuizDivFNU"></div>
+
+<!--Modal : create folder-->
+<div class="modal fade" id="createFolder">
+    <div class="modal-dialog">
+        <form action="{{url('quizTreeController/createFolder')}}" method="Post" enctype="multipart/form-data">
+            {{csrf_field()}}
+            <input type="hidden" name="folderName" id="folderName" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    폴더 이름 <input type="text" id="folder">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">만들기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
 </div>
+
 </body>
 </html>

@@ -18,6 +18,9 @@
     <script type="text/javascript"></script>
 
     <style>
+        body{
+            background: #9370db; !important;
+        }
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             /*background-color: rgba(255,255,255,.84);*/
@@ -82,38 +85,76 @@
 
     </style>
     <script>
-        var quiz_numbar = 0;
         var quiz_member = 0;
-        var quiz_continue = true;
+
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
-
         var real_A;
+        var roomPin ='<?php echo $response['roomPin']; ?>';
+        var t_sessionId = '<?php echo $response['sessionId']; ?>';
+        var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
+
+        var listName = '<?php echo $response['list']['listName']; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
+        var groupName = '<?php echo $response['group']['groupName']; ?>';
+        var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
 
         var answer_count = 0;
         window.onload = function() {
-            {{--var quiz_answer_list = [1,2,3,4];--}}
-            {{--var rightAnswer;--}}
-            {{--var quiz_member = 0;--}}
 
-            {{--var real_A = new Array();--}}
+            //정답뒤섞기
+            function shuffle(a) {
+                var j, x, i;
+                for (i = a.length; i; i -= 1) {
+                    j = Math.floor(Math.random() * i);
+                    x = a[i - 1];
+                    a[i - 1] = a[j];
+                    a[j] = x;
+                }
+            }
+            function Create2DArray(rows) {
+                var arr = [];
 
-            {{--var answer_count = 0;--}}
-            {{--var roomPin ='<?php echo $response['roomPin']; ?>';--}}
-            {{--var t_sessionId = '<?php echo $response['sessionId']; ?>';--}}
-            {{--var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');--}}
+                for (var i=0;i<rows;i++) {
+                    arr[i] = [];
+                }
 
-            {{--var listName = '<?php echo $response['list']['listName']; ?>';--}}
-            {{--var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';--}}
-            {{--var groupName = '<?php echo $response['group']['groupName']; ?>';--}}
-            {{--var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';--}}
+                return arr;
+            }
+            real_A = Create2DArray(quiz_JSON.length);
+
+            for(var i = 0; i <quiz_JSON.length; i++){
+                if( quiz_JSON[i].makeType == "obj"){
+                    shuffle(quiz_answer_list);
+
+                    real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
+                    real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
+                    real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
+                    real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
+
+                    for(var j = 0; j<=3; j++){
+                        switch(quiz_answer_list[j]){
+                            case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
+                                break;
+                        }
+                    }
+                }
+            }
+
+            console.log(JSON.stringify(quiz_JSON));
 
             var socket = io(':8890');
 
-            // $('#race_name').html(listName);
-            // $('#race_count').html(quizCount);
-            // $('#group_name').html(groupName);
-            // $('#group_student_count').html(groupStudentCount);
+            $('#race_name').html(listName);
+            $('#race_count').html(quizCount);
+            $('#group_name').html(groupName);
+            $('#group_student_count').html(groupStudentCount);
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
@@ -124,13 +165,17 @@
                     type: 'POST',
                     url: "{{url('/raceController/studentIn')}}",
                     dataType: 'json',
+                    async: false ,
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
-                        if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId);
+                        if(result['check'] == true) {
+                            socket.emit('android_join_check', true, sessionId, "popQuiz");
+                            quiz_member++;
+                            socket.emit('popInfo',roomPin, JSON.stringify(quiz_JSON) );
+                        }
                         else
-                            socket.emit('android_join_check',false, sessionId);
+                            socket.emit('android_join_check',false, sessionId ,"popQuiz");
                     },
                     error: function(request, status, error) {
                         console.log("안드로이드 join 실패"+roomPin);
@@ -139,105 +184,44 @@
 
             });
 
-
-
-            socket.on('user_in',function(roomPin,nick,sessionId,characterId){
-                //유저정보를 DB세션에 추가함
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('/raceController/studentSet')}}",
-                    dataType: 'json',
-                    async: false ,
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data:"nick="+nick+"&sessionId="+sessionId+"&characterId="+characterId,
-                    success: function (result) {
-                        console.log(result['nickCheck']);
-                        if( result['nickCheck'] && result['characterCheck'] )
-                        {
-                            //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4></li>').appendTo('body');
-
-                            quiz_member++;
-                            $('#student_count').html(quiz_member);
-                            //유저한테 다시보내줌 result['characterId'];
-
-                            socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
-                            socket.emit('android_enter_room',roomPin, result['characterId'], sessionId);
-                        }
-                        else{
-                            socket.emit('web_enter_room',roomPin,nick,sessionId,characterId,false);
-                            //닉네임이나 캐릭터가 문제있음
-                            socket.emit('android_enter_room',roomPin, false, sessionId);
-                        }
-
-                    },
-                    error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
-                    }
-                });
-            });
-
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
             })
         };
-        // var quiz_JSON = [
-        //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
-        //     {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
-        //     {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
-        //     {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
-        //     {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
-        // ];
 
-
-        //정답뒤섞기
-        function shuffle(a) {
-            var j, x, i;
-            for (i = a.length; i; i -= 1) {
-                j = Math.floor(Math.random() * i);
-                x = a[i - 1];
-                a[i - 1] = a[j];
-                a[j] = x;
-            }
-        }
-        function Create2DArray(rows) {
-            var arr = [];
-
-            for (var i=0;i<rows;i++) {
-                arr[i] = [];
-            }
-
-            return arr;
-        }
-        real_A = Create2DArray(quiz_JSON.length);
-
-        for(var i = 0; i <quiz_JSON.length; i++){
-            if( quiz_JSON[i].makeType == "obj"){
-                shuffle(quiz_answer_list);
-
-                real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
-                real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
-                real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
-                real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
-
-                for(var j = 0; j<=3; j++){
-                    switch(quiz_answer_list[j]){
-                        case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
-                            break;
-                        case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
-                            break;
-                    }
-                }
-            }
-        }
-
-        console.log(JSON.stringify(quiz_JSON));
 
         function btn_click(){
+
+            var h1 = document.getElementsByTagName('h1')[0],
+                seconds = 0, minutes = 0, hours = 0,
+                t;
+
+            function add() {
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+
+                h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+                timer();
+            }
+            function timer() {
+                t = setTimeout(add, 1000);
+            }
+            timer();
+
+
+            /* Start button */
+            start.onclick = timer;
+
+
+
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
@@ -270,7 +254,6 @@
                     //+quiz_JSON[quiz_numbar-1].quizId
                     success: function (result) {
                         answer_count++;
-                        document.getElementById('answer_c').innerText= answer_count;
                     },
                     error: function(request, status, error) {
                         alert("AJAX 에러입니다. ");
@@ -300,7 +283,6 @@
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
                     else
                         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
-
                 }
             });
 
@@ -344,6 +326,121 @@
 
     <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
         <img src="/img/info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시험시작을 클릭해주세요
+    </div>
+</div>
+
+<div>
+    <style>
+        * {margin: 0; padding: 0;}
+
+        .container {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            padding: 10px;
+            background: linear-gradient(top, #222, #444);
+            overflow: hidden;
+            display: inline-block;
+            border: 7px solid #efefef;
+            border-radius: 5px;
+            position: relative;
+
+            box-shadow:
+                    inset 0 -2px 10px 1px rgba(0, 0, 0, 0.75),
+                    0 5px 20px -10px rgba(0, 0, 0, 1);
+        }
+
+        .cell {
+            /*Should only display 1 digit. Hence height = line height of .numbers
+            and width = width of .numbers*/
+            width: 0.60em;
+            height: 40px;
+            font-size: 50px;
+            overflow: hidden;
+            position: relative;
+            float: left;
+        }
+
+        .numbers {
+            width: 0.6em;
+            line-height: 40px;
+            font-family: digital, arial, verdana;
+            text-align: center;
+            color: #fff;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            /*Glow to the text*/
+            text-shadow: 0 0 5px rgba(255, 255, 255, 1);
+        }
+
+        /*Styles for the controls*/
+        #timer_controls {
+            margin-top: -5px;
+        }
+        #timer_controls label {
+            cursor: pointer;
+            padding: 5px 10px;
+            background: #efefef;
+            font-family: arial, verdana, tahoma;
+            font-size: 11px;
+            border-radius: 0 0 3px 3px;
+        }
+        input[name="controls"] {display: none;}
+
+        /*Control code*/
+        #stop:checked~.timer .numbers {animation-play-state: paused;}
+        #start:checked~.timer .numbers {animation-play-state: running;}
+        #reset:checked~.timer .numbers {animation: none;}
+
+        .moveten {
+            /*The digits move but dont look good. We will use steps now
+            10 digits = 10 steps. You can now see the digits swapping instead of
+            moving pixel-by-pixel*/
+            animation: moveten 1s steps(10, end) infinite;
+            /*By default animation should be paused*/
+            animation-play-state: paused;
+        }
+        .movesix {
+            animation: movesix 1s steps(6, end) infinite;
+            animation-play-state: paused;
+        }
+
+        /*Now we need to sync the animation speed with time speed*/
+        /*One second per digit. 10 digits. Hence 10s*/
+        .second {animation-duration: 10s;}
+        .tensecond {animation-duration: 60s;} /*60 times .second*/
+
+        .milisecond {animation-duration: 1s;} /*1/10th of .second*/
+        .tenmilisecond {animation-duration: 0.1s;}
+        .hundredmilisecond {animation-duration: 0.01s;}
+
+        .minute {animation-duration: 600s;} /*60 times .second*/
+        .tenminute {animation-duration: 3600s;} /*60 times .minute*/
+
+        .hour {animation-duration: 36000s;} /*60 times .minute*/
+        .tenhour {animation-duration: 360000s;} /*10 times .hour*/
+
+        @keyframes moveten {
+            0% {top: 0;}
+            100% {top: -400px;}
+            /*height = 40. digits = 10. hence -400 to move it completely to the top*/
+        }
+
+        @keyframes movesix {
+            0% {top: 0;}
+            100% {top: -240px;}
+            /*height = 40. digits = 6. hence -240 to move it completely to the top*/
+        }
+
+    </style>
+    <div class="container">
+        <h1><time>00:00:00</time></h1>
+        <div>현재학생 / 전체학생 </div>
     </div>
 </div>
 
