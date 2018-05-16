@@ -86,8 +86,7 @@
     </style>
     <script>
         var quiz_member = 0;
-
-
+        var submit_count=0;
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
         var real_A;
@@ -102,6 +101,7 @@
 
         var answer_count = 0;
         window.onload = function() {
+            
 
             //정답뒤섞기
             function shuffle(a) {
@@ -159,9 +159,8 @@
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
-
+            
             socket.on('android_join',function(roomPin,sessionId){
-
 
                 $.ajax({
                     type: 'POST',
@@ -174,6 +173,7 @@
                         if(result['check'] == true) {
                             socket.emit('android_join_check', true, sessionId, "popQuiz");
                             quiz_member++;
+                            $('#member_count').text(quiz_member);
                         }
                         else
                             socket.emit('android_join_check',false, sessionId ,"popQuiz");
@@ -190,7 +190,10 @@
             })
         };
 
-
+        function pop_end(){
+                // window.loaction.href="/race_result?roomPin="+roomPin;
+                $(location).attr('href', "/race_result?roomPin="+roomPin);
+        }  
         function btn_click(){
 
             var h1 = document.getElementsByTagName('h1')[0],
@@ -220,12 +223,11 @@
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
-            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON));
+            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName);
 
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
-
             socket.on('answer-sum', function(answer ,sessionId , quizId){
 
 
@@ -247,7 +249,11 @@
                 console.log('답변자수 ' , answer_count);
                 console.log('입장플레이어수 ', quiz_member);
             });
-
+            
+            socket.on('pop_quiz_status',function(roomPin){
+                submit_count++;
+                $('#submit_count').text(submit_count);
+            });
         };
     </script>
 </head>
@@ -255,7 +261,7 @@
 
 <div id="wait_room_nav" class="inline-class">
     <img  class="inline-class" src="/img/race_student/exam.png" width="100" height="100">
-    <span>Race</span>
+    <span>PopQuiz</span>
     <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
     <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
     <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
@@ -266,12 +272,12 @@
     <div class="student">
 
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시험시작</button>
-
+        <button onclick="pop_end();" class="btn btn-lg btn-danger">시험 종료 </button>
         <div id="room_Pin" class="counting">
         </div>
 
         <div id="counting_student">
-            <span id="student_count" > 학생 수</span>
+            <span id="member_count" > 학생 수</span>
         </div>
 
     </div>
@@ -402,7 +408,7 @@
     </style>
     <div class="container">
         <h1><time>00:00:00</time></h1>
-        <div>현재학생 / 전체학생 </div>
+        <div>시험 제출자 수<span id="submit_count"></span> </div>
     </div>
 </div>
 

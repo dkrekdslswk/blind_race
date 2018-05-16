@@ -252,6 +252,7 @@
                 async:false,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:"raceId="+raceId+"&sessionId="+sessionId,
+                
                 success: function (result) {
                     $('#raceName').text(result['listName']);
                     $('#quizCount').text(result['quizCount']+"문제");
@@ -278,22 +279,16 @@
             if(quiz_JSON[retest_quiz_num-1].makeType == "sub")
                 selected_answer = document.getElementById('sub_content').value;
 
-            alert(selected_answer);
-
-
             $.ajax({
                 type: 'POST',
                 url: "{{url('raceController/retestAnswerIn')}}",
                 dataType: 'json',
-                async:false,
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data:"quizId="+quizId+"&sessionId="+sessionId+"&answer="+selected_answer,
                 success: function (result) {
-                    if(result['check'])
-                        alert('정답입력 성공');
+                    
                 },
                 error: function (data) {
-                    alert("error");
+                    alert("학생 재시험정답입력 error");
                 }
             });
 
@@ -305,6 +300,7 @@
             $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
 
             switch(quiz_JSON[retest_quiz_num].makeType){
+                
                 case "obj":
                     selected_answer = quiz_JSON[retest_quiz_num].right;
                     $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
@@ -323,6 +319,7 @@
                     $('#obj').show();
                     $('#sub').hide();
                     break;
+                    
                 case "sub":
                     $('#quiz_guide').text('괄호  안에 들어갈 답을 입력 해 주세요');
                     $('#sub').show();
