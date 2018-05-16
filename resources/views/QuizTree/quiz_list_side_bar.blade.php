@@ -335,36 +335,16 @@
 
 <div class="navbar-header">
     <div class="brand-wrapper">
-        <!-- Brand -->
-        <div class="brand-name-wrapper">
-            <a class="navbar-brand" href="#">
-
-            </a>
-        </div>
-
-        <!-- Search -->
-        <a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
-            <span class="glyphicon glyphicon-search"></span>
-        </a>
-
-        <!-- Search body -->
-        <div id="search" class="panel-collapse collapse">
-            <div class="panel-body">
-                <form class="navbar-form" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default "><span class="glyphicon glyphicon-ok"></span></button>
-                </form>
-            </div>
+        <div class="brand-name-wrapper" >
+            <button type="button" class="btn btn-info btn-lg" style="margin-top: 3px; width: 100%" data-toggle="modal" data-target="#createFolder">폴더 만들기</button>
         </div>
     </div>
 </div>
 
-<!-- Main Menu -->
+<!-- 폴더 리스트 -->
 <div class="side-menu-container">
-    <ul class="nav navbar-nav" id="folderList">
-        <li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> 공유폴더</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-folder-close"></span> Active Link</a></li>
+    <ul class="nav navbar-nav" id="folderList" >
+        <!--<li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> 공유폴더</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-folder-close"></span> Active Link</a></li>-->
     </ul>
 </div>
