@@ -126,6 +126,7 @@ Route::post('/raceController/raceEnd','RaceController@raceEnd');
 Route::post('/raceController/getRetestListWeb','RaceController@getRetestListWeb');
 Route::post('/raceController/retestSet','RaceController@retestSet');
 Route::post('/raceController/retestStart','RaceController@retestStart');
+Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
