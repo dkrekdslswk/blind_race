@@ -1075,31 +1075,40 @@ class RaceController extends Controller{
     }
 
     // 재시험 혹은 테스트에서 미제출 문제 처리
-    private function omission($userId, $raceId, $type){
-        $quizs = DB::table('races as r')
+    private function omission($userId, $raceId, $type)
+    {
+        $raceData = DB::table('races')
             ->select(
-                'lq.quizNumber as quizId',
-                'lq.listNumber as listId',
-                DB::raw('count(CASE WHEN re.userNo = '.$userId.' THEN 1 END) as omissionCheck')
+                'listNumber as listId'
             )
             ->where([
-                'r.number' => $raceId
+                'number' => $raceId
             ])
-            ->join('listQuizs as lq', 'lq.listNumber', '=', 'r.listNumber')
-            ->leftJoin('records as re', function ($join){
-                $join->on('re.raceNo', '=', 'r.number');
-                $join->on('re.quizNo', '=', 'lq.listNumber');
+            ->first();
+
+        $quizs = DB::table('listQuizs as lq')
+            ->select(
+                'lq.quizNumber as quizId',
+                DB::raw('count(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
+            )
+            ->where([
+                're.raceNo' => $raceId,
+                're.retest' => $type
+            ])
+            ->leftJoin('records as re', function ($join) {
+                $join->on('re.quizNo', '=', 'lq.quizNumber');
+                $join->on('re.listNo', '=', 'lq.listNumber');
             })
-            ->groupBy(['r.number', 'lq.quizNumber'])
+            ->groupBy('lq.quizNumber')
             ->get();
 
         $insert = array();
-        foreach ($quizs as $quiz){
-            if($quiz->omissionCheck == 0) {
+        foreach ($quizs as $quiz) {
+            if ($quiz->omissionCheck == 0) {
                 array_push($insert, array(
                     'userNo' => $userId,
                     'raceNo' => $raceId,
-                    'listNo' => $quiz->listId,
+                    'listNo' => $raceData->listId,
                     'quizNo' => $quiz->quizId,
                     'retest' => $type,
                     'answer' => '',
@@ -1108,7 +1117,7 @@ class RaceController extends Controller{
             }
         }
 
-        if (count($insert) > 0){
+        if (count($insert) > 0) {
             DB::table('records')
                 ->insert($insert);
         }
