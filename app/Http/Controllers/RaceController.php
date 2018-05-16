@@ -514,7 +514,7 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 혹은 테스트에서 종료 후 세션 정리
+    // 레이스에서 종료 후 세션 정리
     public function raceEnd(Request $request){
         // 선생정보 가져오기기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -536,17 +536,6 @@ class RaceController extends Controller{
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->groupBy('r.number')
                 ->first();
-
-            // 미제출된 문제 오답처리
-            $notAnswerQuizs = DB::table('listQuizs as lq')
-                ->select(
-                    ''
-                )
-                ->where()
-                ->join()
-                ->groupBy()
-                ->orderBy()
-                ->get();
 
             // 최종 성적 정보 가져오기
             $students = DB::table('records as r')
@@ -793,9 +782,22 @@ class RaceController extends Controller{
 
     }
 
-    // 재시험 종료
-    public function retestEnd(){
+    // 재시험 혹은 테스트에서 종료 후 세션 정리
+    public function retestEnd(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
 
+        // 미제출된 문제 오답처리
+        $notAnswerQuizs = DB::table('listQuizs as lq')
+            ->select(
+                ''
+            )
+            ->where()
+            ->join()
+            ->groupBy()
+            ->orderBy()
+            ->get();
     }
 
     // 해당 리스트에서 모든 문제를 가져오는 구문
