@@ -83,8 +83,9 @@
     // BODY ONLOAD : 컨트롤러로부터 폴더 정보를 불러오기 위한 AJAX
     function getFolderValue() {
 
+        // 폴더 리스트만 띠우기 위한거기 때문에 folderId 값은 상관없음
         var params = {
-            folderId: 1
+            folderId: 0
         };
 
         $.ajax({
@@ -99,8 +100,12 @@
             success: function (data) {
                 folderListData = data;
                 quizlistData = data;
+                alert(JSON.stringify(folderListData));
+                // 폴더 리스트
                 folderValue();
-                listValue();
+
+                // 최신 퀴즈 리스트
+                //getListValue(folderListData['folders'][0]['folderId']);
             },
             error: function (data) {
                 alert("error");
@@ -148,6 +153,7 @@
                 $("#folderList").append(
                     "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
+
             }
         }
     }
@@ -247,17 +253,40 @@
     });
 
     // <추가 기능> 폴더 생성
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $('#folder').change(function () {
             var folderName = $("folder").val();
 
             var folderNameObj = document.getElementById("folderName");
             folderNameObj.value = folderName;
         })
-    });
-    
+    });*/
+
+    // <추가 기능> 폴더 생성
     function createFolder() {
-        
+
+        var params = {
+            folderName: "test2"
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/createFolder')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+
+                if(data['check'] == true) window.location.href = "{{url('quiz_list')}}";
+            },
+            error: function (data) {
+
+                alert("error");
+            }
+        });
     }
 
     // <기능 2> 리스트 삭제
@@ -443,9 +472,6 @@
 
 </script>
 
-<!-- 처음에 호출할 때 최신 폴더 + 최신 리스트를 호출해야 하는데...
-     바디 onload로도 가능한지??
--->
 <body onload="getFolderValue()">
 
 <nav>
@@ -552,24 +578,24 @@
 <div id="showQuizDivFNU"></div>
 
 <!--Modal : create folder-->
-<div id="createFolderDiv">
+<div id="createFolderDiv"></div>
     <div class="modal fade" id="createFolder">
         <div class="modal-dialog">
-                <input type="hidden" name="folderName" id="folderName" value="">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
-                    </div>
-                    <div class="modal-body" style="text-align: center">
-                        폴더 이름 <input type="text" id="folder">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">만들기</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    </div>
+            <input type="hidden" name="folderName" id="folderName" value="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
                 </div>
+                <div class="modal-body" style="text-align: center">
+                    폴더 이름 <input type="text" id="folder">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="createFolder()">만들기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
 </body>
 </html>
