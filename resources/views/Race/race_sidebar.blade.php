@@ -336,6 +336,7 @@
 <div class="navbar-header">
     <div class="brand-wrapper">
         <div class="brand-name-wrapper" >
+
         </div>
     </div>
 
@@ -353,13 +354,6 @@
                 </div>
                 <button type="submit" class="btn btn-default "><span class="glyphicon glyphicon-ok"></span></button>
             </form>
-        </div>
-    </div>
-
-    <!-- Create Folder -->
-    <div class="brand-wrapper">
-        <div class="brand-name-wrapper" >
-            <button type="button" class="btn btn-info btn-lg" style="margin-top: 3px; width: 100%" data-toggle="modal" data-target="#createFolder">폴더 만들기</button>
         </div>
     </div>
 </div>

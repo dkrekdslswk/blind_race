@@ -135,11 +135,20 @@
         line-height: 34px;
     }
 
+    #wrapper {
+        margin: 0 0 0 220px;
+        padding: 0;
+        position: relative;
+        min-height: 705px;
+        min-width: 1000px;
+    }
+
 </style>
 
 <script>
 
     // folder, list 정보 저장용 배열
+    var folderListData = new Array();
     var quizlistData = new Array();
 
     // 모달로 넘기는 그룹 선택 파트
@@ -180,13 +189,42 @@
         listIdObj.value = listId;
     }
 
-    function getValue() {
+    // BODY ONLOAD : 컨트롤러로부터 폴더 정보를 불러오기 위한 AJAX
+    function getFolderValue() {
 
         var params = {
             folderId: 1
         };
 
-        // list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/getfolderLists')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+                folderListData = data;
+                quizlistData = data;
+                folderValue();
+                listValue();
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+
+    }
+
+    // 컨트롤러로부터 리스트 정보를 불러오기 위한 AJAX
+    function getListValue(idNum) {
+
+        var params = {
+            folderId: idNum
+        };
+
         $.ajax({
             type: 'POST',
             url: "{{url('quizTreeController/getfolderLists')}}",
@@ -198,17 +236,35 @@
             data: params,
             success: function (data) {
                 quizlistData = data;
-                //alert(JSON.stringify(quizlistData["lists"][0]["listName"]));
-
                 listValue();
             },
             error: function (data) {
                 alert("error");
             }
         });
+
     }
 
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더 정보를 보여줌
+    function folderValue() {
+        for(var i = 0; i < folderListData['folders'].length; i++) {
+            if(folderListData['folders'][i]['folderId'] == 0) {
+                $("#folderList").append(
+                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                );
+            }
+            else {
+                $("#folderList").append(
+                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                );
+            }
+        }
+    }
+
+    // AJAX 통신 성공시 호출되는 메서드 : 리스트 정보를 보여줌
     function listValue() {
+
+        $("#list").empty();
 
         for(var i = 0; i < quizlistData['lists'].length; i++) {
             $("#list").append(
@@ -224,59 +280,69 @@
 
         }
     }
+
 </script>
 
-<body onload="getValue()">
+<body onload="getFolderValue()">
 
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
-<div class="btn-process" style="margin-top:50px;"></div>
-
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default panel-table">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col col-xs-6">
-                        <h3 class="panel-title">퀴즈 리스트</h3>
+    <div class="side-menu">
+        <aside class="navbar navbar-default" role="navigation">
+            @include('Race.race_sidebar')
+        </aside>
+    </div>
+
+    <div class="btn-process" style="margin-top:50px;"></div>
+
+    <!--Quiz List Table-->
+    <div id="wrapper">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">퀴즈 리스트</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped table-bordered table-list">
-                    <thead>
-                    <tr>
-                        <th class="hidden-xs">#</th>
-                        <th style="text-align: center">퀴즈명</th>
-                        <th style="text-align: center">문항수</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody id="list">
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-list">
+                        <thead>
+                        <tr>
+                            <th class="hidden-xs">#</th>
+                            <th style="text-align: center">퀴즈명</th>
+                            <th style="text-align: center">문항수</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
 
-                    {{--list 공간--}}
+                        {{--list 공간--}}
 
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col col-xs-4">Page 1 of 5
-                    </div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                        <ul class="pagination visible-xs pull-right">
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

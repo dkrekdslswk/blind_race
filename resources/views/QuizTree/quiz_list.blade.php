@@ -98,7 +98,9 @@
             data: params,
             success: function (data) {
                 folderListData = data;
+                quizlistData = data;
                 folderValue();
+                listValue();
             },
             error: function (data) {
                 alert("error");
@@ -163,7 +165,6 @@
                 $("#list").append(
                     "<tr>" +
                     "<td align='center'>" +
-                    //"<a class='btn btn-default' data-toggle='modal' data-target='#updateModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-pencil'></em></a>" +
                     "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-trash'></em></a>" +
                     "</td>" +
                     "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate'] + "</td>" +
@@ -254,12 +255,16 @@
             folderNameObj.value = folderName;
         })
     });
+    
+    function createFolder() {
+        
+    }
 
     // <기능 2> 리스트 삭제
     function deleteList(idNum) {
 
         var params = {
-            folderId: 1,
+            folderId: folderListData['selectFolder'],
             listId: idNum
         };
 
@@ -547,27 +552,24 @@
 <div id="showQuizDivFNU"></div>
 
 <!--Modal : create folder-->
-<div class="modal fade" id="createFolder">
-    <div class="modal-dialog">
-        <form action="{{url('quizTreeController/createFolder')}}" method="Post" enctype="multipart/form-data">
-            {{csrf_field()}}
-            <input type="hidden" name="folderName" id="folderName" value="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
+<div id="createFolderDiv">
+    <div class="modal fade" id="createFolder">
+        <div class="modal-dialog">
+                <input type="hidden" name="folderName" id="folderName" value="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        폴더 이름 <input type="text" id="folder">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">만들기</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
                 </div>
-                <div class="modal-body" style="text-align: center">
-                    폴더 이름 <input type="text" id="folder">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">만들기</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </form>
-
+        </div>
     </div>
 </div>
-
 </body>
 </html>
