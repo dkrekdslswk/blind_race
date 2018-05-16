@@ -93,18 +93,19 @@ class QuizTreeController extends Controller
 
         // 가져온 폴더 정보를 정리하기
         $folders = array();
-        foreach ($folderData as $folder){
-            array_push($folders, array(
-                'folderId' => $folder->folderId,
-                'folderName' => $folder->folderName)
-            );
-        }
 
         // 공개된 리스트 정보를 불러올 폴더 설정
         array_push($folders, array(
                 'folderId' => self::OPEN_STATE,
                 'folderName' => '공개 리스트')
         );
+        
+        foreach ($folderData as $folder){
+            array_push($folders, array(
+                'folderId' => $folder->folderId,
+                'folderName' => $folder->folderName)
+            );
+        }
 
         return $folders;
     }
