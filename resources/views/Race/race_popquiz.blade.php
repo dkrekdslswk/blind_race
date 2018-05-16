@@ -86,7 +86,6 @@
     </style>
     <script>
         var quiz_member = 0;
-        
         var submit_count=0;
         var quiz_answer_list = [1,2,3,4];
         var rightAnswer;
@@ -162,8 +161,7 @@
             socket.emit('join', roomPin);
             
             socket.on('android_join',function(roomPin,sessionId){
-                    
-        
+
                 $.ajax({
                     type: 'POST',
                     url: "{{url('/raceController/studentIn')}}",
@@ -230,7 +228,6 @@
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
             //대기방에 입장된 캐릭터와 닉네임이 없어짐
-        
             socket.on('answer-sum', function(answer ,sessionId , quizId){
 
 
@@ -252,7 +249,6 @@
                 console.log('답변자수 ' , answer_count);
                 console.log('입장플레이어수 ', quiz_member);
             });
-            
             
             socket.on('pop_quiz_status',function(roomPin){
                 submit_count++;

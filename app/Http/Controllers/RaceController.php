@@ -171,8 +171,6 @@ class RaceController extends Controller{
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
-        // 반납값 디폴트
-        $sessionCheck   = false;
 
         // 앱 로그인인지 웹 로그인인지 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
@@ -216,13 +214,17 @@ class RaceController extends Controller{
                         'wrongState'   => 'not'
                     ]);
             }
-        }
 
-        // 반납값 정리
-        $returnValue = array(
-            'sessionId'     => $postData['sessionId'],
-            'check'         => $sessionCheck,
-        );
+            // 반납값 정리
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => $sessionCheck
+            );
+        } else {
+            $returnValue = array(
+                'check'         => false
+            );
+        }
 
         return $returnValue;
     }
@@ -914,39 +916,69 @@ class RaceController extends Controller{
 
             if ($raceData) {
                 // 최종 성적 정보 가져오기
-                $students = DB::table('records as re')
+                $records = DB::table('records as re')
                     ->select(
-                        's.number           as sessionId',
-                        's.nick             as nick',
-                        's.characterNumber  as characterId',
-                        's.userNumber       as userId',
                         DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
                     )
                     ->where([
-                        'r.raceNo' => $userData['raceId'],
-                        'r.retest' => 1
+                        're.raceNo' => $userData['raceId'],
+                        're.userNo' => $userData['userId'],
+                        're.retest' => 1
                     ])
-                    ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
-                    ->orderBy('rightCount', 's.userNumber')
-                    ->groupBy('s.userNumber')
-                    ->get();
+                    ->groupBy('re.userNo')
+                    ->first();
 
-                // 미제출 문제 처리하기
-                foreach ($students as $student) {
-                    $this->omission($student->userId, $userData['raceId'], 0);
+                // 학생 점수
+                $score = (int)(($records->rightCount / $raceData->quizCount) * 100);
+
+                // 합격여부 확인하기
+                // 합격
+                if ($raceData->passingMark <= $score) {
+                    // 미제출 문제 처리하기
+                    $this->omission($userData['userId'], $userData['raceId'], 0);
+
+                    // 통과 표시하기
+                    DB::table('raceUsers')
+                        ->where([
+                            'raceNumber' => $userData['raceId'],
+                            'userNumber' => $userData['userId']
+                        ])
+                        ->update([
+                            'retestState' => 'clear'
+                        ]);
+                }
+                // 불합격
+                else {
+                    // 시험친 기록 삭제
+                    DB::table('records')
+                        ->where([
+                            'raceNo' => $userData['raceId'],
+                            'userNo' => $userData['userId'],
+                            'retest' => 1
+                        ])
+                        ->delete();
                 }
 
-                // 재시험 여부 확인하기
-                $retestTargets = array();
-                if ($raceData) {
-                    foreach ($students as $student) {
-                        if ($raceData->passingMark > (($student->rightCount / $raceData->quizCount) * 100)) {
-                            array_push($retestTargets, $student->userId);
-                        }
-                    }
-                }
+                // 반납값 정리
+                $returnValue = array(
+                    'score' => $score,
+                    'passingMark' => $raceData->passingMark,
+                    'check' => true
+                );
+            } else {
+                // 반납값 정리
+                $returnValue = array(
+                    'check' => false
+                );
             }
+        } else {
+            // 반납값 정리
+            $returnValue = array(
+                'check' => false
+            );
         }
+
+        return $returnValue;
     }
 
     // 해당 리스트에서 모든 문제를 가져오는 구문
