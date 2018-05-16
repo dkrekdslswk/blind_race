@@ -171,8 +171,6 @@ class RaceController extends Controller{
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
-        // 반납값 디폴트
-        $sessionCheck   = false;
 
         // 앱 로그인인지 웹 로그인인지 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
@@ -216,13 +214,17 @@ class RaceController extends Controller{
                         'wrongState'   => 'not'
                     ]);
             }
-        }
 
-        // 반납값 정리
-        $returnValue = array(
-            'sessionId'     => $postData['sessionId'],
-            'check'         => $sessionCheck,
-        );
+            // 반납값 정리
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => $sessionCheck
+            );
+        } else {
+            $returnValue = array(
+                'check'         => false
+            );
+        }
 
         return $returnValue;
     }
