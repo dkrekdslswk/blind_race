@@ -515,11 +515,12 @@ class RaceController extends Controller{
     }
 
     // 레이스 혹은 테스트에서 종료 후 세션 정리
-    public function raceEnd(Request $request){
+    public function raceEnd(Request $request)
+    {
         // 선생정보 가져오기기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        if($userData['roomPin']) {
+        if ($userData['roomPin']) {
             // 시험정보 가져오기
             $raceData = DB::table('races as r')
                 ->select(
@@ -555,7 +556,7 @@ class RaceController extends Controller{
                 ->get();
 
             // 미제출 문제 처리하기
-            foreach ($students as $student)
+            foreach ($students as $student) {
                 $this->omission($student->userId, $userData['raceId'], 0);
             }
 
@@ -606,8 +607,8 @@ class RaceController extends Controller{
                         'nick' => $student->nick,
                         'characterId' => $student->characterId,
                         'rightCount' => $student->rightCount,
-                        'retestState' => in_array( $student->userId , $retestTargets),
-                        'wrongState' => in_array(  $student->userId , $wrongTargets)
+                        'retestState' => in_array($student->userId, $retestTargets),
+                        'wrongState' => in_array($student->userId, $wrongTargets)
                     ));
                 }
                 $returnValue = array(
