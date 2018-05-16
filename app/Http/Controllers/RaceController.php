@@ -735,7 +735,7 @@ class RaceController extends Controller{
             );
         }
 
-        return $returnValue;
+        return view('Race/race_retest')->with('response', $returnValue);
     }
 
     // 재시험 문제 받아오기 모바일은 바로 시작 가능
