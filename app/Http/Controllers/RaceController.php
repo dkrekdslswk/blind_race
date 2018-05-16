@@ -525,6 +525,8 @@ class RaceController extends Controller{
                 ->select(
                     'l.name as listName',
                     'r.passingMark as passingMark',
+                    'l.number as listId',
+                    'r.type as type',
                     DB::raw('count(lq.quizNumber) as quizCount')
                 )
                 ->where([
@@ -534,6 +536,17 @@ class RaceController extends Controller{
                 ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
                 ->groupBy('r.number')
                 ->first();
+
+            // 미제출된 문제 오답처리
+            $notAnswerQuizs = DB::table('listQuizs as lq')
+                ->select(
+                    ''
+                )
+                ->where()
+                ->join()
+                ->groupBy()
+                ->orderBy()
+                ->get();
 
             // 최종 성적 정보 가져오기
             $students = DB::table('records as r')
@@ -740,6 +753,7 @@ class RaceController extends Controller{
                 'ru.retestState as retestState',
                 'l.number as listId',
                 'l.name as listName',
+                'u.name as userName',
                 'g.name as groupName',
                 DB::raw('count(lq.quizNumber) as quizCount'),
                 'r.passingMark as passingMark'
@@ -752,8 +766,26 @@ class RaceController extends Controller{
             ->join('groups as g', 'g.number', '=', 'r.groupNumber')
             ->join('lists as l', 'l.number', '=', 'r.listNumber')
             ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+            ->join('users as u', 'u.number', '=', 'ru.userNumber')
             ->groupBy(['ru.userNumber', 'ru.raceNumber'])
             ->first();
+
+        if($raceCheck){
+            $retrunValue = array(
+                'userName' => $raceCheck->userName,
+                'listName' => $raceCheck->listName,
+                'groupName' => $raceCheck->groupName,
+                'quizCount' => $raceCheck->quizCount,
+                'passingMark' => $raceCheck->passingMark,
+                'quizs' => $this->quizGet($raceCheck->listId)
+            );
+        } else {
+            $retrunValue = array(
+                'check' => false
+            );
+        }
+
+        return $retrunValue;
     }
 
     // 재시험 정답 입력
