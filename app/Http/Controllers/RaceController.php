@@ -890,6 +890,60 @@ class RaceController extends Controller{
         $postData = array(
             'sessionId' => $request->input('sessionId')
         );
+
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        if ($userData['raceId']) {
+            // 시험정보 가져오기
+            $raceData = DB::table('races as r')
+                ->select(
+                    'l.name as listName',
+                    'r.passingMark as passingMark',
+                    'l.number as listId',
+                    DB::raw('count(lq.quizNumber) as quizCount')
+                )
+                ->where([
+                    'r.number' => $userData['raceId']
+                ])
+                ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+                ->groupBy('r.number')
+                ->first();
+
+            // 최종 성적 정보 가져오기
+            $students = DB::table('records as r')
+                ->select(
+                    's.number           as sessionId',
+                    's.nick             as nick',
+                    's.characterNumber  as characterId',
+                    's.userNumber       as userId',
+                    DB::raw('COUNT(CASE WHEN r.answerCheck = "O" THEN 1 END) as rightCount')
+                )
+                ->where([
+                    'r.raceNo' => $userData['raceId']
+                ])
+                ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
+                ->orderBy('rightCount', 's.userNumber')
+                ->groupBy('s.userNumber')
+                ->get();
+
+            // 미제출 문제 처리하기
+            foreach ($students as $student) {
+                $this->omission($student->userId, $userData['raceId'], 0);
+            }
+
+            // 재시험 여부 확인하기
+            $retestTargets = array();
+            $wrongTargets = array();
+            if ($raceData) {
+                foreach ($students as $student) {
+                    if ($raceData->passingMark > (($student->rightCount / $raceData->quizCount) * 100)) {
+                        array_push($retestTargets, $student->userId);
+                    }
+                }
+            }
+        }
     }
 
     // 해당 리스트에서 모든 문제를 가져오는 구문
