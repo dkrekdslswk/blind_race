@@ -559,10 +559,10 @@ class RaceController extends Controller{
                 ->groupBy('s.userNumber')
                 ->get();
 
-            // 미제출 문제 처리하기
-            foreach ($students as $student) {
-                $this->omission($student->userId, $userData['raceId'], 0);
-            }
+//            // 미제출 문제 처리하기
+//            foreach ($students as $student) {
+//                $this->omission($student->userId, $userData['raceId'], 0);
+//            }
 
             // 재시험 여부 확인하기
             $retestTargets = array();
