@@ -253,6 +253,7 @@ class QuizTreeController extends Controller
             $returnValue = array(
                 'listId'    => $listId,
                 'listName'  => $postData['listName'],
+                'folderId'  => $postData['folderId'],
                 'bookList'  => $bookList,
                 'quizs'     => array(),
                 'check'     => true
@@ -374,6 +375,7 @@ class QuizTreeController extends Controller
     public function insertList(Request $request){
 //        $postData     = array(
 //            'listId' => 9,
+//            'listName' => '리얼리즘',
 //            'quizs' => array(
 //                [
 //                    'question' => '1',
@@ -399,33 +401,56 @@ class QuizTreeController extends Controller
 //        );
         $postData = array(
             'listId' => $request->input('listId'),
-            'quizs' => $request->input('quizs')
+            'quizs' => $request->input('quizs'),
+            'folderId' => $request->input('folderId'),
+            'listName' => $request->input('listName')
         );
 
+        // 교사정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 입력 실패한 문제의 배열상 위치를 반납
         $errorQuiz = array();
 
-        // 해당유저의 리스트인지 확인
+        // 리스트가 존재하는지, 폴더는 자기 폴더가 맞는지 확인
         $listUserCheck = DB::table('lists as l')
-            ->select('l.number as listId')
+            ->select(
+                'f.number as folderId',
+                DB::raw('count(CASE WHEN l.number = '.$postData['listId'].' THEN 1 END) as listCheck')
+            )
             ->where([
-                'f.teacherNumber'   => $userData['userId'],
-                'l.number'          => $postData['listId']
+                'f.number' => $postData['folderId'],
+                'f.teacherNumber' => $userData['userId']
             ])
-            ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->leftJoin('folders as f', 'f.number', '=', 'l.folderNumber')
             ->first();
 
+        // 해당유저의 리스트인지 확인
         if($listUserCheck) {
-            // 문제들 삭제
-            $this->deleteListQuiz($listUserCheck->listId);
+            if ($listUserCheck->listCheck == 0){
+                $postData['listId'] = DB::table('lists')
+                    ->insertGetId([
+                        'name' => $postData['listName'],
+                        'folderNumber' => $postData['folderId']
+                    ], 'number');
+            } else {
+                DB::table('lists')
+                    ->where([
+                        'number' => $postData['listId']
+                    ])
+                    ->update([
+                        'name' => $postData['listName']
+                    ]);
+
+                // 문제들 삭제
+                $this->deleteListQuiz($postData['listId']);
+            }
 
             foreach ($postData['quizs'] as $quiz) {
                 // 문제를 저장
                 // 주관식 객관식 구분
                 if($quiz['makeType'] == 'obj') {
-                    $quizId = DB::table('quizBanks')
+                    $quizIds = DB::table('quizBanks')
                         ->insertGetId([
                             'question' => $quiz['question'],
                             'rightAnswer' => $quiz['right'],
@@ -436,7 +461,7 @@ class QuizTreeController extends Controller
                             'teacherNumber' => $userData['userId']
                         ], 'number');
                 } else if($quiz['makeType'] == 'sub'){
-                    $quizId = DB::table('quizBanks')
+                    $quizIds = DB::table('quizBanks')
                         ->insertGetId([
                             'question' => $quiz['question'],
                             'hint' => $quiz['hint'],
@@ -445,15 +470,15 @@ class QuizTreeController extends Controller
                             'teacherNumber' => $userData['userId']
                         ], 'number');
                 } else {
-                    $quizId = false;
+                    $quizIds = false;
                 }
 
                 // 리스트에 문제를 연결
-                if($quizId) {
+                if($quizIds) {
                     $insertCheck = DB::table('listQuizs')
                         ->insert([
                             'listNumber' => $postData['listId'],
-                            'quizNumber' => $quizId
+                            'quizNumber' => $quizIds
                         ]);
                 } else {
                     $insertCheck = false;
@@ -467,13 +492,13 @@ class QuizTreeController extends Controller
         }
 
         // 반납 값 정리
-        // 1문제 이상이 입력 성공시
+        // 입력 성공시
         if(count($errorQuiz) == 0){
             $returnValue = array(
                 'check' => true
             );
         }
-        // 1문제도 입력 안되었을 경우
+        // 한문제라도 입력이 안되었을 경우
         else{
             $returnValue = array(
                 'check' => false,

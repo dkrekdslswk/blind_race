@@ -311,8 +311,6 @@
                 $('#Re-Test_list').hide();
             });
 
-
-
             $(document).on("change","input[type=radio][name=character]",function(event){
                 $('.character_select').css("background-color","white");
                 $('#char_img'+this.value).css("background-color","yellow");
