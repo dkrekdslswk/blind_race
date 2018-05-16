@@ -222,6 +222,7 @@ class RaceController extends Controller{
             );
         } else {
             $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
                 'check'         => false
             );
         }
@@ -547,7 +548,7 @@ class RaceController extends Controller{
                     's.nick             as nick',
                     's.characterNumber  as characterId',
                     's.userNumber       as userId',
-                    DB::raw('COUNT(CASE WHEN r.answerCheck = "O" THEN 1 END) as rightCount')
+                    DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
                 )
                 ->where([
                     're.raceNo' => $userData['raceId'],
