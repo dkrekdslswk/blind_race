@@ -1083,8 +1083,7 @@ class RaceController extends Controller{
                 DB::raw('count(CASE WHEN re.userNo = '.$userId.' THEN 1 END) as omissionCheck')
             )
             ->where([
-                'r.number' => $raceId,
-                'omissionCheck' => 1
+                'r.number' => $raceId
             ])
             ->join('listQuizs as lq', ' lq.listNumber', '=', 'r.listNumber')
             ->leftJoin('records as re', function ($join){
@@ -1096,15 +1095,17 @@ class RaceController extends Controller{
 
         $insert = array();
         foreach ($quizs as $quiz){
-            array_push($insert, array(
-                'userNo' => $userId,
-                'raceNo' => $raceId,
-                'listNo' => $quizs->listId,
-                'quizNo' => $quizs->quizNo,
-                'retest' => $type,
-                'answer' => '',
-                'answerCheck' => 'X'
-            ));
+            if($quiz->omissionCheck == 0) {
+                array_push($insert, array(
+                    'userNo' => $userId,
+                    'raceNo' => $raceId,
+                    'listNo' => $quiz->listId,
+                    'quizNo' => $quiz->quizNo,
+                    'retest' => $type,
+                    'answer' => '',
+                    'answerCheck' => 'X'
+                ));
+            }
         }
 
         if (count($insert) > 0){
