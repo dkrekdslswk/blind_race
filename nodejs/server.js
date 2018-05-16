@@ -79,15 +79,15 @@ io.on('connection', function (socket){
         console.log('유저참가', '핀번호:'+pin+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
-
-
-    socket.on('popInfo',function(roomPin, quizData){
-        console.log('유저참가',roomPin+","+quizData);
-        io.sockets.in(roomPin).emit('popInfo',quizData);
+    
+    socket.on('pop_quiz_start',function(roomPin,quizData,listName){
+       console.log('PopQuiz시작',roomPin+","+quizData)
+       io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName);
     });
-    socket.on('popQuiz_start',function(roomPin){
-        console.log('PopQuiz시작',roomPin)
-        io.sockets.in(roomPin).emit('popQuiz_start',roomPin);
+    
+    socket.on('pop_quiz_status',function(roomPin){
+        console.log('쪽지시험 끝남 ++');
+       io.sockets.in(roomPin).emit('pop_quiz_status',roomPin); 
     });
 
 
