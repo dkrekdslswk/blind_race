@@ -492,13 +492,17 @@ class RecordBoxController extends Controller{
                                     ->get();
 
                                 $wrongData = array();
+                                $rights = explode(',', $raceQuizs->rightAnswer);
                                 foreach ($quizData as $quiz) {
-                                    if (preg_match('/[^,]' . $quiz->answer . '[,$]/', $raceQuizs[$i]->rightAnswer)) {
-                                        array_push($wrongData, array(
-                                            'userId' => $quiz->userId,
-                                            'userName' => $quiz->userName,
-                                            'answer' => $quiz->answer
-                                        ));
+                                    foreach ($rights as $right){
+                                        if ($quiz->answer == $right){
+                                            array_push($wrongData, array(
+                                                'userId' => $quiz->userId,
+                                                'userName' => $quiz->userName,
+                                                'answer' => $quiz->answer
+                                            ));
+                                            break;
+                                        }
                                     }
                                 }
 

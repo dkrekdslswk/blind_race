@@ -320,7 +320,7 @@
                                                 <div class="card">
 
                                                     <h1 class="card-title">My class</h1>
-                                                    <h2 class="card-text">  <p><img  src="https://i.imgur.com/Lh3HErN.png" ></p></h2>
+                                                    <h2 class="card-text">My Class를 이용하여 학생들의 쉽게 관리할수 있으며 원하는 클래스를 생성할수 있습니다.</h2>
 
                                                 </div>
                                             </div>

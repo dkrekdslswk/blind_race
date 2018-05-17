@@ -124,9 +124,9 @@
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
                         if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId);
+                            socket.emit('android_join_check',true , sessionId ,"race");
                         else
-                            socket.emit('android_join_check',false, sessionId);
+                            socket.emit('android_join_check',false, sessionId ,"race");
                     },
                     error: function(request, status, error) {
                         console.log("안드로이드 join 실패"+roomPin);
@@ -328,9 +328,10 @@
                             if(correct_count == 0)
                                 incorrect_count = 1 ;
 
-                            $("#quiz_number").text(quizId);
+                            $("#quiz_number").text(quizId+"번 문제 결과");
 
-                            $("#winners").text(correct_count+"명 정답!");
+                            $("#winners").text("정답자:"+correct_count+"명");
+                            $("#fail_count").text("오답자:"+incorrect_count+"명");
 
                             $("#right").text(correct_count);
                             $("#wrong").text(incorrect_count);

@@ -63,9 +63,9 @@ io.on('connection', function (socket){
         console.log('안드조인',roomPin+","+sessionId);
     });
 
-    socket.on('android_join_check',function(join_boolean , sessionId){
+    socket.on('android_join_check',function(join_boolean , sessionId ,raceType){
         console.log(join_boolean+","+sessionId);
-        io.sockets.emit('android_join_result',join_boolean,sessionId);
+        io.sockets.emit('android_join_result',join_boolean,sessionId , raceType);
     });
 
     // 대기방 이탈
@@ -79,6 +79,17 @@ io.on('connection', function (socket){
         console.log('유저참가', '핀번호:'+pin+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
+
+    socket.on('pop_quiz_start',function(roomPin,quizData,listName){
+        console.log('PopQuiz시작',roomPin+","+quizData)
+        io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName);
+    });
+
+    socket.on('pop_quiz_status',function(roomPin){
+        console.log('쪽지시험 끝남 ++');
+        io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
+    });
+
 
     //웹 학생 접속성공여부
     socket.on('web_enter_room',function(roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){

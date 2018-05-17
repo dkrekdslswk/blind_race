@@ -171,8 +171,6 @@ class RaceController extends Controller{
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
-        // 반납값 디폴트
-        $sessionCheck   = false;
 
         // 앱 로그인인지 웹 로그인인지 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
@@ -216,13 +214,18 @@ class RaceController extends Controller{
                         'wrongState'   => 'not'
                     ]);
             }
-        }
 
-        // 반납값 정리
-        $returnValue = array(
-            'sessionId'     => $postData['sessionId'],
-            'check'         => $sessionCheck,
-        );
+            // 반납값 정리
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => $sessionCheck
+            );
+        } else {
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => false
+            );
+        }
 
         return $returnValue;
     }
@@ -316,8 +319,8 @@ class RaceController extends Controller{
         // 유저 정보 가져오기
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        // 리스트 정보 가져오기
-        $listData = DB::table('races as r')
+        // 레이스 정보 가져오기
+        $raceData = DB::table('races as r')
             ->select(
                 'r.number as raceId',
                 'r.listNumber as listId'
@@ -330,7 +333,7 @@ class RaceController extends Controller{
             ->first();
 
         // 레이스가 존재할 경우 값을 입력
-        if($listData){
+        if($raceData){
             // 현재 문제정보
             $quizData = DB::table('quizBanks')
                 ->select(
@@ -349,11 +352,13 @@ class RaceController extends Controller{
                 case 'vocabulary sub':
                 case 'word sub':
                 case 'grammar sub':
-                    if (preg_match('/[^,]'.$postData['answer'].'[,$]/', $quizData->right)) {
-                        $answerCheck = 'O';
-                        break;
-                    } else {
-                        $answerCheck = 'X';
+                    $rights = explode(',', $quizData->right);
+                    $answerCheck = 'X';
+                    foreach ($rights as $right){
+                        if ($postData['answer'] == $right){
+                            $answerCheck = 'O';
+                            break;
+                        }
                     }
                     break;
                 default:
@@ -363,9 +368,9 @@ class RaceController extends Controller{
             // 정답을 입력
             $quizInsert = DB::table('records')
                 ->insert([
-                    'raceNo'        => $listData->raceId,
+                    'raceNo'        => $raceData->raceId,
                     'userNo'        => $userData['userId'],
-                    'listNo'        => $listData->listId,
+                    'listNo'        => $raceData->listId,
                     'quizNo'        => $postData['quizId'],
                     'answerCheck'   => $answerCheck,
                     'answer'        => $postData['answer']
@@ -513,16 +518,19 @@ class RaceController extends Controller{
     }
 
     // 레이스 혹은 테스트에서 종료 후 세션 정리
-    public function raceEnd(Request $request){
+    public function raceEnd(Request $request)
+    {
         // 선생정보 가져오기기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        if($userData['roomPin']) {
+        if ($userData['roomPin']) {
             // 시험정보 가져오기
             $raceData = DB::table('races as r')
                 ->select(
                     'l.name as listName',
                     'r.passingMark as passingMark',
+                    'l.number as listId',
+                    'r.type as type',
                     DB::raw('count(lq.quizNumber) as quizCount')
                 )
                 ->where([
@@ -534,21 +542,27 @@ class RaceController extends Controller{
                 ->first();
 
             // 최종 성적 정보 가져오기
-            $students = DB::table('records as r')
+            $students = DB::table('records as re')
                 ->select(
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
                     's.userNumber       as userId',
-                    DB::raw('COUNT(CASE WHEN r.answerCheck = "O" THEN 1 END) as rightCount')
+                    DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
                 )
                 ->where([
-                    'r.raceNo' => $userData['raceId']
+                    're.raceNo' => $userData['raceId'],
+                    're.retest' => 0
                 ])
-                ->join('sessionDatas as s', 's.userNumber', '=', 'r.userNo')
+                ->join('sessionDatas as s', 's.userNumber', '=', 're.userNo')
                 ->orderBy('rightCount', 's.userNumber')
                 ->groupBy('s.userNumber')
                 ->get();
+
+//            // 미제출 문제 처리하기
+//            foreach ($students as $student) {
+//                $this->omission($student->userId, $userData['raceId'], 0);
+//            }
 
             // 재시험 여부 확인하기
             $retestTargets = array();
@@ -597,8 +611,8 @@ class RaceController extends Controller{
                         'nick' => $student->nick,
                         'characterId' => $student->characterId,
                         'rightCount' => $student->rightCount,
-                        'retestState' => in_array( $student->userId , $retestTargets),
-                        'wrongState' => in_array(  $student->userId , $wrongTargets)
+                        'retestState' => in_array($student->userId, $retestTargets),
+                        'wrongState' => in_array($student->userId, $wrongTargets)
                     ));
                 }
                 $returnValue = array(
@@ -619,31 +633,353 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
+    // 재시험 대상 레이스 목록 가져오기 웹 용
+    public function getRetestListWeb(Request $request){
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        if ($userData['check']) {
+            $returnValue = array(
+                'lists' => $this->selectRetestList($userData['userId']),
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 재시험 대상 레이스 목록 가져오기 어플 용
+    public function getRetestListMobile(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
+
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        if ($userData['check']) {
+            $returnValue = array(
+                'lists' => $this->selectRetestList($userData['userId']),
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
     // 재시험 준비 웹 전용
     public function retestSet(Request $request){
+//        $postData = array(
+//            'raceId' => 1
+//        );
         $postData = array(
-            'raceId' => 1
+            'raceId' => $request->input('raceId')
         );
 
         // 유저정보 받아오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        //
+        // 학생일 경우에는 참가했던 레이스만 입장가능
+        // 선생일 경우에는 출제된 레이스에 참가가능
+        if ($userData['check']){
+            switch ($userData['classification']){
+                case 'student':
+                    $raceCheck = DB::table('raceUsers as ru')
+                        ->select(
+                            'ru.retestState as retestState'
+                        )
+                        ->where([
+                            'ru.userNumber' => $userData['userId'],
+                            'ru.raceNumber' => $postData['raceId']
+                        ])
+                        ->first();
+
+                    // 반납할 값 정리
+                    if ($raceCheck && ($raceCheck->retestState == 'order')) {
+                        $returnValue = array(
+                            'sessionId' => $request->session()->get('sessionId'),
+                            'raceId' => $postData['raceId'],
+                            'check' => true
+                        );
+                    } else if ($raceCheck){ // 대상자가 아닐경우
+                        $returnValue = array(
+                            'retestState' => $raceCheck->retestState,
+                            'check' => false
+                        );
+                    } else { // 레이스가 존재하지 않을 경우
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
+                    break;
+//                case 'teacher':
+//                case 'root':
+                default:
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return view('Race/race_retest')->with('response', $returnValue);
     }
 
     // 재시험 문제 받아오기 모바일은 바로 시작 가능
     public function retestStart(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId'),
+            'raceId'    => $request->input('raceId')
+        );
 
+        // 유저 정보 받아오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        $raceCheck = DB::table('raceUsers as ru')
+            ->select(
+                'ru.retestState as retestState',
+                'l.number as listId',
+                'l.name as listName',
+                'u.name as userName',
+                'g.name as groupName',
+                DB::raw('count(lq.quizNumber) as quizCount'),
+                'r.passingMark as passingMark'
+            )
+            ->where([
+                'ru.userNumber' => $userData['userId'],
+                'ru.raceNumber' => $postData['raceId']
+            ])
+            ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+            ->join('groups as g', 'g.number', '=', 'r.groupNumber')
+            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+            ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+            ->join('users as u', 'u.number', '=', 'ru.userNumber')
+            ->groupBy(['ru.userNumber', 'ru.raceNumber'])
+            ->first();
+
+        if($raceCheck){
+            DB::table('sessionDatas')
+                ->where([
+                    'number' => $postData['sessionId']
+                ])
+                ->update([
+                    'raceNumber' => $postData['raceId']
+                ]);
+
+            $retrunValue = array(
+                'userName' => $raceCheck->userName,
+                'listName' => $raceCheck->listName,
+                'groupName' => $raceCheck->groupName,
+                'quizCount' => $raceCheck->quizCount,
+                'passingMark' => $raceCheck->passingMark,
+                'quizs' => $this->quizGet($raceCheck->listId)
+            );
+        } else {
+            $retrunValue = array(
+                'check' => false
+            );
+        }
+
+        return $retrunValue;
     }
 
     // 재시험 정답 입력
-    public function retestAnswerIn(){
+    public function retestAnswerIn(Request $request){
+        // 학생의 세션 아이디 필요
+//        $postData     = array(
+//            'sessionId' => 2,
+//            'quizId'    => 1,
+//            'answer'    => 1
+//        );
+        $postData     = array(
+            'sessionId' => $request->input('sessionId'),
+            'quizId'    => $request->input('quizId'),
+            'answer'    => $request->input('answer')
+        );
 
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        // 레이스 정보 가져오기
+        $raceData = DB::table('races as r')
+            ->select(
+                'r.number as raceId',
+                'r.listNumber as listId'
+            )
+            ->where([
+                'r.number' => $userData['raceId']
+            ])
+            ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
+            ->first();
+
+        // 레이스가 존재할 경우 값을 입력
+        if($raceData){
+            // 현재 문제정보
+            $quizData = DB::table('quizBanks')
+                ->select(
+                    'rightAnswer as right',
+                    'type'
+                )
+                ->where([
+                    'number' => $postData['quizId']
+                ])
+                ->first();
+
+            switch ($quizData->type){
+                case 'vocabulary obj':
+                case 'word obj':
+                case 'grammar obj':
+                case 'vocabulary sub':
+                case 'word sub':
+                case 'grammar sub':
+                    $rights = explode(',', $quizData->right);
+                    $answerCheck = 'X';
+                    foreach ($rights as $right){
+                        if ($postData['answer'] == $right){
+                            $answerCheck = 'O';
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    $answerCheck = 'X';
+            }
+
+            // 정답을 입력
+            $quizInsert = DB::table('records')
+                ->insert([
+                    'raceNo'        => $raceData->raceId,
+                    'userNo'        => $userData['userId'],
+                    'listNo'        => $raceData->listId,
+                    'quizNo'        => $postData['quizId'],
+                    'answerCheck'   => $answerCheck,
+                    'answer'        => $postData['answer'],
+                    'retest'        => 1
+                ]);
+
+            // true 값 입력 성공
+            // false 재 시간 이내에 정답 입력실패, 중복입력, 레이스가 없음, 리스트가 없음.
+            if ($quizInsert == 1){
+                $returnValue = array(
+                    'check' => true
+                );
+            } else{
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
     }
 
-    // 재시험 종료
-    public function retestEnd(){
+    // 재시험에서 종료 후 세션 정리
+    public function retestEnd(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
 
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        if ($userData['raceId']) {
+            // 시험정보 가져오기
+            $raceData = DB::table('races as r')
+                ->select(
+                    'l.name as listName',
+                    'r.passingMark as passingMark',
+                    'l.number as listId',
+                    DB::raw('count(lq.quizNumber) as quizCount')
+                )
+                ->where([
+                    'r.number' => $userData['raceId']
+                ])
+                ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+                ->groupBy('r.number')
+                ->first();
+
+            if ($raceData) {
+                // 최종 성적 정보 가져오기
+                $records = DB::table('records as re')
+                    ->select(
+                        DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                    )
+                    ->where([
+                        're.raceNo' => $userData['raceId'],
+                        're.userNo' => $userData['userId'],
+                        're.retest' => 1
+                    ])
+                    ->groupBy('re.userNo')
+                    ->first();
+
+                // 학생 점수
+                $score = (int)(($records->rightCount / $raceData->quizCount) * 100);
+
+                // 합격여부 확인하기
+                // 합격
+                if ($raceData->passingMark <= $score) {
+                    // 미제출 문제 처리하기
+                    $this->omission($userData['userId'], $userData['raceId'], 0);
+
+                    // 통과 표시하기
+                    DB::table('raceUsers')
+                        ->where([
+                            'raceNumber' => $userData['raceId'],
+                            'userNumber' => $userData['userId']
+                        ])
+                        ->update([
+                            'retestState' => 'clear'
+                        ]);
+                }
+                // 불합격
+                else {
+                    // 시험친 기록 삭제
+                    DB::table('records')
+                        ->where([
+                            'raceNo' => $userData['raceId'],
+                            'userNo' => $userData['userId'],
+                            'retest' => 1
+                        ])
+                        ->delete();
+                }
+
+                // 반납값 정리
+                $returnValue = array(
+                    'score' => $score,
+                    'passingMark' => $raceData->passingMark,
+                    'check' => true
+                );
+            } else {
+                // 반납값 정리
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            // 반납값 정리
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
     }
 
     // 해당 리스트에서 모든 문제를 가져오는 구문
@@ -696,5 +1032,94 @@ class RaceController extends Controller{
         }
 
         return $returnValue;
+    }
+
+    // 재시험 대상 레이스 목록을 검색
+    private function selectRetestList($userId){
+        $retestData = DB::table('raceUsers as ru')
+            ->select(
+                'ru.raceNumber as raceId',
+                'l.name as listName',
+                DB::raw('count(lq.quizNumber) as quizCount'),
+                'r.passingMark as passingMark',
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+            )
+            ->where([
+                'ru.userNumber' => $userId,
+                'ru.retestState' => 'order'
+            ])
+            ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+            ->join('listQuizs as lq', 'lq.listNumber', '=', 'l.number')
+            ->join('records as re', function ($join){
+                $join->on('re.raceNo', '=', 'ru.raceNumber');
+                $join->on('re.userNo', '=', 'ru.userNumber');
+            })
+            ->groupBy(['ru.raceNumber', 'ru.userNumber'])
+            ->orderBy('ru.raceNumber')
+            ->get();
+
+        // 레이스번호, 리스트이름, 문항수, 통과점수, 이전점수
+        $retests = array();
+        foreach ($retestData as $retestRace){
+            array_push($retests, array(
+                'raceId' => $retestRace->raceId,
+                'listName' => $retestRace->listName,
+                'quizCount' => $retestRace->quizCount,
+                'passingMark' => $retestRace->passingMark,
+                'rightCount' => (int)($retestRace->rightCount / $retestRace->quizCount * 100)
+            ));
+        }
+
+        return $retests;
+    }
+
+    // 재시험 혹은 테스트에서 미제출 문제 처리
+    private function omission($userId, $raceId, $type)
+    {
+        $raceData = DB::table('races')
+            ->select(
+                'listNumber as listId'
+            )
+            ->where([
+                'number' => $raceId
+            ])
+            ->first();
+
+        $quizs = DB::table('listQuizs as lq')
+            ->select(
+                'lq.quizNumber as quizId',
+                DB::raw('count(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
+            )
+            ->where([
+                're.raceNo' => $raceId,
+                're.retest' => $type
+            ])
+            ->leftJoin('records as re', function ($join) {
+                $join->on('re.quizNo', '=', 'lq.quizNumber');
+                $join->on('re.listNo', '=', 'lq.listNumber');
+            })
+            ->groupBy('lq.quizNumber')
+            ->get();
+
+        $insert = array();
+        foreach ($quizs as $quiz) {
+            if ($quiz->omissionCheck == 0) {
+                array_push($insert, array(
+                    'userNo' => $userId,
+                    'raceNo' => $raceId,
+                    'listNo' => $raceData->listId,
+                    'quizNo' => $quiz->quizId,
+                    'retest' => $type,
+                    'answer' => '',
+                    'answerCheck' => 'X'
+                ));
+            }
+        }
+
+        if (count($insert) > 0) {
+            DB::table('records')
+                ->insert($insert);
+        }
     }
 }

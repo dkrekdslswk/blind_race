@@ -12,6 +12,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
     <script>
+        var raceId;
+
         var active_mode;
 
         var characterId;
@@ -238,22 +240,22 @@
         }
 
         socket.on('race_result',function(race_result){
-                var race_result = JSON.parse(race_result);
-                
-                for(var i=0;  i <race_result.length; i++){
-                    if(race_result[i].nick == nick){
-                        
-                        if(race_result[i].retestState == true)
-                            $('#race_result').html('FAIL 재시험치세요');
-                        else if(race_result[i].retestState == false)
-                            $('#race_result').html('PASS 완벽합니다');
-                            
-                    }
+            var race_result = JSON.parse(race_result);
+
+            for(var i=0;  i <race_result.length; i++){
+                if(race_result[i].nick == nick){
+
+                    if(race_result[i].retestState == true)
+                        $('#race_result').html('FAIL 재시험치세요');
+                    else if(race_result[i].retestState == false)
+                        $('#race_result').html('PASS 완벽합니다');
+
                 }
-                $('<a href="/">돌아가기</a>').appendTo('#race_result');
+            }
+            $('<a href="/">돌아가기</a>').appendTo('#race_result');
 
         });
-        
+
         socket.on('race_ending',function(data){
 
             $('body').css("background-color","mediumslateblue");
@@ -308,8 +310,6 @@
                 $('#roomPin_page').show();
                 $('#Re-Test_list').hide();
             });
-
-
 
             $(document).on("change","input[type=radio][name=character]",function(event){
                 $('.character_select').css("background-color","white");
@@ -428,7 +428,50 @@
         }
     </style>
 </head>
-<body>
+<script>
+    function getValue() {
+
+        // list 정보 불러오기
+        $.ajax({
+            type: 'POST',
+            url: "{{url('raceController/getRetestListWeb')}}",
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function (data) {
+                quizlistData = data;
+
+
+                listValue();
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    }
+
+    function listValue() {
+
+        for(var i = 0; i < quizlistData['lists'].length; i++) {
+            $("#list").append(
+                "<tr>" +
+                "<td class='hidden-xs' style='text-align: center'>"+ i+1 + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['listName'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['passingMark'] + "</td>" +
+                "<td style='text-align: center'>"+ quizlistData['lists'][i]['rightCount'] + "</td>" +
+                "<td align='center'>" +
+                "<input type='button' onclick='send_retest("+quizlistData['lists'][i]['raceId']+");' class='btn btn-primary' value='시작하기'>"+
+                "</td>" +
+                "</tr>");
+        }
+    }
+    function send_retest(data){
+        $('#raceId').val(data);
+       document.getElementById('create_retest').submit();
+    }
+
+</script>
+<body onload="getValue()">
 
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
@@ -472,14 +515,22 @@
                             <th class="hidden-xs">#</th>
                             <th style="text-align: center">퀴즈명</th>
                             <th style="text-align: center">문항수</th>
-                            <th></th>
+                            <th style="text-align: center">합격점</th>
+                            <th style="text-align: center">이전점수</th>
+                            <th style="text-align: center"></th>
                         </tr>
                         </thead>
-                        <tbody id="list">
+                        <form id="create_retest" action="{{url('raceController/retestSet')}}"  method="Post" enctype="multipart/form-data">
+                            {{csrf_field()}}
 
-                        {{--list 공간--}}
+                            <tbody id="list">
 
-                        </tbody>
+                            {{--list 공간--}}
+
+                            </tbody>
+                            <input id="raceId" type="text" name="raceId" value="dd"/>
+                        </form>
+
                     </table>
                 </div>
                 <div class="panel-footer">
@@ -524,7 +575,7 @@
         <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
     </div>
 
-    <footer style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
+    <footer style="position:fixed; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
         <img src="/img/info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
         <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">레이스의 모드를 선택해주세요 </span>
     </footer>
