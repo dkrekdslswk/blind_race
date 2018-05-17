@@ -99,7 +99,7 @@ class QuizTreeController extends Controller
                 'folderId' => self::OPEN_STATE,
                 'folderName' => '공개 리스트')
         );
-        
+
         foreach ($folderData as $folder){
             array_push($folders, array(
                 'folderId' => $folder->folderId,
@@ -424,6 +424,7 @@ class QuizTreeController extends Controller
                 'f.teacherNumber' => $userData['userId']
             ])
             ->leftJoin('folders as f', 'f.number', '=', 'l.folderNumber')
+            ->groupBy('f.number')
             ->first();
 
         // 해당유저의 리스트인지 확인
