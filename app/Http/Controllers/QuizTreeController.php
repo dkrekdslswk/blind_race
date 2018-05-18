@@ -424,7 +424,6 @@ class QuizTreeController extends Controller
             // 리스트가 존재하는지, 폴더는 자기 폴더가 맞는지 확인
             $listUserCheck = DB::table('lists as l')
                 ->select(
-                    'f.number as folderId',
                     DB::raw('count(CASE WHEN l.number = ' . $postData['listId'] . ' THEN 1 END) as listCheck')
                 )
                 ->where([
@@ -497,22 +496,27 @@ class QuizTreeController extends Controller
                     if (!$insertCheck) {
                         array_push($errorQuiz, $quiz);
                     }
-
-                    // 반납 값 정리
-                    // 입력 성공시
-                    if(count($errorQuiz) == 0){
-                        $returnValue = array(
-                            'check' => true
-                        );
-                    }
-                    // 한문제라도 입력이 안되었을 경우
-                    else{
-                        $returnValue = array(
-                            'check' => false,
-                            'errorQuiz' => $errorQuiz
-                        );
-                    }
                 }
+
+                // 반납 값 정리
+                // 입력 성공시
+                if(count($errorQuiz) == 0){
+                    $returnValue = array(
+                        'check' => true
+                    );
+                }
+                // 한문제라도 입력이 안되었을 경우
+                else{
+                    $returnValue = array(
+                        'check' => false,
+                        'errorQuiz' => $errorQuiz
+                    );
+                }
+            } else {
+                // 자기 폴더가 아닐 경우
+                $returnValue = array(
+                    'check' => false
+                );
             }
         } else {
             // 레이스 이름이 없을 경우
@@ -521,7 +525,7 @@ class QuizTreeController extends Controller
             );
         }
 
-        return $returnValue;
+        return $listUserCheck->toArray();
     }
 
     // 삭제
