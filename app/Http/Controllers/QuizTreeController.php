@@ -525,7 +525,7 @@ class QuizTreeController extends Controller
             );
         }
 
-        return $listUserCheck->toArray();
+        return $postData;
     }
 
     // 삭제
