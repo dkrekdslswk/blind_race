@@ -147,14 +147,39 @@
 
 <script>
 
-    // folder, list 정보 저장용 배열
-    var folderListData = new Array();
-    var quizlistData = new Array();
+    // 그룹 데이터 저장용 배열
+    var groupData = new Array();
+
+    $.ajax({
+        type: 'POST',
+        url: "{{url('groupController/groupsGet')}}",
+        //processData: false,
+        //contentType: false,
+        dataType: 'json',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        //data: {_token: CSRF_TOKEN, 'post':params},
+        data: "",
+        success: function (data) {
+            groupData = data;
+
+            for(var i =  groupData['groups'].length-1; i >= 0; i--) {
+                $("#groupSelect").append(
+                    "<option value='" + groupData['groups'][i]['groupId'] + "'>" + groupData['groups'][i]['groupName'] + "</option>"
+                );
+            }
+        },
+        error: function (data) {
+            alert("error");
+        }
+    });
 
     // 모달로 넘기는 그룹 선택 파트
     $(document).ready(function () {
+
+        // 선택된 그룹 id 값 넘기기
         $('#groupSelect').change(function () {
-            var selectedText = $("#groupSelect :selected").attr('value');
+            var selectedText = $("#groupSelect :selected").val();
+            alert(selectedText);
 
             var groupIdObj = document.getElementById("groupId");
             groupIdObj.value = selectedText;
@@ -184,16 +209,22 @@
 
     });
 
+    // 레이스 시작할 때 해당 리스트 id값 전달
     function sendId(listId) {
         var listIdObj = document.getElementById("listId");
         listIdObj.value = listId;
     }
 
+    // folder, list 정보 저장용 배열
+    var folderListData = new Array();
+    var quizlistData = new Array();
+
     // BODY ONLOAD : 컨트롤러로부터 폴더 정보를 불러오기 위한 AJAX
     function getFolderValue() {
 
+        // 폴더 리스트만 띠우기 위한거기 때문에 folderId 값은 상관없음
         var params = {
-            folderId: 1
+            folderId: 0
         };
 
         $.ajax({
@@ -206,20 +237,27 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
-                folderListData = data;
-                quizlistData = data;
-                folderValue();
-                listValue();
+
+                // 최신 폴더 id값
+                var index =  data['folders'].length-1;
+
+                //최신 폴더 & 최신 리스트 불러오기
+                getFolderListValue(data['folders'][index]['folderId']);
             },
             error: function (data) {
                 alert("error");
             }
         });
-
     }
 
-    // 컨트롤러로부터 리스트 정보를 불러오기 위한 AJAX
-    function getListValue(idNum) {
+    // 컨트롤러로부터 폴더 & 리스트 정보를 불러오기 위한 AJAX
+    function getFolderListValue(idNum) {
+
+        // 폴더 데이터 초기화
+        folderListData = [];
+
+        // 퀴즈 데이터 초기와
+        quizlistData = [];
 
         var params = {
             folderId: idNum
@@ -235,7 +273,10 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
+
+                folderListData = data;
                 quizlistData = data;
+
                 listValue();
             },
             error: function (data) {
@@ -245,27 +286,29 @@
 
     }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 폴더 정보를 보여줌
-    function folderValue() {
-        for(var i = 0; i < folderListData['folders'].length; i++) {
+    // AJAX 통신 성공시 호출되는 메서드 : 리스트 정보를 보여줌
+    function listValue() {
+
+        // 폴더 & 퀴즈 값이 쌓이지 않게 초기화
+        $("#folderList").empty();
+        $("#list").empty();
+
+        // <----- 폴더 리스트 ----->
+        for(var i = folderListData['folders'].length - 1; i >= 0; i--) {
+
             if(folderListData['folders'][i]['folderId'] == 0) {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
             }
             else {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
             }
         }
-    }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 리스트 정보를 보여줌
-    function listValue() {
-
-        $("#list").empty();
-
+        // <----- 퀴즈 리스트 ----->
         for(var i = 0; i < quizlistData['lists'].length; i++) {
             $("#list").append(
                 "<tr>" +
@@ -363,12 +406,13 @@
                     <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
                 </div>
                 <div class="modal-body" style="text-align: center" >
-                    {{--Dropdowns--}}
+                    <!--Dropdowns-->
                     <div class="select" style="margin: 0 auto; width: 50%">
                         <select id="groupSelect" class="form-control">
                             <option>그룹명</option>
-                            <option value="1">특강 A반</option>
-                            <option value="2">특강 B반</option>
+                            <!-- 그룹 목록 넣을 공간 -->
+                            {{--<option value="1">특강 A반</option>--}}
+                            {{--<option value="2">특강 B반</option>--}}
                         </select>
                     </div>
                     <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em; margin-bottom: 1em;">

@@ -17,7 +17,7 @@
         .chartWrapper {
             position: relative;
             max-width: 1400px;
-            height: 550px;
+            height: 650px;
             overflow-x: scroll;
             overflow-y: hidden;
         }
@@ -30,7 +30,7 @@
             left: 0;
             top: 0;
             width: 100%;
-            height: 500px;
+            height: 600px;
             margin: 0;
         }
 

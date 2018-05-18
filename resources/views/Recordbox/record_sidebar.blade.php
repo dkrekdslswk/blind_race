@@ -95,20 +95,4 @@
         </ul>
     </div>
 
-    <div class="sidebar_footer">
-        <div class="news">
-            <div class="news_image">
-                <img src="/img/news_img.png" style="width: 100%;height: 100px;padding: 2px 2px 2px 2px;">
-            </div>
-            <div class="news_contents">
-                NEWS! 쥿뿐쥬분에 새로운 기능이 생겼어요!<br><br>
-
-                문제나무에는 암기할 내용에 따라 단어,문장,용어세트 그리고 빈칸세트가 있죠.
-                빈칸세트는 다른 세트와 달리 암기학습 보다는 빈칸형태의 문제풀이 활동에 적합합니다.
-                그런데 빈칸을 입력하고 거기에 객관식 선택지를 입력하는 방식이 아무래도 익숙한 방식은 아니었던거 같습니다.
-                그래서 사용법 문의가 많았습니다.
-                그래서문제풀이에 적합한 세트로 특화시키고...
-            </div>
-        </div>
-    </div>
 </div>
