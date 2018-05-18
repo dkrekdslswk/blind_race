@@ -257,7 +257,7 @@ class QuizTreeController extends Controller
 
             $returnValue = array(
                 'listId'    => null,
-                'listName'  => $postData['listName'],
+                'listName'  => null,
                 'folderId'  => $postData['folderId'],
                 'bookList'  => $bookList,
                 'quizs'     => array(),
