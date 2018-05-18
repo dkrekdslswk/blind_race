@@ -231,42 +231,47 @@ class QuizTreeController extends Controller
     // 리스트 만들기
     public function createList(Request $request){
 //        $postData = array(
-//            'listName' => '테스트 리스트명2',
 //            'folderId' => 1
 //        );
         $postData = array(
-            'listName' => $request->input('listName'),
             'folderId' => $request->input('folderId')
         );
 
-        // 리스트 만들기
-        $listId = DB::table('lists')
-            ->insertGetId([
-                'name'          => $postData['listName'],
-                'folderNumber'  => $postData['folderId']
-            ], 'number');
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        // 저장된 교재 정보 가져오기
-        $bookList = $this->getBookGet();
+        // 본인 폴더인지 확인
+        $folderData = DB::table('folders')
+            ->select(
+                'number'
+            )
+            ->where([
+                'teacherNumber' => $userData['userId']
+            ])
+            ->first();
 
         // 반납할 값 반납
-        if (isset($listId)) {
+        if ($folderData) {
+            // 저장된 교재 정보 가져오기
+            $bookList = $this->getBookGet();
+
             $returnValue = array(
-                'listId'    => $listId,
+                'listId'    => null,
                 'listName'  => $postData['listName'],
                 'folderId'  => $postData['folderId'],
                 'bookList'  => $bookList,
                 'quizs'     => array(),
                 'check'     => true
             );
+
+            return view('QuizTree/quiz_making')->with('response', $returnValue);
         }else{
             $returnValue = array(
                 'check' => false
             );
-        }
 
-//        return $returnValue;
-        return view('QuizTree/quiz_making')->with('response', $returnValue);
+            return view('homepage')->with('response', $returnValue);
+        }
     }
 
     // 교재목록 가져오기
@@ -614,6 +619,7 @@ class QuizTreeController extends Controller
             ->select(
                 'l.number                   as listId',
                 'l.name                     as name',
+                'f.number                   as folderNumber',
                 DB::raw('COUNT(r.number)    as raceCount')
             )
             ->where([
@@ -635,11 +641,12 @@ class QuizTreeController extends Controller
 
             // 반납할 값 반납
             $returnValue = array(
-                'listId'    => $listData->listId,
-                'listName'  => $listData->name,
-                'bookList'  => $bookList,
-                'quizs'     => $quizs,
-                'check'     => true
+                'listId'        => $listData->listId,
+                'listName'      => $listData->name,
+                'folderNumber'  => $listData->folderNumber,
+                'bookList'      => $bookList,
+                'quizs'         => $quizs,
+                'check'         => true
             );
         } else {
             $returnValue = array(
