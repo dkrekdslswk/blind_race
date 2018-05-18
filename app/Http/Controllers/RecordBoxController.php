@@ -298,6 +298,7 @@ class RecordBoxController extends Controller{
                             'ru.userNumber as userId',
                             'u.name as userName',
                             'r.created_at as date',
+                            'ut.name as teacherName',
                             DB::raw('year(r.created_at) as year'),
                             DB::raw('month(r.created_at) as month'),
                             DB::raw('dayofmonth(r.created_at) as day'),
@@ -317,6 +318,7 @@ class RecordBoxController extends Controller{
                         ->where($where)
                         ->join('races as r', 'r.number', '=', 'ru.raceNumber')
                         ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                        ->join('users as ut', 'ut.number', '=', 'r.teacherNumber')
                         ->join('users as u', 'u.number', '=', 'ru.userNumber')
                         ->join('records as re', function ($join){
                             $join->on('re.raceNo', '=', 'ru.raceNumber');
@@ -333,6 +335,7 @@ class RecordBoxController extends Controller{
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
+                                'teacherName' => $race->teacherName,
                                 'userId' => $race->userId,
                                 'userName' => $race->userName,
                                 'date' => $race->date,
