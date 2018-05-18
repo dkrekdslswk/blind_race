@@ -513,7 +513,7 @@ class QuizTreeController extends Controller
             );
         }
 
-        return $listUserCheck;
+        return $returnValue;
     }
 
     // 삭제
