@@ -18,6 +18,10 @@
     <script type="text/javascript"></script>
 
     <style>
+        body{
+            background-color:#4ac3d5 !important;
+
+        }
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             /*background-color: rgba(255,255,255,.84);*/
@@ -36,9 +40,10 @@
             border-radius: 15px 50px 30px;
         }
         .student {
-            margin-top: 3%;
             display: block;
             text-align: right;
+            background-color: #6ecfdd;
+            padding-top: 50px;
         }
 
         .student form{
@@ -77,6 +82,10 @@
             margin:auto;
         }
 
+        .user_character{
+            width:50px;
+            height:50px;
+        }
         #messages { list-style-type: none; }
         #messages li { padding: 5px 10px; }
 
@@ -151,7 +160,8 @@
                         if( result['nickCheck'] && result['characterCheck'] )
                         {
                             //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
+                            $('<li class="user_in_room" id="'+ sessionId +'"><img class="user_character" src="/img/character/char'+characterId+'.png"><span style="text-align:center; color:white; background-color:black;">' + nick
+                                + '</span></li>').appendTo('body');
 
                             quiz_member++;
                             $('#student_count').html(quiz_member);
@@ -319,7 +329,7 @@
                         if(result['check'] == true) {
                             console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
 
-                            //학생들에게 정답이 뭐였었는지 전달 
+                            //학생들에게 정답이 뭐였었는지 전달
                             socket.emit('race_mid_correct',roomPin,quiz_JSON[quizId-1].right);
 
                             var correct_count = result['rightAnswer'];
@@ -567,14 +577,13 @@
 <div id="wait_room">
     <div class="student">
 
-        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-
         <div id="room_Pin" class="counting">
         </div>
 
         <div id="counting_student">
             <span id="student_count" > 학생 수</span>
         </div>
+        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
 
     </div>
 
@@ -589,12 +598,135 @@
     </div>
 
     <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
+        <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
     </div>
 </div>
 <div id="playing_contents" style="display:none;">
     @include('Race.race_content')
 </div>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char1.png">
+    <span style="text-align:center; color:white; background-color:black;">학생</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char2.png">
+    <span style="text-align:center; color:white; background-color:black;">학생2</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char3.png">
+    <span style="text-align:center; color:white; background-color:black;">학생3</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char4.png">
+    <span style="text-align:center; color:white; background-color:black;">학생4</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char5.png">
+    <span style="text-align:center; color:white; background-color:black;">학생5</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char6.png">
+    <span style="text-align:center; color:white; background-color:black;">학생6</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char7.png">
+    <span style="text-align:center; color:white; background-color:black;">학생7</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char8.png">
+    <span style="text-align:center; color:white; background-color:black;">학생8</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char9.png">
+    <span style="text-align:center; color:white; background-color:black;">학생9</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char10.png">
+    <span style="text-align:center; color:white; background-color:black;">학생10</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char11.png">
+    <span style="text-align:center; color:white; background-color:black;">학생11</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char12.png">
+    <span style="text-align:center; color:white; background-color:black;">학생12</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char13.png">
+    <span style="text-align:center; color:white; background-color:black;">학생13</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char14.png">
+    <span style="text-align:center; color:white; background-color:black;">학생14</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char15.png">
+    <span style="text-align:center; color:white; background-color:black;">학생15</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char16.png">
+    <span style="text-align:center; color:white; background-color:black;">학생16</span>
+</li>
+
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char17.png">
+    <span style="text-align:center; color:white; background-color:black;">학생17</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char18.png">
+    <span style="text-align:center; color:white; background-color:black;">학생18</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char19.png">
+    <span style="text-align:center; color:white; background-color:black;">학생19</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char20.png">
+    <span style="text-align:center; color:white; background-color:black;">학생20</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char21.png">
+    <span style="text-align:center; color:white; background-color:black;">학생21</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char22.png">
+    <span style="text-align:center; color:white; background-color:black;">학생22</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char23.png">
+    <span style="text-align:center; color:white; background-color:black;">학생23</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char24.png">
+    <span style="text-align:center; color:white; background-color:black;">학생24</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char25.png">
+    <span style="text-align:center; color:white; background-color:black;">학생25</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char26.png">
+    <span style="text-align:center; color:white; background-color:black;">학생26</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char27.png">
+    <span style="text-align:center; color:white; background-color:black;">학생27</span>
+</li>
+<li class="user_in_room">
+    <img class="user_character" src="/img/character/char28.png">
+    <span style="text-align:center; color:white; background-color:black;">학생28</span>
+</li>
 
 
 </body>
