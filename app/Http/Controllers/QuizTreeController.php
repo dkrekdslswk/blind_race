@@ -619,7 +619,7 @@ class QuizTreeController extends Controller
             ->select(
                 'l.number                   as listId',
                 'l.name                     as name',
-                'f.number                   as folderNumber',
+                'f.number                   as folderId',
                 DB::raw('COUNT(r.number)    as raceCount')
             )
             ->where([
@@ -643,7 +643,7 @@ class QuizTreeController extends Controller
             $returnValue = array(
                 'listId'        => $listData->listId,
                 'listName'      => $listData->name,
-                'folderNumber'  => $listData->folderNumber,
+                'folderId'      => $listData->folderId,
                 'bookList'      => $bookList,
                 'quizs'         => $quizs,
                 'check'         => true
