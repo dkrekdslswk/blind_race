@@ -414,102 +414,114 @@ class QuizTreeController extends Controller
 
         // 교사정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        
+        // 이름이 있는지 확인
+        if ($postData['listName']) {
 
-        // 입력 실패한 문제의 배열상 위치를 반납
-        $errorQuiz = array();
+            // 입력 실패한 문제의 배열상 위치를 반납
+            $errorQuiz = array();
 
-        // 리스트가 존재하는지, 폴더는 자기 폴더가 맞는지 확인
-        $listUserCheck = DB::table('lists as l')
-            ->select(
-                'f.number as folderId',
-                DB::raw('count(CASE WHEN l.number = '.$postData['listId'].' THEN 1 END) as listCheck')
-            )
-            ->where([
-                'f.number' => $postData['folderId'],
-                'f.teacherNumber' => $userData['userId']
-            ])
-            ->leftJoin('folders as f', 'f.number', '=', 'l.folderNumber')
-            ->groupBy('f.number')
-            ->first();
+            // 리스트가 존재하는지, 폴더는 자기 폴더가 맞는지 확인
+            $listUserCheck = DB::table('folders as f')
+                ->select(
+                    DB::raw('count(CASE WHEN l.number = ' . $postData['listId'] . ' THEN 1 END) as listCheck')
+                )
+                ->where([
+                    'f.number' => $postData['folderId'],
+                    'f.teacherNumber' => $userData['userId']
+                ])
+                ->leftJoin('lists as l', 'l.folderNumber', '=', 'f.number')
+                ->groupBy('f.number')
+                ->first();
 
-        // 해당유저의 리스트인지 확인
-        if($listUserCheck) {
-            if ($listUserCheck->listCheck == 0){
-                $postData['listId'] = DB::table('lists')
-                    ->insertGetId([
-                        'name' => $postData['listName'],
-                        'folderNumber' => $postData['folderId']
-                    ], 'number');
-            } else {
-                DB::table('lists')
-                    ->where([
-                        'number' => $postData['listId']
-                    ])
-                    ->update([
-                        'name' => $postData['listName']
-                    ]);
-
-                // 문제들 삭제
-                $this->deleteListQuiz($postData['listId']);
-            }
-
-            foreach ($postData['quizs'] as $quiz) {
-                // 문제를 저장
-                // 주관식 객관식 구분
-                if($quiz['makeType'] == 'obj') {
-                    $quizIds = DB::table('quizBanks')
+            // 해당유저의 리스트인지 확인
+            if ($listUserCheck) {
+                if ($listUserCheck->listCheck == 0) {
+                    $postData['listId'] = DB::table('lists')
                         ->insertGetId([
-                            'question' => $quiz['question'],
-                            'rightAnswer' => $quiz['right'],
-                            'example1' => $quiz['example1'],
-                            'example2' => $quiz['example2'],
-                            'example3' => $quiz['example3'],
-                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
-                            'teacherNumber' => $userData['userId']
-                        ], 'number');
-                } else if($quiz['makeType'] == 'sub'){
-                    $quizIds = DB::table('quizBanks')
-                        ->insertGetId([
-                            'question' => $quiz['question'],
-                            'hint' => $quiz['hint'],
-                            'rightAnswer' => $quiz['right'],
-                            'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
-                            'teacherNumber' => $userData['userId']
+                            'name' => $postData['listName'],
+                            'folderNumber' => $postData['folderId']
                         ], 'number');
                 } else {
-                    $quizIds = false;
-                }
-
-                // 리스트에 문제를 연결
-                if($quizIds) {
-                    $insertCheck = DB::table('listQuizs')
-                        ->insert([
-                            'listNumber' => $postData['listId'],
-                            'quizNumber' => $quizIds
+                    DB::table('lists')
+                        ->where([
+                            'number' => $postData['listId']
+                        ])
+                        ->update([
+                            'name' => $postData['listName']
                         ]);
-                } else {
-                    $insertCheck = false;
+
+                    // 문제들 삭제
+                    $this->deleteListQuiz($postData['listId']);
+                }
+                foreach ($postData['quizs'] as $quiz) {
+                    // 문제를 저장
+                    // 주관식 객관식 구분
+                    if ($quiz['makeType'] == 'obj') {
+                        $quizIds = DB::table('quizBanks')
+                            ->insertGetId([
+                                'question' => $quiz['question'],
+                                'rightAnswer' => $quiz['right'],
+                                'example1' => $quiz['example1'],
+                                'example2' => $quiz['example2'],
+                                'example3' => $quiz['example3'],
+                                'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                                'teacherNumber' => $userData['userId']
+                            ], 'number');
+                    } else if ($quiz['makeType'] == 'sub') {
+                        $quizIds = DB::table('quizBanks')
+                            ->insertGetId([
+                                'question' => $quiz['question'],
+                                'hint' => $quiz['hint'],
+                                'rightAnswer' => $quiz['right'],
+                                'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
+                                'teacherNumber' => $userData['userId']
+                            ], 'number');
+                    } else {
+                        $quizIds = false;
+                    }
+
+                    // 리스트에 문제를 연결
+                    if ($quizIds) {
+                        $insertCheck = DB::table('listQuizs')
+                            ->insert([
+                                'listNumber' => $postData['listId'],
+                                'quizNumber' => $quizIds
+                            ]);
+                    } else {
+                        $insertCheck = false;
+                    }
+
+                    // 입력 실패한 문제를 반납
+                    if (!$insertCheck) {
+                        array_push($errorQuiz, $quiz);
+                    }
                 }
 
-                // 입력 실패한 문제를 반납
-                if (!$insertCheck) {
-                    array_push($errorQuiz, $quiz);
+                // 반납 값 정리
+                // 입력 성공시
+                if(count($errorQuiz) == 0){
+                    $returnValue = array(
+                        'check' => true
+                    );
                 }
+                // 한문제라도 입력이 안되었을 경우
+                else{
+                    $returnValue = array(
+                        'check' => false,
+                        'errorQuiz' => $errorQuiz
+                    );
+                }
+            } else {
+                // 자기 폴더가 아닐 경우
+                $returnValue = array(
+                    'check' => false
+                );
             }
-        }
-
-        // 반납 값 정리
-        // 입력 성공시
-        if(count($errorQuiz) == 0){
+        } else {
+            // 레이스 이름이 없을 경우
             $returnValue = array(
-                'check' => true
-            );
-        }
-        // 한문제라도 입력이 안되었을 경우
-        else{
-            $returnValue = array(
-                'check' => false,
-                'errorQuiz' => $errorQuiz
+                'check' => false
             );
         }
 
