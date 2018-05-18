@@ -235,6 +235,76 @@
 
 
         function btn_click(){
+            (function($) {
+                if ($.fn.style) {
+                    return;
+                }
+
+                // Escape regex chars with \
+                var escape = function(text) {
+                    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                };
+
+                // For those who need them (< IE 9), add support for CSS functions
+                var isStyleFuncSupported = !!CSSStyleDeclaration.prototype.getPropertyValue;
+                if (!isStyleFuncSupported) {
+                    CSSStyleDeclaration.prototype.getPropertyValue = function(a) {
+                        return this.getAttribute(a);
+                    };
+                    CSSStyleDeclaration.prototype.setProperty = function(styleName, value, priority) {
+                        this.setAttribute(styleName, value);
+                        var priority = typeof priority != 'undefined' ? priority : '';
+                        if (priority != '') {
+                            // Add priority manually
+                            var rule = new RegExp(escape(styleName) + '\\s*:\\s*' + escape(value) +
+                                '(\\s*;)?', 'gmi');
+                            this.cssText =
+                                this.cssText.replace(rule, styleName + ': ' + value + ' !' + priority + ';');
+                        }
+                    };
+                    CSSStyleDeclaration.prototype.removeProperty = function(a) {
+                        return this.removeAttribute(a);
+                    };
+                    CSSStyleDeclaration.prototype.getPropertyPriority = function(styleName) {
+                        var rule = new RegExp(escape(styleName) + '\\s*:\\s*[^\\s]*\\s*!important(\\s*;)?',
+                            'gmi');
+                        return rule.test(this.cssText) ? 'important' : '';
+                    }
+                }
+
+                // The style function
+                $.fn.style = function(styleName, value, priority) {
+                    // DOM node
+                    var node = this.get(0);
+                    // Ensure we have a DOM node
+                    if (typeof node == 'undefined') {
+                        return this;
+                    }
+                    // CSSStyleDeclaration
+                    var style = this.get(0).style;
+                    // Getter/Setter
+                    if (typeof styleName != 'undefined') {
+                        if (typeof value != 'undefined') {
+                            // Set style property
+                            priority = typeof priority != 'undefined' ? priority : '';
+                            style.setProperty(styleName, value, priority);
+                            return this;
+                        } else {
+                            // Get style property
+                            return style.getPropertyValue(styleName);
+                        }
+                    } else {
+                        // Get CSSStyleDeclaration
+                        return style;
+                    }
+                };
+            })(jQuery);
+
+
+            var body = $("body");
+            body.style('background-color', 'whitesmoke', 'important');
+
+
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             // var quiz_JSON = [
             //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
@@ -601,133 +671,8 @@
         <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
     </div>
 </div>
-<div id="playing_contents" style="display:none;">
-    @include('Race.race_content')
-</div>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char1.png">
-    <span style="text-align:center; color:white; background-color:black;">학생</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char2.png">
-    <span style="text-align:center; color:white; background-color:black;">학생2</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char3.png">
-    <span style="text-align:center; color:white; background-color:black;">학생3</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char4.png">
-    <span style="text-align:center; color:white; background-color:black;">학생4</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char5.png">
-    <span style="text-align:center; color:white; background-color:black;">학생5</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char6.png">
-    <span style="text-align:center; color:white; background-color:black;">학생6</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char7.png">
-    <span style="text-align:center; color:white; background-color:black;">학생7</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char8.png">
-    <span style="text-align:center; color:white; background-color:black;">학생8</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char9.png">
-    <span style="text-align:center; color:white; background-color:black;">학생9</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char10.png">
-    <span style="text-align:center; color:white; background-color:black;">학생10</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char11.png">
-    <span style="text-align:center; color:white; background-color:black;">학생11</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char12.png">
-    <span style="text-align:center; color:white; background-color:black;">학생12</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char13.png">
-    <span style="text-align:center; color:white; background-color:black;">학생13</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char14.png">
-    <span style="text-align:center; color:white; background-color:black;">학생14</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char15.png">
-    <span style="text-align:center; color:white; background-color:black;">학생15</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char16.png">
-    <span style="text-align:center; color:white; background-color:black;">학생16</span>
-</li>
-
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char17.png">
-    <span style="text-align:center; color:white; background-color:black;">학생17</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char18.png">
-    <span style="text-align:center; color:white; background-color:black;">학생18</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char19.png">
-    <span style="text-align:center; color:white; background-color:black;">학생19</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char20.png">
-    <span style="text-align:center; color:white; background-color:black;">학생20</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char21.png">
-    <span style="text-align:center; color:white; background-color:black;">학생21</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char22.png">
-    <span style="text-align:center; color:white; background-color:black;">학생22</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char23.png">
-    <span style="text-align:center; color:white; background-color:black;">학생23</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char24.png">
-    <span style="text-align:center; color:white; background-color:black;">학생24</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char25.png">
-    <span style="text-align:center; color:white; background-color:black;">학생25</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char26.png">
-    <span style="text-align:center; color:white; background-color:black;">학생26</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char27.png">
-    <span style="text-align:center; color:white; background-color:black;">학생27</span>
-</li>
-<li class="user_in_room">
-    <img class="user_character" src="/img/character/char28.png">
-    <span style="text-align:center; color:white; background-color:black;">학생28</span>
-</li>
-
-
+    <div id="playing_contents" style="display:none;">
+        @include('Race.race_content')
+    </div>
 </body>
 </html>
