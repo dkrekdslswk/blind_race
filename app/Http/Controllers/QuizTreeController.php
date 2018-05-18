@@ -422,7 +422,7 @@ class QuizTreeController extends Controller
             $errorQuiz = array();
 
             // 리스트가 존재하는지, 폴더는 자기 폴더가 맞는지 확인
-            $listUserCheck = DB::table('lists as l')
+            $listUserCheck = DB::table('folders as f')
                 ->select(
                     DB::raw('count(CASE WHEN l.number = ' . $postData['listId'] . ' THEN 1 END) as listCheck')
                 )
@@ -430,7 +430,7 @@ class QuizTreeController extends Controller
                     'f.number' => $postData['folderId'],
                     'f.teacherNumber' => $userData['userId']
                 ])
-                ->leftJoin('folders as f', 'f.number', '=', 'l.folderNumber')
+                ->leftJoin('lists as l', 'l.folderNumber', '=', 'f.number')
                 ->groupBy('f.number')
                 ->first();
 
@@ -525,7 +525,7 @@ class QuizTreeController extends Controller
             );
         }
 
-        return $postData;
+        return $returnValue;
     }
 
     // 삭제
