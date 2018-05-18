@@ -34,17 +34,21 @@
         <a id="Mid_skip_btn" class="btn btn-primary btn-lg nextbutton" href="#" role="button">다음문제 넘어가기</a>
     </div>
     <section>
-        <div class="divss">
+
+        <div class="divss" style="display:inline-block;">
             <div class="btn btn-primary" style="background-color:black; color:white; width:600px;">문제</div>
             <div id="Mid_Q_Name" class="well well-lg"  style="font-size:20px;" >문제</div>
 
             <div class="btn btn-primary" style="background-color:black; color:white; width:600px;">정답</div>
             <div id="Mid_A_Right" class="well well-lg" style="font-size:20px;" >정답</div>
-
         </div>
 
-        <div class="pieID pie"></div>
-        <h4 id="winners" class="pieID"></h4>
+        <div style="position:absolute;  top:50%; left:80%; display: inline-block;">
+            <div class="pieID pie"></div>
+            <div style="border:1px solid blue; border-radius: 20px;" id="winners">정답자:</div>
+            <div style="border:1px solid red; border-radius: 20px;" id="fail_count">오답자:0</div>
+        </div>
+        <h4 class="pieID"></h4>
         <ul class="pieID legend" style="display:none;">
 
             <li>

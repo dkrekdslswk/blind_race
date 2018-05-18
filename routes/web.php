@@ -55,6 +55,12 @@ Route::get('/race_waiting', function(){
     return view('Race/race_waiting');
 });
 
+/* 2-1. Blind Race : Waiting Room */
+Route::get('/mid_result', function(){
+    return view('Race/mid_result');
+});
+
+
 /* 2-3. Blind Race : Race Result */
 Route::get('/race_result', function(){
     return view('Race/race_result');

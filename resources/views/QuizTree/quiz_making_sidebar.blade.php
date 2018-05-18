@@ -85,47 +85,13 @@
 
 <script>
 
-    /*$.ajax({
-        type: "POST",
-        url: "",
-        dataType: "json",
-        data:
-
-    });*/
-
-    /*$('#btn').on("click", function () {
-
-        alert("hi");
-        //$('#test').val($('#bookId').attr(value));
-        /!*var url="quizTreeController/getQuiz";
-        var params="bookId="+ +"pageStart="+ +"pageEnd="+ +"type="+ +"level=";
-
-        $.ajax({
-            type:"POST",
-            url:url,
-            data:params,
-            success:function(args){
-                $("#result").html(args);
-            },
-            beforeSend:showRequest,
-            error:function(e){
-                alert(e.responseText);
-            }
-        });
-    });*/
-
     // example quiz data 저장용
     var quizData;
 
+    // 검색 버튼 클릭 시
     $(document).on('click', '#btn', function (e) {
 
         e.preventDefault();
-
-        //var formDataValues = document.forms.namedItem("form_data");
-        //var formValues = new FormData(formDataValues);
-
-
-        //var params = jQuery("#form_data").serialize();
 
         var params = {
             bookId: $('#bookId').val(),
@@ -135,8 +101,6 @@
         };
 
         //alert(JSON.stringify(params));
-
-        //var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
         $.ajax({
             type: 'POST',
@@ -148,11 +112,6 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
-
-                //alert(data.raceId[0].question);
-                //alert(data.raceId.length);
-                //var $tr = $('<tr />').appendTo('#example');
-                //$('<td />').text('test').appendTo($tr);
 
                 // 테이블 비우기
                 //$('#example').empty();
@@ -228,7 +187,6 @@
 
     <form id="form_data" enctype="multipart/form-data" class="form-horizontal">
 
-
         <div class="select">
             <select id="bookSelect" class="form-control">
                 <option>교재 선택</option>
@@ -262,7 +220,7 @@
 
     </form>
 
-    {{--예문--}}
+    <!--예문-->
     <div class="sample_quiz">
         <table class="table table-bordered table-striped">
             <thead id="theadStyle">
