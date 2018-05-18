@@ -462,7 +462,7 @@ class RecordBoxController extends Controller{
                                     ->groupBy($typeGroupBy)
                                     ->first();
 
-                                if ($quizData->rightAnswerCount < $raceQuizs->userCount) {
+                                if ($quizData->rightAnswerCount < $raceQuizs[$i]->userCount) {
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
                                         'id' => $raceQuizs[$i]->quizId,
@@ -495,7 +495,7 @@ class RecordBoxController extends Controller{
                                     ->get();
 
                                 $wrongData = array();
-                                $rights = explode(',', $raceQuizs->rightAnswer);
+                                $rights = explode(',', $raceQuizs[$i]->rightAnswer);
                                 foreach ($quizData as $quiz) {
                                     foreach ($rights as $right){
                                         if ($quiz->answer == $right){
