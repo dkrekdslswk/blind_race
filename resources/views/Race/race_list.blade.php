@@ -179,7 +179,6 @@
         // 선택된 그룹 id 값 넘기기
         $('#groupSelect').change(function () {
             var selectedText = $("#groupSelect :selected").val();
-            alert(selectedText);
 
             var groupIdObj = document.getElementById("groupId");
             groupIdObj.value = selectedText;
