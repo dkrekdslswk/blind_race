@@ -64,6 +64,14 @@
             min-width: 700px;
             display: block;
         }
+
+        #wrong_detail tr , #details_record tr{
+            border-bottom: 1px solid #e5e6e8;
+        }
+
+        #wrong_detail tr td , #details_record tr td{
+            border-left: 1px solid #e5e6e8;
+        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -75,7 +83,7 @@
     <script type="text/javascript">
 
         var chartData = "";
-        var group_id = 1;
+        var group_id = 0;
         var loadDt = new Date();
 
         // 1~9월 1~9일에 앞자리 0추가해주는 함수
@@ -101,10 +109,6 @@
 
             //클래스 불러오기 and 차트 로드하기
             pageMainLoad();
-            pageHistoryLoad();
-            pageStudentListLoad();
-
-            loadGradeCard(1);
         };
 
         //메인 페이지 로드
@@ -112,7 +116,7 @@
 
             /*part.1 사이드바*/
             //클래스 불러오기 and 차트 로드하기 -> record_chart.blade.php
-            getGroups_and_loadChart(group_id);
+            getGroups_and_loadChart(1);
 
         }
 
@@ -122,13 +126,6 @@
             /*part.2 최근기록 화면*/
             //최근 목록 불러오기
 
-
-        }
-
-        //학생관리 페이지 로드
-        function pageStudentListLoad(){
-
-            /*part.3 학생관리 화면*/
 
         }
 
@@ -308,8 +305,9 @@
                     //가장 상단에 있는 클래스 ID값으로 차트 만들기
                     getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
                     getStudents(firstGroup.attr('id'));
-
                     getHistory(firstGroup.attr('id'));
+
+                    group_id = firstGroup.attr('id');
 
                 },
                 error: function (data) {
@@ -339,7 +337,6 @@
                 success: function (data) {
 
                     $('#student_list').empty();
-                    $('#toggle_student_list').empty();
 
                     /*
                     data = {group : { id: 1, name: "#WDJ", studentCount : 5}
@@ -353,7 +350,6 @@
 
                     for(var i = 0 ; i < student.length; i++){
                         $('#student_list').append($('<tr id="student_list_'+i+'">'));
-                        $('#toggle_student_list').append($('<tr id="toggle_student_list'+i+'">'));
 
                         for(var j = 0 ; j < 1 ; j++ ) {
 
@@ -364,14 +360,6 @@
                                                     .attr('id',student[i]['id'])
                                                     .attr('name',student[i]['name'])
                                                     .attr('class','stdList'));
-
-                            $('#toggle_student_list' + i).append($('<td>').text(i+1));
-                            $('#toggle_student_list' + i).append($('<td>')
-                                                    .append($('<a href="#" onclick="getWrongAnswer('+student[i]['id']+')">')
-                                                        .text(student[i]['name']))
-                                                    .attr('id',student[i]['id'])
-                                                    .attr('name',student[i]['name'])
-                                                    .attr('class','toggle_stdList'));
                         }
                     }
 
@@ -384,46 +372,31 @@
 
         }
 
-        function toggle_detailStudent_and_Wrong(id) {
-           switch (id){
-               case "0" :
+        $("input[name=studentOrGrade]:checked").change(function () {
 
-                   $('#toggle_only_students').attr('class','');
-                   $('#toggle_only_wrong_answers').attr('class','hidden');
-                   break;
+            if($("input[name=studentOrGrade]:checked").is(":checked")){
+                alert("체크박스 체크했음!");
+            }else{
+                alert("체크박스 체크 해제!");
+            }
+        });
 
-               case "1" :
-                   $('#toggle_only_students').attr('class','hidden');
-                   $('#toggle_only_wrong_answers').attr('class','');
 
-                   break;
-           }
-        };
+        function toggle_detailStudent_and_Wrong(value) {
 
-        function getWrongAnswer(id) {
-            var data = {
-                group: {id: 1, name: "#WDJ", studentCount: 5},
-                wrong: {
-                    0: {0: 3, 1: "たりとも" , 2 : "ばかりも"},
-                    1: {1: 13, 1: "とあって" , 2 : "にあって"},
-                    2: {2: 17, 1: "かたわら" , 2 : "うちに"},
-                },
-            };
-
-            for(var i = 0 ; i < 3 ; i++ ){
-                $('#toggle_wrong_answers').append($('<tr>').attr('id','toggle_wrong_'+i));
-
-                for(var j = 0 ; j < 3 ; j++){
-
-                    if(j == 0){
-                        $('#toggle_wrong_'+i).append($('<td>').text(i+1));
-                    }else{
-                    $('#toggle_wrong_'+i).append($('<td>').text(data['wrong'][i][j]));
-                    }
-                }
+            if($("#checkbox_0").is(":checked")){
+                $('#toggle_only_students').attr('class','');
+            }else{
+                $('#toggle_only_students').attr('class','hidden');
             }
 
-        }
+            if($("#checkbox_1").is(":checked")){
+                $('#toggle_only_wrong_answers').attr('class','');
+            }else{
+                $('#toggle_only_wrong_answers').attr('class','hidden');
+            }
+        };
+
 
         function getHistory(group_id){
             // 요구하는 값
@@ -476,7 +449,10 @@
 
                         $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['wrongClearCount']+"/"+data['races'][i]['wrongCount']));
 
-                        $('#history_list_tr'+i).append($('<td>').append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">').text("성적표")));
+                        $('#history_list_tr'+i).append($('<td>').attr('class','history_list_gradeCard')
+                            .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                .attr('id',data['races'][i]['raceId'])
+                            .text("성적표")));
 
                     }
 
@@ -542,6 +518,35 @@
 
         }
 
+        $(document).on('click','.history_list_gradeCard button',function () {
+            loadGradeCard(this.id);
+        });
+
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentGradeCard button',function () {
+            var raceId = $(this).attr('id');
+            var userId = $(this).attr('name');
+
+            loadStudentGradeCard(userId,raceId);
+        });
+
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentRetestGradeCard button',function () {
+            var raceId = $(this).attr('id');
+            var userId = $(this).attr('name');
+
+            loadStudentGradeCard(userId,raceId);
+        });
+
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentWrongGradeCard button',function () {
+            var raceId = $(this).attr('id');
+            var userId = $(this).attr('name');
+
+            loadStudentGradeCard(userId,raceId);
+        });
+
+
         function loadGradeCard(value){
 
             //value = {userId : 1300000}
@@ -570,6 +575,7 @@
                                                 userCount:5,
                                                 userName:"김똘똘",
                                                 userId: 1300000,
+                                                teacherName: "이OO교수",
 
                                                 allCount:6,
                                                 allRightCount:4,
@@ -588,32 +594,542 @@
                                               }
                                         }
                     */
+                    console.log(data);
 
                     var StudentData = data['races'];
                     var StudentScore = makingStudentChartData(data);
+                    var totalGrade = 0;
+                    var totalVoca = 0;
+                    var totalGrammer = 0;
+                    var totalWord = 0;
+                    var totalRight = 0;
 
-                    console.log(StudentScore);
+                    $('#modal_raceName_teacher').empty();
+                    $('.modal_date').empty();
                     $('.modal #grade_list').empty();
+                    $('#modal_total_grade').empty();
+                    $('#toggle_student_list').empty();
+
+                    $('#modal_raceName_teacher').text(StudentData[0]['listName'] +"  /  " +StudentData[0]['teacherName'] );
+                    $('.modal_date').text(StudentData[0]['year']+"년 "+StudentData[0]['month']+"월 "+StudentData[0]['day']+"일");
+
 
                     for(var i = 0 ; i < StudentData.length ; i++){
-                        $('.modal #grade_list').append($('<tr>').attr('id', 'modal_stdGrade_'+i));
+                        $('.modal #grade_list').append($('<tr>').attr('id', 'modal_Grade_'+i));
 
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentData[i]['userName']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentScore['total_data'][e][0]['y']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentScore['voca_data'][1][0]['y']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentScore['grammer_data'][1][0]['y']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentScore['word_data'][1][0]['y']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentData[i]['retestState']));
-                            $('#modal_stdGrade_' + i).append($('<td>').text(StudentData[i]['wrongState']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['userName']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
+                        $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
+
+                        //시험친 학생들 명단 출력
+                        $('#toggle_student_list').append($('<tr id="toggle_student_list'+i+'">'));
+
+                        $('#toggle_student_list' + i).append($('<td>').text(i+1));
+                        $('#toggle_student_list' + i).append($('<td>')
+                            .append($('<a href="#" onclick="getWrongAnswer('+StudentData[i]['userId']+','+StudentData[i]['raceId']+')">')
+                                .text(StudentData[i]['userName']))
+                            .attr('id',StudentData[i]['userId'])
+                            .attr('name',StudentData[i]['userName'])
+                            .attr('class','toggle_stdList'));
+
+
+                        totalGrade += StudentScore['total_data'][1][i]['y'];
+                        totalVoca += StudentScore['voca_data'][1][i]['y'];
+                        totalGrammer += StudentScore['grammer_data'][1][i]['y'];
+                        totalWord += StudentScore['word_data'][1][i]['y'];
+                        totalRight += StudentData[i]['allRightCount'];
                     }
+
+                    //modal-footer 총 점수들 표시
+                    $('#modal_total_grade').text("전체 평균: "+parseInt(totalGrade / StudentData.length)+
+                                                " / 어휘: "+parseInt(totalVoca / StudentData.length)+
+                                                " / 문법: "+parseInt(totalGrammer / StudentData.length)+
+                                                " / 독해: "+parseInt(totalWord / StudentData.length)+
+                                                " / 갯수: "+parseInt(totalRight / StudentData.length));
+
+                    //틀린 오답문제들 전부 로드하기
+                    getWrongAnswer2(group_id,StudentData['raceId']);
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+            });
+        }
+
+        function loadStudentGradeCard(userId,raceId){
+            //value = {userId : 1300000}
+            //value = {raceId : 1}
+
+            var reqData = {'raceId' : raceId};
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getStudents')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+                    /*
+                     data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018,
+                                                month:5,
+                                                day:11,
+                                                date: "2018-05-07 19:53:46",
+
+                                                raceId:1,
+                                                listName:"테스트용 리스트1",
+                                                userCount:5,
+                                                userName:"김똘똘",
+                                                userId: 1300000,
+                                                teacherName: "이OO교수",
+
+                                                allCount:6,
+                                                allRightCount:4,
+
+                                                grammarCount:2,
+                                                grammarRightCount:1.4,
+
+                                                vocabularyCount:2,
+                                                vocabularyRightCount:1.2,
+
+                                                wordCount:2,
+                                                wordRightCount:1.4,
+
+                                                retestState:"not",
+                                                wrongState:"not"
+                                              }
+                                        }
+                    */
+
+                    var StudentData;
+
+                    for(var i = 0 ; i < data['races'].length ; i++){
+                        if (userId == data['races'][i]['userId']){
+                            StudentData = data['races'][i];
+                        }
+                    }
+
+                    $('#modal_student_raceName_teacher').empty();
+                    $('.modal_student_date').empty();
+                    $('.modal #studentGradeCard').empty();
+
+                    $('#modal_student_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
+                    $('.modal_student_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+
+
+                    for(var i = 0 ; i < 1 ; i++){
+                        $('.modal #studentGradeCard').append($('<tr>').attr('id', 'modal_stdGrade_'+i));
+
+                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['userName']));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((100 / StudentData['allCount']) * StudentData['allRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['vocabularyCount']) * StudentData['vocabularyRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['grammarCount']) * StudentData['grammarRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['wordCount']) * StudentData['wordRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['allRightCount']+"/"+StudentData['allCount']));
+
+                    }
+
+                    getStudentWrongAnswer(userId,raceId);
 
                 },
                 error: function (data) {
                     alert("학생별 최근 레이스 값 불러오기 에러");
                 }
             });
+        }
 
+        function getWrongAnswer(userId,raceId) {
+
+            var reqData ={"userId" : userId , "raceId" : raceId};
+
+            var data = {
+                group: {id: 1, name: "#WDJ", studentCount: 5},
+                wrongs: {
+                    0: { number: 1,
+                        id: 1,
+                        question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
+
+                        rightAnswerNumber:1,
+                        choiceNumber:2,
+
+                        example1:"たりとも",
+                        example1Number:2,
+                        example2:"とはいえ",
+                        example2Number:1,
+                        example3:"だけさえ",
+                        example3Number:3,
+                        example4:"ばかりも",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    },
+
+                    1: { number: 2,
+                        id: 1,
+                        question: "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。",
+
+                        rightAnswerNumber:2,
+                        choiceNumber:3,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"とあって",
+                        example2Number:2,
+                        example3:"にあって",
+                        example3Number:3,
+                        example4:"にしては",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    },
+                    2: { number: 3,
+                        id: 1,
+                        question: "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。",
+
+                        rightAnswerNumber:3,
+                        choiceNumber:2,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"こととて",
+                        example2Number:2,
+                        example3:"かたわら",
+                        example3Number:3,
+                        example4:"うちに",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    }
+                }
+            };
+
+            $('#toggle_wrong_answers').empty();
+
+            var wrongsData = data['wrongs'];
+
+            //wrongsData.length == 3
+            for(var i = 0 ; i < 3 ; i++ ){
+
+                for(var j = 0 ; j < 3 ; j++) {
+                    $('#toggle_wrong_answers').append($('<tr>').attr('id', 'toggle_wrong_'+wrongsData[i]['number']+"_"+ j));
+
+                    switch (j) {
+                        case 0 :
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
+
+                            break;
+                        case 1 :
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_'+wrongsData[i]['number']+"_"+1));
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_'+wrongsData[i]['number']+"_"+2));
+
+                            break;
+                        case 2 :
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_'+wrongsData[i]['number']+"_"+3));
+                            $('#toggle_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_'+wrongsData[i]['number']+"_"+4));
+                            break;
+
+                    }
+                }
+
+                for(var j = 1 ; j <= 4 ; j++){
+
+                    $('#wrong_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
+
+                    switch (j){
+                        case wrongsData[i]['rightAnswerNumber']:
+                            $('#wrong_'+wrongsData[i]['number']+"_"+ j).css('background-color','#ffa500');
+
+                            break;
+                        case wrongsData[i]['choiceNumber']:
+                            $('#wrong_'+wrongsData[i]['number']+"_"+ j).css('background-color','#e5e6e8');
+
+                            break;
+                    }
+                }
+
+            }
+
+        }
+
+        function getWrongAnswer2(groupId,raceId) {
+
+            var reqData ={"groupId" : groupId,"raceId" : raceId};
+
+            console.log(reqData);
+
+            var data = {
+                group: {id: 1, name: "#WDJ", studentCount: 5},
+                wrongs: {
+                    0: { number: 1,
+                        id: 1,
+                        question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
+
+                        rightAnswerNumber:1,
+                        choiceNumber:2,
+
+                        example1:"たりとも",
+                        example1Number:2,
+                        example2:"とはいえ",
+                        example2Number:1,
+                        example3:"だけさえ",
+                        example3Number:3,
+                        example4:"ばかりも",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:1,
+                        example3Count:2,
+                        example4Count:1,
+
+                    },
+
+                    1: { number: 2,
+                        id: 1,
+                        question: "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。",
+
+                        rightAnswerNumber:2,
+                        choiceNumber:4,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"とあって",
+                        example2Number:2,
+                        example3:"にあって",
+                        example3Number:3,
+                        example4:"にしては",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:3,
+                        example1Count:1,
+                        example2Count:3,
+                        example3Count:0,
+                        example4Count:1,
+
+                    },
+                    2: { number: 3,
+                        id: 1,
+                        question: "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。",
+
+                        rightAnswerNumber:3,
+                        choiceNumber:2,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"こととて",
+                        example2Number:2,
+                        example3:"かたわら",
+                        example3Number:3,
+                        example4:"うちに",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:2,
+                        example1Count:1,
+                        example2Count:1,
+                        example3Count:2,
+                        example4Count:1,
+
+                    }
+                }
+            };
+
+            $('#wrong_detail').empty();
+
+            var wrongsData = data['wrongs'];
+
+            //wrongsData.length == 3
+            for(var i = 0 ; i < 3 ; i++ ){
+
+                for(var j = 0 ; j < 3 ; j++) {
+                    $('#wrong_detail').append($('<tr>').attr('id', 'toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j));
+
+                    switch (j) {
+                        case 0 :
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['rightAnswerCount']+" / "+wrongsData[i]['userCount']).attr('rowSpan',3));
+
+                            break;
+                        case 1 :
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+1));
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+2));
+
+                            break;
+                        case 2 :
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+3));
+                            $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+4));
+                            break;
+                    }
+                }
+
+                for(var j = 1 ; j <= 4 ; j++){
+
+                    if(wrongsData[i]['example'+j+"Count"] == 0){
+                        $('#wrong_detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j])
+
+                    }else {
+                        $('#wrong_detail_' + wrongsData[i]['number'] + "_" + j).text(wrongsData[i]['example' + j])
+                            .append($('<div>').css({display:"inline",float:"right"}).text(wrongsData[i]['example' + j + "Count"] + "명"));
+                    }
+
+                    if(j == wrongsData[i]['rightAnswerNumber']){
+                        $('#wrong_detail_'+wrongsData[i]['number']+"_"+ j).css('background-color','#ffa500');
+                    }
+                }
+            }
+
+        }
+
+        function getStudentWrongAnswer(userId,raceId) {
+
+            var reqData ={"userId" : userId , "raceId" : raceId};
+
+            var data = {
+                group: {id: 1, name: "#WDJ", studentCount: 5},
+                wrongs: {
+                    0: { number: 1,
+                        id: 1,
+                        question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
+
+                        rightAnswerNumber:1,
+                        choiceNumber:2,
+
+                        example1:"たりとも",
+                        example1Number:2,
+                        example2:"とはいえ",
+                        example2Number:1,
+                        example3:"だけさえ",
+                        example3Number:3,
+                        example4:"ばかりも",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    },
+
+                    1: { number: 2,
+                        id: 1,
+                        question: "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。",
+
+                        rightAnswerNumber:2,
+                        choiceNumber:3,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"とあって",
+                        example2Number:2,
+                        example3:"にあって",
+                        example3Number:3,
+                        example4:"にしては",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    },
+                    2: { number: 3,
+                        id: 1,
+                        question: "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。",
+
+                        rightAnswerNumber:3,
+                        choiceNumber:2,
+
+                        example1:"かたがた",
+                        example1Number:1,
+                        example2:"こととて",
+                        example2Number:2,
+                        example3:"かたわら",
+                        example3Number:3,
+                        example4:"うちに",
+                        example4Number:4,
+
+                        userCount: 5,
+                        rightAnswerCount:1,
+                        example1Count:1,
+                        example2Count:2,
+                        example3Count:1,
+
+                    }
+                }
+            };
+
+            $('#details_record').empty();
+
+            var wrongsData = data['wrongs'];
+
+            //wrongsData.length == 3
+            for(var i = 0 ; i < 3 ; i++ ){
+
+                for(var j = 0 ; j < 3 ; j++) {
+                    $('#details_record').append($('<tr>').attr('id', 'detail_wrong_'+wrongsData[i]['number']+"_"+ j));
+
+                    switch (j) {
+                        case 0 :
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
+
+                            break;
+                        case 1 :
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+1));
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+2));
+
+                            break;
+                        case 2 :
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+3));
+                            $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+4));
+                            break;
+
+                    }
+                }
+
+                for(var j = 1 ; j <= 4 ; j++){
+
+                    $('#detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
+
+                    switch (j){
+                        case wrongsData[i]['rightAnswerNumber']:
+                            $('#detail_'+wrongsData[i]['number']+"_"+ j).css('background-color','#ffa500');
+
+                            break;
+                        case wrongsData[i]['choiceNumber']:
+                            $('#detail_'+wrongsData[i]['number']+"_"+ j).css('background-color','#e5e6e8');
+
+                            break;
+                    }
+                }
+
+            }
 
         }
 
@@ -698,16 +1214,6 @@
 
         });
 
-
-        //학생 상세정보에서 성적표 클릭시 성적표 로드
-        $(document).on('click','.toggle_openStudentGradeCard',function () {
-            //$('.modal-body #hiddenValue').val();
-            var userId = $(this).attr('id');
-            var userName = $(this).attr('name');
-
-        });
-
-
         //학생 클릭시 해당 학생 개인성적 조회 및 그래프 로드
         function getStudentGrade(userId) {
             // 요구하는 값
@@ -756,27 +1262,46 @@
                                         }
                     */
 
-                    var ChartData = makingStudentChartData(data);
-                    makingStudentChart(ChartData);
+                        var ChartData = makingStudentChartData(data);
+                        var raceData = data['races'];
+                        makingStudentChart(ChartData);
 
-                    $('#studentGradeList').empty();
-                    for( var i = 0 ; i < data['races'].length ; i++ ){
-                        $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
-                    }
+                        $('#studentGradeList').empty();
+                        for( var i = 0 ; i < raceData.length ; i++ ){
+                            $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
+                        }
 
-                    for( var i = 0 ; i < data['races'].length ; i++ ) {
-                        $('#stdGrade_' + i).append($('<td>').text(i+1));
-                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['year']+"년 "+data['races'][i]['month']+"월 "+data['races'][i]['day']+"일"));
-                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['listName']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][0]['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][0]['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][0]['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][0]['y']));
-                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['retestState']));
-                        $('#stdGrade_' + i).append($('<td>').text(data['races'][i]['wrongState']));
-                        $('#stdGrade_' + i).append($('<td>').append($('<a href="#" class="toggle_openStudentGradeCard" data-toggle="modal" data-target="#modal_studentGradeCard">')
-                                                            .attr('id',data['races'][i]['raceId']).text("성적표")));
-                    }
+                        for( var i = 0 ; i < raceData.length ; i++ ) {
+                            $('#stdGrade_' + i).append($('<td>').text(i+1));
+                            $('#stdGrade_' + i).append($('<td>').text(raceData[i]['year']+"년 "+raceData[i]['month']+"월 "+raceData[i]['day']+"일"));
+                            $('#stdGrade_' + i).append($('<td>').text(raceData[i]['listName']));
+                            $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][i]['y']));
+                            $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][i]['y']));
+                            $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][i]['y']));
+                            $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][i]['y']));
+
+                            if (raceData[i]['retestState'] == 'not') {
+                                $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                            } else {
+                                $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentRetestGradeCard">')
+                                        .attr('id',raceData[i]['raceId']).attr('name',userId)
+                                        .text("응시")));
+                            }
+
+                            if (raceData[i]['wrongState'] == 'not') {
+                                $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                            } else {
+                                $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentWrongGradeCard">')
+                                        .attr('id',raceData[i]['raceId']).attr('name',userId)
+                                        .text("응시")));
+                            }
+                            $('#stdGrade_'+i).append($('<td>').attr('class','modal_openStudentGradeCard')
+                                .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentGradeCard">')
+                                    .attr('id',raceData[i]['raceId']).attr('name',userId)
+                                    .text("성적표")));
+                        }
 
                     },
                 error: function (data) {
@@ -1079,7 +1604,7 @@
                 height:500,
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: "YYYY MMM DD",
+                    valueFormatString: "MMM DD (HH:ss)",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -1097,8 +1622,7 @@
                 legend:{
                     cursor:"pointer",
                     verticalAlign: "bottom",
-                    horizontalAlign: "left",
-                    dockInsidePlotArea: true,
+                    horizontalAlign: "center",
                     itemclick: toogleDataSeries
                 },
                 data: [{

@@ -77,7 +77,18 @@
         <div class="modal-content" style="padding: 10px 20px 0 20px;">
             <div class="modal-header">
                 <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
+
+                <div class="modal_date" style="width: 100%;text-align: right;"> </div>
+
+                <div class="race_and_teacher" style="width: 100%;">
+                    <h5 style="margin: 0;text-align:center">
+                        <div class="" id="modal_raceName_teacher" style="display: inline;margin-right: 10px;">
+                        </div>
+                    </h5>
+                </div>
+
             </div>
+
             <div class="modal-body" style="text-align: left;margin: 0;">
                 <table class="table table-hover">
                     <thead>
@@ -100,12 +111,6 @@
                         <th>
                             갯수
                         </th>
-                        <th style="width: 100px">
-                            재시험
-                        </th>
-                        <th style="width: 100px">
-                            오답노트
-                        </th>
                     </tr>
                     </thead>
                     <tbody id="grade_list">
@@ -114,8 +119,12 @@
                 </table>
             </div>
 
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">학생 점수 인쇄</button>
+            <div class="modal-footer">
+                    <div class="modal_total_list" id="modal_total_grade" style="width: 30%;float: right;">
+
+                    </div>
+
+
             </div>
         </div>
 
@@ -126,28 +135,21 @@
             </div>
 
             <div class="modal-body" style="text-align: left;margin: 0;">
-                <div class="race_and_teacher" style="width: 100%;">
-                    <h5 style="margin: 0;text-align:center">
+
+                <div class="race_and_teacher" style="width: 100%;margin-bottom: 10px;margin-left: 50px;">
+                    <h5 style="margin: 0;text-align:left">
                         <div class="" style="display: inline;margin-right: 10px;">
-                        스쿠스쿠3
+                            <input type="checkbox" checked="checked" id="checkbox_0" value="0" onclick="toggle_detailStudent_and_Wrong()">학생
                         </div>
-                        /
                         <div class="" style="display: inline;margin-left: 10px;">
-                            t 선생님
+                            <input type="checkbox" checked="checked" id="checkbox_1" value="1" onclick="toggle_detailStudent_and_Wrong()">오답 문제
                         </div>
                     </h5>
                 </div>
 
-                <div class="modal_date" style="width: 100%;text-align: right;"> 2018년 1월 16일</div>
-
-                <div>
-                    <input type="radio" checked="checked" name="studentOrGrade" value="0" onclick="toggle_detailStudent_and_Wrong(this.value)">학생
-                    <input type="radio" name="studentOrGrade" value="1" onclick="toggle_detailStudent_and_Wrong(this.value)">오답 문제
-                </div>
-
                 <div id="toggle_only_students">
                     <div class="gradeDetail_student" style="height: 550px;width: 100%;">
-                        <div class="modal_date" style="width: 100%;margin-top: 10px;">학생</div>
+                        <div class="modal_list_student" style="width: 100%;margin-top: 10px;">학생</div>
 
                         <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
                             <div id="stdAllList" style="width: 250px;">
@@ -184,11 +186,8 @@
                                             <th width="50px">
                                                 번호
                                             </th>
-                                            <th>
+                                            <th colspan="3">
                                                 정답
-                                            </th>
-                                            <th>
-                                                오답
                                             </th>
                                         </tr>
                                     </thead>
@@ -204,9 +203,9 @@
                     </div>
                 </div>
 
-                <div id="toggle_only_wrong_answers" class="hidden" style="width: 100%;clear: left">
+                <div id="toggle_only_wrong_answers" class="" style="width: 100%;clear: left">
 
-                    <div class="modal_date" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제 (3개)</div>
+                    <div class="modal_list_wrong" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제</div>
 
                     <table class="table table-hover">
                         <thead>
@@ -223,125 +222,10 @@
                         </tr>
                         </thead>
 
-                        <tbody id="details_record">
-                            <div class="incorrect">
-                                <tr>
-                                    <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
-                                        3
-                                    </td>
-                                    <td rowspan="1" colspan="2" style="text-align: center;">
-                                        苦労してためたお金なのだから、一円（　　）無駄には使いたくない。
-                                    </td>
-                                    <td rowspan="3" style="border-left: 1px solid transparent;">
-                                        0/5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                        たりとも
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        <div style="float:left;">
-                                        ばかりも
-                                        </div>
-                                        <div style="float:right;">
-                                            2명
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div style="float:left;">
-                                            だけさえ
-                                        </div>
-                                        <div style="float:right;">
-                                            2명
-                                        </div>
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        <div style="float:left;">
-                                            とはいえ
-                                        </div>
-                                        <div style="float:right;">
-                                            1명
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
-                            <div class="incorrect">
-                                <tr>
-                                    <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
-                                        13
-                                    </td>
-                                    <td rowspan="1" colspan="2" style="text-align: center;">
-                                        この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。
-                                    </td>
-                                    <td >
-                                        2/5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                        とあって
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        からして
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        にあって
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        <div style="float:left;">
-                                            にしては
-                                        </div>
-                                        <div style="float:right;">
-                                            3명
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
-                            <div class="incorrect">
-                                <tr>
-                                    <td rowspan="3"  style="border-right: 1px solid #e5e6e8; width: 50px;">
-                                        17
-                                    </td>
-                                    <td rowspan="1" colspan="2" style="text-align: center;">
-                                        姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
-                                    </td>
-                                    <td>
-                                        1/5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #ffa500; border-right: 1px solid transparent;">
-                                        かたわら
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        かたがた
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div style="float:left;">
-                                            こととて
-                                        </div>
-                                        <div style="float:right;">
-                                            3명
-                                        </div>
-                                    </td>
-                                    <td style="border-left: 1px solid #e5e6e8;">
-                                        <div style="float:left;">
-                                            うちに
-                                        </div>
-                                        <div style="float:right;">
-                                            1명
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
+                        <tbody id="wrong_detail">
+
                         </tbody>
+
                     </table>
                 </div>
 
