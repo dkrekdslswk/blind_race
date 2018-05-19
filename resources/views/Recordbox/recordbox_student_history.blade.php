@@ -168,3 +168,61 @@
         </div>
     </div>
 </div>
+
+
+{{--Modal : make quiz--}}
+<div class="modal fade" id="modal_studentWritingWrons" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1200px">
+
+        <div class="modal-content" style="padding: 10px 20px 0 20px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="ModalLabel" style="text-align: center;">오답 노트</h3>
+
+                <div class="modal_student_wrong_date" style="width: 100%;text-align: right;"> </div>
+
+                <div class="student_race_and_teacher" style="width: 100%;">
+                    <h5 style="margin: 0;text-align:center">
+                        <div class="" id="modal_student_wrong_raceName_teacher" style="display: inline;margin-right: 10px;"> </div>
+
+                    </h5>
+                </div>
+
+            </div>
+            <div class="modal-body" style="text-align: left;margin: 0;">
+                <table class="table table-hover">
+                    <thead>
+                    <tr id="race_detail_record">
+                        <th style="width: 50px">
+                            번호
+                        </th>
+                        <th colspan="2">
+                            문제
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="wrongQuestions">
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="changeCheck()" id="feedback_modal_confirm">확인</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modal_feedback_cancel">취소</button>
+            </div>
+
+            <script>
+                function changeCheck(){
+                    alert('정상 등록하였습니다.');
+                    $('#1check').attr('class','btn btn-primary').text('확인');
+                }
+            </script>
+        </div>
+
+
+    </div>
+</div>
