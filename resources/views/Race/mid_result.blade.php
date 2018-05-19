@@ -41,10 +41,11 @@
 
             <div class="btn btn-primary" style="background-color:black; color:white; width:600px;">정답</div>
             <div id="Mid_A_Right" class="well well-lg" style="font-size:20px;" >정답</div>
+
         </div>
 
-        <div style="position:absolute;  top:50%; left:80%; display: inline-block;">
-            <div class="pieID pie"></div>
+        <div style="position:absolute; top:50%; left:80%; display: inline-block;">
+        <div class="pieID pie"></div>
             <div style="border:1px solid blue; border-radius: 20px;" id="winners">정답자:</div>
             <div style="border:1px solid red; border-radius: 20px;" id="fail_count">오답자:0</div>
         </div>

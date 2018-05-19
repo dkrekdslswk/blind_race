@@ -298,6 +298,7 @@ class RecordBoxController extends Controller{
                             'ru.userNumber as userId',
                             'u.name as userName',
                             'r.created_at as date',
+                            'ut.name as teacherName',
                             DB::raw('year(r.created_at) as year'),
                             DB::raw('month(r.created_at) as month'),
                             DB::raw('dayofmonth(r.created_at) as day'),
@@ -317,6 +318,7 @@ class RecordBoxController extends Controller{
                         ->where($where)
                         ->join('races as r', 'r.number', '=', 'ru.raceNumber')
                         ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                        ->join('users as ut', 'ut.number', '=', 'r.teacherNumber')
                         ->join('users as u', 'u.number', '=', 'ru.userNumber')
                         ->join('records as re', function ($join){
                             $join->on('re.raceNo', '=', 'ru.raceNumber');
@@ -333,6 +335,7 @@ class RecordBoxController extends Controller{
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
+                                'teacherName' => $race->teacherName,
                                 'userId' => $race->userId,
                                 'userName' => $race->userName,
                                 'date' => $race->date,
@@ -388,12 +391,35 @@ class RecordBoxController extends Controller{
 
         // 메서드 호출 타입 설정
         if ($postData['userId']){
+            $raceQuizsSelect = array([
+                'qb.number as quizId',
+                'qb.question as question',
+                'qb.hint as hint',
+                'qb.rightAnswer as rightAnswer',
+                'qb.example1 as example1',
+                'qb.example2 as example2',
+                'qb.example3 as example3',
+                'qb.type as type',
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
+            ]);
             $typeWhere = array([
                 're.userNo' => $postData['userId'],
                 're.raceNo' => $postData['raceId']
             ]);
             $typeGroupBy = array(['re.raceNo', 're.userNo', 're.quizNo']);
         } else {
+            $raceQuizsSelect = array([
+                'qb.number as quizId',
+                'qb.question as question',
+                'qb.hint as hint',
+                'qb.rightAnswer as rightAnswer',
+                'qb.example1 as example1',
+                'qb.example2 as example2',
+                'qb.example3 as example3',
+                'qb.type as type',
+                DB::raw('count(distinct re.userNo) as userCount'),
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
+            ]);
             $typeWhere = array([
                 're.raceNo' => $postData['raceId']
             ]);
@@ -420,18 +446,7 @@ class RecordBoxController extends Controller{
                 case 'root':
                     // 문제 리스트 뽑아오기
                     $raceQuizs = DB::table('records as re')
-                        ->select(
-                            'qb.number as quizId',
-                            'qb.question as question',
-                            'qb.hint as hint',
-                            'qb.rightAnswer as rightAnswer',
-                            'qb.example1 as example1',
-                            'qb.example2 as example2',
-                            'qb.example3 as example3',
-                            'qb.type as type',
-                            DB::raw('count(distinct re.userNo) as userCount'),
-                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
-                        )
+                        ->select($raceQuizsSelect)
                         ->where($typeWhere)
                         ->where(['re.retest' => 0])
                         ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
@@ -459,7 +474,7 @@ class RecordBoxController extends Controller{
                                     ->groupBy($typeGroupBy)
                                     ->first();
 
-                                if ($quizData->rightAnswerCount < $raceQuizs->userCount) {
+                                if ($quizData->rightAnswerCount < $raceQuizs[$i]->userCount) {
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
                                         'id' => $raceQuizs[$i]->quizId,
@@ -492,7 +507,7 @@ class RecordBoxController extends Controller{
                                     ->get();
 
                                 $wrongData = array();
-                                $rights = explode(',', $raceQuizs->rightAnswer);
+                                $rights = explode(',', $raceQuizs[$i]->rightAnswer);
                                 foreach ($quizData as $quiz) {
                                     foreach ($rights as $right){
                                         if ($quiz->answer == $right){
