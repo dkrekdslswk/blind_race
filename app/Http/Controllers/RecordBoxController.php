@@ -531,7 +531,7 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리2
                     $returnValue = array(
-                        'wrongs' => $wrongs,
+                        'wrongs' => $raceQuizs->toArray(),
                         'check' => true
                     );
                     break;
