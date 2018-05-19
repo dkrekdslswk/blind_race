@@ -379,19 +379,19 @@ class RecordBoxController extends Controller{
     // 오답문제 조회하기 레이스 전체 'raceId'
     public function getWrongs(Request $request){
         // 요구하는 값
-//        $postData = array(
-//            'userId'    => 1300000
-//            'raceId'    => 1
-//        );
-        // 요구하는 값
         $postData = array(
-            'userId'    => $request->has('userId') ? $request->input('userId') : false,
-            'raceId'    => $request->input('raceId')
+            'userId'    => 1300000,
+            'raceId'    => 1
         );
+//        // 요구하는 값
+//        $postData = array(
+//            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+//            'raceId'    => $request->input('raceId')
+//        );
 
         // 메서드 호출 타입 설정
         if ($postData['userId']){
-            $raceQuizsSelect = array([
+            $raceQuizsSelect = array(
                 'qb.number as quizId',
                 'qb.question as question',
                 'qb.hint as hint',
@@ -401,14 +401,14 @@ class RecordBoxController extends Controller{
                 'qb.example3 as example3',
                 'qb.type as type',
                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
-            ]);
+            );
             $typeWhere = array([
                 're.userNo' => $postData['userId'],
                 're.raceNo' => $postData['raceId']
             ]);
             $typeGroupBy = array(['re.raceNo', 're.userNo', 're.quizNo']);
         } else {
-            $raceQuizsSelect = array([
+            $raceQuizsSelect = array(
                 'qb.number as quizId',
                 'qb.question as question',
                 'qb.hint as hint',
@@ -419,7 +419,7 @@ class RecordBoxController extends Controller{
                 'qb.type as type',
                 DB::raw('count(distinct re.userNo) as userCount'),
                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
-            ]);
+            );
             $typeWhere = array([
                 're.raceNo' => $postData['raceId']
             ]);
@@ -470,6 +470,7 @@ class RecordBoxController extends Controller{
                                     )
                                     ->where($typeWhere)
                                     ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                                    ->where(['re.retest' => 0])
                                     ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                                     ->groupBy($typeGroupBy)
                                     ->first();
@@ -502,6 +503,7 @@ class RecordBoxController extends Controller{
                                     )
                                     ->where($typeWhere)
                                     ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                                    ->where(['re.retest' => 0])
                                     ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                                     ->join('users as u', 'u.number', '=', 're.userNo')
                                     ->get();
