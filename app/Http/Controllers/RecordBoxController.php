@@ -464,24 +464,22 @@ class RecordBoxController extends Controller{
                                     ->groupBy($typeGroupBy)
                                     ->first();
 
-                                if ($quizData->rightAnswerCount < $raceQuizs[$i]->userCount) {
-                                    array_push($wrongs, array(
-                                        'number' => $i + 1,
-                                        'id' => $raceQuizs[$i]->quizId,
-                                        'question' => $raceQuizs[$i]->question,
-                                        'hint' => $raceQuizs[$i]->hint,
-                                        'rightAnswer' => $raceQuizs[$i]->rightAnswer,
-                                        'rightAnswerCount' => $quizData->rightAnswerCount,
-                                        'example1' => $raceQuizs[$i]->example1,
-                                        'example1Count' => $quizData->example1Count,
-                                        'example2' => $raceQuizs[$i]->example2,
-                                        'example2Count' => $quizData->example2Count,
-                                        'example3' => $raceQuizs[$i]->example3,
-                                        'example3Count' => $quizData->example3Count,
-                                        'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
-                                        'userCount' => $raceQuizs[$i]->userCount
-                                    ));
-                                }
+                                array_push($wrongs, array(
+                                    'number' => $i + 1,
+                                    'id' => $raceQuizs[$i]->quizId,
+                                    'question' => $raceQuizs[$i]->question,
+                                    'hint' => $raceQuizs[$i]->hint,
+                                    'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                                    'rightAnswerCount' => $quizData->rightAnswerCount,
+                                    'example1' => $raceQuizs[$i]->example1,
+                                    'example1Count' => $quizData->example1Count,
+                                    'example2' => $raceQuizs[$i]->example2,
+                                    'example2Count' => $quizData->example2Count,
+                                    'example3' => $raceQuizs[$i]->example3,
+                                    'example3Count' => $quizData->example3Count,
+                                    'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
+                                    'userCount' => $raceQuizs[$i]->userCount
+                                ));
                             } else if (preg_match('/^[.]+ sub$/', $raceQuizs[$i]->type)) {
                                 // 주관식 처리
                                 $quizData = DB::table('records as re')
