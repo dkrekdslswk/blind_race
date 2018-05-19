@@ -408,7 +408,6 @@ class RecordBoxController extends Controller{
 
         // 유저권한 확인
         if ($userData['check']){
-            $where = array();
             switch ($userData['classification']){
                 case 'student':
                 case 'sleepStudent':
@@ -448,7 +447,7 @@ class RecordBoxController extends Controller{
                     $wrongs = array();
                     for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
                         // 오답 확인
-                        if ($raceQuizs[$i]->userCount != $raceQuizs[$i]->rightAnswerCount) {
+                        if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
                             if (preg_match('/^[.]+ obj$/', $raceQuizs[$i]->type)) {
                                 // 객관식 처리
                                 $quizData = DB::table('records as re')
