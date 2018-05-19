@@ -186,13 +186,12 @@ class BlindDummyTableSeeder extends Seeder
 
                 for ($count = 1; $count <= 6; $count++) {
                     for ($number = 2; $number < count($users); $number++) {
-                        $answerCheck = (string)(mt_rand(0, $number) == 0 ? 'X' : 'O');
                         DB::table('records')->insert([
                             'raceNo' => $raceId,
                             'userNo' => $users[$number][0],
                             'listNo' => $listId,
                             'quizNo' => $quizList[$count - 1],
-                            'answerCheck' => $answerCheck,
+                            'answerCheck' => $answerCheck = (string)(mt_rand(0, $number) == 0 ? 'X' : 'O'),
                             'answer' => $answerCheck == '0' ? $count : $count + mt_rand(1, 3)
                         ]);
                     }

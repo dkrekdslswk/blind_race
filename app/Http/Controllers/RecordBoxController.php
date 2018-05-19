@@ -379,15 +379,16 @@ class RecordBoxController extends Controller{
     // 오답문제 조회하기 레이스 전체 'raceId'
     public function getWrongs(Request $request){
         // 요구하는 값
-        $postData = array(
-            'userId'    => false,
-            'raceId'    => 1
-        );
-//        // 요구하는 값
 //        $postData = array(
-//            'userId'    => $request->has('userId') ? $request->input('userId') : false,
-//            'raceId'    => $request->input('raceId')
+//            'userId'    => false,
+//            'raceId'    => 1
 //        );
+        // 요구하는 값
+        // 요구하는 값
+        $postData = array(
+            'userId'    => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'    => $request->input('raceId')
+        );
 
         // 메서드 호출 타입 설정
         if ($postData['userId']){
