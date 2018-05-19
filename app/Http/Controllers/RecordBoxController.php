@@ -529,7 +529,7 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리2
                     $returnValue = array(
-                        'wrongs' => $wrongs,
+                        'wrongs' => preg_match('/^[.]+ obj$/', $raceQuizs[0]->type),
                         'check' => true
                     );
                     break;
