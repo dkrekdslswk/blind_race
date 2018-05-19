@@ -448,7 +448,7 @@ class RecordBoxController extends Controller{
                     for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
                         // 오답 확인
                         if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
-                            if (preg_match('/^[.]+ obj$/', $raceQuizs[$i]->type)) {
+                            if (preg_match('/^(.)+ obj$/', $raceQuizs[0]->type)) {
                                 // 객관식 처리
                                 $quizData = DB::table('records as re')
                                     ->select(
@@ -480,7 +480,7 @@ class RecordBoxController extends Controller{
                                     'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
                                     'userCount' => $raceQuizs[$i]->userCount
                                 ));
-                            } else if (preg_match('/^[.]+ sub$/', $raceQuizs[$i]->type)) {
+                            } else if (preg_match('/^(.)+ sub$/', $raceQuizs[0]->type)) {
                                 // 주관식 처리
                                 $quizData = DB::table('records as re')
                                     ->select(
@@ -529,8 +529,7 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리2
                     $returnValue = array(
-                        'wrongs' => preg_match('/^(.)+obj$/', $raceQuizs[0]->type),
-                        'wrong2' => $raceQuizs[0]->type,
+                        'wrongs' => $wrongs,
                         'check' => true
                     );
                     break;
