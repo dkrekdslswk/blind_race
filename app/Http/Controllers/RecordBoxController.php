@@ -380,7 +380,6 @@ class RecordBoxController extends Controller{
     public function getWrongs(Request $request){
         // 요구하는 값
         $postData = array(
-            'userId'    => 1300000,
             'raceId'    => 1
         );
 //        // 요구하는 값
