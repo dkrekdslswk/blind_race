@@ -169,6 +169,7 @@
                 $("#folderList").append(
                     "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
+
             }
         }
 
@@ -550,30 +551,6 @@
         </div>
     </div>
 </div>
-
-
-<!--Modal : create quiz-->
-{{--<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
-            {{csrf_field()}}
-            <input type="hidden" name="listName" id="listName" value="">
-            <input type="hidden" name="folderId" id="folderId" value="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">퀴즈 만들기</h5>
-                </div>
-                <div class="modal-body" style="text-align: center">
-                    퀴즈 이름 <input type="text" id="quizName">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">만들기</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>--}}
 
 <!--Modal : delete quiz-->
 <div id="deleteQuizDiv"></div>
