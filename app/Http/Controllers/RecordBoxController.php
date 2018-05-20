@@ -394,12 +394,14 @@ class RecordBoxController extends Controller{
         if ($postData['userId']){
             $typeWhere = array(
                 're.userNo' => $postData['userId'],
-                're.raceNo' => $postData['raceId']
+                're.raceNo' => $postData['raceId'],
+                're.retest' => 0
             );
             $typeGroupBy = array('re.raceNo', 're.userNo', 're.quizNo');
         } else {
             $typeWhere = array(
-                're.raceNo' => $postData['raceId']
+                're.raceNo' => $postData['raceId'],
+                're.retest' => 0
             );
             $typeGroupBy = array('re.raceNo', 're.quizNo');
         }
@@ -436,9 +438,6 @@ class RecordBoxController extends Controller{
                             DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
                         )
                         ->where($typeWhere)
-                        ->where([
-                            're.retest' => 0
-                        ])
                         ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                         ->groupBy($typeGroupBy)
                         ->orderBy('re.quizNo')
@@ -447,6 +446,9 @@ class RecordBoxController extends Controller{
                     // 문제 확인
                     $wrongs = array();
                     for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
+                        // 오답노트 불러오기용 변수
+                        $wrongText = false;
+
                         // 오답 확인
                         if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
                             if (preg_match('/^(.)+ obj$/', $raceQuizs[0]->type)) {
@@ -460,10 +462,22 @@ class RecordBoxController extends Controller{
                                     )
                                     ->where($typeWhere)
                                     ->where(['qb.number' => $raceQuizs[$i]->quizId])
-                                    ->where(['re.retest' => 0])
                                     ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                                     ->groupBy($typeGroupBy)
                                     ->first();
+
+                                // 학생 조회일 경우 오답노트도 출력
+                                if ($postData['userId']){
+                                    $wrongText = DB::table()
+                                        ->select(
+                                            'wrongAnswerNote'
+                                        )
+                                        ->where([
+                                            'quizNumber' => $raceQuizs[$i]->quizId
+                                        ])
+                                        ->where($typeWhere)
+                                        ->first();
+                                }
 
                                 array_push($wrongs, array(
                                     'number' => $i + 1,
@@ -479,7 +493,8 @@ class RecordBoxController extends Controller{
                                     'example3' => $raceQuizs[$i]->example3,
                                     'example3Count' => $quizData->example3Count,
                                     'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
-                                    'userCount' => $raceQuizs[$i]->userCount
+                                    'userCount' => $raceQuizs[$i]->userCount,
+                                    'wrong' => $wrongText ? $wrongText->quizNumber : false
                                 ));
                             } else if (preg_match('/^(.)+ sub$/', $raceQuizs[0]->type)) {
                                 // 주관식 처리
@@ -491,7 +506,6 @@ class RecordBoxController extends Controller{
                                     )
                                     ->where($typeWhere)
                                     ->where(['qb.number' => $raceQuizs[$i]->quizId])
-                                    ->where(['re.retest' => 0])
                                     ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
                                     ->join('users as u', 'u.number', '=', 're.userNo')
                                     ->get();
@@ -511,6 +525,20 @@ class RecordBoxController extends Controller{
                                     }
                                 }
 
+                                // 학생 조회일 경우 오답노트도 출력
+                                if ($postData['userId']){
+                                    $wrongText = DB::table()
+                                        ->select(
+                                            'wrongAnswerNote'
+                                        )
+                                        ->where([
+                                            'quizNumber' => $raceQuizs[$i]->quizId
+                                        ])
+                                        ->where($typeWhere)
+                                        ->first();
+                                }
+
+
                                 if (count($wrongData) > 0) {
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
@@ -521,7 +549,8 @@ class RecordBoxController extends Controller{
                                         'rightAnswerCount' => $raceQuizs[$i]->userCount - count($wrongData),
                                         'wrongs' => $wrongData,
                                         'wrongCount' => count($wrongData),
-                                        'userCount' => $raceQuizs[$i]->userCount
+                                        'userCount' => $raceQuizs[$i]->userCount,
+                                        'wrong' => $wrongText ? $wrongText->quizNumber : false
                                     ));
                                 }
                             }
@@ -530,6 +559,7 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리2
                     $returnValue = array(
+                        'raceId' => $postData['raceId'],
                         'wrongs' => $wrongs,
                         'check' => true
                     );
@@ -545,6 +575,39 @@ class RecordBoxController extends Controller{
                 'check' => false
             );
         }
+
+        return $returnValue;
+    }
+
+    // 오답풀이 입력하기
+    public function insertWrongs(Request $request){
+        $postData = array(
+            'raceId' => 1,
+            'quizId' => $request->input('quizId'),
+            'wrongs' => $request->input('wrongs')
+        );
+//        $postData = array(
+//            'raceId' => $request->input('raceId'),
+//            'quizId' => $request->input('quizId'),
+//            'wrongs' => $request->input('wrongs')
+//        );
+
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 로그인 확인
+        if ($userData['check']){
+            $insertCheck = DB::table()
+                ->where([
+                    'raceNo' => $postData['raceId']
+                ])
+                ->update();
+        }
+
+        // 반납값 정리
+        $returnValue = array(
+            ''
+        );
 
         return $returnValue;
     }
