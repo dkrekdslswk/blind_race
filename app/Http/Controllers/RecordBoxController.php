@@ -581,33 +581,116 @@ class RecordBoxController extends Controller{
 
     // 오답풀이 입력하기
     public function insertWrongs(Request $request){
+//        $postData = array(
+//            'raceId' => 1,
+//            'wrongs' => array(
+//                0 => array(
+//                    'quizId' => 1,
+//                    'text' => '이렇게 쉬운걸 왜 틀린걸까요?'
+//                )
+//            )
+//        );
         $postData = array(
-            'raceId' => 1,
-            'quizId' => $request->input('quizId'),
+            'raceId' => $request->input('raceId'),
             'wrongs' => $request->input('wrongs')
         );
-//        $postData = array(
-//            'raceId' => $request->input('raceId'),
-//            'quizId' => $request->input('quizId'),
-//            'wrongs' => $request->input('wrongs')
-//        );
 
         // 유저정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
         // 로그인 확인
         if ($userData['check']){
-            $insertCheck = DB::table()
+            // 오답풀이 대상자인지 확인
+            $recordData1 = DB::table('raceUsers as ru')
+                ->select(
+                    DB::raw('count(CASE WHEN re.answerCheck = "X" THEN 1 END) as wrongAnswerCount')
+                )
                 ->where([
-                    'raceNo' => $postData['raceId']
+                    'ru.userNumber' => $userData['userId'],
+                    'ru.raceNumber' => $postData['raceId'],
+                    'ru.wrongState' => 'order',
+                    're.retest' => 0
                 ])
-                ->update();
-        }
+                ->join('records as re', function ($join){
+                    $join->on('re.userNo', '=', 'ru.userNumber');
+                    $join->on('re.raceNo', '=', 'ru.raceNumber');
+                })
+                ->groupBy('ru.userNumber')
+                ->first();
 
-        // 반납값 정리
-        $returnValue = array(
-            ''
-        );
+            if ($recordData1) {
+                // 오답풀이 입력
+                foreach ($postData['wrongs'] as $wrong) {
+                    if ($wrong['text'] != '') {
+                        $update = array(
+                            'wrongAnswerNote' => $wrong['text']
+                        );
+                    } else {
+                        $update = array(
+                            'wrongAnswerNote' => null
+                        );
+                    }
+
+                    DB::table('records')
+                        ->where([
+                            'raceNo' => $postData['raceId'],
+                            'quizNo' => $wrong['quizId'],
+                            'userNo' => $userData['userId'],
+                            'retest' => 0,
+                            'answerCheck' => 'X'
+                        ])
+                        ->update($update);
+                }
+
+                // 오답풀이가 전부 입력되었는지 확인
+                $recordData2 = DB::table('raceUsers as ru')
+                    ->select(
+                        DB::raw('count(CASE WHEN re.wrongAnswerNote IS NOT NULL THEN 1 END) as wrongAnswerCount')
+                    )
+                    ->where([
+                        'ru.userNumber' => $userData['userId'],
+                        'ru.raceNumber' => $postData['raceId'],
+                        'ru.wrongState' => 'order',
+                        're.retest' => 0
+                    ])
+                    ->join('records as re', function ($join){
+                        $join->on('re.userNo', '=', 'ru.userNumber');
+                        $join->on('re.raceNo', '=', 'ru.raceNumber');
+                    })
+                    ->groupBy('ru.userNumber')
+                    ->first();
+
+                if ($recordData1->wrongAnswerCount == $recordData2->wrongAnswerCount){
+                    DB::table('raceUsers')
+                        ->where([
+                            'ru.userNumber' => $userData['userId'],
+                            'ru.raceNumber' => $postData['raceId'],
+                            'ru.wrongState' => 'order',
+                        ])
+                        ->update([
+                            'ru.wrongState'  => 'clear'
+                        ]);
+
+                    $returnValue = array(
+                        'wrongCheck' => true,
+                        'check' => true
+                    );
+                } else {
+                    $returnValue = array(
+                        'wrongCheck' => false,
+                        'check' => true
+                    );
+                }
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
