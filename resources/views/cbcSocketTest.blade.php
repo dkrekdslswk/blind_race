@@ -60,5 +60,9 @@
     <input type="text" name="post" id="post" class="form-control first_name"  placeholder="First Name">
     <button type="submit">getWrongs</button>
 </form>
+<?php
+    use App\Http\Controllers\UserController;
+    UserController::sessionDataGet(session('sessionId'));
+?>
 </body>
 </html>
