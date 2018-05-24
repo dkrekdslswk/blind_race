@@ -282,15 +282,19 @@
                 dataType: 'json',
                 data:"sessionId="+sessionId,
                 success: function (result) {
-
+                    if(result['score'] >= result['passingMark'])
+                        $('#q_table').html("재시험 통과 "+result['score']);
+                    else if(result['score'] < result['passingMark']){
+                        $('#q_table').html("FAIL ㅜㅜ  "+result['score']);
+                    }
                 },
                 error: function (data) {
                     alert("학생 재시험 엔딩 FAIL");
                 }
             });
+        }else{
+            quizGet();
         }
-
-        quizGet();
     }
 
     function quizGet(){
