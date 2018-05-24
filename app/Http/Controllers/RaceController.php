@@ -919,7 +919,7 @@ class RaceController extends Controller{
                 // 최종 성적 정보 가져오기
                 $records = DB::table('records as re')
                     ->select(
-                        DB::raw('IFNULL((CASE WHEN re.answerCheck = "O" THEN 1 END), 0) as rightCount')
+                        DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
                     )
                     ->where([
                         're.raceNo' => $userData['raceId'],
