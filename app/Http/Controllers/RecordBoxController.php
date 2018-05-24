@@ -126,10 +126,10 @@ class RecordBoxController extends Controller{
                                 DB::raw('month(r.created_at) as month'),
                                 DB::raw('dayofmonth(r.created_at) as day'),
                                 DB::raw('count(distinct ru.userNumber) as studentCount'),
-                                DB::raw('SUM(CASE WHEN ru.retestState = "order" THEN 1 ELSE 0 END) as retestOrderCount'),
-                                DB::raw('SUM(CASE WHEN ru.retestState = "clear" THEN 1 ELSE 0 END) as retestClearCount'),
-                                DB::raw('SUM(CASE WHEN ru.wrongState = "order" THEN 1 ELSE 0 END) as wrongOrderCount'),
-                                DB::raw('SUM(CASE WHEN ru.wrongState = "clear" THEN 1 ELSE 0 END) as wrongClearCount')
+                                DB::raw('count(CASE WHEN ru.retestState = "order" THEN 1 END) as retestOrderCount'),
+                                DB::raw('count(CASE WHEN ru.retestState = "clear" THEN 1 END) as retestClearCount'),
+                                DB::raw('count(CASE WHEN ru.wrongState = "order" THEN 1 END) as wrongOrderCount'),
+                                DB::raw('count(CASE WHEN ru.wrongState = "clear" THEN 1 END) as wrongClearCount')
                             )
                             ->where('r.groupNumber', '=', $groupData->groupId)
                             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
@@ -312,13 +312,13 @@ class RecordBoxController extends Controller{
                                 DB::raw('month(r.created_at) as month'),
                                 DB::raw('dayofmonth(r.created_at) as day'),
                                 DB::raw('count(re.quizNo) as allCount'),
-                                DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END) as allRightAnswerCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "vocabulary%" THEN 1 ELSE 0 END) as vocabularyCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O" THEN 1 ELSE 0 END) as vocabularyRightAnswerCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "word%" THEN 1 ELSE 0 END) as wordCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 ELSE 0 END) as wordRightAnswerCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "grammar%" THEN 1 ELSE 0 END) as grammarCount'),
-                                DB::raw('SUM(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 ELSE 0 END) as grammarRightAnswerCount'),
+                                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
+                                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
+                                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
                                 'ru.retestState as retestState',
                                 'ru.wrongState as wrongState'
                             )
@@ -446,7 +446,7 @@ class RecordBoxController extends Controller{
                             'qb.example3 as example3',
                             'qb.type as type',
                             DB::raw('count(distinct re.userNo) as userCount'),
-                            DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END) as rightAnswerCount')
+                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
                         )
                         ->where($typeWhere)
                         ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
@@ -466,10 +466,10 @@ class RecordBoxController extends Controller{
                                 // 객관식 처리
                                 $quizData = DB::table('records as re')
                                     ->select(
-                                        DB::raw('SUM(CASE WHEN re.answer = qb.rightAnswer THEN 1 ELSE 0 END) as rightAnswerCount'),
-                                        DB::raw('SUM(CASE WHEN re.answer = qb.example1 THEN 1 ELSE 0 END) as example1Count'),
-                                        DB::raw('SUM(CASE WHEN re.answer = qb.example2 THEN 1 ELSE 0 END) as example2Count'),
-                                        DB::raw('SUM(CASE WHEN re.answer = qb.example3 THEN 1 ELSE 0 END) as example3Count')
+                                        DB::raw('count(CASE WHEN re.answer = qb.rightAnswer THEN 1 END) as rightAnswerCount'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example1 THEN 1 END) as example1Count'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example2 THEN 1 END) as example2Count'),
+                                        DB::raw('count(CASE WHEN re.answer = qb.example3 THEN 1 END) as example3Count')
                                     )
                                     ->where($typeWhere)
                                     ->where(['qb.number' => $raceQuizs[$i]->quizId])
@@ -614,7 +614,7 @@ class RecordBoxController extends Controller{
             // 오답풀이 대상자인지 확인
             $recordData1 = DB::table('raceUsers as ru')
                 ->select(
-                    DB::raw('SUM(CASE WHEN re.answerCheck = "X" THEN 1 ELSE 0 END) as wrongAnswerCount')
+                    DB::raw('count(CASE WHEN re.answerCheck = "X" THEN 1 END) as wrongAnswerCount')
                 )
                 ->where([
                     'ru.userNumber' => $userData['userId'],
@@ -656,7 +656,7 @@ class RecordBoxController extends Controller{
                 // 오답풀이가 전부 입력되었는지 확인
                 $recordData2 = DB::table('raceUsers as ru')
                     ->select(
-                        DB::raw('SUM(CASE WHEN re.wrongAnswerNote IS NOT NULL THEN 1 ELSE 0 END) as wrongAnswerCount')
+                        DB::raw('count(CASE WHEN re.wrongAnswerNote IS NOT NULL THEN 1 END) as wrongAnswerCount')
                     )
                     ->where([
                         'ru.userNumber' => $userData['userId'],
@@ -718,15 +718,15 @@ class RecordBoxController extends Controller{
                 DB::raw('year(r.created_at) as year'),
                 DB::raw('month(r.created_at) as month'),
                 DB::raw('dayofmonth(r.created_at) as day'),
-                DB::raw('COUNT(distinct ru.userNumber) as userCount'),
-                DB::raw('COUNT(distinct re.quizNo) as quizCount'),
-                DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END) as rightAnswerCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "vocabulary%" THEN 1 ELSE 0 END) as vocabularyCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O" THEN 1 ELSE 0 END) as vocabularyRightAnswerCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "word%" THEN 1 ELSE 0 END) as wordCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "word%" AND re.answerCheck = "O" THEN 1 ELSE 0 END) as wordRightAnswerCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "grammar%" THEN 1 ELSE 0 END) as grammarCount'),
-                DB::raw('SUM(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O" THEN 1 ELSE 0 END) as grammarRightAnswerCount')
+                DB::raw('count(distinct ru.userNumber) as userCount'),
+                DB::raw('count(distinct re.quizNo) as quizCount'),
+                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount'),
+                DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
+                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
+                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
             )
             ->where([
                 're.retest' => 0,
