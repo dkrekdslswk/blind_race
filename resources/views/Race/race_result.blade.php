@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
-      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var r_result="";
 
@@ -18,13 +18,13 @@
 
             var changehtml ="" ;
 
-            var roomPin = "<?php echo $_GET['roomPin']; ?>" ;
+            var roomPin = "<?php if(isset($_GET['roomPin'])) echo $_GET['roomPin']; ?>" ;
+
             var socket = io(':8890');
-            
-            
+
+
             socket.emit('join',roomPin);
             socket.emit('race_ending',roomPin);
-
             $.ajax({
                 type: 'POST',
                 url: "{{url('/raceController/raceEnd')}}",
@@ -46,9 +46,8 @@
                     alert("AJAX 에러입니다. ");
                 }
             });
-            socket.emit('race_result',roomPin ,JSON.stringify(r_result) );
-        };
-
+            socket.emit('race_result',roomPin ,JSON.stringify(r_result));
+        }
     </script>
 
 </head>
@@ -58,185 +57,185 @@
 
 
 <div id="race_result" >
-<input type="hidden" name="_token" value="{{csrf_token()}}">
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
 
 
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-<hr>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <hr>
 
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="main-box no-header clearfix">
-            <div class="main-box-body clearfix">
-                <div class="table-responsive">
-                    <table class="table user-list">
-                        <thead>
-                        <tr>
-                            <th><span><h2>합격!</h2></span></th>
-                            <th><h2>참 잘했어요</h2></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <img id="0_character" src="#" width="100px">
-                                <a class="user-link title" id="0_nick"></a>
-                                <span class="user-subhead subtitle" id="0_point"></span>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                            <tr>
+                                <th><span><h2>합격!</h2></span></th>
+                                <th><h2>참 잘했어요</h2></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <img id="0_character" src="#" width="100px">
+                                    <a class="user-link title" id="0_nick"></a>
+                                    <span class="user-subhead subtitle" id="0_point"></span>
 
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img id="1_character" src="#" width="100px">
-                                <a class="user-link title" id="1_nick"></a>
-                                <span class="user-subhead subtitle" id="1_point"></span>
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img id="1_character" src="#" width="100px">
+                                    <a class="user-link title" id="1_nick"></a>
+                                    <span class="user-subhead subtitle" id="1_point"></span>
 
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                            </td>
-                        </tr><tr>
-                            <td>
-                                <img id="2_character" src="#" width="100px">
-                                <a class="user-link title" id="2_nick"></a>
-                                <span class="user-subhead subtitle" id="2_point"></span>
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
+                                </td>
+                            </tr><tr>
+                                <td>
+                                    <img id="2_character" src="#" width="100px">
+                                    <a class="user-link title" id="2_nick"></a>
+                                    <span class="user-subhead subtitle" id="2_point"></span>
 
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                            <tr>
+                                <th><span><h2>불합격!</h2></span></th>
+                                <th><h2>노력하세요</h2></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
+                                    <a class="user-link">없음</a>
+                                    <span class="user-subhead">예시</span>
+
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
+                                    <a class="user-link">없음</a>
+                                    <span class="user-subhead">예시</span>
+
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
+                                </td>
+                            </tr>  <tr>
+                                <td>
+                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
+                                    <a class="user-link">없음</a>
+                                    <span class="user-subhead">예시</span>
+
+                                </td>
+                                <td>
+                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="main-box no-header clearfix">
-            <div class="main-box-body clearfix">
-                <div class="table-responsive">
-                    <table class="table user-list">
-                        <thead>
-                        <tr>
-                            <th><span><h2>불합격!</h2></span></th>
-                            <th><h2>노력하세요</h2></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                <a class="user-link">없음</a>
-                                <span class="user-subhead">예시</span>
-
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                <a class="user-link">없음</a>
-                                <span class="user-subhead">예시</span>
-
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                            </td>
-                        </tr>  <tr>
-                            <td>
-                                <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                <a class="user-link">없음</a>
-                                <span class="user-subhead">예시</span>
-
-                            </td>
-                            <td>
-                                <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
+    <style>
+        body{
+            background:#eee;
+        }
+        .main-box.no-header {
+            padding-top: 20px;
+        }
+        .main-box {
+            background: #FFFFFF;
+            -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
+            -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
+            -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
+            -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
+            box-shadow: 1px 1px 2px 0 #CCCCCC;
+            margin-bottom: 16px;
+            -webikt-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+        .table a.table-link.danger {
+            color: #e74c3c;
+        }
+        .label {
+            border-radius: 3px;
+            font-size: 0.875em;
+            font-weight: 600;
+        }
+        .user-list tbody td .user-subhead {
+            font-size: 0.875em;
+            font-style: italic;
+        }
+        .user-list tbody td .user-link {
+            display: block;
+            font-size: 1.25em;
+            padding-top: 3px;
+            margin-left: 60px;
+        }
+        a {
+            color: #3498db;
+            outline: none!important;
+        }
+        .user-list tbody td>img {
+            position: relative;
+            max-width: 50px;
+            float: left;
+            margin-right: 15px;
+        }
 
-<style>
-    body{
-        background:#eee;
-    }
-    .main-box.no-header {
-        padding-top: 20px;
-    }
-    .main-box {
-        background: #FFFFFF;
-        -webkit-box-shadow: 1px 1px 2px 0 #CCCCCC;
-        -moz-box-shadow: 1px 1px 2px 0 #CCCCCC;
-        -o-box-shadow: 1px 1px 2px 0 #CCCCCC;
-        -ms-box-shadow: 1px 1px 2px 0 #CCCCCC;
-        box-shadow: 1px 1px 2px 0 #CCCCCC;
-        margin-bottom: 16px;
-        -webikt-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
-    .table a.table-link.danger {
-        color: #e74c3c;
-    }
-    .label {
-        border-radius: 3px;
-        font-size: 0.875em;
-        font-weight: 600;
-    }
-    .user-list tbody td .user-subhead {
-        font-size: 0.875em;
-        font-style: italic;
-    }
-    .user-list tbody td .user-link {
-        display: block;
-        font-size: 1.25em;
-        padding-top: 3px;
-        margin-left: 60px;
-    }
-    a {
-        color: #3498db;
-        outline: none!important;
-    }
-    .user-list tbody td>img {
-        position: relative;
-        max-width: 50px;
-        float: left;
-        margin-right: 15px;
-    }
-
-    .table thead tr th {
-        text-transform: uppercase;
-        font-size: 0.875em;
-    }
-    .table thead tr th {
-        border-bottom: 2px solid #e7ebee;
-    }
-    .table tbody tr td:first-child {
-        font-size: 1.125em;
-        font-weight: 300;
-    }
-    .table tbody tr td {
-        font-size: 0.875em;
-        vertical-align: middle;
-        border-top: 1px solid #e7ebee;
-        padding: 12px 8px;
-    }
-</style>
+        .table thead tr th {
+            text-transform: uppercase;
+            font-size: 0.875em;
+        }
+        .table thead tr th {
+            border-bottom: 2px solid #e7ebee;
+        }
+        .table tbody tr td:first-child {
+            font-size: 1.125em;
+            font-weight: 300;
+        }
+        .table tbody tr td {
+            font-size: 0.875em;
+            vertical-align: middle;
+            border-top: 1px solid #e7ebee;
+            padding: 12px 8px;
+        }
+    </style>
 
 </div>
 
