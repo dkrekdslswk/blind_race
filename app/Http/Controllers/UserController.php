@@ -98,6 +98,11 @@ class UserController extends Controller{
             ->where('number', '=', $sessionId)
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
+        // 오래된 세션 정리하기
+        DB::table('sessionDatas')
+            ->where(DB::raw('date(updated_at)'), '<=', DB::raw('subdate(now(), INTERVAL 1 DAY)'))
+            ->delete();
+
         // 유저 정보 읽어오기
         $userData = DB::table('users as u')
             ->select(
@@ -134,9 +139,6 @@ class UserController extends Controller{
 
     // 세션 값 입력
     private function sessionIdGet($userId){
-        // 오래된 세션 확인
-//        $this->oldLoginCheck();
-
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
             ->select([
@@ -147,59 +149,45 @@ class UserController extends Controller{
             ])
             ->first();
 
-        // 새로 세션을 만들기
-        if(!$data){
-            $sessionId = DB::table('sessionDatas')
-                ->insertGetId([
-                    'userNumber' => $userId
-                ], 'number');
+        // 이미 있는 세션 제거하기
+        if($data){
+            DB::table('sessionDatas')
+                ->where([
+                    'sessionId' => $data->sessionId
+                ])
+                ->delete();
         }
-        // 이미 있는 세션 사용
-        else{
-            // 업데이트 날자 갱신
-//            DB::table('sessionDatas')
-//                ->where([
-//                    'number' => $data->sessionId
-//                ])
-//                ->update([
-//                    'updated_at' => 'now()'
-//                ]);
-            $sessionId = $data->sessionId;
-        }
+
+        // 새션 할당하기
+        $sessionId = DB::table('sessionDatas')
+            ->insertGetId([
+                'userNumber' => $userId
+            ], 'number');
 
         // 아이디 반납
         return $sessionId;
     }
 
-    // 오류발생 임시동결
-    // 오래된 세션을 삭제
-//    public function oldLoginCheck(){
-//        DB::table('sessionDatas')
-//            ->where([
-//                DB::raw('date(updated_at) <= date(subdate(now(), INTERVAL 7 DAY))'),
-//                DB::raw('date(created_at) <= date(subdate(now(), INTERVAL 120 DAY))')
-//            ])
-//            ->delete();
-//    }
+    // 회원 정보 수정
+    public function store(Request $request){
+        $postData = array(
+            'name'              => $request->input('name'),
+            'password'          => $request->input('password'),
+            'passwordCheck'     => $request->input('passwordCheck'),
+            'passwordUpdate'    => $request->input('passwordUpdate')
+        );
 
-    // 미구현
-    /*public function store(Request $request){
+        // 반납할 값 정리
+    }
 
-        // 회원가입
-        $result = DB::table('users')
-            ->select([
-                'number as userId'
-            ])
-            ->where([
-                'userNumber' => $userId
-            ])
-            ->first();
-        DB::insert("insert into users(user_id,user_password,user_name) values(?,?,?)"
-            ,[$request->input('p_ID'),$request->input('p_PW'),$request->input('user_name')]);
+    // 로그아웃
+    public function logout(Request $request){
+        $postData = array(
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
+        );
 
-        if($result == 1 )
-            return view('Login/login');
-    }*/
+        //
+    }
 }
 
 ?>
