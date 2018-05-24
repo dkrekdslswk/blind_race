@@ -468,12 +468,12 @@ class RecordBoxController extends Controller{
 
                                 // 학생 조회일 경우 오답노트도 출력
                                 if ($postData['userId']){
-                                    $wrongText = DB::table()
+                                    $wrongText = DB::table('records as re')
                                         ->select(
-                                            'wrongAnswerNote'
+                                            're.wrongAnswerNote'
                                         )
                                         ->where([
-                                            'quizNumber' => $raceQuizs[$i]->quizId
+                                            're.quizNo' => $raceQuizs[$i]->quizId
                                         ])
                                         ->where($typeWhere)
                                         ->first();
