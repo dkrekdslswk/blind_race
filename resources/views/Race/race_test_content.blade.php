@@ -160,6 +160,7 @@
     <script>
         var sessionId = '<?php echo $response['sessionId']; ?>';
         var raceId = '<?php echo $response['raceId']; ?>';
+        var testmode ;
 
         var quizId;
         var quizCount;
@@ -272,6 +273,23 @@
                     alert("학생 재시험정답입력 error");
                 }
             });
+
+            //마지막 문제를 풀고난후
+            if(retest_quiz_num == quiz_JSON.length)
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('raceController/retestEnd')}}",
+                    dataType: 'json',
+                    data:"sessionId="+sessionId,
+                    success: function (result) {
+
+                    },
+                    error: function (data) {
+                        alert("학생 재시험 엔딩 FAIL");
+                    }
+                });
+            }
 
             quizGet();
         }
