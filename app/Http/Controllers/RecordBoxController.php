@@ -290,55 +290,56 @@ class RecordBoxController extends Controller{
 
             // 그룹권한 확인
             $where = array();
-            switch ($userData['classification'] && $typeWhere) {
-                // 학생은 자기것만 볼 수 있음.
-                case 'student':
-                case 'sleepStudent':
-                    $where = array('ru.userNumber' => $userData['userId']);
-                // 선생은 모든 학생을 볼 수 있음.
-                case 'teacher':
-                case 'root':
-                    // 학생 정보 조회
-                    $raceData = DB::table('raceUsers as ru')
-                        ->select(
-                            'r.number as raceId',
-                            'l.name as listName',
-                            'ru.userNumber as userId',
-                            'u.name as userName',
-                            'r.created_at as date',
-                            'ut.name as teacherName',
-                            DB::raw('year(r.created_at) as year'),
-                            DB::raw('month(r.created_at) as month'),
-                            DB::raw('dayofmonth(r.created_at) as day'),
-                            DB::raw('count(re.quizNo) as allCount'),
-                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
-                            DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
-                            DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
-                            DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
-                            DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
-                            DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
-                            DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
-                            'ru.retestState as retestState',
-                            'ru.wrongState as wrongState'
-                        )
-                        ->where($typeWhere)
-                        ->where($where)
-                        ->join('races as r', 'r.number', '=', 'ru.raceNumber')
-                        ->join('lists as l', 'l.number', '=', 'r.listNumber')
-                        ->join('users as ut', 'ut.number', '=', 'r.teacherNumber')
-                        ->join('users as u', 'u.number', '=', 'ru.userNumber')
-                        ->join('records as re', function ($join){
-                            $join->on('re.raceNo', '=', 'ru.raceNumber');
-                            $join->on('re.userNo', '=', 'ru.userNumber');
-                        })
-                        ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                        ->groupBy(['ru.userNumber', 'ru.raceNumber'])
-                        ->orderBy('ru.raceNumber', 'desc')
-                        ->get();
+            if ($typeWhere) {
+                switch ($userData['classification']) {
+                    // 학생은 자기것만 볼 수 있음.
+                    case 'student':
+                    case 'sleepStudent':
+                        $where = array('ru.userNumber' => $userData['userId']);
+                    // 선생은 모든 학생을 볼 수 있음.
+                    case 'teacher':
+                    case 'root':
+                        // 학생 정보 조회
+                        $raceData = DB::table('raceUsers as ru')
+                            ->select(
+                                'r.number as raceId',
+                                'l.name as listName',
+                                'ru.userNumber as userId',
+                                'u.name as userName',
+                                'r.created_at as date',
+                                'ut.name as teacherName',
+                                DB::raw('year(r.created_at) as year'),
+                                DB::raw('month(r.created_at) as month'),
+                                DB::raw('dayofmonth(r.created_at) as day'),
+                                DB::raw('count(re.quizNo) as allCount'),
+                                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
+                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
+                                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
+                                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
+                                'ru.retestState as retestState',
+                                'ru.wrongState as wrongState'
+                            )
+                            ->where($typeWhere)
+                            ->where($where)
+                            ->join('races as r', 'r.number', '=', 'ru.raceNumber')
+                            ->join('lists as l', 'l.number', '=', 'r.listNumber')
+                            ->join('users as ut', 'ut.number', '=', 'r.teacherNumber')
+                            ->join('users as u', 'u.number', '=', 'ru.userNumber')
+                            ->join('records as re', function ($join) {
+                                $join->on('re.raceNo', '=', 'ru.raceNumber');
+                                $join->on('re.userNo', '=', 'ru.userNumber');
+                            })
+                            ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                            ->groupBy(['ru.userNumber', 'ru.raceNumber'])
+                            ->orderBy('ru.raceNumber', 'desc')
+                            ->get();
 
                         // 반납할 정보 정리
                         $races = array();
-                        foreach ($raceData as $race){
+                        foreach ($raceData as $race) {
                             array_push($races, array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
@@ -362,16 +363,21 @@ class RecordBoxController extends Controller{
                             ));
                         }
 
-                    $returnValue = array(
-                        'races' => $races,
-                        'check' => true
-                    );
-                    break;
-                default:
-                    $returnValue = array(
-                        'check' => false
-                    );
-                    break;
+                        $returnValue = array(
+                            'races' => $races,
+                            'check' => true
+                        );
+                        break;
+                    default:
+                        $returnValue = array(
+                            'check' => false
+                        );
+                        break;
+                }
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
             }
         } else {
             $returnValue = array(
