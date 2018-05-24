@@ -926,7 +926,7 @@ class RaceController extends Controller{
                         're.userNo' => $userData['userId'],
                         're.retest' => 1
                     ])
-                    ->groupBy('re.userNo')
+                    ->groupBy(['re.userNo', 're.raceNo'])
                     ->first();
 
                 // 학생 점수
