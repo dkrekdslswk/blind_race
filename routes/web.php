@@ -126,6 +126,9 @@ Route::get('/cbcSocketTest', function(){
 //Route::post('/store',"UserController@store");
 Route::post('/mobileLogin',"UserController@mobileLogin");
 Route::post('/userController/webLogin',"UserController@webLogin");
+Route::post('/mobileLogout',"UserController@mobileLogout");
+Route::post('/userController/webLogout',"UserController@webLogout");
+Route::post('/userController/userUpdate',"UserController@userUpdate");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');

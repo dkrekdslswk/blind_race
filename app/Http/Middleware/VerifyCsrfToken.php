@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         '/mobileLogin',
         // '/raceController/retestStart',
         '/raceController/retestAnswerIn',
-        // '/raceController/retestEnd'
+        // '/raceController/retestEnd',
+        '/mobileLogout'
     ];
 }

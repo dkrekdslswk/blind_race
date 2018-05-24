@@ -396,8 +396,6 @@ class RecordBoxController extends Controller{
 //            'userId'    => false,
 //            'raceId'    => 1
 //        );
-        // 요구하는 값
-        // 요구하는 값
         $postData = array(
             'userId'    => $request->has('userId') ? $request->input('userId') : false,
             'raceId'    => $request->input('raceId')

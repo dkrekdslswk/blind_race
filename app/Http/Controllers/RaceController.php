@@ -979,7 +979,7 @@ class RaceController extends Controller{
             );
         }
 
-        return $returnValue;
+        return view('Race/race_result')->with('response', $returnValue);
     }
 
     // 해당 리스트에서 모든 문제를 가져오는 구문
