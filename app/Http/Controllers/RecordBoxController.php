@@ -263,8 +263,9 @@ class RecordBoxController extends Controller{
 //        );
         // 요구하는 값
         $postData = array(
-            'userId'    => $request->has('userId') ? $request->input('userId') : false,
-            'raceId'    => $request->has('raceId') ? $request->input('raceId') : false
+            'userId'        => $request->has('userId') ? $request->input('userId') : false,
+            'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
+            'retestState'   => $request->has('retestState') ? $request->input('raceId') : false
         );
 
         // 유저정보가져오기
@@ -470,7 +471,7 @@ class RecordBoxController extends Controller{
                                 if ($postData['userId']){
                                     $wrongText = DB::table('records as re')
                                         ->select(
-                                            're.wrongAnswerNote'
+                                            're.wrongAnswerNote as wrongAnswerNote'
                                         )
                                         ->where([
                                             're.quizNo' => $raceQuizs[$i]->quizId
@@ -494,7 +495,7 @@ class RecordBoxController extends Controller{
                                     'example3Count' => $quizData->example3Count,
                                     'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
                                     'userCount' => $raceQuizs[$i]->userCount,
-                                    'wrong' => $wrongText ? $wrongText->quizNumber : false
+                                    'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
                                 ));
                             } else if (preg_match('/^(.)+ sub$/', $raceQuizs[0]->type)) {
                                 // 주관식 처리
@@ -694,6 +695,8 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
+
+    // 피드백과 질문
 
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){
