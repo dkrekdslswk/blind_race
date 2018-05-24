@@ -142,7 +142,6 @@
         min-height: 705px;
         min-width: 1000px;
     }
-
 </style>
 
 <script>
@@ -421,17 +420,21 @@
                     <div id="race_menu">
                         <span style="text-align: center; display:block;"><b>Mode Select</b></span>
                         <span style="text-align: center; display:block;">(사용할 모드를 클릭해주세요) </span>
-                        <div class="race_menu_button" id="Race">
+
+                        <label class="race_menu_button" id="Race">
                             <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
                             <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
                             <span class="race_menu_span">Race</span>
-                        </div>
-                        <!-- 부가기능이므로 아직은 미구현상태  -->
-                        <div class="race_menu_button" id="Exam" >
+                            <input class="magic-radio" type="radio" name="race_mode"/>
+                        </label>
+
+
+                        <label class="race_menu_button" id="Exam" >
                             <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
                             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
                             <span class="race_menu_span">PopQuiz</span>
-                        </div>
+                            <input class="magic-radio" type="radio" name="race_mode"/>
+                        </label>
                     </div>
 
                 </div>
