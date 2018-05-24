@@ -153,7 +153,7 @@ class UserController extends Controller{
         if($data){
             DB::table('sessionDatas')
                 ->where([
-                    'sessionId' => $data->sessionId
+                    'number' => $data->sessionId
                 ])
                 ->delete();
         }
