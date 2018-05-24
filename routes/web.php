@@ -79,6 +79,11 @@ Route::get('/race_popquiz', function(){
     return view('Race/race_popquiz');
 });
 
+/* 2-7 Blind Race : Race_popquiz  -> 학생 웹 쪽지시험 */
+Route::get('/race_student_popquiz', function(){
+    return view('Race/race_student_popquiz');
+});
+
 /* 3. Quiz Tree : Quiz List */
 Route::get('/quiz_list', function(){
     return view('QuizTree/quiz_list');
