@@ -6,38 +6,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
-    // 유저 로그인 확인
-    private function userLogin($userId, $password){
-        // 유저 조회
-        $userData = DB::table('users')
-            ->select([
-                'number as userId',
-                'name',
-                'classification'
-            ])
-            ->where([
-                'number'    => $userId,
-                'pw'        => $password
-            ])
-            ->first();
-
-        // 반납값 정리
-        if(!$userData) {
-            $returnValue = array(
-                'check'             => false
-            );
-        }else{
-            $returnValue = array(
-                'userId'            => $userData->userId,
-                'classification'    => $userData->classification,
-                'name'              => $userData->name,
-                'check'             => true
-            );
-        }
-
-        return $returnValue;
-    }
-
     // 모바일 로그인
     public function mobileLogin(Request $request){
         $userData = $this->userLogin(
@@ -91,6 +59,119 @@ class UserController extends Controller{
         return view('homepage')->with('response', $returnValue);
     }
 
+    // 회원 정보 수정
+    public function userUpdate(Request $request){
+        $postData = array(
+            'name'              => $request->input('name'),
+            'password'          => $request->input('password'),
+            'passwordCheck'     => $request->input('passwordCheck'),
+            'passwordUpdate'    => $request->input('passwordUpdate')
+        );
+
+        // 유저정보
+        $userData = self::sessionDataGet('sessionId');
+
+        if ($userData['check']) {
+            // 페스워드 변경 하기
+            if ($postData['passwordCheck']) {
+                $update = array(
+                    'pw' => $postData['passwordUpdate'],
+                    'name' => $postData['name']
+                );
+            } else {
+                $update = array(
+                    'name' => $postData['name']
+                );
+            }
+
+            // 변경하기
+            DB::table('users')
+                ->where([
+                    'number' => $userData['userId'],
+                    'pw' => $postData['password']
+                ])
+                ->update($update);
+
+            // 반납할 값 정리
+            $userData = self::sessionDataGet('sessionId');
+
+            $returnValue = array(
+                'name' => $userData['userName'],
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 모바일 로그아웃
+    public function mobileLogout(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
+
+        // 세션을 삭제
+        DB::table('sessionDatas')
+            ->where([
+                'number' => $postData['sessionId']
+            ])
+            ->delete();
+    }
+
+    // 웹 로그아웃
+    public function webLogout(Request $request){
+        // 세션을 삭제
+        DB::table('sessionDatas')
+            ->where([
+                'number' => $request->session()->get('sessionId')
+            ])
+            ->update([
+                'nick' => null,
+                'PIN' => null,
+                'characterNumber' => null,
+                'raceNumber' => null
+            ]);
+
+        // 세션 비우기
+        $request->session()->flush();
+    }
+
+    // 유저 로그인 확인
+    private function userLogin($userId, $password){
+        // 유저 조회
+        $userData = DB::table('users')
+            ->select([
+                'number as userId',
+                'name',
+                'classification'
+            ])
+            ->where([
+                'number'    => $userId,
+                'pw'        => $password
+            ])
+            ->first();
+
+        // 반납값 정리
+        if(!$userData) {
+            $returnValue = array(
+                'check'             => false
+            );
+        }else{
+            $returnValue = array(
+                'userId'            => $userData->userId,
+                'classification'    => $userData->classification,
+                'name'              => $userData->name,
+                'check'             => true
+            );
+        }
+
+        return $returnValue;
+    }
+
     // 세션 정보 및 유저정보 읽어오기
     public static function sessionDataGet($sessionId){
         // 세션 시간 갱신
@@ -100,7 +181,7 @@ class UserController extends Controller{
 
         // 오래된 세션 정리하기
         DB::table('sessionDatas')
-            ->where(DB::raw('date(updated_at)'), '<=', DB::raw('subdate(now(), INTERVAL 1 DAY)'))
+            ->where(DB::raw('date(updated_at)'), '<=', DB::raw('subdate(now(), INTERVAL 7 DAY)'))
             ->delete();
 
         // 유저 정보 읽어오기
@@ -137,7 +218,7 @@ class UserController extends Controller{
         return $returnValue;
     }
 
-    // 세션 값 입력
+    // 세션 만들거나 받아오기
     private function sessionIdGet($userId){
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
@@ -149,44 +230,31 @@ class UserController extends Controller{
             ])
             ->first();
 
-        // 이미 있는 세션 제거하기
+        // 이미 있는 세션 그대로 쓰기
         if($data){
+            $sessionId = $data->sessionId;
             DB::table('sessionDatas')
                 ->where([
-                    'number' => $data->sessionId
+                    'number' => $sessionId
                 ])
-                ->delete();
+                ->update([
+                    'nick' => null,
+                    'PIN' => null,
+                    'characterNumber' => null,
+                    'raceNumber' => null
+                ]);
         }
-
         // 새션 할당하기
-        $sessionId = DB::table('sessionDatas')
-            ->insertGetId([
-                'userNumber' => $userId
-            ], 'number');
+        else {
+            // 새션 할당하기
+            $sessionId = DB::table('sessionDatas')
+                ->insertGetId([
+                    'userNumber' => $userId
+                ], 'number');
+        }
 
         // 아이디 반납
         return $sessionId;
-    }
-
-    // 회원 정보 수정
-    public function store(Request $request){
-        $postData = array(
-            'name'              => $request->input('name'),
-            'password'          => $request->input('password'),
-            'passwordCheck'     => $request->input('passwordCheck'),
-            'passwordUpdate'    => $request->input('passwordUpdate')
-        );
-
-        // 반납할 값 정리
-    }
-
-    // 로그아웃
-    public function logout(Request $request){
-        $postData = array(
-            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
-        );
-
-        //
     }
 }
 

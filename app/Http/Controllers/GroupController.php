@@ -480,13 +480,11 @@ class GroupController extends Controller{
         // 요구하는 값
 //        $postData = array(
 //            'userId'        => 1300000,
-//            'userName'      => '뽀로로',
 //            'password'      => 1230000,
 //            'passwordState' => true
 //        );
         $postData = array(
             'userId'        => $request->input('userId'),
-            'userName'      => $request->input('userName'),
             'password'      => $request->input('password'),
             'passwordState' => $request->input('passwordState')
         );

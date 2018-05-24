@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/mobileLogin',
+        '/mobileLogout'
 //        '/raceController/retestStart',
 //        '/raceController/retestAnswerIn',
 //        '/raceController/retestEnd'
