@@ -432,7 +432,7 @@ class RaceController extends Controller{
                     's.nick             as nick',
                     's.characterNumber  as characterId',
                     DB::raw('MIN(r.quizNo) as lastQuizId'),
-                    DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
+                    DB::raw('SUM(CASE WHEN r.answerCheck="O" THEN 1 ELSE 0 END) as rightCount')
                 )
                 ->where([
                     'ru.raceNumber' => $raceData->raceId
@@ -548,7 +548,7 @@ class RaceController extends Controller{
                     's.nick             as nick',
                     's.characterNumber  as characterId',
                     's.userNumber       as userId',
-                    DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                    DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END) as rightCount')
                 )
                 ->where([
                     're.raceNo' => $userData['raceId'],
@@ -919,7 +919,7 @@ class RaceController extends Controller{
                 // 최종 성적 정보 가져오기
                 $records = DB::table('records as re')
                     ->select(
-                        DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                        DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END), 0) as rightCount')
                     )
                     ->where([
                         're.raceNo' => $userData['raceId'],
@@ -1042,7 +1042,7 @@ class RaceController extends Controller{
                 'l.name as listName',
                 DB::raw('count(lq.quizNumber) as quizCount'),
                 'r.passingMark as passingMark',
-                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                DB::raw('SUM(CASE WHEN re.answerCheck = "O" THEN 1 ELSE 0 END) as rightCount')
             )
             ->where([
                 'ru.userNumber' => $userId,
@@ -1089,7 +1089,7 @@ class RaceController extends Controller{
         $quizs = DB::table('listQuizs as lq')
             ->select(
                 'lq.quizNumber as quizId',
-                DB::raw('count(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
+                DB::raw('SUM(CASE WHEN re.userNo = ' . $userId . ' THEN 1 ELSE 0 END) as omissionCheck')
             )
             ->where([
                 're.raceNo' => $raceId,
