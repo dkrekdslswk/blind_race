@@ -408,13 +408,13 @@ class RecordBoxController extends Controller{
                 're.raceNo' => $postData['raceId'],
                 're.retest' => 0
             );
-            $typeGroupBy = array('re.raceNo', 're.userNo', 're.quizNo');
+            $typeGroupBy = array('re.raceNo', 're.userNo', 're.quizNo', 're.retest');
         } else {
             $typeWhere = array(
                 're.raceNo' => $postData['raceId'],
                 're.retest' => 0
             );
-            $typeGroupBy = array('re.raceNo', 're.quizNo');
+            $typeGroupBy = array('re.raceNo', 're.quizNo', 're.retest');
         }
 
         // 유저정보 가져오기
