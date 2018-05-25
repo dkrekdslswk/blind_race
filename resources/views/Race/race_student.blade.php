@@ -57,6 +57,12 @@
                 }
             });
 
+            socket.on('pop_quiz_start',function(quizData,listName){
+                $('.loading_page').hide();
+
+                $('#popQuiz_content').show();
+            });
+
             socket.on('android_game_start',function(quizId , makeType){
                 web_quizId = quizId;
                 web_makeType = makeType;
@@ -127,6 +133,10 @@
                         web_answer_check = ranking_json[i].answerCheck;
                     }
                 }
+
+
+
+
 
                 $('#ranking_info').html(web_ranking+"등");
                 $('#point_info').html(web_point*100+"point");
@@ -223,7 +233,39 @@
                     break;
 
                 case "Exam":
-                    alert("쪽지시험은 미구현");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('/raceController/studentIn')}}",
+                        dataType: 'json',
+                        async:false,
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        data:"roomPin="+roomPin+"&sessionId=0",
+                        success: function (result) {
+                            if(result['check'] == true) {
+                                socket.emit('join', roomPin);
+                                socket.emit('web_test_enter',roomPin);
+                                $('#race_menu').hide();
+                                $('#roomPin_page').hide();
+
+                                //로딩부분
+                                $('body').css("background-color","mediumslateblue");
+                                $(".loading_page").show();
+
+
+                                $('#student_guide').text('시험이 시작될 때까지 기다려 주세요 !');
+                            }
+                            else{
+                                alert("존재하지 않는 시험입니다. 다시입력해주세요");
+                            }
+
+                        },
+                        error: function(request, status, error) {
+                            console.log("안드로이드 join 실패"+roomPin);
+                        }
+                    });
+                    //ajax끝
+
                     break;
 
             }
@@ -585,5 +627,7 @@
 
 
 <div class="contents" style="display:none;">@include('Race.race_student_content')</div>
+
+<div id="popQuiz_content" style="display:none;">@include('Race.race_student_popquiz')</div>
 </body>
 </html>
