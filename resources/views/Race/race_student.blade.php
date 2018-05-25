@@ -32,7 +32,7 @@
         var web_correct_answer;
 
         var web_quiz_count;
-
+    
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
 
@@ -244,10 +244,14 @@
                         success: function (result) {
                             if(result['check'] == true) {
                                 socket.emit('join', roomPin);
+                                
+                                sessionId = result['sessionId'];
+                                
                                 socket.emit('web_test_enter',roomPin);
                                 $('#race_menu').hide();
                                 $('#roomPin_page').hide();
-
+                                
+                                
                                 //로딩부분
                                 $('body').css("background-color","mediumslateblue");
                                 $(".loading_page").show();
@@ -476,8 +480,6 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             success: function (data) {
                 quizlistData = data;
-
-
                 listValue();
             },
             error: function (data) {
@@ -508,7 +510,7 @@
     }
 
 </script>
-<body onload="getValue()">
+<body>
 
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
@@ -517,7 +519,7 @@
     </div>
 
     <div id="race_menu">
-        <button class="race_menu_button" id="Re-Test">
+        <button class="race_menu_button" id="Re-Test" onclick="getValue();">
             <img class="menu_time_img" src="/img/race_student/freetime.png" alt=""><br>
             <img class="race_menu_img" src="/img/race_student/exam2.png" alt=""><br>
             <span class="race_menu_span">Re-Test</span>

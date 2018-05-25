@@ -167,16 +167,16 @@
             case "obj":
                 selected_answer = quiz_JSON[retest_quiz_num].right;
                 $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
-                $('#answer1').text(quiz_JSON[retest_quiz_num].right);
+                $('#answer1_span').text(quiz_JSON[retest_quiz_num].right);
                 $('#answer1_radio').val(quiz_JSON[retest_quiz_num].right);
 
-                $('#answer2').text(quiz_JSON[retest_quiz_num].example1);
+                $('#answer2_span').text(quiz_JSON[retest_quiz_num].example1);
                 $('#answer2_radio').val(quiz_JSON[retest_quiz_num].example1);
 
-                $('#answer3').text(quiz_JSON[retest_quiz_num].example2);
+                $('#answer3_span').text(quiz_JSON[retest_quiz_num].example2);
                 $('#answer3_radio').val(quiz_JSON[retest_quiz_num].example2);
 
-                $('#answer4').text(quiz_JSON[retest_quiz_num].example3);
+                $('#answer4_span').text(quiz_JSON[retest_quiz_num].example3);
                 $('#answer4_radio').val(quiz_JSON[retest_quiz_num].example3);
 
                 $('#obj').show();

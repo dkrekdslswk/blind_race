@@ -66,15 +66,15 @@
         }
 
 
-                $('#raceName').text(listName);
-                $('#quizCount').text(quizCount);
-                $('#passingMark').text("합격점:"+passingMark);
-                $('#groupName').text(groupName);
+                // $('#raceName').text(listName);
+                // $('#quizCount').text(quizCount);
+                // $('#passingMark').text("합격점:"+passingMark);
+                // $('#groupName').text(groupName);
                 // $('#userName').text(userName);
 
 
         socket.on('pop_quiz_start',function(quizData,listName){
-            quiz_JSON = quizData;
+            quiz_JSON = JSON.parse(quizData);
             shuffle_quiz();
             quizGet();
         });
@@ -86,18 +86,8 @@
         if(quiz_JSON[test_quiz_num-1].makeType == "sub")
             selected_answer = document.getElementById('sub_content').value;
 
-        $.ajax({
-            type: 'POST',
-            url: "{{url('raceController/retestAnswerIn')}}",
-            dataType: 'json',
-            data:"quizId="+quizId+"&sessionId="+sessionId+"&answer="+selected_answer,
-            success: function (result) {
-
-            },
-            error: function (data) {
-                alert("학생 재시험정답입력 error");
-            }
-        });
+       socket.emit('answer',roomPin,selected_answer,sessionId,"닉네임대신",quizId);
+       
 
         //마지막 문제를 풀고난후
         if(test_quiz_num == quiz_JSON.length)
@@ -105,13 +95,23 @@
             $.ajax({
                 type: 'POST',
                 url: "{{url('raceController/raceEnd')}}",
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 dataType: 'json',
                 success: function (result) {
                     r_result = result['students'];
+                    
+                    
+                    for(var i=0; i<r_result.length; i++ ){
+                        if(r_result[i].sessionId == sessionId){
+                            if(r_result[i].retestState == true)
+                              $('#q_table').html("FAIL ㅜㅜ  "+"점수");        
+                            else
+                              $('#q_table').html("PASS "+"점수");        
+                        }
+                    }
+                        
 
-                        $('#q_table').html("PASS "+result['score']);
-
-                        $('#q_table').html("FAIL ㅜㅜ  "+result['score']);
+                        
                 },
                 error: function (data) {
                     alert("학생 재시험 엔딩 FAIL");
@@ -131,16 +131,16 @@
             case "obj":
                 selected_answer = quiz_JSON[test_quiz_num].right;
                 $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
-                $('#answer1').text(quiz_JSON[test_quiz_num].right);
+                $('#answer1_span').text(quiz_JSON[test_quiz_num].right);
                 $('#answer1_radio').val(quiz_JSON[test_quiz_num].right);
 
-                $('#answer2').text(quiz_JSON[test_quiz_num].example1);
+                $('#answer2_span').text(quiz_JSON[test_quiz_num].example1);
                 $('#answer2_radio').val(quiz_JSON[test_quiz_num].example1);
 
-                $('#answer3').text(quiz_JSON[test_quiz_num].example2);
+                $('#answer3_span').text(quiz_JSON[test_quiz_num].example2);
                 $('#answer3_radio').val(quiz_JSON[test_quiz_num].example2);
 
-                $('#answer4').text(quiz_JSON[test_quiz_num].example3);
+                $('#answer4_span').text(quiz_JSON[test_quiz_num].example3);
                 $('#answer4_radio').val(quiz_JSON[test_quiz_num].example3);
 
                 $('#obj').show();

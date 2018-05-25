@@ -183,25 +183,25 @@
                         <br>
                         <label>
                             <input id="answer1_radio" name="answer" type="radio" checked="checked">
-                            <span id="answer1" >요로시꾸</span>
+                            <span id="answer1_span" >요로시꾸</span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer2_radio"  name="answer" type="radio">
-                            <span id="answer2">요로시꾸</span>
+                            <span id="answer2_span">요로시꾸</span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer3_radio"  name="answer" type="radio">
-                            <span id="answer3">요로시d</span>
+                            <span id="answer3_span">요로시d</span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer4_radio"  name="answer" type="radio">
-                            <span id="answer4">요로시꾸</span>
+                            <span id="answer4_span">요로시꾸</span>
                         </label>
                         <br>
                     </div>
