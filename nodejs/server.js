@@ -80,9 +80,14 @@ io.on('connection', function (socket){
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
 
-    socket.on('pop_quiz_start',function(roomPin,quizData){
+    socket.on('pop_quiz_start',function(roomPin,quizData,listName){
         console.log('PopQuiz시작',roomPin+","+quizData)
-        io.sockets.in(roomPin).emit('pop_quiz_start',quizData);
+        io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName);
+    });
+
+    socket.on('pop_quiz_status',function(roomPin){
+        console.log('쪽지시험 끝남 ++');
+        io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
     });
 
 

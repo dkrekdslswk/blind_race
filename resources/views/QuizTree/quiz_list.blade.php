@@ -83,8 +83,9 @@
     // BODY ONLOAD : 컨트롤러로부터 폴더 정보를 불러오기 위한 AJAX
     function getFolderValue() {
 
+        // 폴더 리스트만 띠우기 위한거기 때문에 folderId 값은 상관없음
         var params = {
-            folderId: 1
+            folderId: 0
         };
 
         $.ajax({
@@ -97,20 +98,27 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
-                folderListData = data;
-                quizlistData = data;
-                folderValue();
-                listValue();
+
+                // 최신 폴더 id값
+                var index =  data['folders'].length-1;
+
+                //최신 폴더 & 최신 리스트 불러오기
+                getFolderListValue(data['folders'][index]['folderId']);
             },
             error: function (data) {
                 alert("error");
             }
         });
-
     }
 
-    // 컨트롤러로부터 리스트 정보를 불러오기 위한 AJAX
-    function getListValue(idNum) {
+    // 컨트롤러로부터 폴더 & 리스트 정보를 불러오기 위한 AJAX
+    function getFolderListValue(idNum) {
+
+        // 폴더 데이터 초기화
+        folderListData = [];
+
+        // 퀴즈 데이터 초기와
+        quizlistData = [];
 
         var params = {
             folderId: idNum
@@ -126,7 +134,13 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
+
+                //★★★★★ 출력 테스트 ★★★★★
+                //alert(JSON.stringify(data));
+
+                folderListData = data;
                 quizlistData = data;
+
                 listValue();
             },
             error: function (data) {
@@ -136,27 +150,30 @@
 
     }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 폴더 정보를 보여줌
-    function folderValue() {
-        for(var i = 0; i < folderListData['folders'].length; i++) {
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌
+    function listValue() {
+
+        // 폴더 & 퀴즈 값이 쌓이지 않게 초기화
+        $("#folderList").empty();
+        $("#list").empty();
+
+        // <----- 폴더 리스트 ----->
+        for(var i = folderListData['folders'].length - 1; i >= 0; i--) {
+
             if(folderListData['folders'][i]['folderId'] == 0) {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-open'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
             }
             else {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='glyphicon glyphicon-folder-close'></span>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
+
             }
         }
-    }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 리스트 정보를 보여줌
-    function listValue() {
-
-        $("#list").empty();
-
+        // <----- 퀴즈 리스트 ----->
         for(var i = 0; i < quizlistData['lists'].length; i++) {
 
             // 1. 레이스로 활용되지 않은 문제만 수정・삭제 가능
@@ -234,30 +251,44 @@
 
     // <기능 1> 리스트 생성
     // 입력된 퀴즈명, 폴더 아이디를 컨트롤러로 보내기 위함
-    $(document).ready(function () {
-        $('#quizName').change(function () {
-            var quizName = $("#quizName").val();
-
-            var listNameObj = document.getElementById("listName");
-            listNameObj.value = quizName;
-
-            var folderIdObj = document.getElementById("folderId");
-            folderIdObj.value = folderListData["selectFolder"];
-        });
-    });
+    function createList() {
+        var folderIdObj = document.getElementById("folderId");
+        folderIdObj.value = folderListData["selectFolder"];
+    }
 
     // <추가 기능> 폴더 생성
+    var folderName = "";
+
     $(document).ready(function () {
         $('#folder').change(function () {
-            var folderName = $("folder").val();
-
-            var folderNameObj = document.getElementById("folderName");
-            folderNameObj.value = folderName;
+            folderName = $("#folder").val();
         })
     });
-    
+
     function createFolder() {
-        
+
+        var params = {
+            folderName: folderName
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/createFolder')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: params,
+            success: function (data) {
+
+                if(data['check'] == true) window.location.href = "{{url('quiz_list')}}";
+            },
+            error: function (data) {
+
+                alert("error");
+            }
+        });
     }
 
     // <기능 2> 리스트 삭제
@@ -279,7 +310,9 @@
             data: params,
             success: function (data) {
 
-                if(data['check'] == true) window.location.href = "{{url('quiz_list')}}";
+                if(data['check'] == true) {
+                    window.location.href = "{{url('quiz_list')}}"
+                };
             },
             error: function (data) {
 
@@ -311,6 +344,7 @@
                 showListData = data;
 
                 //alert(JSON.stringify(showListData));
+                //alert(JSON.stringify(folderListData['selectFolder']));
                 //alert(JSON.stringify(showListData['quizs'].length));
 
                 var str = "";
@@ -393,7 +427,7 @@
 
                     "<div class='modal-footer'>" +
                         // 퀴즈 수정하기
-                        "<button type='submit' class='btn btn-default' onclick='sendId(" + idNum +")'><em class='fa fa-pencil'></em></button>" +
+                        "<button type='submit' class='btn btn-default' onclick='sendId(" + idNum + ")'><em class='fa fa-pencil'></em></button>" +
                         "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
                     "</div>" +
                     "</div>" +
@@ -443,9 +477,7 @@
 
 </script>
 
-<!-- 처음에 호출할 때 최신 폴더 + 최신 리스트를 호출해야 하는데...
-     바디 onload로도 가능한지??
--->
+
 <body onload="getFolderValue()">
 
 <nav>
@@ -455,7 +487,7 @@
 <div class="row">
     <div class="side-menu">
         <aside class="navbar navbar-default" role="navigation">
-        @include('QuizTree.quiz_list_side_bar')
+        @include('QuizTree.quiz_list_sidebar')
     </aside>
     </div>
 
@@ -467,12 +499,18 @@
             <div class="panel panel-default panel-table">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col col-xs-6">
-                            <h3 class="panel-title">퀴즈 리스트</h3>
+                        <div class="col col-xs-6" id="showFolderName">
+                            <!-- FolerName 공간 -->
                         </div>
-                        <div class="col col-xs-6 text-right">
-                            <button type="button" class="btn btn-sm btn-primary btn-create" data-toggle="modal" data-target="#Modal">퀴즈 만들기</button>
-                        </div>
+                        <!-- Create quiz -->
+                        <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
+                            {{csrf_field()}}
+                            <input type="hidden" name="folderId" id="folderId" value="">
+                            <div class="col col-xs-6 text-right" id="quizButton">
+                                <!-- Quiz Button 공간 -->
+                                <button type="submit" class="btn btn-sm btn-primary btn-create" onclick="createList()">퀴즈 만들기</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -486,7 +524,7 @@
                         </tr>
                         </thead>
                         <tbody id="list">
-                        {{--list 공간--}}
+                        <!-- list 공간 -->
                         </tbody>
                     </table>
                 </div>
@@ -514,29 +552,6 @@
     </div>
 </div>
 
-<!--Modal : create quiz-->
-<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
-            {{csrf_field()}}
-            <input type="hidden" name="listName" id="listName" value="">
-            <input type="hidden" name="folderId" id="folderId" value="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">퀴즈 만들기</h5>
-                </div>
-                <div class="modal-body" style="text-align: center">
-                    퀴즈 이름 <input type="text" id="quizName">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">만들기</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!--Modal : delete quiz-->
 <div id="deleteQuizDiv"></div>
 
@@ -552,24 +567,23 @@
 <div id="showQuizDivFNU"></div>
 
 <!--Modal : create folder-->
-<div id="createFolderDiv">
-    <div class="modal fade" id="createFolder">
-        <div class="modal-dialog">
-                <input type="hidden" name="folderName" id="folderName" value="">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
-                    </div>
-                    <div class="modal-body" style="text-align: center">
-                        폴더 이름 <input type="text" id="folder">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">만들기</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    </div>
-                </div>
+<div class="modal fade" id="createFolder">
+    <div class="modal-dialog">
+        <input type="hidden" name="folderName" id="folderName" value="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                폴더 이름 <input type="text" id="folder" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" onclick="createFolder()">만들기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

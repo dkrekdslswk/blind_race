@@ -55,6 +55,12 @@ Route::get('/race_waiting', function(){
     return view('Race/race_waiting');
 });
 
+/* 2-1. Blind Race : Waiting Room */
+Route::get('/mid_result', function(){
+    return view('Race/mid_result');
+});
+
+
 /* 2-3. Blind Race : Race Result */
 Route::get('/race_result', function(){
     return view('Race/race_result');
@@ -71,6 +77,11 @@ Route::get('/race_retest', function(){
 /* 2-6 Blind Race : Race_popquiz  -> 교사 쪽지시험 부분 */
 Route::get('/race_popquiz', function(){
     return view('Race/race_popquiz');
+});
+
+/* 2-7 Blind Race : Race_popquiz  -> 학생 웹 쪽지시험 */
+Route::get('/race_student_popquiz', function(){
+    return view('Race/race_student_popquiz');
 });
 
 /* 3. Quiz Tree : Quiz List */
@@ -115,6 +126,9 @@ Route::get('/cbcSocketTest', function(){
 //Route::post('/store',"UserController@store");
 Route::post('/mobileLogin',"UserController@mobileLogin");
 Route::post('/userController/webLogin',"UserController@webLogin");
+Route::post('/mobileLogout',"UserController@mobileLogout");
+Route::post('/userController/webLogout',"UserController@webLogout");
+Route::post('/userController/userUpdate',"UserController@userUpdate");
 
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
@@ -127,6 +141,7 @@ Route::post('/raceController/getRetestListWeb','RaceController@getRetestListWeb'
 Route::post('/raceController/retestSet','RaceController@retestSet');
 Route::post('/raceController/retestStart','RaceController@retestStart');
 Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
+Route::post('/raceController/retestEnd','RaceController@retestEnd');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
@@ -142,6 +157,7 @@ Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
 Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCheck');
 Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
 Route::post('/recordBoxController/getWrongs','RecordBoxController@getWrongs');
+Route::post('/recordBoxController/insertWrongs','RecordBoxController@insertWrongs');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');

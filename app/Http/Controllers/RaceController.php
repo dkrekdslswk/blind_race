@@ -171,8 +171,6 @@ class RaceController extends Controller{
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
         );
-        // 반납값 디폴트
-        $sessionCheck   = false;
 
         // 앱 로그인인지 웹 로그인인지 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
@@ -216,13 +214,18 @@ class RaceController extends Controller{
                         'wrongState'   => 'not'
                     ]);
             }
-        }
 
-        // 반납값 정리
-        $returnValue = array(
-            'sessionId'     => $postData['sessionId'],
-            'check'         => $sessionCheck,
-        );
+            // 반납값 정리
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => $sessionCheck
+            );
+        } else {
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => false
+            );
+        }
 
         return $returnValue;
     }
@@ -545,7 +548,7 @@ class RaceController extends Controller{
                     's.nick             as nick',
                     's.characterNumber  as characterId',
                     's.userNumber       as userId',
-                    DB::raw('COUNT(CASE WHEN r.answerCheck = "O" THEN 1 END) as rightCount')
+                    DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
                 )
                 ->where([
                     're.raceNo' => $userData['raceId'],
@@ -556,10 +559,10 @@ class RaceController extends Controller{
                 ->groupBy('s.userNumber')
                 ->get();
 
-            // 미제출 문제 처리하기
-            foreach ($students as $student) {
-                $this->omission($student->userId, $userData['raceId'], 0);
-            }
+//            // 미제출 문제 처리하기
+//            foreach ($students as $student) {
+//                $this->omission($student->userId, $userData['raceId'], 0);
+//            }
 
             // 재시험 여부 확인하기
             $retestTargets = array();
@@ -923,7 +926,7 @@ class RaceController extends Controller{
                         're.userNo' => $userData['userId'],
                         're.retest' => 1
                     ])
-                    ->groupBy('re.userNo')
+                    ->groupBy(['re.userNo', 're.raceNo', 're.retest'])
                     ->first();
 
                 // 학생 점수
@@ -1039,7 +1042,7 @@ class RaceController extends Controller{
                 'l.name as listName',
                 DB::raw('count(lq.quizNumber) as quizCount'),
                 'r.passingMark as passingMark',
-                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
             )
             ->where([
                 'ru.userNumber' => $userId,
@@ -1072,39 +1075,49 @@ class RaceController extends Controller{
     }
 
     // 재시험 혹은 테스트에서 미제출 문제 처리
-    private function omission($userId, $raceId, $type){
-        $quizs = DB::table('races as r')
+    private function omission($userId, $raceId, $type)
+    {
+        $raceData = DB::table('races')
             ->select(
-                'lq.quizNumber as quizId',
-                'lq.listNumber as listId',
-                DB::raw('count(CASE WHEN re.userNo = '.$userId.' THEN 1 END) as omissionCheck')
+                'listNumber as listId'
             )
             ->where([
-                'r.number' => $raceId,
-                'omissionCheck' => 1
+                'number' => $raceId
             ])
-            ->join('listQuizs as lq', ' lq.listNumber', '=', 'r.listNumber')
-            ->leftJoin('records as re', function ($join){
-                $join->on('re.raceNo', '=', 'r.number');
-                $join->on('re.quizNo', '=', 'lq.listNumber');
+            ->first();
+
+        $quizs = DB::table('listQuizs as lq')
+            ->select(
+                'lq.quizNumber as quizId',
+                DB::raw('COUNT(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
+            )
+            ->where([
+                're.raceNo' => $raceId,
+                're.retest' => $type
+            ])
+            ->leftJoin('records as re', function ($join) {
+                $join->on('re.quizNo', '=', 'lq.quizNumber');
+                $join->on('re.listNo', '=', 'lq.listNumber');
             })
-            ->groupBy(['r.number', 'lq.quizNumber'])
+            ->groupBy('lq.quizNumber')
             ->get();
 
         $insert = array();
-        foreach ($quizs as $quiz){
-            array_push($insert, array(
-                'userNo' => $userId,
-                'raceNo' => $raceId,
-                'listNo' => $quizs->listId,
-                'quizNo' => $quizs->quizNo,
-                'retest' => $type,
-                'answer' => '',
-                'answerCheck' => 'X'
-            ));
+        foreach ($quizs as $quiz) {
+            if ($quiz->omissionCheck == 0) {
+                array_push($insert, array(
+                    'userNo' => $userId,
+                    'raceNo' => $raceId,
+                    'listNo' => $raceData->listId,
+                    'quizNo' => $quiz->quizId,
+                    'retest' => $type,
+                    'answer' => '',
+                    'answerCheck' => 'X'
+                ));
+            }
         }
 
-        if (count($insert) > 0){
+        if (count($insert) > 0) {
             DB::table('records')
                 ->insert($insert);
         }

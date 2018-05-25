@@ -1,4 +1,4 @@
-﻿﻿<?php
+﻿<?php
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -164,6 +164,13 @@ class BlindDummyTableSeeder extends Seeder
                 ]);
         }
 
+        // 오답, 재시험 상태
+        $state = array(
+            'not',
+            'order',
+            'clear'
+        );
+
         for ($day = 7 ; $day > 0 ; $day--) {
             for ($count = 0; $count < 5; $count++) {
                 $raceId = DB::table('races')->insertGetId([
@@ -179,8 +186,8 @@ class BlindDummyTableSeeder extends Seeder
                         ->insert([
                             'raceNumber' => $raceId,
                             'userNumber' => $users[$number][0],
-                            'retestState' => 'not',
-                            'wrongState' => 'not'
+                            'retestState' => $state[mt_rand(0, 2)],
+                            'wrongState' => $state[mt_rand(0, 2)]
                         ]);
                 }
 
@@ -191,8 +198,8 @@ class BlindDummyTableSeeder extends Seeder
                             'userNo' => $users[$number][0],
                             'listNo' => $listId,
                             'quizNo' => $quizList[$count - 1],
-                            'answerCheck' => (string)(mt_rand(0, 2) == 0 ? 'X' : 'O'),
-                            'answer' => '1'
+                            'answerCheck' => $answerCheck = (string)(mt_rand(0, $number) == 0 ? 'X' : 'O'),
+                            'answer' => $answerCheck == '0' ? $count : $count + mt_rand(1, 3)
                         ]);
                     }
                 }

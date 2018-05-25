@@ -12,17 +12,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <link href="js/bootstrap.min.js" rel="stylesheet">
-    <style>
-        body{
-            background: #00BCD4 !important;
-        }
-    </style>
 </head>
 <body>
 
-<div>@include('Navigation.main_nav')</div>
 
-@include('Race.race_test_content')
+
 
 </body>
 </html>

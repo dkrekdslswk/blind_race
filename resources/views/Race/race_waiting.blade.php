@@ -18,6 +18,10 @@
     <script type="text/javascript"></script>
 
     <style>
+        body{
+            background-color:#4ac3d5 !important;
+
+        }
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             /*background-color: rgba(255,255,255,.84);*/
@@ -36,9 +40,10 @@
             border-radius: 15px 50px 30px;
         }
         .student {
-            margin-top: 3%;
             display: block;
             text-align: right;
+            background-color: #6ecfdd;
+            padding-top: 50px;
         }
 
         .student form{
@@ -77,6 +82,10 @@
             margin:auto;
         }
 
+        .user_character{
+            width:50px;
+            height:50px;
+        }
         #messages { list-style-type: none; }
         #messages li { padding: 5px 10px; }
 
@@ -151,7 +160,8 @@
                         if( result['nickCheck'] && result['characterCheck'] )
                         {
                             //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><h4 style="text-align:center; color:white; background-color:black;">' + nick + '</h4><img src="/img/character/char'+characterId+'.png"></img></li>').appendTo('body');
+                            $('<li class="user_in_room" id="'+ sessionId +'"><img class="user_character" src="/img/character/char'+characterId+'.png"><span style="text-align:center; color:white; background-color:black;">' + nick
+                                + '</span></li>').appendTo('body');
 
                             quiz_member++;
                             $('#student_count').html(quiz_member);
@@ -225,6 +235,76 @@
 
 
         function btn_click(){
+            (function($) {
+                if ($.fn.style) {
+                    return;
+                }
+
+                // Escape regex chars with \
+                var escape = function(text) {
+                    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+                };
+
+                // For those who need them (< IE 9), add support for CSS functions
+                var isStyleFuncSupported = !!CSSStyleDeclaration.prototype.getPropertyValue;
+                if (!isStyleFuncSupported) {
+                    CSSStyleDeclaration.prototype.getPropertyValue = function(a) {
+                        return this.getAttribute(a);
+                    };
+                    CSSStyleDeclaration.prototype.setProperty = function(styleName, value, priority) {
+                        this.setAttribute(styleName, value);
+                        var priority = typeof priority != 'undefined' ? priority : '';
+                        if (priority != '') {
+                            // Add priority manually
+                            var rule = new RegExp(escape(styleName) + '\\s*:\\s*' + escape(value) +
+                                '(\\s*;)?', 'gmi');
+                            this.cssText =
+                                this.cssText.replace(rule, styleName + ': ' + value + ' !' + priority + ';');
+                        }
+                    };
+                    CSSStyleDeclaration.prototype.removeProperty = function(a) {
+                        return this.removeAttribute(a);
+                    };
+                    CSSStyleDeclaration.prototype.getPropertyPriority = function(styleName) {
+                        var rule = new RegExp(escape(styleName) + '\\s*:\\s*[^\\s]*\\s*!important(\\s*;)?',
+                            'gmi');
+                        return rule.test(this.cssText) ? 'important' : '';
+                    }
+                }
+
+                // The style function
+                $.fn.style = function(styleName, value, priority) {
+                    // DOM node
+                    var node = this.get(0);
+                    // Ensure we have a DOM node
+                    if (typeof node == 'undefined') {
+                        return this;
+                    }
+                    // CSSStyleDeclaration
+                    var style = this.get(0).style;
+                    // Getter/Setter
+                    if (typeof styleName != 'undefined') {
+                        if (typeof value != 'undefined') {
+                            // Set style property
+                            priority = typeof priority != 'undefined' ? priority : '';
+                            style.setProperty(styleName, value, priority);
+                            return this;
+                        } else {
+                            // Get style property
+                            return style.getPropertyValue(styleName);
+                        }
+                    } else {
+                        // Get CSSStyleDeclaration
+                        return style;
+                    }
+                };
+            })(jQuery);
+
+
+            var body = $("body");
+            body.style('background-color', 'whitesmoke', 'important');
+
+
             //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
             // var quiz_JSON = [
             //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
@@ -319,7 +399,7 @@
                         if(result['check'] == true) {
                             console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
 
-                            //학생들에게 정답이 뭐였었는지 전달 
+                            //학생들에게 정답이 뭐였었는지 전달
                             socket.emit('race_mid_correct',roomPin,quiz_JSON[quizId-1].right);
 
                             var correct_count = result['rightAnswer'];
@@ -328,9 +408,10 @@
                             if(correct_count == 0)
                                 incorrect_count = 1 ;
 
-                            $("#quiz_number").text(quizId);
+                            $("#quiz_number").text(quizId+"번 문제 결과");
 
-                            $("#winners").text(correct_count+"명 정답!");
+                            $("#winners").text("정답자:"+correct_count+"명");
+                            $("#fail_count").text("오답자:"+incorrect_count+"명");
 
                             $("#right").text(correct_count);
                             $("#wrong").text(incorrect_count);
@@ -566,14 +647,13 @@
 <div id="wait_room">
     <div class="student">
 
-        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-
         <div id="room_Pin" class="counting">
         </div>
 
         <div id="counting_student">
             <span id="student_count" > 학생 수</span>
         </div>
+        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
 
     </div>
 
@@ -588,13 +668,11 @@
     </div>
 
     <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
+        <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
     </div>
 </div>
-<div id="playing_contents" style="display:none;">
-    @include('Race.race_content')
-</div>
-
-
+    <div id="playing_contents" style="display:none;">
+        @include('Race.race_content')
+    </div>
 </body>
 </html>

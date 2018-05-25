@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Quiz_making</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="generator" content="Bootply" />
+    <title>Quiz_making</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="js/bootstrap.min.js" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+
     <style type="text/css">
 
         .contents {
@@ -15,10 +17,6 @@
 
         .table tr{
             background-color: white;
-        }
-
-        td {
-            text-align: center;
         }
 
         .two_button {
@@ -40,9 +38,6 @@
             border: 2px solid #0099cc;
             color: #0099cc;
         }
-
-
-
     </style>
 </head>
 
@@ -54,14 +49,14 @@
 @elseif(count($response['quizs']) > 0)
     <body onload="updateQuiz()">
 
-    @endif
+@endif
 
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
 <aside style="display:inline-block; vertical-align:top;">
-    @include('QuizTree.quiz_making_side_bar')
+    @include('QuizTree.quiz_making_sidebar')
 </aside>
 
 <script>
@@ -76,7 +71,16 @@
     // 문제 유형 저장용 배열
     var quizTypeRadio = new Array();
 
-    // 메인 -> 문제 테이블 추가 : empty, update
+    $(document).ready(function () {
+        $('#listName').change(function () {
+            var getListName = $('#listName').val();
+            var listNameObj = document.getElementById("listName");
+            listNameObj.value = getListName;
+        });
+    });
+
+
+    // 메인 -> 문제 테이블 추가 : empty, update, call(미구현)
     function quizAdd(addArr) {
 
         // id 값 부여 + 배열에 저장
@@ -223,6 +227,10 @@
     function addObj(idNum, addArr) {
         $('#addTr' + idNum).empty();
 
+        if(addArr.example1 == null) addArr.example1 = "";
+        if(addArr.example2 == null) addArr.example2 = "";
+        if(addArr.example3 == null) addArr.example3 = "";
+
         $('#addTr' + idNum).append(
             "<tr>" +
             "<td rowspan='2' style='background-color: #d9edf7'>정답</td>" +
@@ -263,6 +271,211 @@
         );
     }
 
+    // ----->  ★퀴즈 불러오기 파트★
+
+    // 폴더, 퀴즈 리스트 저장용 배열
+    var folderData = new Array();
+    var quizData = new Array();
+
+    // 미리보기 문제 저장용 배열
+    var showListData = new Array();
+
+    // 퀴즈 만들기에 추가될 문제 저장용 배열
+    var callQuizData = new Array();
+
+    // AJAX : 폴더 리스트 호출
+    $.ajax({
+        type: 'POST',
+        url: "{{url('quizTreeController/getfolderLists')}}",
+        //processData: false,
+        //contentType: false,
+        dataType: 'json',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        //data: {_token: CSRF_TOKEN, 'post':params},
+        data: {folderId: '{{$response['folderId']}}'},
+        success: function (data) {
+
+            folderData = data;
+
+            for(var i = 0; folderData['folders'].length; i++) {
+                $("#folderSelect").append(
+                    "<option value='" + folderData['folders'][i]['folderId'] + "'>" + folderData['folders'][i]['folderName'] + "</option>"
+                );
+            }
+        },
+        error: function (data) {
+            alert("error");
+        }
+    });
+
+    // 선택된 폴더에 있는 퀴즈리스트 호출
+    $(document).ready(function () {
+        $("#folderSelect").change(function () {
+            var selectedFolder = $("#folderSelect :selected").val();
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('quizTreeController/getfolderLists')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: {folderId: selectedFolder},
+                success: function (data) {
+
+                    quizData = data;
+
+                    // 퀴즈 선택란 쌓이는 것 방지 : 비워주기
+                    $("#quizSelect").empty();
+                    $("#quizSelect").append("<option>퀴즈명</option>");
+
+                    for(var i = quizData['lists'].length - 1; i >= 0; i--) {
+                        $("#quizSelect").append(
+                            "<option value='" + quizData['lists'][i]['listId'] + "'>" + quizData['lists'][i]['listName'] + "</option>"
+                        );
+                    }
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        });
+    });
+
+    // 선택된 퀴즈 -> 미리보기
+    var selectedQuiz;
+
+    $(document).ready(function () {
+        $("#quizSelect").change(function () {
+            selectedQuiz = $("#quizSelect :selected").val();
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('quizTreeController/showList')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                //data: {_token: CSRF_TOKEN, 'post':params},
+                data: {listId: selectedQuiz},
+                success: function (data) {
+
+                    showListData = data;
+
+                    // 쌓이는 문제 데이터 비우기
+                    $("#quizShow").empty();
+                    $("#quizShow").append("<h4 align='center'>▼미리보기▼</h4>");
+
+                    var str = "";
+                    var questionId = 0;
+
+                    for(var i = showListData['quizs'].length-1 ; i >= 0 ; i--) {
+
+                        questionId++;
+
+                        if (showListData['quizs'][i]['hint'] == null) showListData['quizs'][i]['hint'] = "";
+                        if (showListData['quizs'][i]['example1'] == null) showListData['quizs'][i]['example1'] = "";
+                        if (showListData['quizs'][i]['example2'] == null) showListData['quizs'][i]['example2'] = "";
+                        if (showListData['quizs'][i]['example3'] == null) showListData['quizs'][i]['example3'] = "";
+                        if (showListData['quizs'][i]['quizType'] == "vocabulary") showListData['quizs'][i]['quizType'] = "어휘";
+                        if (showListData['quizs'][i]['quizType'] == "word") showListData['quizs'][i]['quizType'] = "단어";
+                        if (showListData['quizs'][i]['quizType'] == "grammar") showListData['quizs'][i]['quizType'] = "문법";
+
+                        if (showListData['quizs'][i]['makeType'] == "obj") {
+                            str += "<table class='table table-bordered'>";
+                            str += "<tr>";
+                            str += "<td style='text-align: center;'>" + questionId + "</td>";
+                            str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>출제유형</td>";
+                            str += "<td style='width: 22.5%; text-align: center'>객관식</td>";
+                            str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>문제유형</td>";
+                            str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
+                            str += "</tr>";
+                            str += "<tr>";
+                            str += "<td style='background-color: #d9edf7; text-align: center'>문제</td>";
+                            str += "<td colspan='5'>" + showListData['quizs'][i]['question'] + "</td>";
+                            str += "</tr>";
+                            str += "<tr>";
+                            str += "<td style='background-color: #d9edf7; text-align: center'>정답</td>";
+                            str += "<td style='background-color: #EAEAEA'>" + showListData['quizs'][i]['right'] + "</td>";
+                            str += "<td>" + showListData['quizs'][i]['example1'] + "</td>";
+                            str += "<td>" + showListData['quizs'][i]['example2'] + "</td>";
+                            str += "<td>" + showListData['quizs'][i]['example3'] + "</td>";
+                            str += "</tr>";
+                            str += "</table>";
+                        }
+
+                        else if (showListData['quizs'][i]['makeType'] == "sub") {
+                            str += "<table class='table table-bordered'>";
+                            str += "<tr>";
+                            str += "<td style='text-align: center;'>" + questionId + "</td>";
+                            str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>출제유형</td>";
+                            str += "<td style='width: 22.5%; text-align: center'>주관식</td>";
+                            str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>문제유형</td>";
+                            str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
+                            str += "</tr>";
+                            str += "<tr>";
+                            str += "<td style='background-color: #d9edf7; text-align: center'>문제</td>";
+                            str += "<td colspan='5'>" + showListData['quizs'][i]['question'] + "</td>";
+                            str += "</tr>";
+                            str += "<tr>";
+                            str += "<td style='background-color: #d9edf7; text-align: center'>정답</td>";
+                            str += "<td colspan='2' style='background-color: #EAEAEA;'>" + showListData['quizs'][i]['right'] + "</td>";
+                            str += "<td colspan='2'><힌트> " + showListData['quizs'][i]['hint'] + "</td>";
+                            str += "</tr>";
+                            str += "</table>";
+                        }
+                    }
+
+                    $("#quizShow").append(str);
+
+                },
+                error: function (data) {
+                    alert("error");
+                }
+            });
+        })
+    });
+
+    // 모달 : 불러오기 버튼 클릭 시
+    function callQuiz() {
+        $.ajax({
+            type: 'POST',
+            url: "{{url('quizTreeController/showList')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: {listId: selectedQuiz},
+            success: function (data) {
+
+                callQuizData = data;
+
+                for(var i = callQuizData['quizs'].length - 1; i >= 0; i--) {
+
+                    var callQuizArray = {
+                        question: callQuizData['quizs'][i]['question'],
+                        right: callQuizData['quizs'][i]['right'],
+                        example1: callQuizData['quizs'][i]['example1'],
+                        example2: callQuizData['quizs'][i]['example2'],
+                        example3: callQuizData['quizs'][i]['example3'],
+                        makeType: callQuizData['quizs'][i]['makeType'],
+                        quizType: callQuizData['quizs'][i]['quizType'],
+                        hint: callQuizData['quizs'][i]['hint']
+                    };
+
+                    quizAdd(callQuizArray);
+                }
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    }
+
+    // <----- ★퀴즈 불러오기 파트 끝★
+
     // 문항 추가 버튼 클릭 시 + 퀴즈 생성(BODY ONLOAD)
     $(document).on('click', '#add', function (e) {
         e.preventDefault();
@@ -290,13 +503,11 @@
         // list 아이디
         var listId = "{{$response['listId']}}";
 
-        // 문제
-        //question + idNum
-        //right + idNum
-        //example1 + idNum
-        //example2 + idNum
-        //example3 + idNum
-        //type : o
+        // list 이름
+        var listName = $('#listName').val();
+
+        // folder 아이디
+        var folderId = "{{$response['folderId']}}";
 
         var quizs = new Array();
 
@@ -315,6 +526,8 @@
 
         var params = {
             listId: listId,
+            listName: listName,
+            folderId: folderId,
             quizs: quizs
         };
 
@@ -367,7 +580,7 @@
         window.location.href = "{{url('quiz_list')}}";
     }
 
-    // 테스트
+    // 출력 테스트
     $(document).on('click', '#test', function (e) {
         e.preventDefault();
 
@@ -397,9 +610,22 @@
 
 <div class="contents">
 
-    <div id="quizTitle" style="margin-left: 5%" class="form-inline">
-        <button type="button" class="btn btn-primary btn-lg outline">퀴즈명 : {{$response['listName']}}</button>
-    </div>
+        <div class="form-inline" style="margin-left: 5%">
+            <div style="float: left">
+                <!--1. 퀴즈를 새로 생성할 경우-->
+                @if(count($response['quizs']) == 0)
+                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="">
+
+                <!--2. 퀴즈를 수정할 경우-->
+                @elseif(count($response['quizs']) > 0)
+                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="{{$response['listName']}}">
+
+                @endif
+            </div>
+            <div style="text-align: right; margin-right: 5%">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#callQuizModal">퀴즈 불러오기</button>
+            </div>
+        </div>
 
     <!--문제 박스 : div-->
     <div class="quizBox">
@@ -412,5 +638,42 @@
         <button type="button" class="btn btn-primary" id="add">추가</button>
     </div>
 
+</div>
+
+<!-- Modal : call Quiz -->
+<div class="modal fade" id="callQuizModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">퀴즈 불러오기</h5>
+            </div>
+            <div class="modal-body">
+                {{--Dropdowns--}}
+                <div style="text-align: center">
+                    <div class="select" style="margin: 0 auto; width: 50%">
+                        <select id="folderSelect" class="form-control">
+                            <option>폴더명</option>
+                            <!-- 폴더 리스트 -->
+                        </select>
+                    </div>
+                    <div class="select" style="margin: 0 auto; margin-top: 1%; width: 50%">
+                        <select id="quizSelect" class="form-control">
+                            <option>퀴즈명</option>
+                            <!-- 퀴즈 리스트 -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="quizShow" style="margin-top: 2%">
+                    <h4 align="center">▼미리보기▼</h4>
+                    <!-- 퀴즈 미리보기-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="callQuiz()" data-dismiss="modal">불러오기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
 </div>
 

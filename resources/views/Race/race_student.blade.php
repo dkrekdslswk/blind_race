@@ -33,8 +33,6 @@
 
         var web_quiz_count;
 
-        window.onload = function() {
-
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
 
@@ -153,9 +151,6 @@
                 $('#web_race_midresult').show();
 
             });
-
-        };
-
         function web_answer(answer_num){
 
             switch(web_makeType){
@@ -310,8 +305,6 @@
                 $('#roomPin_page').show();
                 $('#Re-Test_list').hide();
             });
-
-
 
             $(document).on("change","input[type=radio][name=character]",function(event){
                 $('.character_select').css("background-color","white");
