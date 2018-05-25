@@ -227,7 +227,7 @@
 
         <button
                 type="button"
-                class="w3-bar-item w3-button"
+
                 data-toggle="modal"
                 data-target="#create">
             클래스 생성
