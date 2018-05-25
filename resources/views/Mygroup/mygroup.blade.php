@@ -36,7 +36,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="studnetchange1">학생 정보 수정</h5>
+                                <h5 class="modal-title" id="studnetchange1">비밀번호 초기화</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
