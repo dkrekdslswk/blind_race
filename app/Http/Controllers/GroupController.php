@@ -480,13 +480,11 @@ class GroupController extends Controller{
         // 요구하는 값
 //        $postData = array(
 //            'userId'        => 1300000,
-//            'password'      => 1230000,
-//            'passwordState' => true
+//            'password'      => 1230000
 //        );
         $postData = array(
             'userId'        => $request->input('userId'),
-            'password'      => $request->input('password'),
-            'passwordState' => $request->input('passwordState')
+            'password'      => $request->input('password')
         );
 
         // 유저정보 가져오기기
@@ -495,27 +493,14 @@ class GroupController extends Controller{
         // 권한확인
         if ($userData['check']){
             switch ($userData['classification']){
-                case 'student':
-                    // 권한이 학생일 경우 자기자신 것만 변경가능
-                    if ($postData['userId'] != $userData['userId']) {
-                        // 반납할 값 정리 1
-                        $returnValue = array(
-                            'check' => false
-                        );
-                        break;
-                    }
                 case 'root':
                 case 'teacher':
-                    // 변경할 정보 정리
-                    $update = array('name' => $postData['userName']);
-                    if ($postData['passwordState']){
-                        $update['pw'] = $postData['password'];
-                    }
-
-                    // 유저정보 변경하기
+                    // 유저 페스워드 변경하기
                     $updateState = DB::table('users')
                         ->where('number', '=', $postData['userId'])
-                        ->update($update);
+                        ->update([
+                            'pw' => $postData['password']
+                        ]);
 
                     // 업데이트 성공 실패 확인
                     $updateState = ($updateState == 1);
