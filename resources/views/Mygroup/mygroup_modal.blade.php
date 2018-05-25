@@ -124,22 +124,22 @@
                             </button>
                         </div>
                         <form class="px-4 py-3">
-                            <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">이름</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="김민수">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">학번</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="1301036">
-                            </div>
+                            {{--<div class="form-group">--}}
+                                {{--<label for="exampleDropdownFormEmail1">이름</label>--}}
+                                {{--<input--}}
+                                    {{--type="email"--}}
+                                    {{--class="form-control"--}}
+                                    {{--id="exampleDropdownFormEmail1"--}}
+                                    {{--placeholder="김민수">--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                                {{--<label for="exampleDropdownFormEmail1">학번</label>--}}
+                                {{--<input--}}
+                                    {{--type="email"--}}
+                                    {{--class="form-control"--}}
+                                    {{--id="exampleDropdownFormEmail1"--}}
+                                    {{--placeholder="1301036">--}}
+                            {{--</div>--}}
                             <div class="form-group">
                                 <label for="exampleDropdownFormPassword1">비밀번호</label>
                                 <input

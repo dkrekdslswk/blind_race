@@ -707,6 +707,17 @@ class RecordBoxController extends Controller{
     }
 
     // 피드백과 질문
+    // 질문하기
+    public function insertQuestion(){}
+
+    // QnAs 가져오기
+    public function selectQnAs(){}
+
+    // 조회하기
+    public function selectQnA(){}
+
+    // 답변하기
+    public function updateAnswer(){}
 
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){
