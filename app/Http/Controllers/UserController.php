@@ -8,25 +8,30 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller{
     // 모바일 로그인
     public function mobileLogin(Request $request){
-        $userData = $this->userLogin(
-            $request->input('p_ID'),
-            $request->input('p_PW')
-        );
+//        $userData = $this->userLogin(
+//            $request->input('p_ID'),
+//            $request->input('p_PW')
+//        );
+//
+//        // 로그인 성공
+//        if ($userData['check']){
+//            // 반납값 설정
+//            $returnValue = array(
+//                'check'             => true,
+//                'sessionId'         => $this->sessionIdGet($userData['userId']),
+//                'userName'          => $userData['name'],
+//                'classification'    => $userData['classification']
+//            );
+//        } else {
+//            $returnValue = array(
+//                'check'     => false
+//            );
+//        }
 
-        // 로그인 성공
-        if ($userData['check']){
-            // 반납값 설정
-            $returnValue = array(
-                'check'             => true,
-                'sessionId'         => $this->sessionIdGet($userData['userId']),
-                'userName'          => $userData['name'],
-                'classification'    => $userData['classification']
-            );
-        } else {
-            $returnValue = array(
-                'check'     => false
-            );
-        }
+        $returnValue = array(
+            'p_ID' => $request->input('p_ID'),
+            'p_PW' => $request->input('p_PW')
+        );
 
         return json_encode($returnValue);
     }
