@@ -525,13 +525,13 @@
             <span class="race_menu_span">Re-Test</span>
         </button>
         <button class="race_menu_button" id="Race">
-            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
             <span class="race_menu_span">Race</span>
         </button>
         <!-- 부가기능이므로 아직은 미구현상태  -->
         <button class="race_menu_button" id="Exam" >
-            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
             <span class="race_menu_span">Exam</span>
         </button>
@@ -615,7 +615,7 @@
     </div>
 
     <footer style="position:fixed; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
+        <img src="/img/Info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
         <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">레이스의 모드를 선택해주세요 </span>
     </footer>
 </div>
