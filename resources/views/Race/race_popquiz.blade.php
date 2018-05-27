@@ -185,6 +185,12 @@
 
             });
 
+            socket.on('web_test_enter',function(roomPin){
+                quiz_member++;
+                $('#member_count').text(quiz_member);
+            });
+
+
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
             })
@@ -223,6 +229,8 @@
 
             var socket = io(':8890'); //14
             socket.emit('join', roomPin);
+
+            //socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
             socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName);
 
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');

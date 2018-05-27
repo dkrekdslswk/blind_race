@@ -18,6 +18,189 @@
         }
     </style>
 </head>
+<script>
+    var sessionId = '<?php echo $response['sessionId']; ?>';
+    var raceId = '<?php echo $response['raceId']; ?>';
+    var testmode ;
+
+    var quizId;
+    var quizCount;
+    var quiz_JSON;
+    var retest_quiz_num =0;
+
+    var quiz_answer_list = [1,2,3,4];
+    var rightAnswer;
+    var real_A;
+
+    var selected_answer;
+
+    //quizId , sessionId , answer
+
+    window.onload = function(){
+        function shuffle(a) {
+
+            var j, x, i;
+            for (i = a.length; i; i -= 1) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+        }
+        function Create2DArray(rows) {
+            var arr = [];
+
+            for (var i=0;i<rows;i++) {
+                arr[i] = [];
+            }
+
+            return arr;
+        }
+
+        function shuffle_quiz(){
+
+            real_A = Create2DArray(quiz_JSON.length);
+
+            for(var i = 0; i <quiz_JSON.length; i++){
+
+                if( quiz_JSON[i].makeType == "obj"){
+
+                    shuffle(quiz_answer_list);
+
+                    real_A[i][quiz_answer_list[0]] = quiz_JSON[i].right;
+                    real_A[i][quiz_answer_list[1]] = quiz_JSON[i].example1;
+                    real_A[i][quiz_answer_list[2]] = quiz_JSON[i].example2;
+                    real_A[i][quiz_answer_list[3]] = quiz_JSON[i].example3;
+
+                    for(var j = 0; j<=3; j++){
+                        switch(quiz_answer_list[j]){
+                            case 1: quiz_JSON[i].right = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 2: quiz_JSON[i].example1 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 3: quiz_JSON[i].example2 = real_A[i][quiz_answer_list[j]];
+                                break;
+                            case 4: quiz_JSON[i].example3 = real_A[i][quiz_answer_list[j]];
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('raceController/retestStart')}}",
+            dataType: 'json',
+            async:false,
+            data:"raceId="+raceId+"&sessionId="+sessionId,
+
+            success: function (result) {
+                $('#raceName').text(result['listName']);
+                $('#quizCount').text(result['quizCount']+"문제");
+                $('#passingMark').text("합격점:"+result['passingMark']);
+                $('#groupName').text(result['groupName']);
+                $('#userName').text(result['userName']);
+
+                quizCount = result['quizCount'];
+                quiz_JSON = result['quizs']['quiz'];
+                shuffle_quiz();
+
+                quizGet();
+
+            },
+            error: function (data) {
+                alert("error");
+            }
+        });
+    };
+    function nextQuiz(){
+
+        quizId = quiz_JSON[retest_quiz_num-1].quizId;
+
+        if(quiz_JSON[retest_quiz_num-1].makeType == "sub")
+            selected_answer = document.getElementById('sub_content').value;
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('raceController/retestAnswerIn')}}",
+            dataType: 'json',
+            data:"quizId="+quizId+"&sessionId="+sessionId+"&answer="+selected_answer,
+            success: function (result) {
+
+            },
+            error: function (data) {
+                alert("학생 재시험정답입력 error");
+            }
+        });
+
+        //마지막 문제를 풀고난후
+        if(retest_quiz_num == quiz_JSON.length)
+        {
+            $.ajax({
+                type: 'POST',
+                url: "{{url('raceController/retestEnd')}}",
+                dataType: 'json',
+                data:"sessionId="+sessionId,
+                success: function (result) {
+                    if(result['score'] >= result['passingMark'])
+                        $('#q_table').html("재시험 통과 "+result['score']);
+                    else if(result['score'] < result['passingMark']){
+                        $('#q_table').html("FAIL ㅜㅜ  "+result['score']);
+                    }
+                },
+                error: function (data) {
+                    alert("학생 재시험 엔딩 FAIL");
+                }
+            });
+        }else{
+            quizGet();
+        }
+    }
+
+    function quizGet(){
+        $('#quiz_number').text(retest_quiz_num+1);
+        $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
+
+        switch(quiz_JSON[retest_quiz_num].makeType){
+
+            case "obj":
+                selected_answer = quiz_JSON[retest_quiz_num].right;
+                $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
+                $('#answer1_span').text(quiz_JSON[retest_quiz_num].right);
+                $('#answer1_radio').val(quiz_JSON[retest_quiz_num].right);
+
+                $('#answer2_span').text(quiz_JSON[retest_quiz_num].example1);
+                $('#answer2_radio').val(quiz_JSON[retest_quiz_num].example1);
+
+                $('#answer3_span').text(quiz_JSON[retest_quiz_num].example2);
+                $('#answer3_radio').val(quiz_JSON[retest_quiz_num].example2);
+
+                $('#answer4_span').text(quiz_JSON[retest_quiz_num].example3);
+                $('#answer4_radio').val(quiz_JSON[retest_quiz_num].example3);
+
+                $('#obj').show();
+                $('#sub').hide();
+                break;
+
+            case "sub":
+                $('#quiz_guide').text('괄호  안에 들어갈 답을 입력 해 주세요');
+                $('#sub').show();
+                $('#obj').hide();
+                break;
+        }
+        retest_quiz_num++;
+    }
+
+</script>
+
+<script>
+
+    $(document).on("change","input[type=radio][name=answer]",function(event){
+        selected_answer = this.value;
+    });
+
+</script>
 <body>
 
 <div>@include('Navigation.main_nav')</div>
