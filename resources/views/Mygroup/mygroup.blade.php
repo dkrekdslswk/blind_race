@@ -47,12 +47,12 @@
                                 <p></p>
 
 
-                                <label for="name"><b>이름</b></label>
-                                <input type="text"  name="name" id="studentnames" required>
-                                <input type="hidden">
-                                <p></p>
+                                {{--<label for="name"><b>이름</b></label>--}}
+                                {{--<input type="text"  name="name" id="studentnames" required>--}}
+                                {{--<input type="hidden">--}}
+                                {{--<p></p>--}}
 
-                                <input id="checkBox" type="checkbox">
+                                {{--<input id="checkBox" type="checkbox">--}}
                                 <label for="psw"><b>비밀번호 바꾸기</b></label>
                                 <input type="text" placeholder="새로운 비밀번호 변경" id="psw" required>
                             </div>
@@ -71,12 +71,13 @@
                     <!-- <div class="fa-3x">
                         <i class="fas fa-cog fa-spin light" data-toggle="modal" data-target="#teacher"></i>
                     </div> -->
+                <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px ; display: inline-block"  data-toggle="modal";  data-target="#exampleModal">
                     <p id ="teacher">김민수 선생님</p>
                     <h1  id ="group" >A반</h1>
 
 
                 <!-- Button trigger modal -->
-                <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px  ;"  data-toggle="modal" data-target="#exampleModal">
+
 
                 </button>
 
@@ -107,7 +108,10 @@
             </div>
 
     <div class="row">
+
         <div class="col-xs-5">
+            <h1>미등록 학생</h1>
+            <div>
             <input
                     class="margins"
                     type="text"
@@ -115,24 +119,32 @@
                     onkeyup="myFunction()"
                     placeholder="미소속 학생 찾기"
                     title="Type in a name"
+
                     value="">
+
             <table>
                 <tr class="header">
                     <th style="width:25%;">이름</th>
                     <th style="width:35%;">학번</th>
-                    <th style="width:20%;">추가</th>
+                    <th style="width:20%;">추가 <input type="checkbox" id="allCheck"/></th>
                 </tr>
             </table>
             <table id="myTable">
             </table>
+
+                <input type="button" id="selectBtn" value="추가">
+            </div>
+
         </div>
-        <div class="col-xs-7">>
+
+        <div class="col-xs-7">
+            <h1>등록 학생</h1>
             <table>
                 <tr class="header">
                     <th style="width:15%;">이름</th>
                     <th style="width:20%;">학번</th>
-                    <th style="width:35%;">학생 정보</th>
-                    <th style="width:25%;">삭제</th>
+                    <th style="width:35%;">비밀번호 변경</th>
+                    <th style="width:25%;">클래스에서 제외</th>
                 </tr>
             </table>
 
@@ -157,6 +169,11 @@
         </div>
 
     </div>
+
+
+
+
+
 
 
             <style>
