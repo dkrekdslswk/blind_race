@@ -708,16 +708,28 @@ class RecordBoxController extends Controller{
 
     // 피드백과 질문
     // 질문하기
-    public function insertQuestion(){}
+    public function insertQuestion(Request $request){
+        $postData = array(
+            'title' => $request->input('title'),
+            'question' => $request->input('question'),
+            'teacherId' => $request->input('teacherId')
+        );
+
+        $returnValue = array(
+
+        );
+
+        return $returnValue;
+    }
 
     // QnAs 가져오기
-    public function selectQnAs(){}
+    public function selectQnAs(Request $request){}
 
     // 조회하기
-    public function selectQnA(){}
+    public function selectQnA(Request $request){}
 
     // 답변하기
-    public function updateAnswer(){}
+    public function updateAnswer(Request $request){}
 
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){

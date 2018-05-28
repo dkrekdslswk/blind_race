@@ -23,7 +23,8 @@ class CreateQnATable extends Migration
             $table->unsignedInteger('teacherNumber');
             $table->foreign('teacherNumber')->references('number')->on('users');
 
-            $table->text('question')->nullable();
+            $table->string('title', 50);
+            $table->text('question');
             $table->text('answer')->nullable();
 
             $table->timestamp('question_at')->default(DB::raw('CURRENT_TIMESTAMP'));
