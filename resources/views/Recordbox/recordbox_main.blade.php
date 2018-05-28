@@ -518,6 +518,7 @@
 
         }
 
+        //레코드리스트에서 성적표 클릭시 성적표 로드
         $(document).on('click','.history_list_gradeCard button',function () {
             loadGradeCard(this.id);
         });
@@ -535,7 +536,9 @@
             var raceId = $(this).attr('id');
             var userId = $(this).attr('name');
 
+            console.log(userId,raceId);
             loadStudentGradeCard(userId,raceId);
+            getRetestData();
         });
 
         //학생 상세정보에서 오답노트 클릭시 성적표 로드
@@ -547,6 +550,7 @@
         });
 
 
+        //성적표 출력
         function loadGradeCard(value){
 
             //value = {userId : 1300000}
@@ -879,7 +883,7 @@
 
                         for(var j = 0 ; j < 3 ; j++) {
                             $('#wrong_detail').append($('<tr>').attr('id', 'toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j));
-ㅉ
+
                             switch (j) {
                                 case 0 :
                                     $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
@@ -1285,7 +1289,9 @@
 
                                 break;
                             case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-primary').text("응시")));
+                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentRetestGradeCard">')
+                                        .attr('id',stdHomework[i]['raceId']).attr('name',stdHomework['userId']).text("응시")));
 
                                 break;
                         }
@@ -1300,7 +1306,9 @@
 
                                 break;
                             case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-primary').text("제출")));
+                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentWrongGradeCard">')
+                                        .attr('id',stdHomework[i]['raceId']).attr('name',stdHomework['userId']).text("제출")));
 
                                 break;
                         }
@@ -1343,7 +1351,7 @@
 
                     /*
                      data = { group : {id : 1 , name : "3WDJ"} ,
-                               races : { 0 : {  year:2018
+                               races : { 0 :ty {  year:2018
                                                 month:5
                                                 day:11
 
@@ -1811,6 +1819,64 @@
             }
         }
 
+        //재시험 점수 가져오기
+        function getRetestData(){
+
+//        $postData = array(
+//            'userId'        => 1300000
+//            'raceId'        => 1
+//            'retestState'   => 1
+//        );
+            var reqData = {"userId" : 1300000, "retestState" : 1};
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/getStudents')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                    /*
+                     data = { group : {id : 1 , name : "3WDJ"} ,
+                               races : { 0 : {  year:2018
+                                                month:5
+                                                day:11
+
+                                                raceId:2
+                                                listName:"테스트용 리스트1"
+                                                userCount:5
+                                                userName:"김똘똘"
+
+                                                allCount:6
+                                                allRightCount:4
+
+                                                grammarCount:2
+                                                grammarRightAnswerCount:1.4
+
+                                                vocabularyCount:2
+                                                vocabularyRightAnswerCount:1.2
+
+                                                wordCount:2
+                                                wordRightAnswerCount:1.4
+
+                                                retestState:not
+                                                wrongState:not
+                                              }
+                                        }
+                    */
+
+                   console.log(data);
+
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+
+            })
+        }
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
@@ -1895,6 +1961,390 @@
     </div>
 
 </div>
+
+
+
+<div class="modal_page">
+    {{--Modal : Race Record--}}
+    <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 1200px">
+
+            <div class="modal-content grade" style="padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
+
+                    <div class="modal_date" style="text-align: right;"> </div>
+
+                    <div class="" id="modal_raceName_teacher" style="text-align:center;"></div>
+
+                </div>
+
+                <div class="modal-body" style="text-align: left;margin: 0;">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                학생
+                            </th>
+                            <th>
+                                평균점수
+                            </th>
+                            <th>
+                                어휘
+                            </th>
+                            <th>
+                                문법
+                            </th>
+                            <th>
+                                독해
+                            </th>
+                            <th>
+                                갯수
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="grade_list">
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="modal_total_list" id="modal_total_grade" style="width: 30%;float: right;"> </div>
+                </div>
+            </div>
+
+            {{--상세 보기--}}
+            <div class="modal-content detail" style="margin-top: 10px;padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
+                </div>
+
+                <div class="modal-body" style="text-align: left;margin: 0;">
+
+                    <div class="" style="text-align: center;">
+                        <input type="checkbox" checked="checked" id="checkbox_0" value="0" onclick="toggle_detailStudent_and_Wrong()">학생
+                        <input type="checkbox" checked="checked" id="checkbox_1" value="1" onclick="toggle_detailStudent_and_Wrong()">오답 문제
+                    </div>
+
+                    <div id="toggle_only_students">
+                        <div class="gradeDetail_student" style="height: 550px;width: 100%;">
+                            <div class="modal_list_student" style="width: 100%;margin-top: 10px;">학생</div>
+
+                            <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
+                                <div id="stdAllList" style="width: 250px;">
+                                    <table class="table table-hover table-bordered" style="width: 100%;height: 0;">
+                                        <thead>
+                                        <tr>
+                                            <th width="50px">
+                                                번호
+                                            </th>
+                                            <th>
+                                                이름
+                                            </th>
+                                        </tr>
+                                        </thead>
+
+                                        {{--getStudent()로 학생들 불러오기--}}
+                                        <tbody id="toggle_student_list">
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 50px;margin-left: 50px;margin-right: 50px;float: left;">
+                                >
+                            </div>
+
+                            <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
+                                <div id="stdAllList" style="width: 600px;">
+                                    <table class="table table-hover table-bordered" style="width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th width="50px">
+                                                번호
+                                            </th>
+                                            <th colspan="3">
+                                                정답
+                                            </th>
+                                        </tr>
+                                        </thead>
+
+                                        {{--getStudent()로 학생들 불러오기--}}
+                                        <tbody id="toggle_wrong_answers">
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="toggle_only_wrong_answers" class="" style="width: 100%;clear: left">
+
+                        <div class="modal_list_wrong" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제</div>
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr id="race_detail_record">
+                                <th style="width: 50px">
+                                    번호
+                                </th>
+                                <th colspan="2">
+                                    문제
+                                </th>
+                                <th style="width: 100px">
+                                    오답률
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="wrong_detail">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {{--Modal : Student Grade--}}
+    <div class="modal fade" id="modal_studentGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 1200px">
+
+            <div class="modal-content grade" style="padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
+
+                    <div class="modal_student_date" style="width: 100%;text-align: right;"> </div>
+
+                    <div class="" id="modal_student_raceName_teacher" style="width: 100%;text-align: center;"> </div>
+
+                </div>
+                <div class="modal-body" style="text-align: left;margin: 0;">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                학생
+                            </th>
+                            <th>
+                                평균점수
+                            </th>
+                            <th>
+                                어휘
+                            </th>
+                            <th>
+                                문법
+                            </th>
+                            <th>
+                                독해
+                            </th>
+                            <th>
+                                갯수
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="studentGradeCard">
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
+
+                <div class="modal-footer">
+                </div>
+            </div>
+
+            {{--상세 보기--}}
+            <div class="modal-content detail" style="margin-top: 10px;padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
+                </div>
+
+                <div class="modal-body" style="text-align: left;margin: 0;">
+
+                    <div class="gradeDetail_quiz" style="width: 100%;clear: left">
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr id="race_detail_record">
+                                <th style="width: 50px">
+                                    번호
+                                </th>
+                                <th colspan="2">
+                                    문제
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="details_record">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{--Modal : Student Retest Record--}}
+    <div class="modal fade" id="modal_studentRetestGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 1200px">
+
+            <div class="modal-content grade" style="padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
+
+                    <div class="modal_student_date" style="width: 100%;text-align: right;"> </div>
+
+                    <div class="student_race_and_teacher" style="width: 100%;">
+                        <h5 style="margin: 0;text-align:center">
+                            <div class="" id="modal_student_raceName_teacher" style="display: inline;margin-right: 10px;"> </div>
+
+                        </h5>
+                    </div>
+
+                </div>
+                <div class="modal-body" style="text-align: left;margin: 0;">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                학생
+                            </th>
+                            <th>
+                                평균점수
+                            </th>
+                            <th>
+                                어휘
+                            </th>
+                            <th>
+                                문법
+                            </th>
+                            <th>
+                                독해
+                            </th>
+                            <th>
+                                갯수
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="studentGradeCard">
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
+
+                <div class="modal-footer">
+                </div>
+            </div>
+
+            {{--상세 보기--}}
+            <div class="modal-content detail" style="margin-top: 10px;padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
+                </div>
+
+                <div class="modal-body" style="text-align: left;margin: 0;">
+
+                    <div class="gradeDetail_quiz" style="width: 100%;clear: left">
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr id="race_detail_record">
+                                <th style="width: 50px">
+                                    번호
+                                </th>
+                                <th colspan="2">
+                                    문제
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="details_record">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{--Modal : 오답 노트 --}}
+    <div class="modal fade" id="modal_studentWrongGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 1200px">
+
+            <div class="modal-content detail" style="padding: 10px 20px 0 20px;">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">오답 노트</h3>
+
+                    <div class="modal_wrong_date" style="width: 100%;text-align: right;"> </div>
+
+                    <div class="" id="modal_wrong_raceName_teacher" style="text-align: center;width: 100%;"> </div>
+
+                </div>
+                <div class="modal-body" style="text-align: left;margin: 0;">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr id="race_detail_record">
+                            <th style="width: 50px">
+                                번호
+                            </th>
+                            <th colspan="2">
+                                문제
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="wrongQuestions">
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="changeCheck()" id="feedback_modal_confirm">확인</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modal_feedback_cancel">취소</button>
+                </div>
+
+                <script>
+                    function changeCheck(){
+                        alert('정상 등록하였습니다.');
+                        $('#1check').attr('class','btn btn-primary').text('확인');
+                    }
+                </script>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
 
 </body>
 </html>

@@ -36,6 +36,20 @@
                     //var r_result = JSON.parse(data);
                     r_result = result['students'];
                     for(var i=0;  i <r_result.length; i++){
+                        var append_info ='<tr><td><img src="/img/character/char'+r_result[i].characterId+'.png" width="100px">';
+                            append_info +='<a class="user-link title">'+r_result[i].nick+'</a>';
+                            append_info +='<span class="user-subhead subtitle">'+r_result[i].rightCount*100+"point"+'</span></td>';
+
+
+                        if(r_result[i].retestState == false){
+                            append_info +='<td><span><img src="/img/race_student/success.png" style="width: 100px"></span></td></tr>';
+                            $('#pass_table').append(append_info);
+                        }else{
+                            append_info +='<td><span><img src="/img/race_student/fail.png" style="width: 100px"></span></td></tr>';
+                            $('#fail_table').append(append_info);
+                        }
+
+
                         // changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';
                         $('#'+i+'_nick').text(r_result[i].nick);
                         $('#'+i+'_point').text(r_result[i].rightCount*100+"point");
@@ -69,25 +83,13 @@
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
-                        <table class="table user-list">
+                        <table class="table user-list" id="pass_table">
                             <thead>
                             <tr>
                                 <th><span><h2>합격!</h2></span></th>
                                 <th><h2>참 잘했어요</h2></th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <img id="0_character" src="#" width="100px">
-                                    <a class="user-link title" id="0_nick"></a>
-                                    <span class="user-subhead subtitle" id="0_point"></span>
-
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                                </td>
-                            </tr>
                             <tr>
                                 <td>
                                     <img id="1_character" src="#" width="100px">
@@ -98,18 +100,7 @@
                                 <td>
                                     <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
                                 </td>
-                            </tr><tr>
-                                <td>
-                                    <img id="2_character" src="#" width="100px">
-                                    <a class="user-link title" id="2_nick"></a>
-                                    <span class="user-subhead subtitle" id="2_point"></span>
-
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                                </td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -120,14 +111,13 @@
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
-                        <table class="table user-list">
+                        <table class="table user-list" id="fail_table">
                             <thead>
                             <tr>
                                 <th><span><h2>불합격!</h2></span></th>
                                 <th><h2>노력하세요</h2></th>
                             </tr>
                             </thead>
-                            <tbody>
                             <tr>
                                 <td>
                                     <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
@@ -139,28 +129,6 @@
                                     <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                    <a class="user-link">없음</a>
-                                    <span class="user-subhead">예시</span>
-
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                                </td>
-                            </tr>  <tr>
-                                <td>
-                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                    <a class="user-link">없음</a>
-                                    <span class="user-subhead">예시</span>
-
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                                </td>
-                            </tr>
-                            </tbody>
                         </table>
                     </div>
                 </div>
