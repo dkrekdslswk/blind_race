@@ -124,22 +124,22 @@
                             </button>
                         </div>
                         <form class="px-4 py-3">
-                            <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">이름</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="김민수">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleDropdownFormEmail1">학번</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleDropdownFormEmail1"
-                                    placeholder="1301036">
-                            </div>
+                            {{--<div class="form-group">--}}
+                                {{--<label for="exampleDropdownFormEmail1">이름</label>--}}
+                                {{--<input--}}
+                                    {{--type="email"--}}
+                                    {{--class="form-control"--}}
+                                    {{--id="exampleDropdownFormEmail1"--}}
+                                    {{--placeholder="김민수">--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                                {{--<label for="exampleDropdownFormEmail1">학번</label>--}}
+                                {{--<input--}}
+                                    {{--type="email"--}}
+                                    {{--class="form-control"--}}
+                                    {{--id="exampleDropdownFormEmail1"--}}
+                                    {{--placeholder="1301036">--}}
+                            {{--</div>--}}
                             <div class="form-group">
                                 <label for="exampleDropdownFormPassword1">비밀번호</label>
                                 <input
@@ -148,7 +148,7 @@
                                     id="exampleDropdownFormPassword1"
                                     placeholder="1401036">
                             </div>
-                           
+
                         </form>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

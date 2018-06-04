@@ -97,7 +97,7 @@ class QuizTreeController extends Controller
         // 공개된 리스트 정보를 불러올 폴더 설정
         array_push($folders, array(
                 'folderId' => self::OPEN_STATE,
-                'folderName' => '공개 리스트')
+                'folderName' => '공유 리스트')
         );
 
         foreach ($folderData as $folder){

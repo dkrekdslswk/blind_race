@@ -738,6 +738,7 @@ class RaceController extends Controller{
     }
 
     // 재시험 문제 받아오기 모바일은 바로 시작 가능
+    // 해당 문제 리스트 비우기
     public function retestStart(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId'),
@@ -926,7 +927,7 @@ class RaceController extends Controller{
                         're.userNo' => $userData['userId'],
                         're.retest' => 1
                     ])
-                    ->groupBy('re.userNo')
+                    ->groupBy(['re.userNo', 're.raceNo', 're.retest'])
                     ->first();
 
                 // 학생 점수
@@ -1042,7 +1043,7 @@ class RaceController extends Controller{
                 'l.name as listName',
                 DB::raw('count(lq.quizNumber) as quizCount'),
                 'r.passingMark as passingMark',
-                DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
+                DB::raw('COUNT(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightCount')
             )
             ->where([
                 'ru.userNumber' => $userId,
@@ -1089,7 +1090,7 @@ class RaceController extends Controller{
         $quizs = DB::table('listQuizs as lq')
             ->select(
                 'lq.quizNumber as quizId',
-                DB::raw('count(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
+                DB::raw('COUNT(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
             )
             ->where([
                 're.raceNo' => $raceId,

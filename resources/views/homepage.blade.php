@@ -43,13 +43,12 @@
 
                         </li>
 
-
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('recirdbox') }}">레코드박스
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('recordbox') }}">레코드박스
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="{{ url('recirdbox') }}">레코드 박스</a>
+                                    <a href="{{ url('recordbox') }}">레코드 박스</a>
                                 </li>
                                 <li>
                                     <a href="#">오답노트</a>

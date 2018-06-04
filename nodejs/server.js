@@ -63,6 +63,10 @@ io.on('connection', function (socket){
         console.log('안드조인',roomPin+","+sessionId);
     });
 
+    socket.on('web_test_enter',function(roomPin){
+        io.sockets.emit('web_test_enter',roomPin);
+    });
+
     socket.on('android_join_check',function(join_boolean , sessionId ,raceType){
         console.log(join_boolean+","+sessionId);
         io.sockets.emit('android_join_result',join_boolean,sessionId , raceType);

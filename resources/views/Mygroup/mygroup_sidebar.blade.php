@@ -163,39 +163,39 @@
                     //data: {_token: CSRF_TOKEN, 'post':params},
                     data: "groupId=" + groupId,
                     success: function (data) {
-                        GroupData = data;
-//                        alert(JSON.stringify(GroupData['students']));
+                            GroupData = data;
+//                     alert(JSON.stringify(GroupData['students']));
 
-                        teacher = GroupData['teacher']['name'];
-                        group = GroupData['group']['name'];
-                        groupnumber = GroupData['group']['id'];
-                        groupIds = GroupData['group']['id'];
-                        student = GroupData['students'];
+                            teacher = GroupData['teacher']['name'];
+                            group = GroupData['group']['name'];
+                            groupIds = GroupData['group']['id'];
+                            student = GroupData['students'];
 
-                        $('#teacher').html(teacher);
-                        $('#group').html(group);
-                        $('#groupnumber').html(groupnumber);
+                            $('#teacher').html(teacher);
+                            $('#group').html(group);
+                            $('#groupIds').val(groupIds);
+                            var student_list = '';
 
-                        var student_list = '';
+                            for (var i = 0; i < student.length; i++) {
 
-                        for (var i = 0; i < student.length; i++) {
+                                student_list += '<tr><td>'
 
-                            student_list += '<tr><td>'
+                                    + student[i].name
+                                    + '</td><td id="delete' + i + '">'
+                                    + student[i].id
+                                    + '</td><td>' +
+                                    ' <button type="button"  data-toggle="modal" ' +
+                                    '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
+                                    ' 비밀번호 변경\n' +
+                                    ' </button>' +
+                                    '</td><td>' +
+                                    '<button onclick="Delete(' + i + ')">제외하기</button>' +
+                                    '</td></tr>'
+                            }
 
-                                + student[i].name
-                                + '</td><td>'
-                                + student[i].id
-                                + '</td><td>' +
-                                '<button>학생 정보 수정</button>' +
-                                '</td><td>' +
-                                '<button>삭제하기</button>' +
-                                '</td></tr>'
-                        }
+                            $('#student').html(student_list);
 
-                        $('#student').html(student_list);
-
-
-                    },
+                        },
                     error: function (data) {
                         alert("에러");
                     }
@@ -206,7 +206,7 @@
 
     </script>
 </head>
-<body>
+
 <div id="navigation" style="min-height: 600px;">
 
     <!--네비바 위부분 공백-->
@@ -227,7 +227,7 @@
 
         <button
                 type="button"
-                class="w3-bar-item w3-button"
+
                 data-toggle="modal"
                 data-target="#create">
             클래스 생성
@@ -247,5 +247,5 @@
 
 
     </div>
+</div>
 
-</body>

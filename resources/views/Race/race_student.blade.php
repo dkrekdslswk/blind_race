@@ -32,9 +32,7 @@
         var web_correct_answer;
 
         var web_quiz_count;
-
-        window.onload = function() {
-
+    
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
 
@@ -57,6 +55,12 @@
                 }else{
                     alert('입장에실패했습니다. 입력정보를 확인해보십시오');
                 }
+            });
+
+            socket.on('pop_quiz_start',function(quizData,listName){
+                $('.loading_page').hide();
+
+                $('#popQuiz_content').show();
             });
 
             socket.on('android_game_start',function(quizId , makeType){
@@ -130,6 +134,10 @@
                     }
                 }
 
+
+
+
+
                 $('#ranking_info').html(web_ranking+"등");
                 $('#point_info').html(web_point*100+"point");
                 $('#answer_content').html(web_correct_answer);
@@ -153,9 +161,6 @@
                 $('#web_race_midresult').show();
 
             });
-
-        };
-
         function web_answer(answer_num){
 
             switch(web_makeType){
@@ -228,7 +233,43 @@
                     break;
 
                 case "Exam":
-                    alert("쪽지시험은 미구현");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('/raceController/studentIn')}}",
+                        dataType: 'json',
+                        async:false,
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        data:"roomPin="+roomPin+"&sessionId=0",
+                        success: function (result) {
+                            if(result['check'] == true) {
+                                socket.emit('join', roomPin);
+                                
+                                sessionId = result['sessionId'];
+                                
+                                socket.emit('web_test_enter',roomPin);
+                                $('#race_menu').hide();
+                                $('#roomPin_page').hide();
+                                
+                                
+                                //로딩부분
+                                $('body').css("background-color","mediumslateblue");
+                                $(".loading_page").show();
+
+
+                                $('#student_guide').text('시험이 시작될 때까지 기다려 주세요 !');
+                            }
+                            else{
+                                alert("존재하지 않는 시험입니다. 다시입력해주세요");
+                            }
+
+                        },
+                        error: function(request, status, error) {
+                            console.log("안드로이드 join 실패"+roomPin);
+                        }
+                    });
+                    //ajax끝
+
                     break;
 
             }
@@ -439,8 +480,6 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             success: function (data) {
                 quizlistData = data;
-
-
                 listValue();
             },
             error: function (data) {
@@ -471,7 +510,7 @@
     }
 
 </script>
-<body onload="getValue()">
+<body>
 
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
@@ -480,19 +519,19 @@
     </div>
 
     <div id="race_menu">
-        <button class="race_menu_button" id="Re-Test">
+        <button class="race_menu_button" id="Re-Test" onclick="getValue();">
             <img class="menu_time_img" src="/img/race_student/freetime.png" alt=""><br>
             <img class="race_menu_img" src="/img/race_student/exam2.png" alt=""><br>
             <span class="race_menu_span">Re-Test</span>
         </button>
         <button class="race_menu_button" id="Race">
-            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
             <span class="race_menu_span">Race</span>
         </button>
         <!-- 부가기능이므로 아직은 미구현상태  -->
         <button class="race_menu_button" id="Exam" >
-            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
             <span class="race_menu_span">Exam</span>
         </button>
@@ -576,7 +615,7 @@
     </div>
 
     <footer style="position:fixed; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
+        <img src="/img/Info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
         <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">레이스의 모드를 선택해주세요 </span>
     </footer>
 </div>
@@ -590,5 +629,7 @@
 
 
 <div class="contents" style="display:none;">@include('Race.race_student_content')</div>
+
+<div id="popQuiz_content" style="display:none;">@include('Race.race_student_popquiz')</div>
 </body>
 </html>

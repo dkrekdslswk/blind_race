@@ -143,13 +143,8 @@
     //그룹ID
     function add_student(st_made_number){
 
-
-        var student_number = $("#st"+st_made_number).text();
-
-        var student_number_zip = new Array(0);
-
         var student_number_zip = [{
-         "id":""+student_number
+         "id":""+st_made_number
         }];
 
 //        student_number_zip.insert("id",student_number);
@@ -245,8 +240,11 @@
                         +search_studentJSON[i].name
                         +'</td><td id="st'+i+'">'
                         +search_studentJSON[i].id
-                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
+//                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
+                        +'</td><td><input id="checkBox" type="checkbox" value="'+search_studentJSON[i].id+'" ></td></tr>'
                 }
+
+
 
                 $('#myTable').html(student_list);
 
@@ -255,6 +253,25 @@
                 alert("검색에러");
             }
         });
+
+
+
+
+            $(function(){
+                $('#selectBtn').click(function(){
+//          console.log(('#contents'));
+
+//          $('#contents').children('p').text(""); P인자식만 해당
+                    $('input:checkbox').each(function() { //[name=??] 로특정 체크박스만 불러오기가능
+                        var add_info ="";
+                        if(this.checked) {
+                            add_info += "'id' :" + $(this).val() + ",";
+                            //                            $('#contents').append(this.value);
+                            add_student($(this).val());
+                        }
+                    });
+                });
+            });
 
 
 
@@ -323,9 +340,9 @@
             //processData: false,
             //contentType: false,
             dataType: 'json',
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId="+groupId,
+            data: "groupId=" + groupId,
             success: function (data) {
                 GroupData = data;
 //                     alert(JSON.stringify(GroupData['students']));
@@ -340,20 +357,20 @@
                 $('#groupIds').val(groupIds);
                 var student_list = '';
 
-                for( var i = 0 ; i < student.length; i++){
+                for (var i = 0; i < student.length; i++) {
 
-                    student_list +='<tr><td>'
+                    student_list += '<tr><td>'
 
-                        +student[i].name
-                        + '</td><td id="delete'+i+'">'
-                        +student[i].id
-                        +'</td><td>'+
+                        + student[i].name
+                        + '</td><td id="delete' + i + '">'
+                        + student[i].id
+                        + '</td><td>' +
                         ' <button type="button"  data-toggle="modal" ' +
-                        '   data-target="#studnetchange" onclick="setting('+i+');">\n' +
-                        ' 학생 정보 수정\n' +
+                        '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
+                        ' 비밀번호 변경\n' +
                         ' </button>' +
-                        '</td><td>'+
-                        '<button onclick="Delete('+i+')">삭제하기</button>' +
+                        '</td><td>' +
+                        '<button onclick="Delete(' + i + ')">제외하기</button>' +
                         '</td></tr>'
                 }
 
@@ -365,57 +382,7 @@
                 alert("에러");
             }
         });
-
-
-
-
-        function getAnothergroup(groupId) {
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/groupDataGet')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: "groupId=" + groupId,
-                success: function (data) {
-                    GroupData = data;
-//                        alert(JSON.stringify(GroupData['students']));
-
-                    teacher = GroupData['teacher']['name'];
-                    group = GroupData['group']['name'];
-                    student = GroupData['students'];
-
-                    $('#teacher').html(teacher);
-                    $('#group').html(group);
-
-                    var student_list = '';
-
-                    for (var i = 0; i < student.length; i++) {
-
-                        student_list += '<tr><td>'
-
-                            + student[i].name
-                            + '</td><td>'
-                            + student[i].id
-                            + '</td><td>' +
-                            '<button data-toggle="modal" data-target="#">학생 정보 수정</button>' +
-                            '</td><td>' +
-                            '<button>삭제하기</button>' +
-                            '</td></tr>'
-                    }
-
-                    $('#student').html(student_list);
-
-
-                },
-                error: function (data) {
-                    alert("에러");
-                }
-            });
-        }
+    }
 
         function enterTabTable(obj,obj2) {
             var i, k, ftag, str="";
@@ -439,13 +406,20 @@
             document.getElementById(obj2).innerHTML = str;
         }
 
-
-
-
-
-
-    }
-
+    $(function(){
+        //전체선택 체크박스 클릭
+        $("#allCheck").click(function(){
+            //만약 전체 선택 체크박스가 체크된상태일경우
+            if($("#allCheck").prop("checked")) {
+                //해당화면에 전체 checkbox들을 체크해준다
+                $("input[type=checkbox]").prop("checked",true);
+                // 전체선택 체크박스가 해제된 경우
+            } else {
+                //해당화면에 모든 checkbox들의 체크를해제시킨다.
+                $("input[type=checkbox]").prop("checked",false);
+            }
+        })
+    })
 
 </script>
 </html>
