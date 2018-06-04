@@ -760,6 +760,12 @@ class QuizTreeController extends Controller
     }
 
     // 폴더 삭제
+    public function deleteFolder(Request $request){
+        $postData = array(
+            'folderId' => $request->has('folderId') ? $request->input('folderId') : false
+        );
+
+    }
 
     // 공개여부설정
     // 공개, 비공개 설정
