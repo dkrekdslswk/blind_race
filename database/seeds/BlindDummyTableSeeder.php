@@ -182,65 +182,95 @@ class BlindDummyTableSeeder extends Seeder
 
         // 1주일 결과 정보
         for ($day = 7 ; $day > 0 ; $day--) {
-            for ($count = 0; $count < 5; $count++) {
-                $raceId = DB::table('races')->insertGetId([
-                    'groupNumber' => $groupId,
-                    'teacherNumber' => $users[0][0],
-                    'listNumber' => $listId,
-                    'type' => 'race',
-                    'created_at' => DB::raw('subdate(now(), INTERVAL ' . $day . ' DAY)')
-                ], 'number');
+            $raceId = DB::table('races')->insertGetId([
+                'groupNumber' => $groupId,
+                'teacherNumber' => $users[0][0],
+                'listNumber' => $listId,
+                'type' => 'race',
+                'created_at' => DB::raw('subdate(now(), INTERVAL ' . $day . ' DAY)')
+            ], 'number');
 
-                for ($number = 2; $number < count($users); $number++) {
-                    DB::table('raceUsers')
-                        ->insert([
-                            'raceNumber' => $raceId,
-                            'userNumber' => $users[$number][0],
-                            'retestState' => $state[mt_rand(0, 2)],
-                            'wrongState' => $state[mt_rand(0, 2)]
-                        ]);
+            $check = true;
+            for ($number = 2; $number < count($users); $number++) {
+                DB::table('raceUsers')
+                    ->insert([
+                        'raceNumber' => $raceId,
+                        'userNumber' => $users[$number][0],
+                        'retestState' => $state[0],
+                        'wrongState' => $state[0]
+                    ]);
+
+                $retestState = 0;
+                for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
+                    DB::table('records')->insert([
+                        'raceNo' => $raceId,
+                        'userNo' => $users[$number][0],
+                        'listNo' => $listId,
+                        'quizNo' => $quizList[$quizCount - 1],
+                        'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number) != 0) ? 'X' : 'O'),
+                        'answer' => $answerCheck == '0' ? $quizCount : $quizCount + mt_rand(1, 3)
+                    ]);
+
+                    if ($check) {
+                        $retestState++;
+                    }
                 }
 
-                $check = true;
-                for ($number = 2; $number < count($users); $number++) {
-                    $retestState = 0;
-                    for ($count = 1; $count <= 6; $count++) {
-                        DB::table('records')->insert([
-                            'raceNo' => $raceId,
-                            'userNo' => $users[$number][0],
-                            'listNo' => $listId,
-                            'quizNo' => $quizList[$count - 1],
-                            'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number)) == 0 ? 'X' : 'O'),
-                            'answer' => $answerCheck == '0' ? $count : $count + mt_rand(1, 3)
-                        ]);
-                    }
-
-                    // 재시험 결과 정보
-                    if ($retestState > 3 && (mt_rand(0, $number) == 0)) {
+                // 재시험 결과 정보
+                if ($retestState > 2 && (mt_rand(0, 2) != 0)) {
+                    $insert = array();
+                    while ($retestState <= 2) {
+                        $retestState = 0;
                         $insert = array();
-                        while ($retestState <= 3) {
-                            $retestState = 0;
-                            $insert = array();
 
-                            for ($count = 1; $count <= 6; $count++) {
-                                array_push($insert, array(
-                                    'raceNo' => $raceId,
-                                    'userNo' => $users[$number][0],
-                                    'listNo' => $listId,
-                                    'quizNo' => $quizList[$count - 1],
-                                    'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number)) == 0 ? 'X' : 'O'),
-                                    'answer' => $answerCheck == '0' ? $count : $count + mt_rand(1, 3),
-                                    'retest' => 1
-                                ));
+                        for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
+                            array_push($insert, array(
+                                'raceNo' => $raceId,
+                                'userNo' => $users[$number][0],
+                                'listNo' => $listId,
+                                'quizNo' => $quizList[$quizCount - 1],
+                                'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number) == 0) ? 'X' : 'O'),
+                                'answer' => $answerCheck == '0' ? $quizCount : $quizCount + mt_rand(1, 3),
+                                'retest' => 1
+                            ));
 
-                                if ($check) {
-                                    $retestState++;
-                                }
+                            if ($check) {
+                                $retestState++;
                             }
                         }
-
-                        DB::table('records')->insert($insert);
                     }
+
+                    DB::table('records')->insert($insert);
+
+                    DB::table('raceUsers')
+                        ->where([
+                            'raceNumber' => $raceId,
+                            'userNumber' => $users[$number][0]
+                        ])
+                        ->insert([
+                            'retestState' => $state[2],
+                            'wrongState' => $state[1]
+                        ]);
+                } else if($retestState > 2){
+                    DB::table('raceUsers')
+                        ->where([
+                            'raceNumber' => $raceId,
+                            'userNumber' => $users[$number][0]
+                        ])
+                        ->insert([
+                            'retestState' => $state[1],
+                            'wrongState' => $state[1]
+                        ]);
+                } else if($retestState > 0){
+                    DB::table('raceUsers')
+                        ->where([
+                            'raceNumber' => $raceId,
+                            'userNumber' => $users[$number][0]
+                        ])
+                        ->insert([
+                            'retestState' => $state[0],
+                            'wrongState' => $state[1]
+                        ]);
                 }
             }
         }
