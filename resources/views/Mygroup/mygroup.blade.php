@@ -42,7 +42,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <label for="studentnumber"><b>학번</b></label>
+                                <label for="studentnumber"><b>이름</b> </label>
                                 <input type="text"  name="studentnumber"  id="studentnumbers"  required>
                                 <p></p>
 
@@ -71,6 +71,7 @@
                     <!-- <div class="fa-3x">
                         <i class="fas fa-cog fa-spin light" data-toggle="modal" data-target="#teacher"></i>
                     </div> -->
+
                 <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px ; display: inline-block"  data-toggle="modal";  data-target="#exampleModal">
                     <p id ="teacher">김민수 선생님</p>
                     <h1  id ="group" >A반</h1>
@@ -334,23 +335,16 @@
         function update() {
 
 
-            var userId = document.getElementById("studentnumbers").value;
-            var userName = document.getElementById("studentnames").value;
-            var passwordState = document.getElementById("checkBox").value;
+            var userName = document.getElementById("studentnumbers").value;
             var password = document.getElementById("psw").value;
 
-            if(passwordState == 'on'){
-                passwordState = true;
-            }
 
 
 
             var postData =
             {
                 userId :    userName,
-                userName :  userId,
-                password :  password,
-                passwordState  :passwordState
+                password :  password
 
             }
 

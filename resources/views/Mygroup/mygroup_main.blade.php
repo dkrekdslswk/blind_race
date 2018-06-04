@@ -109,6 +109,67 @@
 
 </body>
 <script>
+    var groupIds ;
+
+    function getAnothergroup(groupIds) {
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/groupDataGet')}}",
+            //processData: false,
+            //contentType: false,
+            async:false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: "groupId=" + groupId,
+            success: function (data) {
+
+                GroupData = data;
+//                     alert(JSON.stringify(GroupData['group']['id']));
+
+                teacher = GroupData['teacher']['name'];
+                group = GroupData['group']['name'];
+                groupIds = GroupData['group']['id'];
+                student = GroupData['students'];
+
+                $('#teacher').html(teacher);
+                $('#group').html(group);
+
+                $('#groupIds').val(groupIds);
+                var student_list = '';
+
+                for (var i = 0; i < student.length; i++) {
+
+                    student_list += '<tr><td>'
+
+                        + student[i].name
+                        + '</td><td id="delete' + i + '">'
+                        + student[i].id
+                        + '</td><td>' +
+                        ' <button type="button"  data-toggle="modal" ' +
+                        '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
+                        ' 비밀번호 변경\n' +
+                        ' </button>' +
+                        '</td><td>' +
+                        '<button onclick="Delete(' + i + ')">제외하기</button>' +
+                        '</td></tr>'
+                }
+
+                $('#student').html(student_list);
+
+            },
+            error: function (data) {
+                alert("에러");
+            }
+        });
+
+        searching_Student(groupIds);
+    }
+
+
+
+
     function setting(settingNumber){
         $('#studentnumbers').val(student[settingNumber].name);
         $('#studentnames').val(student[settingNumber].id);
@@ -186,15 +247,16 @@
             //processData: false,
             //contentType: false,
             dataType: 'json',
+            async: false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: params,
             success: function (data) {
                 GroupData = data;
-//                alert(JSON.stringify(GroupData['groups']));
 
 
                 Myclass = GroupData['groups'];
+                groupIds = Myclass[0].groupId;
 
                 var class_list = '';
 
@@ -218,41 +280,9 @@
         });
 
 
-        // 검색하기
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/groupController/selectUser')}}",
-            //processData: false,
-            //contentType: false,
-            dataType: 'json',
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data: "search=&groupId=1",
-            success: function (data) {
-                GroupData = data;
-
-                search_studentJSON = GroupData['users'];
-
-                var student_list = '';
-
-                for( var i = 0 ; i < search_studentJSON.length; i++){
-
-                    student_list +='<tr><td>'
-                        +search_studentJSON[i].name
-                        +'</td><td id="st'+i+'">'
-                        +search_studentJSON[i].id
-//                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
-                        +'</td><td><input id="checkBox" type="checkbox" value="'+search_studentJSON[i].id+'" ></td></tr>'
-                }
+        searching_Student(groupIds);
 
 
-
-                $('#myTable').html(student_list);
-
-            },
-            error: function (data) {
-                alert("검색에러");
-            }
-        });
 
 
 
@@ -313,20 +343,20 @@
             td,
             i;
         input = document.getElementById("myInput");
-        filter = input
-            .value
-            .toUpperCase();
-        table = document.getElementById("myTable");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+            filter = input
+                .value
+                .toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
-            }
         }
 
     }
@@ -340,12 +370,13 @@
             //processData: false,
             //contentType: false,
             dataType: 'json',
+            async:false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: "groupId=" + groupId,
             success: function (data) {
                 GroupData = data;
-//                     alert(JSON.stringify(GroupData['students']));
+//                     alert(JSON.stringify(GroupData['group']['id']));
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
@@ -383,6 +414,44 @@
             }
         });
     }
+
+        function searching_Student(groupIds){
+            // 검색하기
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/selectUser')}}",
+                //processData: false,
+                //contentType: false,
+                async:false,
+                dataType: 'json',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: "search=&groupId="+ groupIds,
+                success: function (data) {
+//                    alert(groupIds)
+                    GroupData = data;
+
+                    search_studentJSON = GroupData['users'];
+
+                    var student_list = '';
+                    for( var i = 0 ; i < search_studentJSON.length; i++){
+
+                        student_list +='<tr><td>'
+                            +search_studentJSON[i].name
+                            +'</td><td id="st'+i+'">'
+                            +search_studentJSON[i].id
+                            //                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
+                            +'</td><td><input id="checkBox" type="checkbox" value="'+search_studentJSON[i].id+'" ></td></tr>'
+                    }
+
+
+                    $('#myTable').html(student_list);
+
+                },
+                error: function (data) {
+                    alert("검색에러");
+                }
+            });
+        }
 
         function enterTabTable(obj,obj2) {
             var i, k, ftag, str="";

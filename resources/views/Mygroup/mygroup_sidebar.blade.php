@@ -148,60 +148,6 @@
 
     </style>
     <script>
-            var groupIds ;
-
-            function getAnothergroup(groupId) {
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('/groupController/groupDataGet')}}",
-                    //processData: false,
-                    //contentType: false,
-                    async:false,
-                    dataType: 'json',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    //data: {_token: CSRF_TOKEN, 'post':params},
-                    data: "groupId=" + groupId,
-                    success: function (data) {
-                            GroupData = data;
-//                     alert(JSON.stringify(GroupData['students']));
-
-                            teacher = GroupData['teacher']['name'];
-                            group = GroupData['group']['name'];
-                            groupIds = GroupData['group']['id'];
-                            student = GroupData['students'];
-
-                            $('#teacher').html(teacher);
-                            $('#group').html(group);
-                            $('#groupIds').val(groupIds);
-                            var student_list = '';
-
-                            for (var i = 0; i < student.length; i++) {
-
-                                student_list += '<tr><td>'
-
-                                    + student[i].name
-                                    + '</td><td id="delete' + i + '">'
-                                    + student[i].id
-                                    + '</td><td>' +
-                                    ' <button type="button"  data-toggle="modal" ' +
-                                    '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
-                                    ' 비밀번호 변경\n' +
-                                    ' </button>' +
-                                    '</td><td>' +
-                                    '<button onclick="Delete(' + i + ')">제외하기</button>' +
-                                    '</td></tr>'
-                            }
-
-                            $('#student').html(student_list);
-
-                        },
-                    error: function (data) {
-                        alert("에러");
-                    }
-                });
-            }
-
 
 
     </script>
