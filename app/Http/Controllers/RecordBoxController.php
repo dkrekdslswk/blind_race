@@ -710,26 +710,244 @@ class RecordBoxController extends Controller{
     // 질문하기
     public function insertQuestion(Request $request){
         $postData = array(
-            'title' => $request->input('title'),
-            'question' => $request->input('question'),
-            'teacherId' => $request->input('teacherId')
+            'title' => $request->has('title') ? $request->input('title') : false,
+            'question' => $request->has('question') ? $request->input('question') : false,
+            'teacherId' => $request->has('teacherId') ? $request->input('teacherId') : false
         );
 
-        $returnValue = array(
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        );
+        // 로그인 확인
+        if ($userData['check'] && $postData['title'] && $postData['question'] && $postData['teacherId']){
+            switch ($userData['classification']){
+                case 'student':
+                    DB::table('QnAs')
+                        ->insert([
+                            'userNumber' => $userData['userId'],
+                            'teacherNumber' => $postData['teacherId'],
+                            'title' => $postData['title'],
+                            'question' => $postData['question']
+                        ]);
+
+                    // 반납값 정리
+                    $returnValue = array(
+                        'check' => true
+                    );
+                    break;
+                default:
+
+                    // 반납값 정리
+                    $returnValue = array(
+                        'check' => false
+                    );
+                    break;
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
 
         return $returnValue;
     }
 
     // QnAs 가져오기
-    public function selectQnAs(Request $request){}
+    public function selectQnAs(Request $request){
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        if ($userData['check']){
+            // 유저 권한별 정리
+            switch ($userData['classification']){
+                case 'student':
+                    $where = array(
+                        'QnAs.userNumber' => $userData['userId']
+                    );
+                    break;
+                case 'teacher':
+                    $where = array(
+                        'QnAs.teacherNumber' => $userData['userId']
+                    );
+                    break;
+                case 'root':
+                    $where = array(
+                        'QnAs.teacherNumber' => $userData['userId']
+                    );
+                    break;
+                default:
+                    $where = array(
+                        1 => 2
+                    );
+                    break;
+            }
+
+            // QnA정보 가져오기
+            $QnAData = DB::table('QnAs')
+                ->select(
+                    'QnAs.number as QnAId',
+                    'u.name as userName',
+                    'tu.name as teacherName',
+                    'QnAs.title as title',
+                    'QnAs.question_at as question_at',
+                    'QnAs.answer_at as answer_at'
+                )
+                ->where($where)
+                ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
+                ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
+                ->first();
+
+            // 반납값 정리
+            $QnAs = array();
+            foreach ($QnAData as $QnA){
+                array_push($QnAs, array(
+                    'QnAId' => $QnA->QnAId,
+                    'userName' => $QnA->userName,
+                    'teacherName' => $QnA->teacherName,
+                    'title' => $QnA->title,
+                    'question_at' => $QnA->question_at,
+                    'answer_at' => $QnA->answer_at
+                ));
+            }
+
+            $returnValue = array(
+                'QnAs' => $QnAs,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
 
     // 조회하기
-    public function selectQnA(Request $request){}
+    public function selectQnA(Request $request){
+        $postData = array(
+            'QnAId' => $request->input('QnAId')
+        );
+
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        if ($userData['check']){
+            // 유저 권한별 정리
+            switch ($userData['classification']){
+                case 'student':
+                    $where = array(
+                        'QnAs.userNumber' => $userData['userId']
+                    );
+                    break;
+                case 'teacher':
+                    $where = array(
+                        'QnAs.teacherNumber' => $userData['userId']
+                    );
+                    break;
+                case 'root':
+                    $where = array(
+                        'QnAs.teacherNumber' => $userData['userId']
+                    );
+                    break;
+                default:
+                    $where = array(
+                        1 => 2
+                    );
+                    break;
+            }
+
+            // QnA정보 가져오기
+            $QnAData = DB::table('QnAs')
+                ->select(
+                    'QnAs.number as QnAId',
+                    'u.name as userName',
+                    'tu.name as teacherName',
+                    'QnAs.title as title',
+                    'QnAs.question as question',
+                    'QnAs.answer as answer',
+                    'QnAs.question_at as question_at',
+                    'QnAs.answer_at as answer_at'
+                )
+                ->where($where)
+                ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
+                ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
+                ->where([
+                    'QnAs.number' => $postData['QnAId']
+                ])
+                ->orderBy('number', 'DESC')
+                ->get();
+
+            // 반납값 정리
+            $returnValue = array(
+                'QnA' => array(
+                    'QnAId' => $QnAData->QnAId,
+                    'userName' => $QnAData->userName,
+                    'teacherName' => $QnAData->teacherName,
+                    'title' => $QnAData->title,
+                    'question' => $QnAData->question,
+                    'answer' => $QnAData->answer,
+                    'question_at' => $QnAData->question_at,
+                    'answer_at' => $QnAData->answer_at
+                ),
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
 
     // 답변하기
-    public function updateAnswer(Request $request){}
+    public function updateAnswer(Request $request){
+        $postData = array(
+            'QnAId' => $request->has('QnAId') ? $request->input('QnAId') : false,
+            'answer' => $request->has('answer') ? $request->input('answer') : false
+        );
+
+        // 유저 정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 확인
+        if ($userData['check'] && $postData['QnAId'] && $postData['answer']){
+            switch ($userData['classification']){
+                case 'teacher':
+                    $where = array(
+                        'teacherNumber' => $userData['userId']
+                    );
+                    break;
+                default:
+                    $where = array(
+                        1 => 2
+                    );
+                    break;
+            }
+
+            // 업데이트
+            DB::table('QnAs')
+                ->where($where)
+                ->where([
+                    'number' => $postData['QnAId']
+                ])
+                ->update([
+                    'answer' => $postData['answer'],
+                    'answer_at' => DB::raw('now()')
+                ]);
+
+            $returnValue = array(
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => true
+            );
+        }
+
+        return $returnValue;
+    }
 
     // 기간내의 차트 읽어오기
     private function selectGroupRecords($groupId, $startDate, $endDate){

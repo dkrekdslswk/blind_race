@@ -158,6 +158,10 @@ Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCh
 Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
 Route::post('/recordBoxController/getWrongs','RecordBoxController@getWrongs');
 Route::post('/recordBoxController/insertWrongs','RecordBoxController@insertWrongs');
+Route::post('/recordBoxController/insertQuestion','RecordBoxController@insertQuestion');
+Route::post('/recordBoxController/selectQnAs','RecordBoxController@selectQnAs');
+Route::post('/recordBoxController/selectQnA','RecordBoxController@selectQnA');
+Route::post('/recordBoxController/updateAnswer','RecordBoxController@updateAnswer');
 
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');

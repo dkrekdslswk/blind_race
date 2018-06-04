@@ -97,7 +97,7 @@ class QuizTreeController extends Controller
         // 공개된 리스트 정보를 불러올 폴더 설정
         array_push($folders, array(
                 'folderId' => self::OPEN_STATE,
-                'folderName' => '공개 리스트')
+                'folderName' => '공유 폴더')
         );
 
         foreach ($folderData as $folder){
@@ -760,6 +760,13 @@ class QuizTreeController extends Controller
     }
 
     // 폴더 삭제
+    public function deleteFolder(Request $request){
+        $postData = array(
+            'folderId' => $request->has('folderId') ? $request->input('folderId') : false
+        );
+
+
+    }
 
     // 공개여부설정
     // 공개, 비공개 설정
