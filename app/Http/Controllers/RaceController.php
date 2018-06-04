@@ -738,6 +738,7 @@ class RaceController extends Controller{
     }
 
     // 재시험 문제 받아오기 모바일은 바로 시작 가능
+    // 해당 문제 리스트 비우기
     public function retestStart(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId'),
