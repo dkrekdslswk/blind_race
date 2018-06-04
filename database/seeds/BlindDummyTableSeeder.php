@@ -218,8 +218,7 @@ class BlindDummyTableSeeder extends Seeder
 
                 // 재시험 결과 정보
                 if ($retestState > 2 && (mt_rand(0, 2) != 0)) {
-                    $insert = array();
-                    while ($retestState <= 2) {
+                    do {
                         $retestState = 0;
                         $insert = array();
 
@@ -238,7 +237,7 @@ class BlindDummyTableSeeder extends Seeder
                                 $retestState++;
                             }
                         }
-                    }
+                    }while($retestState <= 2);
 
                     DB::table('records')->insert($insert);
 
