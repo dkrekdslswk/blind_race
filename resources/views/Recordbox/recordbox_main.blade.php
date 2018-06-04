@@ -82,8 +82,9 @@
 
     <script type="text/javascript">
 
-        var chartData = "";
+        var teacher = 1;
         var group_id = 0;
+        var chartData = "";
         var loadDt = new Date();
 
         // 1~9월 1~9일에 앞자리 0추가해주는 함수
@@ -104,53 +105,117 @@
             tempdate.setMonth(tempdate.getMonth()-1);
         var defaultStartDate = tempdate.getFullYear() + '-' + fn_leadingZeros(tempdate.getMonth() + 1, 2) + '-' + fn_leadingZeros(tempdate.getDate(), 2);
 
+
         //처음 화면 로드
         window.onload = function() {
 
-            //클래스 불러오기 and 차트 로드하기
-            pageMainLoad();
+            //클래스 불러오기 and 차트 로드하기 and 학생 명단 출력하기 and 피드백 가져오기
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupsGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                //data: { var teacher = 1 },
+                data: teacher,
+                success: function (data) {
+
+                    var GroupData = data;
+
+                    //사이드바에 클래스 추가
+                    for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
+
+                        $('#group_names').append($('<a href="#">')
+                            .append($('<div class="groups" name="'+GroupData['groups'][i].groupName+'" id="'+ GroupData['groups'][i].groupId +'">')
+                                .text(GroupData['groups'][i].groupName)));
+
+                    }
+
+                    //가장 상단에 위치한 클래스
+                    var firstGroup = $('.groups:first-child');
+
+                    //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
+                    $('#nav_group_name').text(firstGroup.attr('name'));
+
+                    //그룹아이디값을 상단 클래스 아이디값으로 변경
+                    group_id = firstGroup.attr('id');
+
+                    //전체 페이지 출력
+                    AllPageLoad(group_id);
+
+                },
+                error: function (data) {
+                    alert("그룹겟 에러");
+                }
+            });
+
         };
 
-        //메인 페이지 로드
-        function pageMainLoad(){
+        //전체 페이지 로드
+        function AllPageLoad(groupid){
 
-            /*part.1 사이드바*/
-            //클래스 불러오기 and 차트 로드하기 -> record_chart.blade.php
-            getGroups_and_loadChart(1);
+            //차트 불러오기
+            getChartData_and_loadChart(groupid,defaultStartDate,defaultEndDate);
 
-        }
+            //가장 상단에 있는 클래스 ID값으로  최근 기록 불러오기
+            getHistory(groupid);
 
-        //최근기록 페이지 로드
-        function pageHistoryLoad(){
+            //가장 상단에 있는 클래스 ID값으로 학생명단 만들기
+            getStudents(groupid);
 
-            /*part.2 최근기록 화면*/
-            //최근 목록 불러오기
-
+            //피드백 페이지 불러오기
 
         }
 
-        //피드백 페이지 로드
-        function pageFeedbackLoad(){
+        $(document).ready(function () {
 
-            /*part.5 피드백 화면*/
-            //차트 만들기 실행 -> record_chart.blade.php
+            var raceId = "";
+            var userId = "";
 
-        }
+            //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
+            $(document).on('click','.groups',function () {
 
-        //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
-        $(document).on('click','.groups',function () {
+                var reqGroupId = $(this).attr('id');
+                var reqGroupName = $(this).attr('name');
 
-            var reqGroupId = $(this).attr('id');
+                group_id = reqGroupId;
 
-            group_id = reqGroupId;
+                AllPageLoad(group_id);
+            });
 
-            var reqGroupName = $(this).attr('name');
+            //레코드리스트에서 성적표 클릭시 성적표 로드
+            $(document).on('click','.history_list_gradeCard button',function () {
+                loadGradeCard(this.id);
+            });
 
-            getChartData_and_loadChart(reqGroupId,defaultStartDate,defaultEndDate);
-            getStudents(reqGroupId);
-            getHistory(reqGroupId);
+            //학생 상세정보에서 성적표 클릭시 성적표 로드
+            $(document).on('click','.modal_openStudentGradeCard button',function () {
+                raceId = $(this).attr('id');
+                userId = $(this).attr('name');
 
+                loadStudentGradeCard(userId,raceId);
+            });
+
+            //학생 상세정보에서 재시험 클릭시 성적표 로드
+            $(document).on('click','.modal_openStudentRetestGradeCard button',function () {
+                raceId = $(this).attr('id');
+                userId = $(this).attr('name');
+
+                console.log(userId,raceId);
+                loadStudentGradeCard(userId,raceId);
+                getRetestData();
+            });
+
+            //학생 상세정보에서 오답노트 클릭시 성적표 로드
+            $(document).on('click','.modal_openStudentWrongGradeCard button',function () {
+                raceId = $(this).attr('id');
+                userId = $(this).attr('name');
+
+                getStudentWrongWriting(userId,raceId);
+            });
         });
+
 
         //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
         function changeDateToChart(){
@@ -204,6 +269,7 @@
             getChartData_and_loadChart(group_id,startDate,defaultEndDate);
         }
 
+        //날짜 조회 눌렀을 때 차트 출력
         function orderChart(){
             var startDate = document.querySelector('input[id="startDate"]').value;
             var endDate = document.querySelector('input[id="endDate"]').value;
@@ -269,7 +335,7 @@
 
         }
 
-        //클래스 가져오기
+/*        //클래스 가져오기
         //차트 그리기
         //학생 명단 가져오기
         function getGroups_and_loadChart(groupId) {
@@ -277,7 +343,7 @@
             $.ajax({
                 type: 'POST',
 
-                url: "{{url('/groupController/groupsGet')}}",
+                url: "{ {url('/groupController/groupsGet')} }",
                 //processData: false,
                 //contentType: false,
                 dataType: 'json',
@@ -315,7 +381,7 @@
                 }
             });
 
-        }
+        }*/
 
         //그룹에 속한 학생들 가져오기
         //최근기록 -> 성적표(토글)페이지
@@ -381,8 +447,13 @@
             }
         });
 
+        // 라디오버튼 선택 확인 (문제유형)
+        $('input:checkbox[name="gradeCase"]').change(function () {
 
-        function toggle_detailStudent_and_Wrong(value) {
+            console.log(this.id);
+        });
+
+/*        function toggle_detailStudent_and_Wrong(value) {
 
             if($("#checkbox_0").is(":checked")){
                 $('#toggle_only_students').attr('class','');
@@ -395,7 +466,7 @@
             }else{
                 $('#toggle_only_wrong_answers').attr('class','hidden');
             }
-        };
+        }*/
 
 
         function getHistory(group_id){
@@ -517,38 +588,6 @@
 
 
         }
-
-        //레코드리스트에서 성적표 클릭시 성적표 로드
-        $(document).on('click','.history_list_gradeCard button',function () {
-            loadGradeCard(this.id);
-        });
-
-        //학생 상세정보에서 성적표 클릭시 성적표 로드
-        $(document).on('click','.modal_openStudentGradeCard button',function () {
-            var raceId = $(this).attr('id');
-            var userId = $(this).attr('name');
-
-            loadStudentGradeCard(userId,raceId);
-        });
-
-        //학생 상세정보에서 재시험 클릭시 성적표 로드
-        $(document).on('click','.modal_openStudentRetestGradeCard button',function () {
-            var raceId = $(this).attr('id');
-            var userId = $(this).attr('name');
-
-            console.log(userId,raceId);
-            loadStudentGradeCard(userId,raceId);
-            getRetestData();
-        });
-
-        //학생 상세정보에서 오답노트 클릭시 성적표 로드
-        $(document).on('click','.modal_openStudentWrongGradeCard button',function () {
-            var raceId = $(this).attr('id');
-            var userId = $(this).attr('name');
-
-            getStudentWrongWriting(userId,raceId);
-        });
-
 
         //성적표 출력
         function loadGradeCard(value){
@@ -2023,8 +2062,8 @@
                 <div class="modal-body" style="text-align: left;margin: 0;">
 
                     <div class="" style="text-align: center;">
-                        <input type="checkbox" checked="checked" id="checkbox_0" value="0" onclick="toggle_detailStudent_and_Wrong()">학생
-                        <input type="checkbox" checked="checked" id="checkbox_1" value="1" onclick="toggle_detailStudent_and_Wrong()">오답 문제
+                        <input type="checkbox" checked="checked" name="gradeCase" id="checkbox_0" value="0">학생
+                        <input type="checkbox" checked="checked" name="gradeCase" id="checkbox_1" value="1">오답 문제
                     </div>
 
                     <div id="toggle_only_students">
