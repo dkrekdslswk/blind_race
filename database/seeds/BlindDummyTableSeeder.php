@@ -247,7 +247,7 @@ class BlindDummyTableSeeder extends Seeder
                             'raceNumber' => $raceId,
                             'userNumber' => $users[$number][0]
                         ])
-                        ->insert([
+                        ->update([
                             'retestState' => $state[2],
                             'wrongState' => $state[1]
                         ]);
@@ -257,7 +257,7 @@ class BlindDummyTableSeeder extends Seeder
                             'raceNumber' => $raceId,
                             'userNumber' => $users[$number][0]
                         ])
-                        ->insert([
+                        ->update([
                             'retestState' => $state[1],
                             'wrongState' => $state[1]
                         ]);
@@ -267,7 +267,7 @@ class BlindDummyTableSeeder extends Seeder
                             'raceNumber' => $raceId,
                             'userNumber' => $users[$number][0]
                         ])
-                        ->insert([
+                        ->update([
                             'retestState' => $state[0],
                             'wrongState' => $state[1]
                         ]);
