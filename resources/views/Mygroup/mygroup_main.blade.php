@@ -122,7 +122,7 @@
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId=" + groupId,
+            data: "groupId=" + groupIds,
             success: function (data) {
 
                 GroupData = data;
