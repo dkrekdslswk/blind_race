@@ -255,7 +255,7 @@ class RecordBoxController extends Controller{
 
     // 학생들의 최근기록 조회 'userId'
     // 레이스를 친 학생들 정보 조회 'raceId'
-    // + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
+    // 재시험 한 결과를 조회하기 위해서 사용 'userId', 'raceId', 'retestState' => 1
     public function getStudents(Request $request){
         // 요구하는 값
 //        $postData = array(
@@ -267,22 +267,29 @@ class RecordBoxController extends Controller{
         $postData = array(
             'userId'        => $request->has('userId') ? $request->input('userId') : false,
             'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
-            'retestState'   => $request->has('retestState') ? $request->input('retestState') : 0
+            'retestState'   => $request->has('retestState') ? $request->input('retestState') : false
         );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
         if ($userData['check']) {
             // 조회 구분
-            if($postData['userId']){
+            if($postData['userId'] && $postData['raceId'] && $postData['retestState']){
                 $typeWhere = array(
                     'ru.userNumber' => $postData['userId'],
+                    'ru.raceNumber' => $postData['raceId'],
                     're.retest' => $postData['retestState']
+                );
+            }
+            else if($postData['userId']){
+                $typeWhere = array(
+                    'ru.userNumber' => $postData['userId'],
+                    're.retest' => 0
                 );
             } else if ($postData['raceId']){
                 $typeWhere = array(
                     'ru.raceNumber' => $postData['raceId'],
-                    're.retest' => $postData['retestState']
+                    're.retest' => 0
                 );
             } else {
                 $typeWhere = false;
@@ -390,15 +397,19 @@ class RecordBoxController extends Controller{
 
     // 오답문제 조회하기 학생별 'userId', 'raceId'
     // 오답문제 조회하기 레이스 전체 'raceId'
+    // + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
     public function getWrongs(Request $request){
         // 요구하는 값
 //        $postData = array(
 //            'userId'    => false,
 //            'raceId'    => 1
+//            'retestState'   => 1
 //        );
         $postData = array(
             'userId'    => $request->has('userId') ? $request->input('userId') : false,
-            'raceId'    => $request->input('raceId')
+            'raceId'    => $request->input('raceId'),
+            'retestState'   => $request->has('retestState') ? $request->input('retestState') : 0,
+            'sessionId'   => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 메서드 호출 타입 설정
@@ -406,19 +417,19 @@ class RecordBoxController extends Controller{
             $typeWhere = array(
                 're.userNo' => $postData['userId'],
                 're.raceNo' => $postData['raceId'],
-                're.retest' => 0
+                're.retest' => $postData['retestState']
             );
             $typeGroupBy = array('re.raceNo', 're.userNo', 're.quizNo', 're.retest');
         } else {
             $typeWhere = array(
                 're.raceNo' => $postData['raceId'],
-                're.retest' => 0
+                're.retest' => $postData['retestState']
             );
             $typeGroupBy = array('re.raceNo', 're.quizNo', 're.retest');
         }
 
         // 유저정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 유저권한 확인
         if ($userData['check']){
@@ -590,6 +601,14 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
+    // 오답문제 조회하기 학생별 'userId', 'raceId', 'sessionId'
+    // 오답문제 조회하기 레이스 전체 'raceId', 'sessionId'
+    // + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
+    // 모바일 버전 오답문제 조회하기
+    public function mobileGetWrongs(Request $request){
+        return $this->getWrongs($request);
+    }
+
     // 오답풀이 입력하기
     public function insertWrongs(Request $request){
 //        $postData = array(
@@ -603,11 +622,12 @@ class RecordBoxController extends Controller{
 //        );
         $postData = array(
             'raceId' => $request->input('raceId'),
-            'wrongs' => $request->input('wrongs')
+            'wrongs' => $request->input('wrongs'),
+            'sessionId'   => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 로그인 확인
         if ($userData['check']){
@@ -704,6 +724,11 @@ class RecordBoxController extends Controller{
         }
 
         return $returnValue;
+    }
+
+    // 모바일 버전 오답풀이 입력하기
+    public function mobileInsertWrongs(Request $request){
+        return $this->insertWrongs($request);
     }
 
     // 피드백과 질문
