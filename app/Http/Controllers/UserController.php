@@ -15,13 +15,24 @@ class UserController extends Controller{
 
         // 로그인 성공
         if ($userData['check']){
-            // 반납값 설정
-            $returnValue = array(
-                'check'             => true,
-                'sessionId'         => $this->sessionIdGet($userData['userId']),
-                'userName'          => $userData['name'],
-                'classification'    => $userData['classification']
-            );
+            // 세션 받아오기
+            $sessionId = $this->sessionIdGet($userData['userId']);
+
+            if ($sessionId) {
+                // 반납값 설정
+                $returnValue = array(
+                    'check' => true,
+                    'loginCheck' => true,
+                    'sessionId' => $this->sessionIdGet($userData['userId']),
+                    'userName' => $userData['name'],
+                    'classification' => $userData['classification']
+                );
+            } else {
+                $returnValue = array(
+                    'check' => true,
+                    'loginCheck' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check'     => false
@@ -40,19 +51,29 @@ class UserController extends Controller{
 
         // 로그인 성공
         if ($userData['check']){
-            // 세션 아이디 저장
-            $request->session()->put('sessionId', $this->sessionIdGet($userData['userId']));
+            // 세션아이디 받아오기
+            $sessionId = $this->sessionIdGet($userData['userId']);
 
-            // 반납값 설정
-            $returnValue = array(
-                'check'             => true,
-                'userName'          => $userData['name'],
-                'classification'    => $userData['classification']
-            );
+            if ($sessionId) {
+                // 세션 아이디 저장
+                $request->session()->put('sessionId', $sessionId);
+
+                // 반납값 설정
+                $returnValue = array(
+                    'check' => true,
+                    'loginCheck' => true,
+                    'userName' => $userData['name'],
+                    'classification' => $userData['classification']
+                );
+            } else {
+                $returnValue = array(
+                    'check'     => false,
+                    'loginCheck' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check'     => false
-                
             );
         }
 
@@ -124,7 +145,7 @@ class UserController extends Controller{
 
     // 웹 로그아웃
     public function webLogout(Request $request){
-        // 세션을 삭제
+        // 세션안 데이터 비우기
         DB::table('sessionDatas')
             ->where([
                 'number' => $request->session()->get('sessionId')
@@ -232,17 +253,18 @@ class UserController extends Controller{
 
         // 이미 있는 세션 그대로 쓰기
         if($data){
-            $sessionId = $data->sessionId;
-            DB::table('sessionDatas')
-                ->where([
-                    'number' => $sessionId
-                ])
-                ->update([
-                    'nick' => null,
-                    'PIN' => null,
-                    'characterNumber' => null,
-                    'raceNumber' => null
-                ]);
+            $sessionId = false;
+//            $sessionId = $data->sessionId;
+//            DB::table('sessionDatas')
+//                ->where([
+//                    'number' => $sessionId
+//                ])
+//                ->update([
+//                    'nick' => null,
+//                    'PIN' => null,
+//                    'characterNumber' => null,
+//                    'raceNumber' => null
+//                ]);
         }
         // 새션 할당하기
         else {

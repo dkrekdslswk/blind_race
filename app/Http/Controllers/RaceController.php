@@ -805,9 +805,9 @@ class RaceController extends Controller{
 //            'answer'    => 1
 //        );
         $postData     = array(
-            'sessionId' => $request->input('sessionId'),
-            'quizId'    => $request->input('quizId'),
-            'answer'    => $request->input('answer')
+            'sessionId' => $request->has('sessionId'),
+            'quizId'    => $request->has('quizId') ? $request->input('quizId') : false,
+            'answer'    => $request->has('answer') ? $request->input('answer') : false
         );
 
         // 유저 정보 가져오기
@@ -827,6 +827,11 @@ class RaceController extends Controller{
 
         // 레이스가 존재할 경우 값을 입력
         if($raceData){
+            // 정답 미입력 처리
+            if (!$postData['answer']){
+                $postData['answer'] = '';
+            }
+
             // 현재 문제정보
             $quizData = DB::table('quizBanks')
                 ->select(
