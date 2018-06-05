@@ -200,10 +200,7 @@ class UserController extends Controller{
             ->where('number', '=', $sessionId)
             ->update(['updated_at' => DB::raw('CURRENT_TIMESTAMP')]);
 
-        // 오래된 세션 정리하기
-        DB::table('sessionDatas')
-            ->where(DB::raw('date(updated_at)'), '<=', DB::raw('subdate(now(), INTERVAL 7 DAY)'))
-            ->delete();
+        self::oldSessionDelete();
 
         // 유저 정보 읽어오기
         $userData = DB::table('users as u')
@@ -241,6 +238,8 @@ class UserController extends Controller{
 
     // 세션 만들거나 받아오기
     private function sessionIdGet($userId){
+        self::oldSessionDelete();
+
         // 이미 있는 세션 확인하기
         $data = DB::table('sessionDatas')
             ->select([
@@ -277,6 +276,14 @@ class UserController extends Controller{
 
         // 아이디 반납
         return $sessionId;
+    }
+
+    // 오래된 세션 정리
+    private static function oldSessionDelete(){
+        // 오래된 세션 정리하기
+        DB::table('sessionDatas')
+            ->where(DB::raw('date(updated_at)'), '<=', DB::raw('subdate(now(), INTERVAL 7 DAY)'))
+            ->delete();
     }
 }
 
