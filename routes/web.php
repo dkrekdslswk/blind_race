@@ -137,11 +137,12 @@ Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
 Route::post('/raceController/raceEnd','RaceController@raceEnd');
-Route::post('/raceController/getRetestListWeb','RaceController@getRetestListWeb');
 Route::post('/raceController/retestSet','RaceController@retestSet');
 Route::post('/raceController/retestStart','RaceController@retestStart');
 Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
 Route::post('/raceController/retestEnd','RaceController@retestEnd');
+// 모바일용
+Route::post('/getRetestListMobile','RaceController@getRetestListMobile');
 
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
