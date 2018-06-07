@@ -65,11 +65,11 @@
             display: block;
         }
 
-        #wrong_detail tr , #details_record tr , #wrongQuestions tr{
+        #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
         }
 
-        #wrong_detail tr td , #details_record tr td , #wrongQuestions tr td {
+        #modal_allWrongAnswerList tr td , #details_record tr td , #wrongQuestions tr td {
             border-left: 1px solid #e5e6e8;
         }
     </style>
@@ -184,6 +184,12 @@
                 AllPageLoad(group_id);
             });
 
+            //학생 한명 클릭하면 개인성적 가져오기
+            $(document).on('click','.stdList',function () {
+                getStudentGrade(this.id);
+
+            });
+
             //레코드리스트에서 성적표 클릭시 성적표 로드
             $(document).on('click','.history_list_gradeCard button',function () {
                 loadGradeCard(this.id);
@@ -202,9 +208,13 @@
                 raceId = $(this).attr('id');
                 userId = $(this).attr('name');
 
-                console.log(userId,raceId);
-                loadStudentGradeCard(userId,raceId);
                 getRetestData();
+            });
+
+            //학생 상세정보에서 학생 클릭시 오답들 로드
+            $(document).on('click','.toggle_stdList',function () {
+                getWrongAnswer($(this).attr('id'),$(this).attr('name'));
+
             });
 
             //학생 상세정보에서 오답노트 클릭시 성적표 로드
@@ -214,8 +224,26 @@
 
                 getStudentWrongWriting(userId,raceId);
             });
-        });
 
+            // 라디오버튼 선택 확인 (문제유형)
+            $(document).on('click','#checkbox',function(){
+
+                $('input:checkbox[name="gradeCase"]').each(function() {
+
+                    //checked 처리된 항목의 값
+                    if(this.checked) {
+                        $('#'+this.value).show();
+                    }
+                    //check가 아닐때
+                    else{
+                        $('#'+this.value).hide();
+                    }
+                });
+
+            });
+
+
+        });
 
         //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
         function changeDateToChart(){
@@ -438,21 +466,6 @@
 
         }
 
-        $("input[name=studentOrGrade]:checked").change(function () {
-
-            if($("input[name=studentOrGrade]:checked").is(":checked")){
-                alert("체크박스 체크했음!");
-            }else{
-                alert("체크박스 체크 해제!");
-            }
-        });
-
-        // 라디오버튼 선택 확인 (문제유형)
-        $('input:checkbox[name="gradeCase"]').change(function () {
-
-            console.log(this.id);
-        });
-
 /*        function toggle_detailStudent_and_Wrong(value) {
 
             if($("#checkbox_0").is(":checked")){
@@ -590,12 +603,12 @@
         }
 
         //성적표 출력
-        function loadGradeCard(value){
+        function loadGradeCard(raceId){
 
             //value = {userId : 1300000}
             //value = {raceId : 1}
 
-            var reqData = {'raceId' : value};
+            var reqData = {'raceId' : raceId};
 
             $.ajax({
                 type: 'POST',
@@ -638,63 +651,11 @@
                                         }
                     */
 
-                    var StudentData = data['races'];
-                    var StudentScore = makingStudentChartData(data);
-                    var totalGrade = 0;
-                    var totalVoca = 0;
-                    var totalGrammer = 0;
-                    var totalWord = 0;
-                    var totalRight = 0;
-
-                    $('#modal_raceName_teacher').empty();
-                    $('.modal_date').empty();
-                    $('.modal #grade_list').empty();
-                    $('#modal_total_grade').empty();
-                    $('#toggle_student_list').empty();
-                    $('#toggle_wrong_answers').empty();
-
-                    $('#modal_raceName_teacher').text(StudentData[0]['listName'] +"  /  " +StudentData[0]['teacherName'] );
-                    $('.modal_date').text(StudentData[0]['year']+"년 "+StudentData[0]['month']+"월 "+StudentData[0]['day']+"일");
-
-
-                    for(var i = 0 ; i < StudentData.length ; i++){
-                        $('.modal #grade_list').append($('<tr>').attr('id', 'modal_Grade_'+i));
-
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['userName']));
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
-                        $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
-
-                        //시험친 학생들 명단 출력
-                        $('#toggle_student_list').append($('<tr id="toggle_student_list'+i+'">'));
-
-                        $('#toggle_student_list' + i).append($('<td>').text(i+1));
-                        $('#toggle_student_list' + i).append($('<td>')
-                            .append($('<a href="#" onclick="getWrongAnswer('+StudentData[i]['userId']+','+StudentData[i]['raceId']+')">')
-                                .text(StudentData[i]['userName']))
-                            .attr('id',StudentData[i]['userId'])
-                            .attr('name',StudentData[i]['userName'])
-                            .attr('class','toggle_stdList'));
-
-
-                        totalGrade += StudentScore['total_data'][1][i]['y'];
-                        totalVoca += StudentScore['voca_data'][1][i]['y'];
-                        totalGrammer += StudentScore['grammer_data'][1][i]['y'];
-                        totalWord += StudentScore['word_data'][1][i]['y'];
-                        totalRight += StudentData[i]['allRightCount'];
-                    }
-
-                    //modal-footer 총 점수들 표시
-                    $('#modal_total_grade').text("전체 평균: "+parseInt(totalGrade / StudentData.length)+
-                                                " / 어휘: "+parseInt(totalVoca / StudentData.length)+
-                                                " / 문법: "+parseInt(totalGrammer / StudentData.length)+
-                                                " / 독해: "+parseInt(totalWord / StudentData.length)+
-                                                " / 갯수: "+parseInt(totalRight / StudentData.length));
+                    //전체 점수와 평균 점수들 로드하기
+                    getAllGrades(data);
 
                     //틀린 오답문제들 전부 로드하기
-                    getRaceWrongAnswer(StudentData[0]['raceId']);
+                    getRaceWrongAnswer(raceId);
                 },
                 error: function (data) {
                     alert("학생별 최근 레이스 값 불러오기 에러");
@@ -702,6 +663,7 @@
             });
         }
 
+        //학생 성적표 출력
         function loadStudentGradeCard(userId,raceId){
             //value = {userId : 1300000}
             //value = {raceId : 1}
@@ -757,16 +719,16 @@
                         }
                     }
 
-                    $('#modal_student_raceName_teacher').empty();
-                    $('.modal_student_date').empty();
-                    $('.modal #studentGradeCard').empty();
+                    $('.modal-header #modal_date').empty();
+                    $('.modal-header #modal_RaceNameAndTeacher').empty();
+                    $('.modal-body #modal_gradeList').empty();
+                    $('.modal-footer #modal_total_grades').empty();
 
-                    $('#modal_student_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
-                    $('.modal_student_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
-
+                    $('.modal-header #modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+                    $('.modal-header #modal_RaceNameAndTeacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
 
                     for(var i = 0 ; i < 1 ; i++){
-                        $('.modal #studentGradeCard').append($('<tr>').attr('id', 'modal_stdGrade_'+i));
+                        $('.modal #modal_gradeList').append($('<tr>'));
 
                         $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['userName']));
                         $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((100 / StudentData['allCount']) * StudentData['allRightCount'])));
@@ -823,14 +785,14 @@
                             }
                     */
 
-                    $('#toggle_wrong_answers').empty();
+                    $('#modal_studentWrongAnswers').empty();
 
                     var wrongsData = data['wrongs'];
 
                     for(var i = 0 ; i < wrongsData.length ; i++ ){
 
                         for(var j = 0 ; j < 3 ; j++) {
-                            $('#toggle_wrong_answers').append($('<tr>').attr('id', 'toggle_wrong_'+wrongsData[i]['number']+"_"+ j));
+                            $('#modal_studentWrongAnswers').append($('<tr>').attr('id', 'toggle_wrong_'+wrongsData[i]['number']+"_"+ j));
 
                             switch (j) {
                                 case 0 :
@@ -866,13 +828,69 @@
                         }
 
                     }
-
                 },
                 error: function (data) {
                     alert("해당 학생별 오답 문제 가져오기");
                 }
             });
 
+        }
+
+        //전체 점수와 평균점수들 로드하기
+        //modal-body (학생점수)
+        function getAllGrades(data){
+
+            var StudentData = data['races'];
+            var StudentScore = makingStudentChartData(data);
+
+            var totalGrade = 0;
+            var totalVoca = 0;
+            var totalGrammer = 0;
+            var totalWord = 0;
+            var totalRight = 0;
+
+            //modal페이지 초기화하고 타입에 맞는 페이지 제작
+            //0 -> 레이스 성적표
+            makingModalPage(0);
+
+            for(var i = 0 ; i < StudentData.length ; i++){
+
+                $('#modal_raceName_teacher').text(StudentData[i]['listName'] +"  /  " +StudentData[i]['teacherName'] );
+                $('#modal_date').text(StudentData[i]['year']+"년 "+StudentData[i]['month']+"월 "+StudentData[i]['day']+"일");
+
+                $('.modal #modal_gradeList').append($('<tr>').attr('id', 'modal_Grade_'+i));
+
+                $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['userName']));
+                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
+                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
+                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
+                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
+                $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
+
+                //시험친 학생들 명단 출력
+                $('#modal_studentList').append($('<tr id="modal_studentList'+i+'">'));
+
+                $('#modal_studentList' + i).append($('<td>').text(i+1));
+                $('#modal_studentList' + i).append($('<td>')
+                    .append($('<a href="#">')
+                        .text(StudentData[i]['userName']))
+                    .attr('id',StudentData[i]['userId'])
+                    .attr('name',StudentData[i]['raceId'])
+                    .attr('class','toggle_stdList'));
+
+                totalGrade += StudentScore['total_data'][1][i]['y'];
+                totalVoca += StudentScore['voca_data'][1][i]['y'];
+                totalGrammer += StudentScore['grammer_data'][1][i]['y'];
+                totalWord += StudentScore['word_data'][1][i]['y'];
+                totalRight += StudentData[i]['allRightCount'];
+            }
+
+            //modal-footer 총 점수들 표시
+            $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / StudentData.length)+
+                " / 어휘: "+parseInt(totalVoca / StudentData.length)+
+                " / 문법: "+parseInt(totalGrammer / StudentData.length)+
+                " / 독해: "+parseInt(totalWord / StudentData.length)+
+                " / 갯수: "+parseInt(totalRight / StudentData.length));
         }
 
         //해당 레이스안에서 나온 오답들 가져오기
@@ -914,30 +932,33 @@
                             }
                     */
 
-                    $('#wrong_detail').empty();
 
+                    //오답리스트 로드할 위치(id값)를 변수에 담기
+                    var WrongList = "modal_allWrongAnswerList";
                     var wrongsData = data['wrongs'];
+
+                    $('#'+WrongList).empty();
 
                     for(var i = 0 ; i < wrongsData.length ; i++ ){
 
                         for(var j = 0 ; j < 3 ; j++) {
-                            $('#wrong_detail').append($('<tr>').attr('id', 'toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j));
+                            $('#' + WrongList).append($('<tr>').attr('id', WrongList + wrongsData[i]['number']+"_"+ j));
 
                             switch (j) {
                                 case 0 :
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['rightAnswerCount']+" / "+wrongsData[i]['userCount']).attr('rowSpan',3));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['rightAnswerCount']+" / "+wrongsData[i]['userCount']).attr('rowSpan',3));
 
                                     break;
                                 case 1 :
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+0));
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+1));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 0));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 1));
 
                                     break;
                                 case 2 :
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+2));
-                                    $('#toggle_wrong_detail_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','wrong_detail_'+wrongsData[i]['number']+"_"+3));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 2));
+                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 3));
                                     break;
                             }
                         }
@@ -946,16 +967,16 @@
 
                             //정답 부분은 색깔 주기
                             if (j == 0){
-                                $('#wrong_detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
+                                $('#wrongExample_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
 
                             }else {
                                 //지문에 오답자가 한명도 없을 때
                                 if(wrongsData[i]['example'+j+"Count"] == 0){
-                                    $('#wrong_detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
+                                    $('#wrongExample_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
 
                                 }else {
                                     //오답자가 있는경우
-                                    $('#wrong_detail_' + wrongsData[i]['number'] + "_" + j).text(wrongsData[i]['example' + j])
+                                    $('#wrongExample_' + wrongsData[i]['number'] + "_" + j).text(wrongsData[i]['example' + j])
                                         .append($('<div>').css({display:"inline",float:"right"}).text(wrongsData[i]['example' + j + "Count"] + "명"));
                                 }
                             }
@@ -1007,7 +1028,7 @@
                             }
                     */
 
-                    $('#toggle_wrong_answers').empty();
+                    $('#modal_studentWrongAnswers').empty();
 
                     var wrongsData = data['wrongs'];
 
@@ -1330,7 +1351,7 @@
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentRetestGradeCard">')
-                                        .attr('id',stdHomework[i]['raceId']).attr('name',stdHomework['userId']).text("응시")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시")));
 
                                 break;
                         }
@@ -1347,7 +1368,7 @@
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentWrongGradeCard">')
-                                        .attr('id',stdHomework[i]['raceId']).attr('name',stdHomework['userId']).text("제출")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출")));
 
                                 break;
                         }
@@ -1361,13 +1382,6 @@
                 }
             });
         }
-
-
-        //학생 한명 클릭하면 개인성적 가져오기
-        $(document).on('click','.stdList',function () {
-            getStudentGrade(this.id);
-
-        });
 
         //학생 클릭시 해당 학생 개인성적 조회 및 그래프 로드
         function getStudentGrade(userId) {
@@ -1439,6 +1453,7 @@
                             switch (raceData[i]['retestState']){
                                 case "not" :
                                     $('#stdGrade_' + i).append($('<td>').text("PASS"));
+
                                     break;
                                 case "order" :
                                     $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
@@ -1859,14 +1874,15 @@
         }
 
         //재시험 점수 가져오기
-        function getRetestData(){
+        function getRetestData(userId,raceId,retestState){
 
 //        $postData = array(
 //            'userId'        => 1300000
 //            'raceId'        => 1
 //            'retestState'   => 1
 //        );
-            var reqData = {"userId" : 1300000, "retestState" : 1};
+            var reqData = {"userId" : 1300000, "raceId" : 1, "retestState" : 1};
+            console.log(reqData);
 
             $.ajax({
                 type: 'POST',
@@ -1915,6 +1931,45 @@
                 }
 
             })
+        }
+
+        //모달 페이지 내용값 초기화 및 타입별 모달페이지 제작
+        function makingModalPage(type){
+
+            //모달 페이지 내용값 초기화
+            $('.modal-content.studentGrade .modal-header #modal_date').empty();
+            $('.modal-content.studentGrade .modal-header #modal_raceName_teacher').empty();
+            $('.modal-content.studentGrade .modal-body #modal_gradeList').empty();
+            $('.modal-content.studentGrade .modal-footer #modal_total_grades').empty();
+
+            $('.modal-content.detail .modal-body #modal_studentList').empty();
+            $('.modal-content.detail .modal-body #modal_studentWrongAnswers').empty();
+
+
+            switch (type){
+                case 0 :
+                    //레이스 성적표
+                    $('.modal-content.studentGrade').show();    //학생 성적표
+                    $('.checkbox-grade').show();                //체크박스
+                    $('.toggle_only_students').show();          //학생별 오답체트
+
+                    break;
+                case 1 :
+                    //학생 개인 성적표 & 재시험 성적표
+                    $('.modal-content.studentGrade').show();    //학생 성적표
+                    $('.checkbox-grade').hide();                //체크박스
+                    $('.toggle_only_students').hide();          //학생별 오답체트
+
+                    break;
+                case 2 :
+                    //학생 개인 오답노트
+                    $('.modal-content.studentGrade').hide();    //학생 성적표
+                    $('.checkbox-grade').hide();                //체크박스
+                    $('.toggle_only_students').hide();          //학생별 오답체트
+
+                    break;
+            }
+
         }
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
@@ -2008,13 +2063,17 @@
     <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document" style="width: 1200px">
 
-            <div class="modal-content grade" style="padding: 10px 20px 0 20px;">
+            {{--PAGE SPLIT 1. 모달 학생점수 페이지--}}
+            <div class="modal-content studentGrade" style="padding: 10px 20px 0 20px;">
+
                 <div class="modal-header">
                     <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
 
-                    <div class="modal_date" style="text-align: right;"> </div>
+                    {{--INSERT DATA 1. 날짜--}}
+                    <div id="modal_date" style="text-align: right;"> </div>
 
-                    <div class="" id="modal_raceName_teacher" style="text-align:center;"></div>
+                    {{--INSERT DATA 2. 레이스이름과 교수님 성함--}}
+                    <div id="modal_raceName_teacher" style="text-align:center;"></div>
 
                 </div>
 
@@ -2042,18 +2101,23 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="grade_list">
+
+                        {{--INSERT DATA 3. 학생들 성적 테이블--}}
+                        <tbody id="modal_gradeList">
 
                         </tbody>
                     </table>
                 </div>
 
                 <div class="modal-footer">
-                    <div class="modal_total_list" id="modal_total_grade" style="width: 30%;float: right;"> </div>
+
+                    {{--PAGE SPLIT 2. 모달 전체 평균 점수들--}}
+                    {{--INSERT DATA 4. 전체 평균 점수들--}}
+                    <div id="modal_total_grades" style="width: 30%;float: right;"> </div>
                 </div>
             </div>
 
-            {{--상세 보기--}}
+            {{--PAGE SPLIT 3. 모달 상세보기 페이지--}}
             <div class="modal-content detail" style="margin-top: 10px;padding: 10px 20px 0 20px;">
                 <div class="modal-header">
                     <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
@@ -2061,11 +2125,14 @@
 
                 <div class="modal-body" style="text-align: left;margin: 0;">
 
+                    {{--PAGE SPLIT 4. 모달 학생과 오답문제 선택하는 체크박스--}}
+                    {{--INSERT DATA 5. 학생과 오답문제 선택하는 체크박스--}}
                     <div class="" style="text-align: center;">
-                        <input type="checkbox" checked="checked" name="gradeCase" id="checkbox_0" value="0">학생
-                        <input type="checkbox" checked="checked" name="gradeCase" id="checkbox_1" value="1">오답 문제
+                        <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_students">학생
+                        <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_wrong_answers">오답 문제
                     </div>
 
+                    {{--PAGE SPLIT 5. 모달 학생리스트와 학생별 오답노트 리스트--}}
                     <div id="toggle_only_students">
                         <div class="gradeDetail_student" style="height: 550px;width: 100%;">
                             <div class="modal_list_student" style="width: 100%;margin-top: 10px;">학생</div>
@@ -2084,8 +2151,8 @@
                                         </tr>
                                         </thead>
 
-                                        {{--getStudent()로 학생들 불러오기--}}
-                                        <tbody id="toggle_student_list">
+                                        {{--INSERT DATA 6. 해당 레이스를 시험친 학생리스트--}}
+                                        <tbody id="modal_studentList">
 
                                         </tbody>
 
@@ -2111,8 +2178,8 @@
                                         </tr>
                                         </thead>
 
-                                        {{--getStudent()로 학생들 불러오기--}}
-                                        <tbody id="toggle_wrong_answers">
+                                        {{--INSERT DATA 7. 해당 학생의 오답 리스트--}}
+                                        <tbody id="modal_studentWrongAnswers">
 
                                         </tbody>
 
@@ -2122,6 +2189,7 @@
                         </div>
                     </div>
 
+                    {{--PAGE SPLIT 6. 모달 레이스 전체 오답노트 리스트--}}
                     <div id="toggle_only_wrong_answers" class="" style="width: 100%;clear: left">
 
                         <div class="modal_list_wrong" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제</div>
@@ -2141,7 +2209,8 @@
                             </tr>
                             </thead>
 
-                            <tbody id="wrong_detail">
+                            {{--INSERT DATA 8. 해당 레이스의 오답 리스트--}}
+                            <tbody id="modal_allWrongAnswerList">
 
                             </tbody>
 
@@ -2165,7 +2234,7 @@
 
                     <div class="modal_student_date" style="width: 100%;text-align: right;"> </div>
 
-                    <div class="" id="modal_student_raceName_teacher" style="width: 100%;text-align: center;"> </div>
+                    <div class="" id="modal_RaceNameAndTeacher" style="width: 100%;text-align: center;"> </div>
 
                 </div>
                 <div class="modal-body" style="text-align: left;margin: 0;">
@@ -2197,8 +2266,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                <input type="hidden" name="hiddenValue" id="hiddenValue" value="" />
 
                 <div class="modal-footer">
                 </div>

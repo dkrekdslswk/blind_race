@@ -1016,7 +1016,7 @@
     </div>
 
     <div class="hidden" id="record_feedback">
-        @include('Recordbox.record_feedback')
+        @include('Recordbox.recordbox_student_feedback')
     </div>
 
 </div>
