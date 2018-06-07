@@ -99,7 +99,7 @@ class UserController extends Controller{
             );
         }
 
-        return view('homepage')->with('response', $returnValue);
+        return $returnValue;
     }
 
     // 회원 정보 수정
