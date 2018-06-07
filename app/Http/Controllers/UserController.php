@@ -16,7 +16,7 @@ class UserController extends Controller{
             $returnValue = array(
                 'check' => true,
                 'loginCheck' => true,
-                'userName' => $userData['name'],
+                'userName' => $userData['userName'],
                 'classification' => $userData['classification']
             );
         } else {
