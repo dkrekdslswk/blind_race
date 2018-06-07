@@ -21,6 +21,8 @@ class VerifyCsrfToken extends Middleware
         '/raceController/retestEnd',
 
         '/mobileGetWrongs',
-        '/mobileInsertWrongs'
+        '/mobileInsertWrongs',
+
+        '/mobileStudentGroupsGet'
     ];
 }
