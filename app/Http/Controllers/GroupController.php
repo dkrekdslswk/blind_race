@@ -97,8 +97,8 @@ class GroupController extends Controller{
                     'gs.userNumber' => $userData['userId']
                 ])
                 ->join('groups as g', 'g.number', '=', 'gs.groupNumber')
-                ->join('races as r', 'r.groupNumber', '=', 'g.number')
-                ->join('raceUsers as ru', function ($join){
+                ->leftJoin('races as r', 'r.groupNumber', '=', 'g.number')
+                ->leftJoin('raceUsers as ru', function ($join){
                     $join->on('ru.raceNumber', '=', 'r.number');
                     $join->on('ru.userNumber', '=', 'gs.userNumber');
                 })

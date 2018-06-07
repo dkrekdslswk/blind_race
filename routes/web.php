@@ -182,8 +182,10 @@ Route::post('/recordBoxController/selectQnAs','RecordBoxController@selectQnAs');
 Route::post('/recordBoxController/selectQnA','RecordBoxController@selectQnA');
 Route::post('/recordBoxController/updateAnswer','RecordBoxController@updateAnswer');
 // 모바일용
+Route::post('/mobileGetStudents','RecordBoxController@mobileGetStudents');
 Route::post('/mobileGetWrongs','RecordBoxController@mobileGetWrongs');
 Route::post('/mobileInsertWrongs','RecordBoxController@mobileInsertWrongs');
+
 
 /*
  * 그룹 컨트롤러

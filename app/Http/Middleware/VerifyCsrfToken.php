@@ -22,6 +22,7 @@ class VerifyCsrfToken extends Middleware
 
         '/mobileGetWrongs',
         '/mobileInsertWrongs',
+        '/mobileGetStudents',
 
         '/mobileStudentGroupsGet'
     ];
