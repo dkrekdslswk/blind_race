@@ -208,7 +208,7 @@
                 raceId = $(this).attr('id');
                 userId = $(this).attr('name');
 
-                getRetestData();
+                getRetestData(userId,raceId);
             });
 
             //학생 상세정보에서 학생 클릭시 오답들 로드
@@ -652,7 +652,7 @@
                     */
 
                     //전체 점수와 평균 점수들 로드하기
-                    getAllGrades(data);
+                    makingModalPage(raceId,data,0);
 
                     //틀린 오답문제들 전부 로드하기
                     getRaceWrongAnswer(raceId);
@@ -668,7 +668,7 @@
             //value = {userId : 1300000}
             //value = {raceId : 1}
 
-            var reqData = {'raceId' : raceId};
+            var reqData = {'raceId' : raceId , 'userId' : userId};
 
             $.ajax({
                 type: 'POST',
@@ -712,35 +712,18 @@
                     */
 
                     var StudentData;
+                    console.log(data);
 
-                    for(var i = 0 ; i < data['races'].length ; i++){
+/*                    for(var i = 0 ; i < data['races'].length ; i++){
                         if (userId == data['races'][i]['userId']){
                             StudentData = data['races'][i];
                         }
                     }
 
-                    $('.modal-header #modal_date').empty();
-                    $('.modal-header #modal_RaceNameAndTeacher').empty();
-                    $('.modal-body #modal_gradeList').empty();
-                    $('.modal-footer #modal_total_grades').empty();
-
-                    $('.modal-header #modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
-                    $('.modal-header #modal_RaceNameAndTeacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
-
-                    for(var i = 0 ; i < 1 ; i++){
-                        $('.modal #modal_gradeList').append($('<tr>'));
-
-                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['userName']));
-                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((100 / StudentData['allCount']) * StudentData['allRightCount'])));
-                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['vocabularyCount']) * StudentData['vocabularyRightCount'])));
-                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['grammarCount']) * StudentData['grammarRightCount'])));
-                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['wordCount']) * StudentData['wordRightCount'])));
-                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['allRightCount']+"/"+StudentData['allCount']));
-
-                    }
+                    makingModalPage(raceId,StudentData,1);
 
                     $('#details_record').empty();
-                    getStudentWrongAnswer(userId,raceId);
+                    getStudentWrongAnswer(userId,raceId);*/
 
                 },
                 error: function (data) {
@@ -834,63 +817,6 @@
                 }
             });
 
-        }
-
-        //전체 점수와 평균점수들 로드하기
-        //modal-body (학생점수)
-        function getAllGrades(data){
-
-            var StudentData = data['races'];
-            var StudentScore = makingStudentChartData(data);
-
-            var totalGrade = 0;
-            var totalVoca = 0;
-            var totalGrammer = 0;
-            var totalWord = 0;
-            var totalRight = 0;
-
-            //modal페이지 초기화하고 타입에 맞는 페이지 제작
-            //0 -> 레이스 성적표
-            makingModalPage(0);
-
-            for(var i = 0 ; i < StudentData.length ; i++){
-
-                $('#modal_raceName_teacher').text(StudentData[i]['listName'] +"  /  " +StudentData[i]['teacherName'] );
-                $('#modal_date').text(StudentData[i]['year']+"년 "+StudentData[i]['month']+"월 "+StudentData[i]['day']+"일");
-
-                $('.modal #modal_gradeList').append($('<tr>').attr('id', 'modal_Grade_'+i));
-
-                $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['userName']));
-                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
-                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
-                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
-                $('#modal_Grade_' + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
-                $('#modal_Grade_' + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
-
-                //시험친 학생들 명단 출력
-                $('#modal_studentList').append($('<tr id="modal_studentList'+i+'">'));
-
-                $('#modal_studentList' + i).append($('<td>').text(i+1));
-                $('#modal_studentList' + i).append($('<td>')
-                    .append($('<a href="#">')
-                        .text(StudentData[i]['userName']))
-                    .attr('id',StudentData[i]['userId'])
-                    .attr('name',StudentData[i]['raceId'])
-                    .attr('class','toggle_stdList'));
-
-                totalGrade += StudentScore['total_data'][1][i]['y'];
-                totalVoca += StudentScore['voca_data'][1][i]['y'];
-                totalGrammer += StudentScore['grammer_data'][1][i]['y'];
-                totalWord += StudentScore['word_data'][1][i]['y'];
-                totalRight += StudentData[i]['allRightCount'];
-            }
-
-            //modal-footer 총 점수들 표시
-            $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / StudentData.length)+
-                " / 어휘: "+parseInt(totalVoca / StudentData.length)+
-                " / 문법: "+parseInt(totalGrammer / StudentData.length)+
-                " / 독해: "+parseInt(totalWord / StudentData.length)+
-                " / 갯수: "+parseInt(totalRight / StudentData.length));
         }
 
         //해당 레이스안에서 나온 오답들 가져오기
@@ -1431,67 +1357,69 @@
                                         }
                     */
 
-                        var ChartData = makingStudentChartData(data);
-                        var raceData = data['races'];
-                        makingStudentChart(ChartData);
+                    var raceData = data['races'];
+                    var ChartData = makingStudentChartData(data);
 
-                        $('#studentGradeList').empty();
+                    makingStudentChart(ChartData);
 
-                        for( var i = 0 ; i < raceData.length ; i++ ){
-                            $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
+                    $('#studentGradeList').empty();
+
+                    for( var i = 0 ; i < raceData.length ; i++ ){
+                        $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
+                    }
+
+                    for( var i = 0 ; i < raceData.length ; i++ ) {
+                        $('#stdGrade_' + i).append($('<td>').text(i+1));
+                        $('#stdGrade_' + i).append($('<td>').text(raceData[i]['year']+"년 "+raceData[i]['month']+"월 "+raceData[i]['day']+"일"));
+                        $('#stdGrade_' + i).append($('<td>').text(raceData[i]['listName']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][i]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][i]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][i]['y']));
+                        $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][i]['y']));
+
+                        switch (raceData[i]['retestState']){
+                            case "not" :
+                                $('#stdGrade_' + i).append($('<td>').text("PASS"));
+
+                                break;
+                            case "order" :
+                                $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+
+                                break;
+                            case "clear" :
+                                $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentRetestGradeCard">')
+                                        .attr('id',raceData[i]['raceId']).attr('name',userId).text("응시")));
+
+                                break;
+                        }
+                        //임시로 yes로 바꿈
+                        raceData[i]['wrongState'] = "clear";
+
+                        switch (raceData[i]['wrongState']){
+                            case "not" :
+                                $('#stdGrade_' + i).append($('<td>').text("PASS"));
+
+                                break;
+                            case "order" :
+                                $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
+
+                                break;
+                            case "clear" :
+                                $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
+                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentWrongGradeCard">')
+                                        .attr('id',raceData[i]['raceId']).attr('name',userId).text("제출")));
+
+                                break;
                         }
 
-                        for( var i = 0 ; i < raceData.length ; i++ ) {
-                            $('#stdGrade_' + i).append($('<td>').text(i+1));
-                            $('#stdGrade_' + i).append($('<td>').text(raceData[i]['year']+"년 "+raceData[i]['month']+"월 "+raceData[i]['day']+"일"));
-                            $('#stdGrade_' + i).append($('<td>').text(raceData[i]['listName']));
-                            $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][i]['y']));
-                            $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][i]['y']));
-                            $('#stdGrade_' + i).append($('<td>').text(ChartData['grammer_data'][1][i]['y']));
-                            $('#stdGrade_' + i).append($('<td>').text(ChartData['word_data'][1][i]['y']));
+                        $('#stdGrade_'+i).append($('<td>').attr('class','modal_openStudentGradeCard')
+                            .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                .attr('id',raceData[i]['raceId']).attr('name',userId).text("성적표")));
 
-                            switch (raceData[i]['retestState']){
-                                case "not" :
-                                    $('#stdGrade_' + i).append($('<td>').text("PASS"));
+                    }
 
-                                    break;
-                                case "order" :
-                                    $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
-
-                                    break;
-                                case "clear" :
-                                    $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
-                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentRetestGradeCard">')
-                                            .attr('id',raceData[i]['raceId']).attr('name',userId).text("응시")));
-
-                                    break;
-                            }
-                            //임시로 yes로 바꿈
-                            raceData[i]['wrongState'] = "clear";
-
-                            switch (raceData[i]['wrongState']){
-                                case "not" :
-                                    $('#stdGrade_' + i).append($('<td>').text("PASS"));
-
-                                    break;
-                                case "order" :
-                                    $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
-
-                                    break;
-                                case "clear" :
-                                    $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
-                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentWrongGradeCard">')
-                                            .attr('id',raceData[i]['raceId']).attr('name',userId).text("제출")));
-
-                                    break;
-                            }
-
-                            $('#stdGrade_'+i).append($('<td>').attr('class','modal_openStudentGradeCard')
-                                .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_studentGradeCard">')
-                                    .attr('id',raceData[i]['raceId']).attr('name',userId).text("성적표")));
-                        }
-
-                    },
+                },
                 error: function (data) {
                     alert("학생별 최근 레이스 값 불러오기 에러");
                 }
@@ -1874,14 +1802,14 @@
         }
 
         //재시험 점수 가져오기
-        function getRetestData(userId,raceId,retestState){
+        function getRetestData(userId,raceId){
 
 //        $postData = array(
 //            'userId'        => 1300000
 //            'raceId'        => 1
 //            'retestState'   => 1
 //        );
-            var reqData = {"userId" : 1300000, "raceId" : 1, "retestState" : 1};
+            var reqData = {"userId" : userId, "raceId" : raceId, "retestState" : 1};
             console.log(reqData);
 
             $.ajax({
@@ -1934,7 +1862,7 @@
         }
 
         //모달 페이지 내용값 초기화 및 타입별 모달페이지 제작
-        function makingModalPage(type){
+        function makingModalPage(raceId,allData,type){
 
             //모달 페이지 내용값 초기화
             $('.modal-content.studentGrade .modal-header #modal_date').empty();
@@ -1945,30 +1873,126 @@
             $('.modal-content.detail .modal-body #modal_studentList').empty();
             $('.modal-content.detail .modal-body #modal_studentWrongAnswers').empty();
 
+            var StudentData = new Array();
+            var StudentScore = new Array();
+
+            var MODALID_gradeList_tr = "modal_grade_";
+            var MODALID_studentList_tr = "modal_student_";
+
+            var totalGrade = 0;
+            var totalVoca = 0;
+            var totalGrammer = 0;
+            var totalWord = 0;
+            var totalRight = 0;
+
 
             switch (type){
+
                 case 0 :
-                    //레이스 성적표
+                    //레이스 성적표 만들기
+                    //data -> 레이스에 관한 모든 데이터(리턴값 그대로)
+                    StudentData = allData['races'];
+                    StudentScore = makingStudentChartData(allData);
+
                     $('.modal-content.studentGrade').show();    //학생 성적표
-                    $('.checkbox-grade').show();                //체크박스
+                    $('.modal_checkbox').show();                //체크박스
                     $('.toggle_only_students').show();          //학생별 오답체트
 
-                    break;
-                case 1 :
-                    //학생 개인 성적표 & 재시험 성적표
-                    $('.modal-content.studentGrade').show();    //학생 성적표
-                    $('.checkbox-grade').hide();                //체크박스
-                    $('.toggle_only_students').hide();          //학생별 오답체트
+
+                    $('#modal_raceName_teacher').text(StudentData[0]['listName'] +"  /  " +StudentData[0]['teacherName'] );
+                    $('#modal_date').text(StudentData[0]['year']+"년 "+StudentData[0]['month']+"월 "+StudentData[0]['day']+"일");
+
+                    for(var i = 0 ; i < StudentData.length ; i++){
+
+                        $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
+
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData[i]['userName']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
+
+                        //시험친 학생들 명단 출력
+                        $('#modal_studentList').append($('<tr>').attr('id', MODALID_studentList_tr + i));
+
+                        $('#' + MODALID_studentList_tr + i).append($('<td>').text(i+1));
+                        $('#' + MODALID_studentList_tr + i).append($('<td>')
+                            .append($('<a href="#">')
+                                .text(StudentData[i]['userName']))
+                            .attr('id',StudentData[i]['userId'])
+                            .attr('name',StudentData[i]['raceId'])
+                            .attr('class','toggle_stdList'));
+
+                        totalGrade += StudentScore['total_data'][1][i]['y'];
+                        totalVoca += StudentScore['voca_data'][1][i]['y'];
+                        totalGrammer += StudentScore['grammer_data'][1][i]['y'];
+                        totalWord += StudentScore['word_data'][1][i]['y'];
+                        totalRight += StudentData[i]['allRightCount'];
+                    }
+
+                    //modal-footer 총 점수들 표시
+                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / StudentData.length)+
+                        " / 어휘: "+parseInt(totalVoca / StudentData.length)+
+                        " / 문법: "+parseInt(totalGrammer / StudentData.length)+
+                        " / 독해: "+parseInt(totalWord / StudentData.length)+
+                        " / 갯수: "+parseInt(totalRight / StudentData.length));
+
+                    //오답들
+                    getRaceWrongAnswer(raceId);
 
                     break;
+
+                /*******************************************************************************************************/
+
+                case 1 :
+                    //학생 개인 성적표 & 재시험 성적표 만들기
+                    //data -> 해당 학생 1명의 데이터 (data리턴된값의 ['raceId'] => data['raceId'][i])
+                    StudentData = allData;
+                    StudentScore = makingStudentChartData(allData);
+
+                    $('.modal-content.studentGrade').show();    //학생 성적표
+                    $('.modal_checkbox').hide();                //체크박스
+                    $('.toggle_only_students').hide();          //학생별 오답체트
+
+                    //날짜출력
+                    $('.modal-header #modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+                    //레이스이름과 교수님이름 출력
+                    $('.modal-header #modal_RaceNameAndTeacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
+
+
+                    for(var i = 0 ; i < 1 ; i++){
+                        $('.modal #modal_gradeList').append($('<tr>'));
+
+                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['userName']));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((100 / StudentData['allCount']) * StudentData['allRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['vocabularyCount']) * StudentData['vocabularyRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['grammarCount']) * StudentData['grammarRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(parseInt((33 / StudentData['wordCount']) * StudentData['wordRightCount'])));
+                        $('#modal_stdGrade_' + i).append($('<td>').text(StudentData['allRightCount']+"/"+StudentData['allCount']));
+
+                    }
+
+                    $('#details_record').empty();
+                    getStudentWrongAnswer(userId,raceId);
+
+
+                    break;
+
+                /*******************************************************************************************************/
+
                 case 2 :
-                    //학생 개인 오답노트
+                    //학생 개인 오답노트 만들기
                     $('.modal-content.studentGrade').hide();    //학생 성적표
-                    $('.checkbox-grade').hide();                //체크박스
+                    $('.modal_checkbox').hide();                //체크박스
                     $('.toggle_only_students').hide();          //학생별 오답체트
 
                     break;
             }
+
+        }
+
+        function makingGradeCard(){
 
         }
 
@@ -2127,7 +2151,7 @@
 
                     {{--PAGE SPLIT 4. 모달 학생과 오답문제 선택하는 체크박스--}}
                     {{--INSERT DATA 5. 학생과 오답문제 선택하는 체크박스--}}
-                    <div class="" style="text-align: center;">
+                    <div class="modal_checkbox" style="text-align: center;">
                         <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_students">학생
                         <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_wrong_answers">오답 문제
                     </div>
