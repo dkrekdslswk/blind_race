@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
+    const RETEST_NOT = 0;
+    const RETEST_STATE = 1;
+
     // 차트정보 가져오기
     public function getChart(Request $request){
         // 현재 시간가져오기 기본값 가져오기
@@ -267,11 +270,18 @@ class RecordBoxController extends Controller{
         $postData = array(
             'userId'        => $request->has('userId') ? $request->input('userId') : false,
             'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
-            'retestState'   => $request->has('retestState') ? $request->input('retestState') : false
+            'retestState'   => $request->has('retestState') ? $request->input('retestState') : 0,
+            'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저정보가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        // 모바일용, 세션 아이디 값을 보낼 경우 세션의 유저아이디 값을 사용
+        if ($request->has('sessionId')){
+            $postData['userId'] = $userData['userId'];
+        }
+
         if ($userData['check']) {
             // 조회 구분
             if($postData['userId'] && $postData['raceId'] && $postData['retestState']){

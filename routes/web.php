@@ -127,6 +127,7 @@ Route::get('/cbcSocketTest', function(){
  * 로그인 컨트롤러
  */
 // 웹용
+Route::post('/userController/loginCheck',"UserController@loginCheck");
 Route::post('/userController/webLogin',"UserController@webLogin");
 Route::post('/userController/webLogout',"UserController@webLogout");
 Route::post('/userController/userUpdate',"UserController@userUpdate");

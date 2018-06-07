@@ -6,6 +6,28 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
+    // 웹용 홈페이지 호출
+    public function loginCheck(Request $request){
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        // 반납값 설정
+        if ($userData['check']){
+            $returnValue = array(
+                'check' => true,
+                'loginCheck' => true,
+                'userName' => $userData['name'],
+                'classification' => $userData['classification']
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+        
+        return $returnValue;
+    }
+
     // 모바일 로그인
     public function mobileLogin(Request $request){
         $userData = $this->userLogin(
