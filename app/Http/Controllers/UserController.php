@@ -45,7 +45,7 @@ class UserController extends Controller{
                 $returnValue = array(
                     'check' => true,
                     'loginCheck' => true,
-                    'sessionId' => $this->sessionIdGet($userData['userId']),
+                    'sessionId' => $sessionId,
                     'userName' => $userData['name'],
                     'classification' => $userData['classification']
                 );
