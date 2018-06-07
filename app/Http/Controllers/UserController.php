@@ -145,17 +145,24 @@ class UserController extends Controller{
 
     // 웹 로그아웃
     public function webLogout(Request $request){
-        // 세션안 데이터 비우기
+        // 세션을 삭제
         DB::table('sessionDatas')
             ->where([
                 'number' => $request->session()->get('sessionId')
             ])
-            ->update([
-                'nick' => null,
-                'PIN' => null,
-                'characterNumber' => null,
-                'raceNumber' => null
-            ]);
+            ->delete();
+
+//        // 세션안 데이터 비우기
+//        DB::table('sessionDatas')
+//            ->where([
+//                'number' => $request->session()->get('sessionId')
+//            ])
+//            ->update([
+//                'nick' => null,
+//                'PIN' => null,
+//                'characterNumber' => null,
+//                'raceNumber' => null
+//            ]);
 
         // 세션 비우기
         $request->session()->flush();
