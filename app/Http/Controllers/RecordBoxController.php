@@ -287,7 +287,7 @@ class RecordBoxController extends Controller{
 
         if ($userData['check']) {
             // 조회 구분
-            if($postData['userId'] && $postData['raceId'] && $postData['retestState']){
+            if($postData['userId'] && $postData['raceId']){
                 $typeWhere = array(
                     'ru.userNumber' => $postData['userId'],
                     'ru.raceNumber' => $postData['raceId'],
