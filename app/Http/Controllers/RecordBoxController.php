@@ -773,11 +773,12 @@ class RecordBoxController extends Controller{
         $postData = array(
             'title' => $request->has('title') ? $request->input('title') : false,
             'question' => $request->has('question') ? $request->input('question') : false,
-            'teacherId' => $request->has('teacherId') ? $request->input('teacherId') : false
+            'teacherId' => $request->has('teacherId') ? $request->input('teacherId') : false,
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 로그인 확인
         if ($userData['check'] && $postData['title'] && $postData['question'] && $postData['teacherId']){
@@ -812,11 +813,14 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-
     // QnAs 가져오기
     public function selectQnAs(Request $request){
+        $postData = array(
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
+        );
+
         // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         if ($userData['check']){
             // 유저 권한별 정리
@@ -883,15 +887,15 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-
     // 조회하기
     public function selectQnA(Request $request){
         $postData = array(
-            'QnAId' => $request->input('QnAId')
+            'QnAId' => $request->input('QnAId'),
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         if ($userData['check']){
             // 유저 권한별 정리
@@ -961,16 +965,16 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-
     // 답변하기
     public function updateAnswer(Request $request){
         $postData = array(
             'QnAId' => $request->has('QnAId') ? $request->input('QnAId') : false,
-            'answer' => $request->has('answer') ? $request->input('answer') : false
+            'answer' => $request->has('answer') ? $request->input('answer') : false,
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 확인
         if ($userData['check'] && $postData['QnAId'] && $postData['answer']){
@@ -1008,6 +1012,24 @@ class RecordBoxController extends Controller{
         }
 
         return $returnValue;
+    }
+
+    // 모바일용 피드백과 질문
+    // 질문하기
+    public function mobileInsertQuestion(Request $request){
+
+    }
+    // QnAs 가져오기
+    public function mobileSelectQnAs(Request $request){
+
+    }
+    // 조회하기
+    public function mobileSelectQnA(Request $request){
+
+    }
+    // 답변하기
+    public function mobileUpdateAnswer(Request $request){
+
     }
 
     // 기간내의 차트 읽어오기

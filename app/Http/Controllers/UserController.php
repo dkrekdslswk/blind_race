@@ -163,6 +163,8 @@ class UserController extends Controller{
                 'number' => $postData['sessionId']
             ])
             ->delete();
+
+        return array('check' => true);
     }
 
     // 웹 로그아웃
@@ -188,6 +190,8 @@ class UserController extends Controller{
 
         // 세션 비우기
         $request->session()->flush();
+
+        return array('check' => true);
     }
 
     // 유저 로그인 확인
