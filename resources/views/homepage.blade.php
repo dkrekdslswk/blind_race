@@ -36,6 +36,8 @@
                                 break;
                         }
 
+                        $('#login_button').text("Log-Out");
+                        $('#login_button').attr("onclick","tryLogout()");
                     }
                     else{
                         $('#home_race').attr("href", "#");
@@ -43,7 +45,7 @@
 
                 },
                 error: function(request, status, error) {
-                    console.log("안드로이드 join 실패"+roomPin);
+
                 }
             });
             //ajax끝
@@ -82,14 +84,13 @@
 
                 },
                 error: function(request, status, error) {
-                    console.log("안드로이드 join 실패"+roomPin);
+
                 }
             });
             //ajax끝
         }
 
-        function trylogout(){
-
+        function tryLogout(){
             $.ajax({
                 type: 'POST',
                 url: "{{url('/userController/webLogout')}}",
@@ -97,18 +98,13 @@
                 async:false,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 success: function (result) {
-                    if(result['check'] == true) {
-                        $('#login_button').text("Log-in");
-                        $('#login_button').attr("onclick","tryLogin()");
-                        alert("로그아웃되었습니다.");
-                    }
-                    else{
-
-                    }
-
+                    $('#login_button').text("Log-in");
+                    $('#login_button').attr("onclick","tryLogin()");
+                    alert("로그아웃되었습니다.");
+                    window.location.reload();
                 },
                 error: function(request, status, error) {
-                    console.log("안드로이드 join 실패"+roomPin);
+                    alert("로그아웃 실패 ");
                 }
             });
         }
