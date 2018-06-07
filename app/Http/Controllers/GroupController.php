@@ -76,6 +76,64 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
+    // 학생 그룹 목록 가져오기
+    public function studentGroupsGet(Request $request){
+        $postData = array(
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
+        );
+
+        // 유저정보 가져오기
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        if ($userData['check'] && ($userData['classification'] == 'student')){
+            $groupsData = DB::table('groupStudents as gs')
+                ->select(
+                    'g.number as groupId',
+                    'g.name as groupName',
+                    DB::raw('count(CASE WHEN ru.retestState = "order" THEN 1 END) as retestStateCount'),
+                    DB::raw('count(CASE WHEN ru.wrongState = "order" THEN 1 END) as wrongStateCount')
+                )
+                ->where([
+                    'gs.userNumber' => $userData['userId']
+                ])
+                ->join('groups as g', 'g.number', '=', 'gs.groupNumber')
+                ->join('races as r', 'r.groupNumber', '=', 'g.number')
+                ->join('raceUsers as ru', function ($join){
+                    $join->on('ru.raceNumber', '=', 'r.number');
+                    $join->on('ru.userNumber', '=', 'gs.userNumber');
+                })
+                ->groupBy('g.number')
+                ->orderBy('g.number', 'DESC')
+                ->get();
+
+            $groups = array();
+            foreach ($groupsData as $groupData){
+                array_push($groups, array(
+                    'groupId' => $groupData->groupId,
+                    'groupName' => $groupData->groupName,
+                    'retestStateCount' => $groupData->retestStateCount,
+                    'wrongStateCount' => $groupData->wrongStateCount
+                ));
+            }
+
+            $returnValue = array(
+                'groups' => $groups,
+                'check' => true
+            );
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
+    }
+
+    // 모바일용 학생 그룹 목록 가져오기
+    public function mobileStudentGroupsGet(Request $request){
+        return $this->studentGroupsGet($request);
+    }
+
     // 그룹 정보 가져오기 root, teacher
     public function groupDataGet(Request $request){
         // 요구하는 값

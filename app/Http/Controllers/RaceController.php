@@ -826,7 +826,7 @@ class RaceController extends Controller{
             ->first();
 
         // 레이스가 존재할 경우 값을 입력
-        if($raceData){
+        if($raceData && $postData['quizId']){
             // 정답 미입력 처리
             if (!$postData['answer']){
                 $postData['answer'] = '';

@@ -123,13 +123,21 @@ Route::get('/cbcSocketTest', function(){
 
 /* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
 
-//Route::post('/store',"UserController@store");
-Route::post('/mobileLogin',"UserController@mobileLogin");
+/*
+ * 로그인 컨트롤러
+ */
+// 웹용
 Route::post('/userController/webLogin',"UserController@webLogin");
-Route::post('/mobileLogout',"UserController@mobileLogout");
 Route::post('/userController/webLogout',"UserController@webLogout");
 Route::post('/userController/userUpdate',"UserController@userUpdate");
+// 모바일용
+Route::post('/mobileLogin',"UserController@mobileLogin");
+Route::post('/mobileLogout',"UserController@mobileLogout");
 
+/*
+ * 레이스 컨트롤러
+ */
+// 웹용
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
 Route::post('/raceController/studentSet','RaceController@studentSet');
@@ -138,12 +146,17 @@ Route::post('/raceController/answerIn','RaceController@answerIn');
 Route::post('/raceController/result','RaceController@result');
 Route::post('/raceController/raceEnd','RaceController@raceEnd');
 Route::post('/raceController/retestSet','RaceController@retestSet');
+// 모바일, 웹 겸용
 Route::post('/raceController/retestStart','RaceController@retestStart');
 Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
 Route::post('/raceController/retestEnd','RaceController@retestEnd');
 // 모바일용
 Route::post('/getRetestListMobile','RaceController@getRetestListMobile');
 
+/*
+ * 문제나무 컨트롤러
+ */
+// 웹용
 Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
 Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
 Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList');
@@ -153,6 +166,10 @@ Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList'
 Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
 Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
 
+/*
+ * 레코드박스 컨트롤러
+ */
+// 웹용
 Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
 Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
 Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCheck');
@@ -167,7 +184,10 @@ Route::post('/recordBoxController/updateAnswer','RecordBoxController@updateAnswe
 Route::post('/mobileGetWrongs','RecordBoxController@mobileGetWrongs');
 Route::post('/mobileInsertWrongs','RecordBoxController@mobileInsertWrongs');
 
-
+/*
+ * 그룹 컨트롤러
+ */
+// 웹용
 Route::post('/groupController/groupsGet','GroupController@groupsGet');
 Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
 Route::post('/groupController/createGroup','GroupController@createGroup');
@@ -175,6 +195,9 @@ Route::post('/groupController/pushInvitation','GroupController@pushInvitation');
 Route::post('/groupController/selectUser','GroupController@selectUser');
 Route::post('/groupController/studentModify','GroupController@studentModify');
 Route::post('/groupController/studentGroupExchange','GroupController@studentGroupExchange');
+Route::post('/groupController/studentGroupsGet','GroupController@studentGroupsGet');
+// 모바일용
+Route::post('/mobileStudentGroupsGet','GroupController@mobileStudentGroupsGet');
 ?>
 
 
