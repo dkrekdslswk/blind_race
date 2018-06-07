@@ -206,6 +206,7 @@ class RaceController extends Controller{
             $sessionCheck = ($sessionUpdate == 1);
 
             // 갱신 성공시 유저정보 입력
+            $characters = array();
             if ($sessionCheck){
                 DB::table('raceUsers')
                     ->insert([
@@ -214,11 +215,19 @@ class RaceController extends Controller{
                         'retestState'   => 'not',
                         'wrongState'   => 'not'
                     ]);
+
+                $characters = DB::table('sessionDatas')
+                    ->where([
+                        'PIN' => $postData['roomPin']
+                    ])
+                    ->pluck('characterNumber')
+                    ->toArray();
             }
 
             // 반납값 정리
             $returnValue = array(
                 'sessionId'     => $postData['sessionId'],
+                'characters'    => $characters,
                 'check'         => $sessionCheck
             );
         } else {

@@ -1017,19 +1017,19 @@ class RecordBoxController extends Controller{
     // 모바일용 피드백과 질문
     // 질문하기
     public function mobileInsertQuestion(Request $request){
-
+        return $this->insertQuestion($request);
     }
     // QnAs 가져오기
     public function mobileSelectQnAs(Request $request){
-
+        return $this->selectQnAs($request);
     }
     // 조회하기
     public function mobileSelectQnA(Request $request){
-
+        return $this->selectQnA($request);
     }
     // 답변하기
     public function mobileUpdateAnswer(Request $request){
-
+        return $this->updateAnswer($request);
     }
 
     // 기간내의 차트 읽어오기
