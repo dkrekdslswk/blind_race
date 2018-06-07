@@ -47,10 +47,23 @@ class BlindDummyTableSeeder extends Seeder
                 'classification'    => array_get($user, 3)
             ]);
         }
-
+        
         // 그룹 정보
         $groupId = DB::table('groups')->insertGetId([
-            'name' => '3WDJ',
+            'name' => '3WDJ 특강 B반',
+            'teacherNumber' => $users[0][0]
+        ], 'number');
+
+        // 그룹에 학생 추가
+        for ($number = 2; $number < count($users); $number++) {
+            DB::table('groupStudents')->insert([
+                'groupNumber' => $groupId,
+                'userNumber' => $users[$number][0],
+            ]);
+        }
+        // 그룹 정보
+        $groupId = DB::table('groups')->insertGetId([
+            'name' => '3WDJ 정규 A반',
             'teacherNumber' => $users[0][0]
         ], 'number');
 
