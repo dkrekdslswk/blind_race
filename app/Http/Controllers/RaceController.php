@@ -220,6 +220,7 @@ class RaceController extends Controller{
                     ->where([
                         'PIN' => $postData['roomPin']
                     ])
+                    ->whereNotNull('characterNumber')
                     ->pluck('characterNumber')
                     ->toArray();
             }
@@ -294,6 +295,7 @@ class RaceController extends Controller{
                 ->where([
                     'PIN' => $postData['roomPin']
                 ])
+                ->whereNotNull('characterNumber')
                 ->pluck('characterNumber')
                 ->toArray();
 
