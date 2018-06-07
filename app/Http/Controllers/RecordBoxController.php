@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-    const RETEST_NOT = 0;
-    const RETEST_STATE = 1;
+    const RETEST_NOT_STATE  = 0;
+    const RETEST_STATE      = 1;
 
     // 차트정보 가져오기
     public function getChart(Request $request){
@@ -256,9 +256,11 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생들의 최근기록 조회 'userId'
+    // 학생의 최근기록 조회 'userId'
+    // + 학생 본인일 경우 자기 성적 조회 + 'groupId
     // 레이스를 친 학생들 정보 조회 'raceId'
     // 재시험 한 결과를 조회하기 위해서 사용 'userId', 'raceId', 'retestState' => 1
+    // + 학생 본인일 경우 자기 성적 조회
     public function getStudents(Request $request){
         // 요구하는 값
 //        $postData = array(
@@ -270,7 +272,8 @@ class RecordBoxController extends Controller{
         $postData = array(
             'userId'        => $request->has('userId') ? $request->input('userId') : false,
             'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
-            'retestState'   => $request->has('retestState') ? $request->input('retestState') : 0,
+            'groupId'       => $request->has('groupId') ? $request->input('groupId') : false,
+            'retestState'   => $request->has('retestState') ? $request->input('retestState') : self::RETEST_NOT_STATE,
             'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -278,7 +281,7 @@ class RecordBoxController extends Controller{
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 모바일용, 세션 아이디 값을 보낼 경우 세션의 유저아이디 값을 사용
-        if ($request->has('sessionId')){
+        if ($userData['classification'] == 'student'){
             $postData['userId'] = $userData['userId'];
         }
 
@@ -290,16 +293,21 @@ class RecordBoxController extends Controller{
                     'ru.raceNumber' => $postData['raceId'],
                     're.retest' => $postData['retestState']
                 );
-            }
-            else if($postData['userId']){
+            } else if($postData['userId'] && $postData['groupId']){
                 $typeWhere = array(
                     'ru.userNumber' => $postData['userId'],
-                    're.retest' => 0
+                    'r.groupNumber' => $postData['groupId'],
+                    're.retest' => self::RETEST_NOT_STATE
+                );
+            } else if($postData['userId']){
+                $typeWhere = array(
+                    'ru.userNumber' => $postData['userId'],
+                    're.retest' => self::RETEST_NOT_STATE
                 );
             } else if ($postData['raceId']){
                 $typeWhere = array(
                     'ru.raceNumber' => $postData['raceId'],
-                    're.retest' => 0
+                    're.retest' => self::RETEST_NOT_STATE
                 );
             } else {
                 $typeWhere = false;
@@ -405,6 +413,14 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
+    // 학생의 최근기록 조회 'userId', 'sessionId'
+    // + 학생 본인일 경우 자기 그룹내 성적 조회 + 'groupId
+    // 레이스를 친 학생들 정보 조회 'raceId', 'sessionId'
+    // 재시험 한 결과를 조회하기 위해서 사용 'userId', 'raceId', 'retestState' => 1
+    public function mobileGetStudents(Request $request){
+        return $this->getStudents($request);
+    }
+
     // 오답문제 조회하기 학생별 'userId', 'raceId'
     // 오답문제 조회하기 레이스 전체 'raceId'
     // => 유저가 학생일 경우 오답문제 조회하기 'raceId'
@@ -419,7 +435,7 @@ class RecordBoxController extends Controller{
         $postData = array(
             'userId'    => $request->has('userId') ? $request->input('userId') : false,
             'raceId'    => $request->has('raceId') ? $request->input('raceId') : false,
-            'retestState'   => $request->has('retestState') ? $request->input('retestState') : 0,
+            'retestState'   => $request->has('retestState') ? $request->input('retestState') : self::RETEST_NOT_STATE,
             'sessionId'   => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -660,7 +676,7 @@ class RecordBoxController extends Controller{
                     'ru.userNumber' => $userData['userId'],
                     'ru.raceNumber' => $postData['raceId'],
                     'ru.wrongState' => 'order',
-                    're.retest' => 0
+                    're.retest' => self::RETEST_NOT_STATE
                 ])
                 ->join('records as re', function ($join){
                     $join->on('re.userNo', '=', 'ru.userNumber');
@@ -687,7 +703,7 @@ class RecordBoxController extends Controller{
                             'raceNo' => $postData['raceId'],
                             'quizNo' => $wrong['quizId'],
                             'userNo' => $userData['userId'],
-                            'retest' => 0,
+                            'retest' => self::RETEST_NOT_STATE,
                             'answerCheck' => 'X'
                         ])
                         ->update($update);
@@ -702,7 +718,7 @@ class RecordBoxController extends Controller{
                         'ru.userNumber' => $userData['userId'],
                         'ru.raceNumber' => $postData['raceId'],
                         'ru.wrongState' => 'order',
-                        're.retest' => 0
+                        're.retest' => self::RETEST_NOT_STATE
                     ])
                     ->join('records as re', function ($join){
                         $join->on('re.userNo', '=', 'ru.userNumber');
@@ -1015,7 +1031,7 @@ class RecordBoxController extends Controller{
                 DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount')
             )
             ->where([
-                're.retest' => 0,
+                're.retest' => self::RETEST_NOT_STATE,
                 'r.groupNumber' => $groupId
             ])
             ->where(DB::raw('date(r.created_at)'), '>=', $startDate)

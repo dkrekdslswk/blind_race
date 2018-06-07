@@ -7,6 +7,7 @@ use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuizTreeController;
+use app\Http\Controllers\RecordBoxController;
 
 class RaceController extends Controller{
     // 리스트 선택 후 레이스 혹은 테스트를 생성
@@ -552,7 +553,7 @@ class RaceController extends Controller{
                 )
                 ->where([
                     're.raceNo' => $userData['raceId'],
-                    're.retest' => 0
+                    're.retest' => RecordBoxController::RETEST_NOT_STATE
                 ])
                 ->join('sessionDatas as s', 's.userNumber', '=', 're.userNo')
                 ->orderBy('rightCount', 's.userNumber')
@@ -930,7 +931,7 @@ class RaceController extends Controller{
                     ->where([
                         're.raceNo' => $userData['raceId'],
                         're.userNo' => $userData['userId'],
-                        're.retest' => 1
+                        're.retest' => RecordBoxController::RETEST_STATE
                     ])
                     ->groupBy(['re.userNo', 're.raceNo', 're.retest'])
                     ->first();
@@ -942,7 +943,7 @@ class RaceController extends Controller{
                 // 합격
                 if ($raceData->passingMark <= $score) {
                     // 미제출 문제 처리하기
-                    $this->omission($userData['userId'], $userData['raceId'], 0);
+                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_NOT_STATE);
 
                     // 통과 표시하기
                     DB::table('raceUsers')
