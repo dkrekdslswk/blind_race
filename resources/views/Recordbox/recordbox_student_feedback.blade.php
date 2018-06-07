@@ -62,14 +62,14 @@
 
 <script>
 
-        var loadFile = function(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                var output = document.getElementById('output');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+    var loadFile = function(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('output');
+            output.src = reader.result;
         };
+        reader.readAsDataURL(event.target.files[0]);
+    };
 
 </script>
 
@@ -94,7 +94,7 @@
             <td>18.04.17</td>
             <td>
                 <a href="#" data-toggle="modal" data-target="#Modal2">
-                [스쿠스쿠레이스2 - 3번] 질문있습니다.
+                    [스쿠스쿠레이스2 - 3번] 질문있습니다.
                 </a>
             </td>
             <td  id="feedbackCheckIcon" name="feedback_check" style="text-align: center">
@@ -123,6 +123,9 @@
         </div>
     </div>
 </div>
+
+<button class="btn btn-default" data-toggle="modal" data-target="#Modal_question">글쓰기</button>
+
 
 {{--Modal : select group--}}
 <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
