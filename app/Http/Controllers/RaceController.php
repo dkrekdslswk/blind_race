@@ -240,6 +240,79 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
+    // 레이스 시작전에 학생이 나갔을 경우
+    public function studentOut(Request $request){
+        // 받아야하는 값
+//        $postData = array(
+//            'roomPin'       => 123456,
+//            'sessionId'     => 2
+//        );
+        $postData = array(
+            'roomPin'       => $request->input('roomPin'),
+            'sessionId'     => $request->input('sessionId')
+        );
+
+        // 해당유저 확인
+        $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
+        $raceData = DB::table('races as r')
+            ->select([
+                'r.number as raceId',
+                'r.type as raceType'
+            ])
+            ->where([
+                'gs.userNumber'         => $userData['userId'],
+                's2.PIN'                => $postData['roomPin'],
+                's2.nick'               => ''
+            ])
+            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
+            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
+            ->first();
+
+        if ($raceData) {
+            // 유저 세션 갱신
+            DB::table('sessionDatas')
+                ->where([
+                    'number' => $postData['sessionId']
+                ])
+                ->update([
+                    'PIN'               => null,
+                    'raceNumber'        => null,
+                    'characterNumber'   => null,
+                    'nick'              => null,
+                ]);
+
+            DB::table('raceUsers')
+                ->where([
+                    'raceNumber'    => $raceData->raceId,
+                    'userNumber'    => $userData['userId']
+                ])
+                ->delete();
+
+            $characters = DB::table('sessionDatas')
+                ->where([
+                    'PIN' => $postData['roomPin']
+                ])
+                ->pluck('characterNumber')
+                ->toArray();
+
+            // 반납값 정리
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'characters'    => $characters,
+                'check'         => true
+            );
+        } else {
+            $returnValue = array(
+                'sessionId'     => $postData['sessionId'],
+                'check'         => false
+            );
+        }
+
+        return $returnValue;
+    }
+
     // 레이스 에서 학생이 닉네임과 캐릭터를 설정할 때
     public function studentSet(Request $request){
         // 받아야하는 값

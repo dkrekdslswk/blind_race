@@ -141,6 +141,7 @@ Route::post('/mobileLogout',"UserController@mobileLogout");
 // 웹용
 Route::post('/raceController/createRace','RaceController@createRace');
 Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/studentOut','RaceController@studentOut');
 Route::post('/raceController/studentSet','RaceController@studentSet');
 Route::post('/raceController/quizNext','RaceController@quizNext');
 Route::post('/raceController/answerIn','RaceController@answerIn');
