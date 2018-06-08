@@ -40,7 +40,7 @@ class CreateRaceUserTable extends Migration
             $table->foreign('wrongState')->references('name')->on('raceUserStates');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->foreign('wrong_at')->nullable();
+            $table->timestamp('wrong_at')->nullable();
         });
     }
 
