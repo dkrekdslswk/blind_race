@@ -142,8 +142,6 @@
                     //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
                     $('#nav_group_name').text(firstGroup.attr('name'));
 
-                    console.log(firstGroup.attr('name'));
-
                     //그룹아이디값을 상단 클래스 아이디값으로 변경
                     group_id = firstGroup.attr('id');
 
@@ -223,6 +221,7 @@
                         break;
                 }
 
+                //해당되는 날짜를 차트에 보여주기
                 getChartData_and_loadChart(group_id,startDate,defaultEndDate);
 
             });
@@ -267,7 +266,10 @@
 
             //학생 상세정보에서 학생 클릭시 오답들 로드
             $(document).on('click','.toggle_stdList',function () {
-                getStudentWrongAnswer($(this).attr('id'),$(this).attr('name'),"race");
+                raceId =$(this).attr('name');
+                userId = $(this).attr('id');
+
+                getStudentWrongAnswer(userId,raceId,"race");
 
             });
 
@@ -298,7 +300,6 @@
 
 
         });
-
 
         //날짜 조회 눌렀을 때 차트 출력
         function orderChart(){
@@ -460,7 +461,6 @@
                         }
                     }
 
-
                 },
                 error: function (data) {
                     alert("그룹에 속한 학생 에러");
@@ -602,7 +602,6 @@
                 }
             }*/
 
-
         }
 
         //성적표 출력
@@ -655,6 +654,7 @@
                     */
 
                     //전체 점수와 평균 점수들 로드하기
+                    //0은 전체 성적표
                     makingModalPage(raceId,data,0);
 
                 },
@@ -712,6 +712,7 @@
                                         }
                     */
 
+                    //1은 학생개인 성적표
                     makingModalPage(raceId,data,1);
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
 
@@ -1172,8 +1173,6 @@
 
                                 break;
                         }
-                        //임시로 yes로 바꿈
-                        raceData[i]['wrongState'] = "clear";
 
                         switch (raceData[i]['wrongState']){
                             case "not" :
