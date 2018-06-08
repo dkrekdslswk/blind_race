@@ -82,11 +82,6 @@
 
     <script type="text/javascript">
 
-        var teacher = 1;
-        var group_id = 0;
-        var chartData = "";
-        var loadDt = new Date();
-
         // 1~9월 1~9일에 앞자리 0추가해주는 함수
         function fn_leadingZeros(n, digits) {
 
@@ -100,11 +95,19 @@
         }
 
         // 날짜의 포맷을 ( YYYY-mm-dd ) 형태로 만들어줍니다.
+        var loadDt = new Date();
         var defaultEndDate = loadDt.getFullYear() + '-' + fn_leadingZeros(loadDt.getMonth() + 1, 2) + '-' + fn_leadingZeros(loadDt.getDate(), 2);
         var tempdate = new Date(defaultEndDate);
-            tempdate.setMonth(tempdate.getMonth()-1);
+        tempdate.setMonth(tempdate.getMonth()-1);
         var defaultStartDate = tempdate.getFullYear() + '-' + fn_leadingZeros(tempdate.getMonth() + 1, 2) + '-' + fn_leadingZeros(tempdate.getDate(), 2);
 
+        /***********************************날짜 구하기**************************************************************************************************/
+
+        //group_id에 세션값을 받아서 넣어주기
+        //teacher에 세션값을 받아서 넣어주기
+        var group_id = 0;
+        var teacher = 1;
+        var chartData = "";
 
         //처음 화면 로드
         window.onload = function() {
@@ -127,9 +130,10 @@
                     for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
 
                         $('#group_names').append($('<a href="#">')
-                            .append($('<div class="groups" name="'+GroupData['groups'][i].groupName+'" id="'+ GroupData['groups'][i].groupId +'">')
-                                .text(GroupData['groups'][i].groupName)));
-
+                            .append($('<div>').attr('class','groups')
+                                              .attr('name',GroupData['groups'][i]['groupName'])
+                                              .attr('id',GroupData['groups'][i]['groupId'])
+                                              .text(GroupData['groups'][i]['groupName'])));
                     }
 
                     //가장 상단에 위치한 클래스
@@ -137,6 +141,8 @@
 
                     //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
                     $('#nav_group_name').text(firstGroup.attr('name'));
+
+                    console.log(firstGroup.attr('name'));
 
                     //그룹아이디값을 상단 클래스 아이디값으로 변경
                     group_id = firstGroup.attr('id');
@@ -172,6 +178,54 @@
 
             var raceId = "";
             var userId = "";
+
+            //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
+            $(document).on('click','#radio_changeDateToChart',function () {
+
+                var selectedradio = $("input[type=radio][name=optradio]:checked").val();
+                var startDate = "";
+
+                function caldate(day){
+
+                    var caledmonth, caledday, caledYear;
+                    var v = new Date(Date.parse(loadDt) - day*1000*60*60*24);
+
+                    caledYear = v.getFullYear();
+
+                    if( v.getMonth() < 9 ){
+                        caledmonth = '0'+(v.getMonth()+1);
+                    }else{
+                        caledmonth = v.getMonth()+1;
+                    }
+
+                    if( v.getDate() < 9 ){
+                        caledday = '0'+v.getDate();
+                    }else{
+                        caledday = v.getDate();
+                    }
+                    return caledYear+"-"+caledmonth+'-'+caledday;
+                }
+                switch (selectedradio) {
+                    case "1":
+                        startDate = caldate(7);
+                        break;
+                    case "2":
+                        startDate = caldate(30);
+                        break;
+                    case "3":
+                        startDate = caldate(90);
+                        break;
+                    case "4":
+                        startDate = caldate(180);
+                        break;
+                    case "5":
+                        startDate = caldate(365);
+                        break;
+                }
+
+                getChartData_and_loadChart(group_id,startDate,defaultEndDate);
+
+            });
 
             //클래스 클릭 할 때 마다 메인 페이지(차트) 로드
             $(document).on('click','.groups',function () {
@@ -245,57 +299,6 @@
 
         });
 
-        //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
-        function changeDateToChart(){
-
-            var selectedradio = $("input[type=radio][name=optradio]:checked").val();
-            var startDate = "";
-
-            function caldate(day){
-
-                var caledmonth, caledday, caledYear;
-                var v = new Date(Date.parse(loadDt) - day*1000*60*60*24);
-
-                caledYear = v.getFullYear();
-
-                if( v.getMonth() < 9 ){
-                    caledmonth = '0'+(v.getMonth()+1);
-                }else{
-                    caledmonth = v.getMonth()+1;
-                }
-
-                if( v.getDate() < 9 ){
-                    caledday = '0'+v.getDate();
-                }else{
-                    caledday = v.getDate();
-                }
-                return caledYear+"-"+caledmonth+'-'+caledday;
-            }
-
-            switch (selectedradio) {
-                case "1":
-                    startDate = caldate(7);
-                    break;
-
-                case "2":
-                    startDate = caldate(30);
-                    break;
-
-                case "3":
-                    startDate = caldate(90);
-                    break;
-
-                case "4":
-                    startDate = caldate(180);
-                    break;
-
-                case "5":
-                    startDate = caldate(365);
-                    break;
-            }
-
-            getChartData_and_loadChart(group_id,startDate,defaultEndDate);
-        }
 
         //날짜 조회 눌렀을 때 차트 출력
         function orderChart(){
@@ -653,7 +656,7 @@
 
                     //전체 점수와 평균 점수들 로드하기
                     makingModalPage(raceId,data,0);
-                    
+
                 },
                 error: function (data) {
                     alert("학생별 최근 레이스 값 불러오기 에러");
@@ -1605,7 +1608,7 @@
                     alert("학생별 최근 레이스 값 불러오기 에러");
                 }
 
-            })
+            });
         }
 
         //모달 페이지 내용값 초기화 및 타입별 모달페이지 제작
@@ -1631,6 +1634,7 @@
 
             switch (type){
 
+                //레이스 성적표 만들기
                 case 0 :
 
                     $('.modal-content.studentGrade').show();                          //학생 성적표 표시하기
@@ -1645,7 +1649,6 @@
                     var totalWord = 0;
                     var totalRight = 0;
 
-                    //레이스 성적표 만들기
                     //data -> 레이스에 관한 모든 데이터(리턴값 그대로)
                     StudentData = allData['races'];
                     StudentScore = makingStudentChartData(allData);
@@ -1698,8 +1701,9 @@
                     break;
 
                 /*******************************************************************************************************/
-
+                //학생개인 성적표 만들기
                 case 1 :
+
 
                     $('.modal-content.studentGrade').show();                        //학생 성적표 표시
                     $('.modal-content.studentGrade #modal_total_grades').hide();    //학생 성적표 빼기
@@ -1707,7 +1711,6 @@
                     $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
                     $('#wrongPercent').hide();                                      //오답률 빼기
 
-                    //학생개인 성적표 만들기
                     //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
                     StudentData = allData['races'];
                     StudentScore = makingStudentChartData(allData);
@@ -1736,7 +1739,7 @@
                 /*******************************************************************************************************/
 
                 case 2 :
-
+                    //오답노트 페이지 만들기
                     $('.modal-content.studentGrade').hide();                        //학생 성적표 표시
                     $('.modal-content.detail .modal_checkbox').hide();              //체크박스 빼기
                     $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
@@ -1805,6 +1808,27 @@
 
             }
 
+        }
+
+
+        function getQuestion(groupId){
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/selectQnAs')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: reqData,
+                success: function (data) {
+
+                },
+                error: function (data) {
+                    alert("학생별 최근 레이스 값 불러오기 에러");
+                }
+
+            });
         }
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
