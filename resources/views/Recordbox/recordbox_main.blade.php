@@ -1174,6 +1174,9 @@
                                 break;
                         }
 
+                        //임의로 값수정
+                        raceData[i]['wrongState'] = "clear";
+
                         switch (raceData[i]['wrongState']){
                             case "not" :
                                 $('#stdGrade_' + i).append($('<td>').text("PASS"));
@@ -1194,7 +1197,6 @@
                         $('#stdGrade_'+i).append($('<td>').attr('class','modal_openStudentGradeCard')
                             .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
                                 .attr('id',raceData[i]['raceId']).attr('name',userId).text("성적표")));
-
                     }
 
                 },
@@ -1254,7 +1256,6 @@
                             }
                         };*/
 
-
             var total_data_Points = [];
             var grammer_data_Points = [];
             var vocabulary_Points = [];
@@ -1300,8 +1301,6 @@
                 "word_data" : ["단어 점수" , word_data_Points]
             };
 
-
-
             return AllChartData;
         }
 
@@ -1338,7 +1337,6 @@
                                               }
                                         }
                     */
-
             var total_data_Points = [];
             var grammer_data_Points = [];
             var vocabulary_Points = [];
@@ -1360,28 +1358,28 @@
                 var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
 
                 //차트 데이터 배열 만들기
-                total_data_Points.push({ x : new Date(raceData[i]['date']),
-                    y : parseInt(total_grade) ,
-                    label : raceData[i]['listName']});
+                total_data_Points.push({ x      : new Date(raceData[i]['date']),
+                                         y      : parseInt(total_grade) ,
+                                         label  : raceData[i]['listName']});
 
-                grammer_data_Points.push({ x : new Date(raceData[i]['date']),
-                    y : parseInt(grammer_grade) ,
-                    label : raceData[i]['listName']});
+                grammer_data_Points.push({ x    : new Date(raceData[i]['date']),
+                                           y    : parseInt(grammer_grade) ,
+                                           label: raceData[i]['listName']});
 
-                vocabulary_Points.push({ x : new Date(raceData[i]['date']),
-                    y : parseInt(vocabulary_grade) ,
-                    label : raceData[i]['listName']});
+                vocabulary_Points.push({ x      : new Date(raceData[i]['date']),
+                                         y      : parseInt(vocabulary_grade) ,
+                                         label  : raceData[i]['listName']});
 
-                word_data_Points.push({ x : new Date(raceData[i]['date']),
-                    y : parseInt(word_grade) ,
-                    label : raceData[i]['listName']});
+                word_data_Points.push({ x       : new Date(raceData[i]['date']),
+                                        y       : parseInt(word_grade) ,
+                                        label   : raceData[i]['listName']});
             }
 
             //차트 데이터 합치기
-            AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
-                "voca_data" : ["어학 점수", vocabulary_Points] ,
-                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-                "word_data" : ["단어 점수" , word_data_Points]
+            AllChartData = { "total_data"   : ["전체 평균 점수" , total_data_Points] ,
+                             "voca_data"    : ["어학 점수", vocabulary_Points] ,
+                             "grammer_data" : ["독해 점수" , grammer_data_Points] ,
+                             "word_data"    : ["단어 점수" , word_data_Points]
             };
 
             return AllChartData;
@@ -1653,9 +1651,8 @@
                     StudentScore = makingStudentChartData(allData);
 
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
-
-                    $('#modal_date').text(StudentData[0]['year']+"년 "+StudentData[0]['month']+"월 "+StudentData[0]['day']+"일");
-                    $('#modal_raceName_teacher').text(StudentData[0]['listName'] +"  /  " +StudentData[0]['teacherName'] );
+                    $('#modal_date').text(StudentData[0]['year'] + "년 " + StudentData[0]['month'] + "월 " + StudentData[0]['day'] + "일");
+                    $('#modal_raceName_teacher').text(StudentData[0]['listName'] + "  /  " + StudentData[0]['teacherName']);
 
                     for(var i = 0 ; i < StudentData.length ; i++){
 
@@ -1673,11 +1670,10 @@
 
                         $('#' + MODALID_studentList_tr + i).append($('<td>').text(i+1));
                         $('#' + MODALID_studentList_tr + i).append($('<td>')
-                            .append($('<a href="#">')
-                                .text(StudentData[i]['userName']))
                             .attr('id',StudentData[i]['userId'])
                             .attr('name',StudentData[i]['raceId'])
-                            .attr('class','toggle_stdList'));
+                            .attr('class','toggle_stdList')
+                            .append($('<a href="#">').text(StudentData[i]['userName'])));
 
                         totalGrade += StudentScore['total_data'][1][i]['y'];
                         totalVoca += StudentScore['voca_data'][1][i]['y'];
@@ -1702,7 +1698,6 @@
                 /*******************************************************************************************************/
                 //학생개인 성적표 만들기
                 case 1 :
-
 
                     $('.modal-content.studentGrade').show();                        //학생 성적표 표시
                     $('.modal-content.studentGrade #modal_total_grades').hide();    //학생 성적표 빼기
@@ -1760,25 +1755,21 @@
                             $('#modal_allWrongAnswerList').append($('<tr>').attr('id', MODALID_wrongList_tr+ i + "_" + j));
 
                             switch (j) {
-
                                 case 0 :
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
 
                                     break;
-
                                 case 1 :
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+0));
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+1));
 
                                     break;
-
                                 case 2 :
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+2));
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+3));
 
                                     break;
-
                                 case 3 :
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text("풀이"));
                                     $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('colSpan',2).text(wrongsData[i]['wrong']));
@@ -1786,9 +1777,7 @@
                                     break;
                             }
                         }
-
                         for(var j = 0 ; j < 4 ; j++){
-
                             if (j == 0){
                                 $('#example_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
 
@@ -1798,7 +1787,6 @@
                                 if(wrongsData[i]['example'+j+'Count'] == 1){
                                     $('#example_'+wrongsData[i]['number']+"_"+ j).css('background-color','#e5e6e8');
                                 }
-
                             }
                         }
 
@@ -1806,9 +1794,7 @@
                     break;
 
             }
-
         }
-
 
         function getQuestion(groupId){
 
