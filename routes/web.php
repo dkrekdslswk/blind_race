@@ -167,6 +167,7 @@ Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList'
 Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList');
 Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
 Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
+Route::post('/quizTreeController/updateOpenState'    ,'QuizTreeController@updateOpenState');
 
 /*
  * 레코드박스 컨트롤러
