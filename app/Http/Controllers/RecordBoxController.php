@@ -346,7 +346,7 @@ class RecordBoxController extends Controller{
                                 DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
                                 'ru.retestState as retestState',
                                 'ru.wrongState as wrongState',
-                                'ru.wrongDate as wrongDate'
+                                'ru.wrong_at as wrongDate'
                             )
                             ->where($typeWhere)
                             ->where($where)
