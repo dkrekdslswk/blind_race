@@ -132,8 +132,11 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
+
+
+                        var character_info = result['characters'].toString();
                         if(result['check'] == true)
-                            socket.emit('android_join_check',true , sessionId ,"race");
+                            socket.emit('android_join_check',true , sessionId ,"race",character_info);
                         else
                             socket.emit('android_join_check',false, sessionId ,"race");
                     },
@@ -671,8 +674,8 @@
         <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
     </div>
 </div>
-    <div id="playing_contents" style="display:none;">
-        @include('Race.race_content')
-    </div>
+<div id="playing_contents" style="display:none;">
+    @include('Race.race_content')
+</div>
 </body>
 </html>
