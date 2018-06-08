@@ -1027,7 +1027,7 @@ class RaceController extends Controller{
                 // 합격
                 if ($raceData->passingMark <= $score) {
                     // 미제출 문제 처리하기
-                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_NOT_STATE);
+                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_STATE);
 
                     // 통과 표시하기
                     DB::table('raceUsers')
