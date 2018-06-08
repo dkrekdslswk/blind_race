@@ -7,7 +7,7 @@ use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuizTreeController;
-use app\Http\Controllers\RecordBoxController;
+use App\Http\Controllers\RecordBoxController;
 
 class RaceController extends Controller{
     // 리스트 선택 후 레이스 혹은 테스트를 생성

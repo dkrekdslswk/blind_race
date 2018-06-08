@@ -718,6 +718,11 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
+    // 공개여부설정
+    public function updateOpenState(Request $request){
+
+    }
+
     // 문제가져오기
     private function getListQuiz($listId){
         // 저장된 문제들 읽어오기
@@ -758,16 +763,4 @@ class QuizTreeController extends Controller
 
         return $quizs;
     }
-
-    // 폴더 삭제
-    public function deleteFolder(Request $request){
-        $postData = array(
-            'folderId' => $request->has('folderId') ? $request->input('folderId') : false
-        );
-
-
-    }
-
-    // 공개여부설정
-    // 공개, 비공개 설정
 }
