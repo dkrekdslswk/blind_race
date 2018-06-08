@@ -67,10 +67,11 @@ io.on('connection', function (socket){
         io.sockets.emit('web_test_enter',roomPin);
     });
 
-    socket.on('android_join_check',function(join_boolean , sessionId ,raceType){
-        console.log(join_boolean+","+sessionId);
-        io.sockets.emit('android_join_result',join_boolean,sessionId , raceType);
+    socket.on('android_join_check',function(join_boolean , sessionId ,raceType,character_info){
+        console.log(join_boolean+","+character_info);
+        io.sockets.emit('android_join_result',join_boolean,sessionId , raceType , character_info);
     });
+
 
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
