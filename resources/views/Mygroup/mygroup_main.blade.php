@@ -165,6 +165,7 @@
         });
 
         searching_Student(groupIds);
+
     }
 
 
@@ -191,6 +192,7 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: "groupId=" + groupIds+"&userId="+userId,
             success: function (data) {
+
                 alert("성공적으로 삭제했습니다.");
                 window.location.href = "{{url('mygroup')}}";
             },
@@ -203,6 +205,7 @@
 
     //그룹ID
     function add_student(st_made_number){
+        searching_Student(groupIds);
 
         var student_number_zip = [{
          "id":""+st_made_number
@@ -224,6 +227,7 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: "groupId="+groupIds+"&students="+student_number_zip,
             success: function (data) {
+
                 window.location.href = "{{url('mygroup')}}";
             },
             error: function (data) {
@@ -257,6 +261,7 @@
 
                 Myclass = GroupData['groups'];
                 groupIds = Myclass[0].groupId;
+
 
                 var class_list = '';
 
