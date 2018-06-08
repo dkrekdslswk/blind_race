@@ -187,6 +187,10 @@ Route::post('/recordBoxController/updateAnswer','RecordBoxController@updateAnswe
 Route::post('/mobileGetStudents','RecordBoxController@mobileGetStudents');
 Route::post('/mobileGetWrongs','RecordBoxController@mobileGetWrongs');
 Route::post('/mobileInsertWrongs','RecordBoxController@mobileInsertWrongs');
+Route::post('/mobileInsertQuestion','RecordBoxController@mobileInsertQuestion');
+Route::post('/mobileSelectQnAs','RecordBoxController@mobileSelectQnAs');
+Route::post('/mobileSelectQnA','RecordBoxController@mobileSelectQnA');
+Route::post('/mobileUpdateAnswer','RecordBoxController@mobileUpdateAnswer');
 
 
 /*
