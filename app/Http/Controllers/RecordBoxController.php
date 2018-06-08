@@ -345,7 +345,8 @@ class RecordBoxController extends Controller{
                                 DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
                                 DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
                                 'ru.retestState as retestState',
-                                'ru.wrongState as wrongState'
+                                'ru.wrongState as wrongState',
+                                'ru.wrongDate as wrongDate'
                             )
                             ->where($typeWhere)
                             ->where($where)
@@ -384,7 +385,8 @@ class RecordBoxController extends Controller{
                                 'grammarCount' => $race->grammarCount,
                                 'grammarRightCount' => $race->grammarRightAnswerCount,
                                 'retestState' => $race->retestState,
-                                'wrongState' => $race->wrongState
+                                'wrongState' => $race->wrongState,
+                                'wrongDate' => $race->wrongDate
                             ));
                         }
 
@@ -735,7 +737,8 @@ class RecordBoxController extends Controller{
                             'ru.wrongState' => 'order',
                         ])
                         ->update([
-                            'ru.wrongState'  => 'clear'
+                            'ru.wrongState'  => 'clear',
+                            'ru.wrong_at'  => DB::raw('now()')
                         ]);
 
                     $returnValue = array(
