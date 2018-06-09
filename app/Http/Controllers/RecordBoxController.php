@@ -16,8 +16,8 @@ class RecordBoxController extends Controller{
      *
      * @param Request $request->input()
      *          'groupId'   해당 그룹 아이디
-     *          ['startDate' 차트 검색 시작 날짜]
-     *          ['endDate'   차트 검색 종료 날짜]
+     *          ['startDate'] 차트 검색 시작 날짜
+     *          ['endDate']   차트 검색 종료 날짜
      *
      * @return array(
      *              'group' => array(
@@ -1321,9 +1321,9 @@ class RecordBoxController extends Controller{
     /****
      * 기간내의 차트 읽어오기
      *
-     * @param $groupId
-     * @param $startDate
-     * @param $endDate
+     * @param $groupId   그룹 아이디
+     * @param $startDate 차트 검색 시작 날짜
+     * @param $endDate   차트 검색 종료 날짜
      * @return array(
      *      'listName' 리스트 이름
      *      'raceId' 레이스 아이디
@@ -1336,10 +1336,10 @@ class RecordBoxController extends Controller{
      *      'rightAnswerCount' 정답 수
      *      'vocabularyCount' 어휘 수
      *      'vocabularyRightAnswerCount' 어휘 정답 수
-     *      'wordCount'                     => $record->wordCount                   / $record->userCount,
-     *      'wordRightAnswerCount'          => $record->wordRightAnswerCount        / $record->userCount,
-     *      'grammarCount'                  => $record->grammarCount                / $record->userCount,
-     *      'grammarRightAnswerCount'       => $record->grammarRightAnswerCount     / $record->userCount
+     *      'wordCount' 단어 수
+     *      'wordRightAnswerCount' 단어 정답 수
+     *      'grammarCount' 문법 수
+     *      'grammarRightAnswerCount' 문법 정답 수
      *  )
      */
     private function selectGroupRecords($groupId, $startDate, $endDate){
