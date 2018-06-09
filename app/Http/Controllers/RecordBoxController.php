@@ -550,10 +550,45 @@ class RecordBoxController extends Controller{
      * @param Request $request->input()
      *      ['userId']
      *      ['raceId']
-     *      ['retestState']     - 재시험 정보 조회용 변수
-     *      ['sessionId']       - 모바일 전용 변수
+     *      ['retestState'] - 재시험 정보 조회용 변수
+     *      ['sessionId'] - 모바일 전용 변수
      *
-     * @return array
+     * @return array(
+            'raceId' 레이스 아이디
+            'wrongs' => array(
+                0 -> array(
+                    'number' => $i + 1,
+                    'id' => $raceQuizs[$i]->quizId,
+                    'question' => $raceQuizs[$i]->question,
+                    'hint' => $raceQuizs[$i]->hint,
+                    'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                    'rightAnswerCount' => $quizData->rightAnswerCount,
+                    'example1' => $raceQuizs[$i]->example1,
+                    'example1Count' => $quizData->example1Count,
+                    'example2' => $raceQuizs[$i]->example2,
+                    'example2Count' => $quizData->example2Count,
+                    'example3' => $raceQuizs[$i]->example3,
+                    'example3Count' => $quizData->example3Count,
+                    'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
+                    'userCount' => $raceQuizs[$i]->userCount,
+                    'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
+                ),
+                // 객관식
+                1 => array(
+                    'number' => $i + 1,
+                    'id' => $raceQuizs[$i]->quizId,
+                    'question' => $raceQuizs[$i]->question,
+                    'hint' => $raceQuizs[$i]->hint,
+                    'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                    'rightAnswerCount' => $raceQuizs[$i]->userCount - count($wrongData),
+                    'wrongs' => $wrongData,
+                    'wrongCount' => count($wrongData),
+                    'userCount' => $raceQuizs[$i]->userCount,
+                    'wrong' => $wrongText ? $wrongText->quizNumber : false
+                )
+            ),
+            'check' => true
+        );
      */
     public function getWrongs(Request $request){
         // 요구하는 값
