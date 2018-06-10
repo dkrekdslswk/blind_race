@@ -100,6 +100,12 @@
 
         var real_A = new Array();
 
+        var A_count=0;
+        var B_count=0;
+        var C_count=0;
+        var D_count=0;
+
+
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
@@ -314,15 +320,6 @@
             body.style('background-color', 'whitesmoke', 'important');
 
 
-            //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
-            // var quiz_JSON = [
-            //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
-            //     {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
-            //     {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
-            //     {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
-            //     {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
-            // ];
-
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
@@ -344,6 +341,16 @@
             socket.on('answer-sum', function(answer ,sessionId , quizId){
                 if(answer == 1 || answer == 2||answer == 3 || answer == 4)
                 {
+                    switch(answer){
+                        case '1': A_count++;
+                            break;
+                        case '2': B_count++;
+                            break;
+                        case '3': C_count++;
+                            break;
+                        case '4': D_count++;
+                            break;
+                    }
                     if( answer == rightAnswer)
                         answer = real_A[rightAnswer];
                     else{
@@ -424,11 +431,34 @@
                             // correct_percentage
                             $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
                             $("#Mid_A_Right").text(quiz_JSON[quizId-1].right);
-                            
+
                             $('#mid_percent').text(correct_percentage+"%");
                             $('#mid_circle').attr('class','c100 p'+correct_percentage+' green');
 
 
+
+                            //통계 부분
+                            $('#A_count').text(A_count);
+                            $('#B_count').text(B_count);
+                            $('#C_count').text(C_count);
+                            $('#D_count').text(D_count);
+
+                            var sum_count = A_count+B_count+C_count+D_count;
+                            var A_mark = Math.floor(A_count / sum_count * 100 / 5 * 9 );
+                            var B_mark = Math.floor(B_count / sum_count * 100 / 5 * 9 );
+                            var C_mark = Math.floor(C_count / sum_count * 100 / 5 * 9 );
+                            var D_mark = Math.floor(D_count / sum_count * 100 / 5 * 9 );
+
+                            $('#A_mark').css('height',A_mark);
+                            $('#B_mark').css('height',B_mark);
+                            $('#C_mark').css('height',C_mark);
+                            $('#D_mark').css('height',D_mark);
+
+                            A_count = 0;
+                            B_count = 0;
+                            C_count = 0;
+                            D_count = 0;
+                            
                             ranking_process(result['studentResults']);
 
                             if( quiz_numbar >quiz_JSON.length){
