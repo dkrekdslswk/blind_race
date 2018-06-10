@@ -11,19 +11,31 @@ class RecordBoxController extends Controller{
     const RETEST_NOT_STATE  = 0;
     const RETEST_STATE      = 1;
 
-    // 차트정보 가져오기
+    /****
+     * 차트정보 가져오기
+     *
+     * @param Request $request->input()
+     *          'groupId'   해당 그룹 아이디
+     *          ['startDate'] 차트 검색 시작 날짜
+     *          ['endDate']   차트 검색 종료 날짜
+     *
+     * @return array(
+     *              'group' => array(
+     *                  'id'    그룹 아이디
+     *                  'name'  그룹 이름
+     *              ),
+     *              'races'     $this->selectGroupRecords('groupId', 'startDate', 'endDate');
+     *              'startDate' 검색된 값의 시작 날짜
+     *              'endDate'   검색된 값의 종료 날짜
+     *              'check'     검색 성공여부
+     *          );
+     */
     public function getChart(Request $request){
         // 현재 시간가져오기 기본값 가져오기
         $time = time();
         $endDate = date('Y-m-d', $time);
         $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
 
-        // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1,
-//            'startDate' => '2018-05-01',
-//            'endDate'   => '2018-05-10'
-//        );
         $postData = array(
             'groupId'   => $request->input('groupId'),
             'startDate' => $request->has('startDate') ? $request->input('startDate') : $startDate,
@@ -87,19 +99,55 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 최근출제된 레이스 목록 받아오기
+    /****
+     * 최근출제된 레이스 목록 받아오기
+     *
+     * @param Request $request->input()
+     *      'groupId' 해당 그룹 아이디
+     *      ['startDate'] 차트 검색 시작 날짜
+     *      ['endDate'] 차트 검색 종료 날짜
+     *
+     * @return array(
+     *          'races'  => array(
+     *              0 => array(
+     *                  'raceId'            레이스 아이디
+     *                  'listName'          리스트 이름
+     *                  'teacherName'       선생 이름
+     *                  'date'              레이스 출제 날짜
+     *                  'year'              레이스 출제 년도
+     *                  'month'             레이스 출제 달
+     *                  'day'               레이스 출제 일
+     *                  'studentCount'      레이스 참가 학생 수
+     *                  'retestClearCount'  재시험 응시완료자 수
+     *                  'retestCount'       재시험 총 대상자 수
+     *                  'wrongClearCount'   오답노트 응시완료자 수
+     *                  'wrongCount'        오답노트 총 대상자 수
+     *              )
+     *          ),
+     *          'check' 권한확인, 검색 성공여부
+     *      );
+     */
     public function getRaces(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupId'   => 1
-//        );
         $postData = array(
-            'groupId'   => $request->input('groupId')
+            'groupId'   => $request->input('groupId'),
+            'startDate' => $request->has('startDate') ? $request->input('startDate') : false,
+            'endDate'   => $request->has('endDate') ? $request->input('endDate') : false
         );
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
         if ($userData['check']) {
+            $dateWhere = array();
+            if ($postData['startDate']){
+                array_push($dateWhere, array(
+                    DB::raw('date(r.created_at)'), '>=', $postData['startDate']
+                ));
+            }
+            if ($postData['endDate']){
+                $dateWhere = array(
+                    [DB::raw('date(r.created_at)'), '<=', $postData['endDate']]
+                );
+            }
 
             // 그룹권한 확인
             $where = array();
@@ -135,6 +183,7 @@ class RecordBoxController extends Controller{
                                 DB::raw('count(CASE WHEN ru.wrongState = "clear" THEN 1 END) as wrongClearCount')
                             )
                             ->where('r.groupNumber', '=', $groupData->groupId)
+                            ->where($dateWhere)
                             ->join('raceUsers as ru', 'ru.raceNumber', '=', 'r.number')
                             ->join('lists as l', 'l.number', '=', 'r.listNumber')
                             ->join('folders as f', 'f.number', '=', 'l.folderNumber')
@@ -189,13 +238,25 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 과제 미출제 학생 조회
+    /****
+     * 과제 미출제 학생 조회
+     *
+     * @param Request $request->input()
+     *      'raceId' 해당 레이스 아이디
+     *
+     * @return array(
+     *      'students'  => array(
+     *              0 => array(
+     *                  'userId'        유저 아이디
+     *                  'userName'      유저 이름
+     *                  'retestState'   재시험 응시 상태
+     *                  'wrongState'    오답노트 응시 상태
+     *              )
+     *          ),
+     *          'check' 성공 여부
+    *      );
+     */
     public function homeworkCheck(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'raceId'    => 1
-//        );
-        // 요구하는 값
         $postData = array(
             'raceId'    => $request->input('raceId')
         );
@@ -256,24 +317,55 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생의 최근기록 조회 'userId'
-    // + 학생 본인일 경우 자기 성적 조회 + 'groupId
-    // 레이스를 친 학생들 정보 조회 'raceId'
-    // 재시험 한 결과를 조회하기 위해서 사용 'userId', 'raceId', 'retestState' => 1
-    // + 학생 본인일 경우 자기 성적 조회
+    /****
+     * 학생의 최근기록 조회 - 'userId'
+     * 레이스를 친 학생들 정보 조회 - 'raceId'
+     * 재시험 한 결과를 조회하기 위해서 사용 - 'userId', 'raceId', 'retestState' = 1
+     *
+     * 학생용 자기 성적조회 - 'groupId'
+     * 학생용 자기 재시험 성적 조회 - 'raceId', 'retestState' = 1
+     *
+     * @param Request $request->input()
+     *      ['userId']
+     *      ['raceId']
+     *      ['retestState']     재시험 정보 조회용 변수
+     *      ['groupId']         학생 전용 변수
+     *      ['sessionId']       모바일 전용 변수
+     *
+     * @return array(
+     *      'races' => array(
+     *          0 => array(
+     *              'raceId'                레이스 아이디
+     *              'listName'              리스트 이름
+     *              'teacherName'           선생 이름
+     *              'userId'                유저 아이디
+     *              'userName'              유저 이름
+     *              'date'                  레이스 실시 날짜
+     *              'year'                  레이스 실시 년도
+     *              'month'                 레이스 실시 달
+     *              'day'                   레이스 실시 일
+     *              'allCount'              문항 수
+     *              'allRightCount'         정답 수
+     *              'vocabularyCount'       어휘 문항 수
+     *              'vocabularyRightCount'  어휘 정답 수
+     *              'wordCount'             단어 문항 수
+     *              'wordRightCount'        단어 정답 수
+     *              'grammarCount'          문법 문항 수
+     *              'grammarRightCount'     문법 정답 수
+     *              'retestState'           재시험 응시 상태
+     *              'wrongState'            오답노트 응시 상태
+     *              'wrongDate'             오답노트 응시 날짜
+     *          )
+     *      ),
+     *      'check' 검색 성공 여부
+     *  );
+     */
     public function getStudents(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'userId'        => 1300000
-//            'raceId'        => 1
-//            'retestState'   => 1
-//        );
-        // 요구하는 값
         $postData = array(
             'userId'        => $request->has('userId') ? $request->input('userId') : false,
             'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
-            'groupId'       => $request->has('groupId') ? $request->input('groupId') : false,
             'retestState'   => $request->has('retestState') ? $request->input('retestState') : self::RETEST_NOT_STATE,
+            'groupId'       => $request->has('groupId') ? $request->input('groupId') : false,
             'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -415,25 +507,81 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 학생의 최근기록 조회 'userId', 'sessionId'
-    // + 학생 본인일 경우 자기 그룹내 성적 조회 + 'groupId
-    // 레이스를 친 학생들 정보 조회 'raceId', 'sessionId'
-    // 재시험 한 결과를 조회하기 위해서 사용 'userId', 'raceId', 'retestState' => 1
+    /****
+     * getStudents 의 모바일용
+     * 학생의 최근기록 조회 - 'userId'
+     * 레이스를 친 학생들 정보 조회 - 'raceId'
+     * 재시험 한 결과를 조회하기 위해서 사용 - 'userId', 'raceId', 'retestState' = 1
+     *
+     * 학생용 자기 성적조회 - 'groupId'
+     * 학생용 자기 재시험 성적 조회 - 'raceId', 'retestState' = 1
+     *
+     * @param Request $request->input()
+     *      ['userId']
+     *      ['raceId']
+     *      ['retestState']     재시험 정보 조회용 변수
+     *      ['groupId']         학생 전용 변수
+     *      ['sessionId']       모바일 전용 변수
+     *
+     * @return $this->>getStudents(Request $request)
+     */
     public function mobileGetStudents(Request $request){
         return $this->getStudents($request);
     }
 
-    // 오답문제 조회하기 학생별 'userId', 'raceId'
-    // 오답문제 조회하기 레이스 전체 'raceId'
-    // => 유저가 학생일 경우 오답문제 조회하기 'raceId'
-    // + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
+    /****
+     * 오답문제 조회하기 학생별 'userId', 'raceId'
+     * 오답문제 조회하기 레이스 전체 'raceId'
+     * 
+     * 학생용 오답문제 조회하기 'raceId'
+     * 
+     * + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
+     * 
+     * @param Request $request->input()
+     *      ['userId']
+     *      ['raceId']
+     *      ['retestState'] - 재시험 정보 조회용 변수
+     *      ['sessionId'] - 모바일 전용 변수
+     *
+     * @return array(
+     *      'raceId' 레이스 아이디
+     *      'wrongs' => array(
+     *          // 객관식
+     *          0 -> array(
+     *              'number'            문제 번호
+     *              'id'                문제 아이디
+     *              'question'          문제
+     *              'hint'              힌트
+     *              'rightAnswer'       정답
+     *              'rightAnswerCount'  정답자 수
+     *              'example1'          예문 1번
+     *              'example1Count'     오답자1 수
+     *              'example2'          예문 2번
+     *              'example2Count'     오답자2 수
+     *              'example3'          예문 3번
+     *              'example3Count'     오답자3 수
+     *              'wrongCount'        전체 오답자 수
+     *              'userCount'         전체 유저 수
+     *              'wrong'             한명의 유저를 검색할 경우 유저가 입력한 오답
+     *          ),
+     *          // 주관식
+     *          1 => array(
+     *              'number'            문제 번호
+     *              'id'                문제 아이디
+     *              'question'          문제
+     *              'hint'              힌트
+     *              'rightAnswer'       정답
+     *              'rightAnswerCount'  정답자 수
+     *              'wrongs'            오답 들
+     *              'wrongCount'        오답자 수
+     *              'userCount'         전체 유저 수
+     *              'wrong'             한명의 유저를 검색할 경우 유저가 입력한 오답
+     *          )
+     *      ),
+     *      'check'  성공 여부
+     *  );
+     */
     public function getWrongs(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'userId'    => false,
-//            'raceId'    => 1
-//            'retestState'   => 1
-//        );
         $postData = array(
             'userId'    => $request->has('userId') ? $request->input('userId') : false,
             'raceId'    => $request->has('raceId') ? $request->input('raceId') : false,
@@ -638,26 +786,47 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 오답문제 조회하기 학생별 'userId', 'raceId', 'sessionId'
-    // 오답문제 조회하기 레이스 전체 'raceId', 'sessionId'
-    // => 유저가 학생일 경우 오답문제 조회하기 'raceId'
-    // + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
-    // 모바일 버전 오답문제 조회하기
+    /****
+     * getWrongs 의 모바일용
+     *
+     * 오답문제 조회하기 학생별 'userId', 'raceId'
+     * 오답문제 조회하기 레이스 전체 'raceId'
+     *
+     * 학생용 오답문제 조회하기 'raceId'
+     *
+     * + 재시험 한 결과를 조회하기 위해서 사용 'retestState' => 1
+     *
+     * @param Request $request->input()
+     *      ['userId']
+     *      ['raceId']
+     *      ['retestState'] - 재시험 정보 조회용 변수
+     *      ['sessionId'] - 모바일 전용 변수
+     *
+     * @return $this->getWrongs(Request $request)
+     */
     public function mobileGetWrongs(Request $request){
         return $this->getWrongs($request);
     }
 
-    // 오답풀이 입력하기
+    /****
+     * 오답풀이 입력하기
+     *
+     * @param Request $request->input()
+     *      'raceId' 레이스 아이디
+     *      'wrongs' => array(
+     *          0 => array(
+     *              'quizId'    문제 아이디(int:1~)
+     *              'text'      오답 풀이(string)
+     *          )
+     *      )
+     *      ['sessionId'] 모바일 전용 변수
+     * 
+     * @return array(
+     *          'wrongCheck'    오답노트 완료 여부
+     *          'check'         입력 성공 여부
+     *      )
+     */
     public function insertWrongs(Request $request){
-//        $postData = array(
-//            'raceId' => 1,
-//            'wrongs' => array(
-//                0 => array(
-//                    'quizId' => 1,
-//                    'text' => '이렇게 쉬운걸 왜 틀린걸까요?'
-//                )
-//            )
-//        );
         $postData = array(
             'raceId' => $request->input('raceId'),
             'wrongs' => $request->input('wrongs'),
@@ -765,13 +934,38 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 모바일 버전 오답풀이 입력하기
+    /****
+     * 모바일 버전 오답풀이 입력하기
+     *
+     * @param Request $request->input()
+     *      'raceId' 레이스 아이디
+     *      'wrongs' => array(
+     *          0 => array(
+     *              'quizId'    문제 아이디(int:1~)
+     *              'text'      오답 풀이(string)
+     *          )
+     *      )
+     *      ['sessionId'] 모바일 전용 변수
+     *
+     * @return $this->insertWrongs(Request $request)
+     */
     public function mobileInsertWrongs(Request $request){
         return $this->insertWrongs($request);
     }
 
-    // 피드백과 질문
-    // 질문하기
+    /****
+     * 웹 용 피드백 혹은 질문하기
+     *
+     * @param Request $request->input()
+     *      'title'     재목
+     *      'question'  질문
+     *      'teacherId' 질문할 선생의 아이디
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return array(
+     *      'check' 질문 저장 성공여부
+     *  );
+     */
     public function insertQuestion(Request $request){
         $postData = array(
             'title' => $request->has('title') ? $request->input('title') : false,
@@ -816,7 +1010,27 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-    // QnAs 가져오기
+
+    /****
+     * 웹 용 QnA 목록 가져오기
+     *
+     * @param Request $request->input
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return array(
+     *      'QnAs' => array(
+     *              0 => array(
+     *                  'QnAId'         질문 아이디
+     *                  'userName'      질문한 학생 이름
+     *                  'teacherName'   질문받은 교사 이름
+     *                  'title'         질문 제목
+     *                  'question_at'   질문한 날짜
+     *                  'answer_at'     답변한 날짜
+     *              )
+     *          ),
+     *          'check' 조회 성공 여부
+     *      )
+     */
     public function selectQnAs(Request $request){
         $postData = array(
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
@@ -890,7 +1104,28 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-    // 조회하기
+
+    /****
+     * 웹 용 QnA 조회하기
+     *
+     * @param Request $request->input()
+     *      'QnAId' 질문 아이디
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return array(
+     *      'QnA' => array(
+     *          'QnAId'         질문 번호
+     *          'userName'      질문한 학생 이름
+     *          'teacherName'   질문받은 교사 이름
+     *          'title'         질문 제목
+     *          'question'      질문
+     *          'answer'        대답
+     *          'question_at'   질문한 날짜
+     *          'answer_at'     대답한 날짜
+     *      ),
+     *      'check' 조회 성공 여부확인
+     * )
+     */
     public function selectQnA(Request $request){
         $postData = array(
             'QnAId' => $request->input('QnAId'),
@@ -968,7 +1203,19 @@ class RecordBoxController extends Controller{
 
         return $returnValue;
     }
-    // 답변하기
+
+    /****
+     * 웹 용 QnA 답변하기
+     *
+     * @param Request $request->input()
+     *      'QnAId' 질문 아이디
+     *      'answer' QnA 답변
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return array(
+     *      'check' 답변 성공 여부확인
+     * )
+     */
     public function updateAnswer(Request $request){
         $postData = array(
             'QnAId' => $request->has('QnAId') ? $request->input('QnAId') : false,
@@ -1017,25 +1264,84 @@ class RecordBoxController extends Controller{
         return $returnValue;
     }
 
-    // 모바일용 피드백과 질문
-    // 질문하기
+    /****
+     * 모바일 용 QnA 질문하기
+     *
+     * @param Request $request->input()
+     *      'title' 재목
+     *      'question' 질문
+     *      'teacherId' 질문할 선생의 아이디
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return $this->insertQuestion(Request $request);
+     */
     public function mobileInsertQuestion(Request $request){
         return $this->insertQuestion($request);
     }
-    // QnAs 가져오기
+
+    /****
+     * 모바일 용 QnA 목록 가져오기
+     *
+     * @param Request $request->input
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return $this->selectQnAs(Request $request);
+     */
     public function mobileSelectQnAs(Request $request){
         return $this->selectQnAs($request);
     }
-    // 조회하기
+
+    /****
+     * 모바일 용 QnA 조회하기
+     *
+     * @param Request $request->input()
+     *      'QnAId' 질문 아이디
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return $this->selectQnA(Request $request);
+     */
     public function mobileSelectQnA(Request $request){
         return $this->selectQnA($request);
     }
-    // 답변하기
+
+    /****
+     * 모바일 용 QnA 답변하기
+     *
+     * @param Request $request->input()
+     *      'QnAId' 질문 아이디
+     *      'answer' QnA 답변
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return $this->updateAnswer(Request $request);
+     */
     public function mobileUpdateAnswer(Request $request){
         return $this->updateAnswer($request);
     }
 
-    // 기간내의 차트 읽어오기
+    /****
+     * 기간내의 차트 읽어오기
+     *
+     * @param $groupId   그룹 아이디
+     * @param $startDate 차트 검색 시작 날짜
+     * @param $endDate   차트 검색 종료 날짜
+     * @return array(
+     *      'listName' 리스트 이름
+     *      'raceId' 레이스 아이디
+     *      'date' 레이스 출제 날짜
+     *      'year' 레이스 출제 년도
+     *      'month' 레이스 출제 달
+     *      'day' 레이스 출제 일
+     *      'userCount' 시험친 학생 수
+     *      'quizCount' 레이스 출제 문항 수
+     *      'rightAnswerCount' 정답 수
+     *      'vocabularyCount' 어휘 수
+     *      'vocabularyRightAnswerCount' 어휘 정답 수
+     *      'wordCount' 단어 수
+     *      'wordRightAnswerCount' 단어 정답 수
+     *      'grammarCount' 문법 수
+     *      'grammarRightAnswerCount' 문법 정답 수
+     *  )
+     */
     private function selectGroupRecords($groupId, $startDate, $endDate){
         $recordDatas = DB::table('races as r')
             ->select(

@@ -285,18 +285,18 @@ class UserController extends Controller{
 
         // 이미 있는 세션 그대로 쓰기
         if($data){
-            $sessionId = false;
-//            $sessionId = $data->sessionId;
-//            DB::table('sessionDatas')
-//                ->where([
-//                    'number' => $sessionId
-//                ])
-//                ->update([
-//                    'nick' => null,
-//                    'PIN' => null,
-//                    'characterNumber' => null,
-//                    'raceNumber' => null
-//                ]);
+//            $sessionId = false;
+            $sessionId = $data->sessionId;
+            DB::table('sessionDatas')
+                ->where([
+                    'number' => $sessionId
+                ])
+                ->update([
+                    'nick' => null,
+                    'PIN' => null,
+                    'characterNumber' => null,
+                    'raceNumber' => null
+                ]);
         }
         // 새션 할당하기
         else {

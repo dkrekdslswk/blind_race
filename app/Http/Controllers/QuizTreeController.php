@@ -12,6 +12,7 @@ class QuizTreeController extends Controller
 {
     // 공개된 레이스의 숫자 및 가상 폴더의 번호
     const OPEN_STATE = 0;
+    const OPEN_NOT_STATE = 1;
 
     // 폴더목록과 선택된 폴더의 리스트 목록을 반납
     public function getfolderLists(Request $request)
@@ -720,7 +721,50 @@ class QuizTreeController extends Controller
 
     // 공개여부설정
     public function updateOpenState(Request $request){
+        $postData = array(
+            'listId' => $request->has('listId') ? $request->input('listId') : false,
+            'openState' => $request->has('openState') ? $request->input('openState') : false
+        );
 
+        // 유저정보 읽어오기
+        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+
+        if ($userData['check'] && $postData['listId'] && (($postData['openState'] == self::OPEN_STATE) || ($postData['openState'] == self::OPEN_NOT_STATE))){
+            switch ($userData['classification'] == 'teacher'){
+                case 'teacher':
+                case 'root':
+                    $updateData = DB::table('lists as l')
+                        ->where([
+                            'l.number' => $postData['listId'],
+                            'f.teacherNumber' => $userData['userId']
+                        ])
+                        ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+                        ->update([
+                            'openState' => $postData['openState']
+                        ]);
+                    break;
+                default:
+                    $updateData = false;
+                    break;
+            }
+
+            if ($updateData){
+                $returnValue = array(
+                    'listId' => $postData['listId'],
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
+        } else {
+            $returnValue = array(
+                'check' => false
+            );
+        }
+
+        return $returnValue;
     }
 
     // 문제가져오기

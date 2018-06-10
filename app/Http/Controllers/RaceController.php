@@ -536,32 +536,35 @@ class RaceController extends Controller{
             $studentResults = array();
             $rightAnswer = 0;
             $wrongAnswer = 0;
-            foreach($students as $student){
+            foreach($students as $student) {
                 // 미입력자 처리
-                if ((int)$student->lastQuizId != (int)$postData['quizId']){
+                if ((int)$student->lastQuizId != (int)$postData['quizId']) {
                     DB::table('records')
                         ->insert([
                             'raceNo' => $raceData->raceId,
                             'userNo' => $student->userId,
                             'listNo' => $raceData->listId,
                             'quizNo' => $postData['quizId'],
-                            'answer'        => '',
-                            'answerCheck'   => 'X'
+                            'answer' => '',
+                            'answerCheck' => 'X'
                         ]);
 
                     array_push($studentResults, array(
-                        'sessionId'     => $student->sessionId,
-                        'nick'          => $student->nick,
-                        'characterId'   => $student->characterId,
-                        'rightCount'    => $student->rightCount,
-                        'answer'        => '',
-                        'answerCheck'   => 'X'
+                        'sessionId' => $student->sessionId,
+                        'nick' => $student->nick,
+                        'characterId' => $student->characterId,
+                        'rightCount' => $student->rightCount,
+                        'answer' => '',
+                        'answerCheck' => 'X'
                     ));
                     $wrongAnswer++;
                 } else {
                     // 입력한 사람 정답여부 처리하기
                     $studentAnswer = DB::table('records')
-                        ->select('answerCheck')
+                        ->select(
+                            'answerCheck',
+                            'answer'
+                        )
                         ->where([
                             'raceNo' => $raceData->raceId,
                             'userNo' => $student->userId,
@@ -570,17 +573,18 @@ class RaceController extends Controller{
                         ])
                         ->first();
 
-                    if ($studentAnswer->answerCheck == 'O'){
+                    if ($studentAnswer->answerCheck == 'O') {
                         $rightAnswer++;
-                    }else{
+                    } else {
                         $wrongAnswer++;
                     }
                     array_push($studentResults, array(
-                        'sessionId'     => $student->sessionId,
-                        'nick'          => $student->nick,
-                        'characterId'   => $student->characterId,
-                        'rightCount'    => $student->rightCount,
-                        'answer'        => $studentAnswer->answerCheck
+                        'sessionId' => $student->sessionId,
+                        'nick' => $student->nick,
+                        'characterId' => $student->characterId,
+                        'rightCount' => $student->rightCount,
+                        'answer' => $studentAnswer->answer,
+                        'answerCheck' => $studentAnswer->answerCheck
                     ));
                 }
             }
@@ -1027,7 +1031,7 @@ class RaceController extends Controller{
                 // 합격
                 if ($raceData->passingMark <= $score) {
                     // 미제출 문제 처리하기
-                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_NOT_STATE);
+                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_STATE);
 
                     // 통과 표시하기
                     DB::table('raceUsers')
