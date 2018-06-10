@@ -222,7 +222,7 @@
                     case 2: changehtml += '<td style="width:50px; height: 50px; background-color:#e75480;">'; break;
                     default : changehtml += '<td style="width:50px; height: 50px; background-color:silver;">'; break;
                 }
-                changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">';
+                changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">'
                 + '</td>'
                 + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
                 + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
@@ -238,7 +238,7 @@
 
                 }
             }
-            $('#student_rank').append(changehtml);
+            $('#student_rank').html(changehtml);
         }
 
 
@@ -452,7 +452,7 @@
 
                     if(quiz_continue == true)
                         socket.emit('android_next_quiz',roomPin);
-                }, 30000);
+                }, 99999999999);
             });
 
 
