@@ -10,25 +10,36 @@ use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
-    // 공개된 레이스의 숫자 및 가상 폴더의 번호
+    // 공유 레이스 번호
     const OPEN_STATE = 0;
     const OPEN_NOT_STATE = 1;
 
-    // 폴더목록과 선택된 폴더의 리스트 목록을 반납
+    /****
+     * 폴더목록과 선택된 폴더의 리스트 목록을 반납
+     *
+     * @param Request $request->input()
+     *      ['folderId'] 선택된 폴더
+     *
+     * @return array(
+     *      'folders'       => $this->getFolders(세션 아이디)
+     *      'lists'         => $this->getLists(선택된 폴더 아이디, 세션 아이디)
+     *      'selectFolder'  선택된 폴더
+     *      'check'         검색 성공 여부
+     *  )
+     */
     public function getfolderLists(Request $request)
     {
-        // 들어올 정보
-//        $postData = array('folderId' => 'base');
-        $postData = array('folderId' => $request->post('folderId'));
+        $postData = array(
+            'folderId' => $request->has('folderId') ? $request->input('folderId') : false
+        );
 
         // 유저의 폴더 정보 가져오기
         $folders = $this->getFolders($request->session()->get('sessionId'));
 
         // 요구하는 폴더가 없을경우 기본 폴더를 가져옴
-        if ($postData['folderId'] == 'base'){
+        if ($postData['folderId'] == 'base' || ($postData['folderId'] == false)){
             $selectFolderId = $folders[0]['folderId'];
-        }
-        else{
+        } else {
             $selectFolderId = $postData['folderId'];
         }
 
@@ -46,7 +57,17 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 폴더목록 가져오기
+    /****
+     * 폴더목록 가져오기
+     *
+     * @param $sessionId //세션 아이디
+     * @return array(
+     *      0 => array(
+     *          'folderId' 폴더 아이디
+     *          'folderName' 폴더 이름
+     *      )
+     *  )
+     */
     private function getFolders($sessionId){
         // 폴더목록 가져오기
         $folderData = DB::table('folders as f')
@@ -111,7 +132,28 @@ class QuizTreeController extends Controller
         return $folders;
     }
 
-    // 리스트 목록 가져오기
+    /****
+     * 리스트 목록 가져오기
+     *
+     * @param $selectFolderId //폴더 아이디
+     * @param $sessionId // 세션 아이디
+     * @return array(
+     *      'listId' 리스트 아이디
+     *      'listName' 라스트 이름
+     *      'quizCount' 문항수
+     *      'createdDate' 만들어진 날짜
+     *      'openState' 공유 폴더 여부
+     *      // 레이스 출제된 기록
+     *      'races' => array(
+     *          0 => array(
+     *              'date' 출제된 날짜
+     *              'type' 출제한 방식
+     *              'groupName' 출제된 그룹
+     *              'teacherName' 출제한 교사
+     *          )
+     *      )
+     *  )
+     */
     private function getLists($selectFolderId, $sessionId){
         // 공개된 리스트 목록 가져오기
         if ($selectFolderId == self::OPEN_STATE){
@@ -192,7 +234,18 @@ class QuizTreeController extends Controller
         return $lists;
     }
 
-    // 리스트 폴더 만들기
+    /****
+     * 리스트 폴더 만들기
+     *
+     * @param Request $request->input()
+     *
+     * @return array(
+    'folders'    => $this->getFolders(세션 아이디),
+    'lists'      => array(),
+    'selectFolder'  => $folderId,
+    'check'         => true
+    )
+     */
     public function createFolder(Request $request){
         // 보내진 값 받기
         $postData = array(
@@ -722,17 +775,27 @@ class QuizTreeController extends Controller
     // 공개여부설정
     public function updateOpenState(Request $request){
         $postData = array(
-            'listId' => $request->has('listId') ? $request->input('listId') : false,
-            'openState' => $request->has('openState') ? $request->input('openState') : false
+            'listId' => $request->has('listId') ? $request->input('listId') : false
         );
 
         // 유저정보 읽어오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        if ($userData['check'] && $postData['listId'] && (($postData['openState'] == self::OPEN_STATE) || ($postData['openState'] == self::OPEN_NOT_STATE))){
+        if ($userData['check'] && $postData['listId']){
             switch ($userData['classification'] == 'teacher'){
                 case 'teacher':
                 case 'root':
+                    $listData = DB::table('lists as l')
+                        ->select(
+                            'l.openState as openState'
+                        )
+                        ->where([
+                            'l.number' => $postData['listId'],
+                            'f.teacherNumber' => $userData['userId']
+                        ])
+                        ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+                        ->first();
+
                     $updateData = DB::table('lists as l')
                         ->where([
                             'l.number' => $postData['listId'],
@@ -740,7 +803,7 @@ class QuizTreeController extends Controller
                         ])
                         ->join('folders as f', 'f.number', '=', 'l.folderNumber')
                         ->update([
-                            'openState' => $postData['openState']
+                            'openState' => ($listData->openState == self::OPEN_STATE ? self::OPEN_NOT_STATE : self::OPEN_STATE)
                         ]);
                     break;
                 default:
