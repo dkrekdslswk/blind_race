@@ -226,7 +226,7 @@
                 + '</td>'
                 + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
                 + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
-                + '<td style=" background-color:white;">';
+                + '<td style=" background-color:white;">ranking_JSON[i].answer';
 
                 switch(ranking_JSON[i].answer){
                     case "O":

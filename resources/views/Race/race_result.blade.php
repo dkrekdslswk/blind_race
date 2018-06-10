@@ -90,17 +90,7 @@
                                 <th><h2>참 잘했어요</h2></th>
                             </tr>
                             </thead>
-                            <tr>
-                                <td>
-                                    <img id="1_character" src="#" width="100px">
-                                    <a class="user-link title" id="1_nick"></a>
-                                    <span class="user-subhead subtitle" id="1_point"></span>
 
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/lxlPPOZ.jpg" style="width: 100px"></span>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -118,17 +108,6 @@
                                 <th><h2>노력하세요</h2></th>
                             </tr>
                             </thead>
-                            <tr>
-                                <td>
-                                    <img src="https://i.imgur.com/LlQi7HQ.jpg" alt="">
-                                    <a class="user-link">없음</a>
-                                    <span class="user-subhead">예시</span>
-
-                                </td>
-                                <td>
-                                    <span><img src="https://i.imgur.com/0YUZZ2m.png" style="width: 100px"></span>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
