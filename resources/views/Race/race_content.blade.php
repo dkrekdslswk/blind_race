@@ -147,7 +147,7 @@
     <script>
     </script>
 
-    <div class="main" style="display:none;">
+    <div class="main" style="">
         <div id='content'>
 
             <center>
@@ -187,11 +187,7 @@
         </div>
     </div>
 
-    <div id='mid_result' style='display:block;' >
-        <div>
-            @include('Race.sidebar')
-        </div>
-
+    <div id='mid_result' style='display:block; display:none;' >
         <div>
             @include('Race.mid_result')
         </div>

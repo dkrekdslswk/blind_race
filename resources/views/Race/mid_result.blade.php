@@ -11,7 +11,7 @@
 <link   rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="css/circle.css">
+<link rel="stylesheet" href="../css/circle.css">
 <style type="text/css">
 
     body{
@@ -85,17 +85,6 @@
     }
 </style>
 
-    <div>
-        <div id="wait_room_nav" class="inline-class">
-            <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
-            <span>Race</span>
-            <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-            <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
-            <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
-            <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
-        </div>
-    </div>
-
     <div class="block" style="display:inline-block; margin-left:15%; width:70%; height:20%; ">
         <h2 class='titular' style="line-height:30px;">
             <span id="quiz_number">1번</span>
@@ -135,7 +124,7 @@
     <div id="buttons" style="position:absolute; top:30%; right: 3%;">
         <a id="Mid_skip_btn" class="btn btn-lg nextbutton orange" href="#" role="button">Next</a>
     </div>
-</div>
+
 
 
 
@@ -229,6 +218,8 @@
                     </li>
                 </ul>
             </div>
+
+</div>
 <style>
 
     /************************
@@ -258,7 +249,7 @@
     p {
         font-size: 15px;
     }
-    h1, h2, p, a, span{
+    #mid_content h1,#mid_content h2,#mid_content p,#mid_content a,#mid_content span{
         color: #fff;
     }
     .scnd-font-color {
