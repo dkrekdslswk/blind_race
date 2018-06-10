@@ -92,8 +92,8 @@
         </h2>
 
         <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-right:30px;" >
-            <div class="c100 p50 green">
-                <span>50%</span>
+            <div id="mid_circle" class="c100 p50 green">
+                <span id="mid_percent"></span>
                 <div class="slice">
                     <div class="bar"></div>
                     <div class="fill"></div>

@@ -223,12 +223,12 @@
                     default : changehtml += '<td style="width:50px; height: 50px; background-color:silver;">'; break;
                 }
                 changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">'
-                + '</td>'
-                + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
-                + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
-                + '<td style=" background-color:white;">ranking_JSON[i].answer';
+                    + '</td>'
+                    + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
+                    + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
+                    + '<td style=" background-color:white;">';
 
-                switch(ranking_JSON[i].answer){
+                switch(ranking_JSON[i].answerCheck){
                     case "O":
                         changehtml+='<img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
                         break;
@@ -414,8 +414,8 @@
                             var correct_count = result['rightAnswer'];
                             var incorrect_count =result['wrongAnswer'];
 
-                            if(correct_count == 0)
-                                incorrect_count = 1 ;
+                            // if(correct_count == 0)
+                            //     incorrect_count = 1 ;
 
                             $("#quiz_number").text(quizId);
 
@@ -424,6 +424,10 @@
                             // correct_percentage
                             $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
                             $("#Mid_A_Right").text(quiz_JSON[quizId-1].right);
+                            
+                            $('#mid_percent').text(correct_percentage+"%");
+                            $('#mid_circle').attr('class','c100 p'+correct_percentage+' green');
+
 
                             ranking_process(result['studentResults']);
 
