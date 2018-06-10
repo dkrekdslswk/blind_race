@@ -2,6 +2,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+        #make {
+            width: 250px;
+            height: 50px;
+            background-image: url(https://i.imgur.com/ysTPYcF.png);
+            background-repeat: no-repeat;
+            background-size: width 250px;
+
+        }
+        .w3-light-grey {
+            background-image: url("https://i.imgur.com/HSrLDSe.png");
+            background-size: 100%;
+        }
         .page-small .learn-small,
         .page-small .main-small,
         .page-small .set-small {
@@ -166,21 +178,24 @@
         <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
         -->
 
-        <button class="w3-bar-item w3-button">
-            <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
-            w3-button""="w3-button""">미등록 학생</a> -->
-        </button>
+
 
         <button
+                id ="make"
                 type="button"
-
                 data-toggle="modal"
-                data-target="#create">
+                data-target="#create"
+                >
             클래스 생성
         </button>
 
         <div class="w3-dropdown-hover">
-            <h2>나의 클래스</h2>
+           <div style="width: 300px">
+               <p>My Class</p>
+               <p></p>
+               <p></p>
+               <p></p>
+           </div>
 
 
             <table id="Myclass">
