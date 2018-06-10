@@ -212,6 +212,7 @@ Route::post('/groupController/studentGroupExchange','GroupController@studentGrou
 Route::post('/groupController/studentGroupsGet','GroupController@studentGroupsGet');
 // 모바일용
 Route::post('/mobileStudentGroupsGet','GroupController@mobileStudentGroupsGet');
+Route::post('/mobileGroupsGet','GroupController@mobileGroupsGet');
 ?>
 
 

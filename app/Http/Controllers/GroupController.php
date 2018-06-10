@@ -6,59 +6,62 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 class GroupController extends Controller{
+
     /****
      * 그룹 목록 가져오기
      *
      * @param Request $request->input()
-     *      그외 다른값은 요구하지 않음.
+     *      ['sessionId'] 모바일용 변수
      *
      * @return array(
      *      'groups'    => array(
-     *              0 => array(
-         *                  'groupId' 그룹 아이디
-         *                  'groupName' 그룹 이름
-     *                  )
+     *          0 => array(
+     *                  'groupId' 그룹 아이디
+     *                  'groupName' 그룹 이름
+     *              )
      *          ),
      *          'check' 조회 성공 여부
      *      )
      */
     public function groupsGet(Request $request){
-        
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
+        $postData = array(
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
+        );
+
+        $userData = UserController::sessionDataGet($postData['sessionId']);
 
         // 유저 로그인 확인
         if ($userData['check']){
             // 권한확인, 권한별로 목록 보여주기
             switch ($userData['classification']) {
             case 'root':
-                $classificationWhere = array();
-                $check = true;
-                break;
             case 'teacher':
-                $classificationWhere = array(
-                    'teacherNumber' => $userData['userId']
-                );
                 $check = true;
                 break;
-            case 'student':
             default:
-                $classificationWhere = array(
-                    'teacherNumber' => 0
-                );
                 $check = false;
                 break;
             }
 
             // 올바른 권한을 가진 사람만 접근가능
             if ($check){
-                // 그룹 정보 가져오기
-                $groupDatas = DB::table('groups')
+                $groupDatas = DB::table('groups as g')
                     ->select(
-                        'number as groupId',
-                        'name   as groupName'
+                        'g.number as groupId',
+                        'g.name as groupName',
+                        DB::raw('count(CASE WHEN ru.retestState = "order" THEN 1 END) as retestStateCount'),
+                        DB::raw('count(CASE WHEN ru.wrongState = "order" THEN 1 END) as wrongStateCount')
                     )
-                    ->where($classificationWhere)
-                    ->orderBy('number', 'desc')
+                    ->where([
+                        'g.teacherNumber' => $userData['userId']
+                    ])
+                    ->leftJoin('races as r', 'r.groupNumber', '=', 'g.number')
+                    ->leftJoin('raceUsers as ru', function ($join){
+                        $join->on('ru.raceNumber', '=', 'r.number');
+                        $join->on('ru.userNumber', '=', 'gs.userNumber');
+                    })
+                    ->groupBy('g.number')
+                    ->orderBy('g.number', 'DESC')
                     ->get();
 
                 // 반납할 값 정리
@@ -66,7 +69,9 @@ class GroupController extends Controller{
                 foreach ($groupDatas as $groupData){
                     array_push($groups, array(
                         'groupId' => $groupData->groupId,
-                        'groupName' => $groupData->groupName
+                        'groupName' => $groupData->groupName,
+                        'retestStateCount' => $groupData->retestStateCount,
+                        'wrongStateCount' => $groupData->wrongStateCount
                     ));
                 }
                 $returnValue = array(
@@ -85,6 +90,18 @@ class GroupController extends Controller{
         }
 
         return $returnValue;
+    }
+
+    /****
+     * 모바일용 그룹 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *
+     * @return $this->groupsGet($request);
+     */
+    public function mobileGroupsGet(Request $request){
+        return $this->groupsGet($request);
     }
 
     /****
@@ -114,7 +131,7 @@ class GroupController extends Controller{
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
         if ($userData['check'] && ($userData['classification'] == 'student')){
-            $groupsData = DB::table('groupStudents as gs')
+            $groupDatas = DB::table('groupStudents as gs')
                 ->select(
                     'g.number as groupId',
                     'g.name as groupName',
@@ -135,7 +152,7 @@ class GroupController extends Controller{
                 ->get();
 
             $groups = array();
-            foreach ($groupsData as $groupData){
+            foreach ($groupDatas as $groupData){
                 array_push($groups, array(
                     'groupId' => $groupData->groupId,
                     'groupName' => $groupData->groupName,
@@ -161,7 +178,7 @@ class GroupController extends Controller{
      * 모바일용 학생 그룹 목록 가져오기
      *
      * @param Request $request->input()
-     *      ['sessionId'] 모바일용 변수
+     *      'sessionId' 세션 아이디
      *
      * @return $this->studentGroupsGet(Request $request)
      */
@@ -384,7 +401,7 @@ class GroupController extends Controller{
 
         // 유저 정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        
+
         // 유저권한확인
         if ($userData['check']) {
             $where = array();
@@ -521,7 +538,7 @@ class GroupController extends Controller{
      * @param Request $request->input()
      *      'search' 검색어(학번, 이름)
      *      'groupId' 그룹 아이디
-     * 
+     *
      * @return array(
      *      'users' => array(
      *          0 => array(
