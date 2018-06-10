@@ -6,8 +6,22 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 class GroupController extends Controller{
-    // 그룹 목록 가져오기 root(all teachers), teacher(mine)
-    // --레코드박스 그룹 목록 가져오기에도 사용
+    /****
+     * 그룹 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      그외 다른값은 요구하지 않음.
+     *
+     * @return array(
+     *      'groups'    => array(
+     *              0 => array(
+         *                  'groupId' 그룹 아이디
+         *                  'groupName' 그룹 이름
+     *                  )
+     *          ),
+     *          'check' 조회 성공 여부
+     *      )
+     */
     public function groupsGet(Request $request){
         
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -57,18 +71,15 @@ class GroupController extends Controller{
                 }
                 $returnValue = array(
                     'groups'    => $groups,
-                    'get'       => $request->input('test'),
                     'check'     => true
                 );
             } else {
                 $returnValue = array(
-                    'get'       => $request->input('test'),
                     'check'     => false
                 );
             }
         } else {
             $returnValue = array(
-                'get'       => $request->input('test'),
                 'check'     => false
             );
         }
@@ -76,7 +87,24 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 학생 그룹 목록 가져오기
+    /****
+     * 학생 그룹 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return array(
+     *      'groups' => array(
+     *          0 => array(
+     *              'groupId' 그룹 아이디
+     *              'groupName' 그룹 이름
+     *              'retestStateCount' 재시험 미응시 카운트
+     *              'wrongStateCount' 재시험 미응시 카운트
+     *          )
+     *      ),
+     *      'check' 정보 조회 여부
+     *  )
+     */
     public function studentGroupsGet(Request $request){
         $postData = array(
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
@@ -129,17 +157,44 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 모바일용 학생 그룹 목록 가져오기
+    /****
+     * 모바일용 학생 그룹 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      ['sessionId'] 모바일용 변수
+     *
+     * @return $this->studentGroupsGet(Request $request)
+     */
     public function mobileStudentGroupsGet(Request $request){
         return $this->studentGroupsGet($request);
     }
 
-    // 그룹 정보 가져오기 root, teacher
+    /****
+     * 그룹 정보 가져오기 (그룹 정보, 담당 교사 정보, 학생 정보)
+     *
+     * @param Request $request->input()
+     *      'groupId' 그룹 아이디
+     *
+     * @return array(
+     *      'group' => array(
+     *          'id'            그룹 아이디
+     *          'name'          그룹 이름
+     *          'studentCount'  그룹에 속한 학생 수
+     *      ),
+     *      'teacher' => array(
+     *          'id'    담당 교사 아이디
+     *          'name'  담당 교사 이름
+     *      ),
+     *      'students' => array(
+     *          0 => array(
+     *              'id'    학생 아이디
+     *              'name'  학생 이름
+     *          )
+     *      ),
+     *      'check' 조회 성공 여부
+     *  )
+     */
     public function groupDataGet(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupId'
-//        );
         $postData = array(
             'groupId' => $request->input('groupId')
         );
@@ -221,12 +276,27 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 그룹 만들기 root, teacher
+    /****
+     * 그룹 만들기
+     *
+     * @param Request $request->input()
+     *      'groupName' 그룹 이름
+     *
+     * @return array(
+     *      'group' => array(
+     *          'id' 그룹 아이디
+     *          'name' 그룹 이름
+     *          'studentCount' 호완용 변수 - 그룹 학생 수(지금 만들어서 0명)
+     *      ),
+     *      'teacher' => array(
+     *          'id' 담당 교사 아이디
+     *          'name' 담당 교사 이름
+     *      ),
+     *      'students' 호완용 변수 - 그룹 학생 수(지금 만들어서 0명)
+     *      'check' 검색 성공 여부
+     *  )
+     */
     public function createGroup(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupName'
-//        );
         $postData = array(
             'groupName' => $request->input('groupName')
         );
@@ -282,15 +352,31 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 학생 등록하기 root, teacher
+    /****
+     * 그룹에 학생 등록하기
+     *
+     * @param Request $request->input()
+     *      'groupId' 그룹 아이디
+     *      // 해당 그룹에 등혹할 학생 목록
+     *      'students' => array(
+     *          0 => array(
+     *              'id' 학생 아이디
+     *              'name' 학생 이름
+     *          )
+     *      )
+     *
+     * @return array(
+     *      // 등록에 성공한 학생 목록
+     *      'students' => array(
+     *          0 => array(
+     *              'id' 학생 아이디
+     *              'name' 학생 이름
+     *          )
+     *      ),
+     *      'check' 등록 성공 여부
+     *  )
+     */
     public function pushInvitation(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'groupId',
-//            'students' => array(
-//                0 => array('id', 'name')
-//            )
-//        );
         $postData = array(
             'groupId' => $request->input('groupId'),
             'students' => json_decode($request->input('students'))
@@ -429,13 +515,25 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 유저 검색 root, teacher
+    /****
+     * 해당 그룹에 포함되지 않은 유저 검색
+     *
+     * @param Request $request->input()
+     *      'search' 검색어(학번, 이름)
+     *      'groupId' 그룹 아이디
+     * 
+     * @return array(
+     *      'users' => array(
+     *          0 => array(
+     *              'id' 학생 아이디
+     *              'name' 학생 이름
+     *              'classification' 유저의 권한(학생, 교사 등)
+     *          )
+     *      ),
+     *      'check' 검색 성공 여보
+     *  )
+     */
     public function selectUser(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'search' => '김', // 123
-//            'groupId' => 1
-//        );
         $postData = array(
             'search'    => $request->input('search'),
             'groupId'   => $request->input('groupId')
@@ -533,13 +631,18 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 학생 정보수정 root, teacher
+    /****
+     * 비밀번호 잊은 학생을 위해 비밀번호 변경
+     *
+     * @param Request $request->input()
+     *      'userId' 학생 아이디
+     *      'password' 변경할 비밀번호
+     *
+     * @return array(
+     *      'check'변경 성공 여부
+     *  )
+     */
     public function studentModify(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'userId'        => 1300000,
-//            'password'      => 1230000
-//        );
         $postData = array(
             'userId'        => $request->input('userId'),
             'password'      => $request->input('password')
@@ -583,7 +686,17 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
-    // 학생 그룹에서 제외 root, teacher
+    /****
+     * 학생 그룹에서 제외
+     *
+     * @param Request $request->input()
+     *      'userId' 학생 아이디
+     *      'groupId' 그룹 아이디
+     *
+     * @return array(
+     *      'check' 그룹에서 제외 성공
+     *  )
+     */
     public function studentGroupExchange(Request $request){
         // 요구하는 값
         $postData = array(
