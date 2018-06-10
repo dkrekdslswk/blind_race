@@ -213,31 +213,37 @@
 
                 var rank = i+1;
 
-                changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active "';
+                changehtml +='<tr class="rank_hr"><td  style="width:50px; height:50px; text-align:center;">';
+                changehtml +='<div style="width:30px; height:30px; background-color:white;">'+rank+'</div></td>';
+
                 switch(i){
-                    case 0: changehtml += 'style="background-color:gold;"><img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
-                    case 1: changehtml += 'style="background-color:silver;"><img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
-                    case 2: changehtml += 'style="background-color:saddlebrown;"><img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
-                    default : changehtml += '>';
+                    case 0: changehtml += '<td style="width:50px; height: 50px; background-color:skyblue;">'; break;
+                    case 1: changehtml += '<td style="width:50px; height: 50px; background-color:yellow;">'; break;
+                    case 2: changehtml += '<td style="width:50px; height: 50px; background-color:#e75480;">'; break;
+                    default : changehtml += '<td style="width:50px; height: 50px; background-color:silver;">'; break;
                 }
-                changehtml+=
-                    +rank
-                    +" 등"
-                    + ranking_JSON[i].nick
-                    +'<i class="magin fas fa-trophy"></i><span >'
-                    + ranking_JSON[i].rightCount*100
-                    +" point"
-                    +'</span><i class="margin"><img src="/img/character/char'
-                    +ranking_JSON[i].characterId
-                    +'.png" style="width:40px; height:40px;">'
-                    +'</i></a>'
-                    +'</li>' ;
+                changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">';
+                + '</td>'
+                + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
+                + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
+                + '<td style=" background-color:white;">';
+
+                switch(ranking_JSON[i].answer){
+                    case "O":
+                        changehtml+='<img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        break;
+                    case "X" :
+                        changehtml+='<img src="/img/wrong.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        break;
+
+                }
             }
-            $(".nav-side-menu").html(changehtml);
+            $('#student_rank').append(changehtml);
         }
 
 
         function btn_click(){
+
             (function($) {
                 if ($.fn.style) {
                     return;
@@ -411,97 +417,13 @@
                             if(correct_count == 0)
                                 incorrect_count = 1 ;
 
-                            $("#quiz_number").text(quizId+"번 문제 결과");
-
-                            $("#winners").text("정답자:"+correct_count+"명");
-                            $("#fail_count").text("오답자:"+incorrect_count+"명");
-
-                            $("#right").text(correct_count);
-                            $("#wrong").text(incorrect_count);
+                            $("#quiz_number").text(quizId);
 
                             var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
 
-                            // $('.pie::before').css('content',correct_percentage);
-
-
-
+                            // correct_percentage
                             $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
-                            $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quizId-1].right);
-
-                            function sliceSize(dataNum, dataTotal) {
-                                return (dataNum / dataTotal) * 360;
-                            }
-                            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-                                $(pieElement).append(
-                                    "<div class='slice " + sliceID + "'><span></span></div>"
-                                );
-                                var offset = offset - 1;
-                                var sizeRotation = -179 + sliceSize;
-                                $("." + sliceID).css({
-                                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-                                });
-                                $("." + sliceID + " span").css({
-                                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-                                    "background-color": color
-                                });
-
-                            }
-                            function iterateSlices(
-                                sliceSize,
-                                pieElement,
-                                offset,
-                                dataCount,
-                                sliceCount,
-                                color
-                            ) {
-                                var sliceID = "s" + dataCount + "-" + sliceCount;
-                                var maxSize = 179;
-                                if (sliceSize <= maxSize) {
-                                    addSlice(sliceSize, pieElement, offset, sliceID, color);
-                                } else {
-                                    addSlice(maxSize, pieElement, offset, sliceID, color);
-                                    iterateSlices(
-                                        sliceSize - maxSize,
-                                        pieElement,
-                                        offset + maxSize,
-                                        dataCount,
-                                        sliceCount + 1,
-                                        color
-                                    );
-                                }
-                            }
-                            function createPie(dataElement, pieElement) {
-                                var listData = [];
-                                $(dataElement + " span").each(function () {
-                                    listData.push(Number($(this).html()));
-                                });
-                                var listTotal = 0;
-                                for (var i = 0; i < listData.length; i++) {
-                                    listTotal += listData[i];
-                                }
-                                var offset = 0;
-                                var color = [
-                                    "green",
-                                    "silver",
-                                    "orange",
-                                    "tomato",
-                                    "crimson",
-                                    "purple",
-                                    "turquoise",
-                                    "forestgreen",
-                                    "navy",
-                                    "gray"
-                                ];
-                                for (var i = 0; i < listData.length; i++) {
-                                    var size = sliceSize(listData[i], listTotal);
-                                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
-                                    $(dataElement + " li:nth-child(" + (
-                                        i + 1
-                                    ) + ")").css("border-color", color[i]);
-                                    offset += size;
-                                }
-                            }
-                            createPie(".pieID.legend", ".pieID.pie");
+                            $("#Mid_A_Right").text(quiz_JSON[quizId-1].right);
 
                             ranking_process(result['studentResults']);
 
