@@ -449,16 +449,16 @@
                             var C_mark = Math.floor(C_count / sum_count * 100 / 5 * 9 );
                             var D_mark = Math.floor(D_count / sum_count * 100 / 5 * 9 );
 
-                            $('#A_mark').css('height',A_mark);
-                            $('#B_mark').css('height',B_mark);
-                            $('#C_mark').css('height',C_mark);
-                            $('#D_mark').css('height',D_mark);
+                            $('#A_mark').css('height',A_mark+"px");
+                            $('#B_mark').css('height',B_mark+"px");
+                            $('#C_mark').css('height',C_mark+"px");
+                            $('#D_mark').css('height',D_mark+"px");
 
                             A_count = 0;
                             B_count = 0;
                             C_count = 0;
                             D_count = 0;
-                            
+
                             ranking_process(result['studentResults']);
 
                             if( quiz_numbar >quiz_JSON.length){
