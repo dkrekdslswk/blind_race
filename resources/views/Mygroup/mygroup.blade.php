@@ -68,8 +68,8 @@
                     </div> -->
 
 
-                    <p style="font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>
-                    <p style="font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>
+                    <i>  <p style="font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
+                    <i>  <p style="font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
                 <button type="button" style="color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
 
                 <!-- Button trigger modal -->
