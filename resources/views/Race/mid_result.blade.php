@@ -92,8 +92,8 @@
         </h2>
 
         <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-right:30px;" >
-            <div class="c100 p50 green">
-                <span>50%</span>
+            <div id="mid_circle" class="c100 p50 green">
+                <span id="mid_percent"></span>
                 <div class="slice">
                     <div class="bar"></div>
                     <div class="fill"></div>
@@ -192,29 +192,29 @@
                         <li data-ejeY='0'></li>
                     </ul>
                     <ul class='eje-x'>
-                        <li ><i>A</i></li>
-                        <li ><i>B</i></li>
-                        <li ><i>C</i></li>
-                        <li ><i>D</i></li>
+                        <li id="A_mark"><i>A</i></li>
+                        <li id="B_mark"><i>B</i></li>
+                        <li id="C_mark"><i>C</i></li>
+                        <li id="D_mark"><i>D</i></li>
                     </ul>
                 </div>
 
                 <ul class="os-percentages horizontal-list">
                     <li>
                         <p class="ios os scnd-font-color">A</p>
-                        <p class="os-percentage">21<sup>%</sup></p>
+                        <p class="os-percentage" id="A_count">21<sup>명</sup></p>
                     </li>
                     <li>
                         <p class="mac os scnd-font-color">B</p>
-                        <p class="os-percentage">39<sup>%</sup></p>
+                        <p class="os-percentage" id="B_count">39<sup>명</sup></p>
                     </li>
                     <li>
                         <p class="linux os scnd-font-color">C</p>
-                        <p class="os-percentage">9<sup>%</sup></p>
+                        <p class="os-percentage" id="C_count">9<sup>명</sup></p>
                     </li>
                     <li>
                         <p class="win os scnd-font-color">D</p>
-                        <p class="os-percentage">31<sup>%</sup></p>
+                        <p class="os-percentage" id="D_count">31<sup>명</sup></p>
                     </li>
                 </ul>
             </div>

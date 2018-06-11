@@ -75,7 +75,7 @@ io.on('connection', function (socket){
 
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
-        // io.sockets.in(group_num).emit('leaveRoom',user_num);
+        io.sockets.in(group_num).emit('leaveRoom',user_num);
         console.log('danger', group_num+","+user_num);
     });
 
@@ -93,6 +93,12 @@ io.on('connection', function (socket){
     socket.on('pop_quiz_status',function(roomPin){
         console.log('쪽지시험 끝남 ++');
         io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
+    });
+
+    //대기방에서 퇴장시 캐릭터 활성화 하는 함수
+    socket.on('enable_character',function(roomPin,char_num){
+        io.sockets.in(roomPin).emit('enable_character',char_num);
+        console.log("방이탈 "+roomPin+","+char_num)
     });
 
 
