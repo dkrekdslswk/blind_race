@@ -273,6 +273,15 @@ class RaceController extends Controller{
 
         if ($raceData) {
             // 유저 세션 갱신
+            $character = DB::table('sessionDatas')
+                ->select('characterNumber')
+                ->where([
+                    'PIN' => $postData['roomPin'],
+                    'number' => $postData['sessionId']
+                ])
+                ->whereNotNull('characterNumber')
+                ->first();
+
             DB::table('sessionDatas')
                 ->where([
                     'number' => $postData['sessionId']
@@ -291,18 +300,10 @@ class RaceController extends Controller{
                 ])
                 ->delete();
 
-            $characters = DB::table('sessionDatas')
-                ->where([
-                    'PIN' => $postData['roomPin']
-                ])
-                ->whereNotNull('characterNumber')
-                ->pluck('characterNumber')
-                ->toArray();
-
             // 반납값 정리
             $returnValue = array(
                 'sessionId'     => $postData['sessionId'],
-                'characters'    => $characters,
+                'characters'    => $character ? $character->characterNumber : false,
                 'check'         => true
             );
         } else {
