@@ -194,7 +194,25 @@
 
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
-            })
+                quiz_member--;
+                $('#student_count').text(quiz_member);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentOut')}}",
+                    dataType: 'json',
+                    async: false ,
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin"+roomPin+"&sessionId"+user_num,
+                    success: function (result) {
+                        console.log("학생퇴장"+user_num);
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+            });
         };
         //정답뒤섞기
         function shuffle(a) {
@@ -449,10 +467,10 @@
                             var C_mark = Math.floor(C_count / sum_count * 100 / 5 * 9 );
                             var D_mark = Math.floor(D_count / sum_count * 100 / 5 * 9 );
 
-                            $('#A_mark').css('height',A_mark+"px");
-                            $('#B_mark').css('height',B_mark+"px");
-                            $('#C_mark').css('height',C_mark+"px");
-                            $('#D_mark').css('height',D_mark+"px");
+                            $('li:nth-child(1):before').css('height',A_mark+"px");
+                            $('li:nth-child(2):before').css('height',B_mark+"px");
+                            $('li:nth-child(3):before').css('height',C_mark+"px");
+                            $('li:nth-child(4):before').css('height',D_mark+"px");
 
                             A_count = 0;
                             B_count = 0;

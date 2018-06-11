@@ -75,7 +75,7 @@ io.on('connection', function (socket){
 
     // 대기방 이탈
     socket.on('leaveRoom', function( group_num, user_num){
-        // io.sockets.in(group_num).emit('leaveRoom',user_num);
+        io.sockets.in(group_num).emit('leaveRoom',user_num);
         console.log('danger', group_num+","+user_num);
     });
 
