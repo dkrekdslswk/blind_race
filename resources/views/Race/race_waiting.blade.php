@@ -208,7 +208,7 @@
                         console.log("학생퇴장"+user_num);
 
                        if( result['characters'] != 'false'){
-                           alert('character가있었음'+result['characters']);
+                           socket.emit('enable_character',roomPin,user_num);
                        }
                     },
                     error: function(request, status, error) {
