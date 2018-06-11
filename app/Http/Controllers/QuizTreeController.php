@@ -479,34 +479,30 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 만든 리스트 저장하기
+    /****
+     * 만든 리스트 저장하기
+     *
+     * @param Request $request->input()
+     *  'listId' 리스트 아이디 - 수정 용
+     *  'listName' 리스트 이름
+     *  'quizs' => array(
+     *      0 => array(
+     *          'question' 문제
+     *          'right' 정답
+     *          'hint' 힌트
+     *          'example1' 예문1
+     *          'example2' 예문2
+     *          'example3' 예문3
+     *          'quizType' 퀴즈 타입
+     *          'makeType' 주관식 객관식 구분
+     *      )
+     *  )
+     * @return array(
+     *      'check' 입력 성공여부
+     *      'errorQuiz' 입력 실패시 입력 실패한 목록 위의 'quizs'와 동일한 양식
+     *  )
+     */
     public function insertList(Request $request){
-//        $postData     = array(
-//            'listId' => 9,
-//            'listName' => '리얼리즘',
-//            'quizs' => array(
-//                [
-//                    'question' => '1',
-//                    'right' => '1',
-//                    'hint' => '1',
-//                    'example1' => '2',
-//                    'example2' => '3',
-//                    'example3' => '4',
-//                    'quizType'  => '',
-//                    'makeType'  => ''
-//                ],
-//                [
-//                    'question' => '1',
-//                    'right' => '1',
-//                    'hint' => '1',
-//                    'example1' => '2',
-//                    'example2' => '3',
-//                    'example3' => '4',
-//                    'quizType'  => '',
-//                    'makeType'  => ''
-//                ]
-//            )
-//        );
         $postData = array(
             'listId' => $request->input('listId'),
             'quizs' => $request->input('quizs'),
@@ -630,12 +626,17 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 삭제
+    /****
+     * 리스트 삭제
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 번호
+     * 
+     * @return array(
+     *      'check' 삭제 성공 여부
+     *  )
+     */
     public function deleteList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -692,7 +693,11 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 문제들 삭제
+    /****
+     * 리스트를 삭제하기 전에 문제들 삭제
+     *
+     * @param $listId // 리스트 아이디
+     */
     private function deleteListQuiz($listId){
         // 문제 리스트 받아오기
         $listQuizs = DB::table('listQuizs')
@@ -715,12 +720,23 @@ class QuizTreeController extends Controller
             ->delete();
     }
 
-    // 수정
+    /****
+     * 리스트 수정 준비하기
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 번호
+     *
+     * @return view($view)->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'listId' 리스트 아이디
+     *          'listName' 리스트 이름
+     *          'folderId' 폴더 아이디
+     *          'bookList' => $this->getBookGet()
+     *          'quizs' => $this->getListQuiz(리스트 아이디)
+     *          'check' 성공 여부
+     *      )
+     */
     public function updateList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -768,16 +784,28 @@ class QuizTreeController extends Controller
             );
         }
 
-//        return $returnValue;
-        return view('QuizTree/quiz_making')->with('response', $returnValue);
+        if ($returnValue['check']) {
+            $view = 'QuizTree/quiz_making';
+        } else {
+            $view = 'homepage';
+        }
+
+        return view($view)->with('response', $returnValue);
     }
 
-    // 미리보기
+    /****
+     * 리스트 미리보기
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 아이디
+     *
+     * @return array(
+     *      'listName' 리스트 이름
+     *      'quizs'     => $this->getListQuiz(리스트 아이디)
+     *      'check' 조회 성공 여부
+     *  )
+     */
     public function showList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -820,7 +848,17 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 공개여부설정
+    /****
+     * 리스트 공개 여부 설정
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 아이디
+     *
+     * @return array(
+     *      'listId' => 리스트 아이디,
+     *      'check' => 성공 여부
+     *  )
+     */
     public function updateOpenState(Request $request){
         $postData = array(
             'listId' => $request->has('listId') ? $request->input('listId') : false
@@ -878,7 +916,24 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 문제가져오기
+    /****
+     * 리스트에 저장된 문제 조회 하기
+     * 
+     * @param $listId // 리스트 아이디
+     * @return array(
+     *      0 => array(
+     *          'quizId' 퀴즈 아이디
+     *          'question' 문제
+     *          'hint' 힌트
+     *          'right' 정답
+     *          'example1' 예문1
+     *          'example2' 예문2
+     *          'example3' 예문3
+     *          'quizType' 문제 타입
+     *          'makeType' 주관식 객관식 구분
+     *      )
+     *  )
+     */
     private function getListQuiz($listId){
         // 저장된 문제들 읽어오기
         $quizData = DB::table('quizBanks as qb')
