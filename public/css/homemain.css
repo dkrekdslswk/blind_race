@@ -256,7 +256,7 @@ label span{color:#FF0000; background-color:inherit;}
 /* Page Intro */
 #pageintro a{color:#FFFFFF;}
 /* #pageintro ul must have the same background colour as the last LI element - A dirty workaround for WebKits SubPixel render bug (Chrome, Opera, Safari) */
-#pageintro ul{background-color:#F9CD36;}
+#pageintro ul{background-color:#9ac4d6;}
 /* 3D Shadow only works in modern browsers - inpired by http://markdotto.com/playground/3d-text/ */
 #pageintro li a:hover i{text-shadow:0 1px 0 #CCCCCC, 0 2px 0 #C9C9C9, 0 3px 0 #BBBBBB, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25);}
 

@@ -2,13 +2,8 @@
 <html>
     <title>My group</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script
-        defer="defer"
-        src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
-        integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
-        crossorigin="anonymous"></script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <body >
     <!--그룹이 아무것도 없을때의 경우를 생각하지않았음 -->
@@ -27,7 +22,7 @@
         <!-- Page Content -->
 
         <div class="container">
-            <div class="jumbotron">
+            <div class="jumbotrons">
                 <!-- Button trigger modal -->
 
 
@@ -72,10 +67,10 @@
                         <i class="fas fa-cog fa-spin light" data-toggle="modal" data-target="#teacher"></i>
                     </div> -->
 
-                <img src="https://i.imgur.com/5JqDi1z.png" style =" width:40px ; display: inline-block"  data-toggle="modal";  data-target="#exampleModal">
-                    <p id ="teacher">김민수 선생님</p>
-                    <h1  id ="group" >A반</h1>
 
+                    <i>  <p style="font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
+                    <i>  <p style="font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
+                <button type="button" style="color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
 
                 <!-- Button trigger modal -->
 
@@ -108,67 +103,74 @@
 
             </div>
 
+
+
     <div class="row">
+        <div class="col col-lg-5" style="padding-left: 15px;">
 
-        <div class="col-xs-5">
-            <h1>미등록 학생</h1>
             <div>
-            <input
-                    class="margins"
-                    type="text"
-                    id="myInput"
-                    onkeyup="myFunction()"
-                    placeholder="미소속 학생 찾기"
-                    title="Type in a name"
+                <p class="in pen" style="margin-right: 60px">미소속 학생</p>
+                <input
+                        class="margins"
+                        type="text"
+                        id="myInput"
+                        onkeyup="myFunction()"
+                        placeholder="학생 검색"
+                        title="Type in a name"
 
-                    value="">
+                        value="">
+                <input type="button"
+                       style="margin-left: 10px"
+                       class="btn btn-primary-outline btn-round-lg btn-sm in" id="selectBtn" value="추가하기">
 
-            <table>
-                <tr class="header">
-                    <th style="width:25%;">이름</th>
-                    <th style="width:35%;">학번</th>
-                    <th style="width:20%;">추가 <input type="checkbox" id="allCheck"/></th>
-                </tr>
-            </table>
-            <table id="myTable">
-            </table>
+                <table>
+                    <tr class="header">
+                        <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
+                        <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
+                        <th style="width:15%"><i class="fas fa-user-plus"></i> <input type="checkbox" id="allCheck"/></th>
+                    </tr>
+                </table>
+                <table id="myTable">
+                </table>
 
-                <input type="button" id="selectBtn" value="추가">
+                {{--<input type="button" id="selectBtn" value="추가">--}}
             </div>
+        </div>
+        <div class="col col-lg-1">
+            
+        </div>
+        <div class="col col-lg-5">
+
+                <p class="pen">현재 학급 학생</p>
+                <table>
+                    <tr class="header" style="border-top: 1px solid gray;">
+                        <th style="width:26%"><i class="fas fa-user-circle"></i>  이름</th>
+                        <th style="width:25%"><i class="fas fa-clipboard-list"></i> 학번</th>
+                        <th style="width:35%;"><i class="fas fa-info"></i> 비밀번호</th>
+                        <th style="width:25%;"><i class="fas fa-trash-alt"></i>삭제</th>
+                    </tr>
+                </table>
+
+                <table id="student">
+                    <tr>
+                        <th>
+                            <input type="checkbox"/>클래스</th>
+                        <th>이름</th>
+                        <th>학번</th>
+                        <th>레코드 박스</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"/>B반
+                            <button>X</button>
+                        </td>
+                        <td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>
+                        <td>1401036</td>
+                        <td>확인</td>
+                    </tr>
+
+                </table>
 
         </div>
-
-        <div class="col-xs-7">
-            <h1>등록 학생</h1>
-            <table>
-                <tr class="header">
-                    <th style="width:15%;">이름</th>
-                    <th style="width:20%;">학번</th>
-                    <th style="width:35%;">비밀번호 변경</th>
-                    <th style="width:25%;">클래스에서 제외</th>
-                </tr>
-            </table>
-
-            <table id="student">
-                <tr>
-                    <th>
-                        <input type="checkbox"/>클래스</th>
-                    <th>이름</th>
-                    <th>학번</th>
-                    <th>레코드 박스</th>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"/>B반
-                        <button>X</button>
-                    </td>
-                    <td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>
-                    <td>1401036</td>
-                    <td>확인</td>
-                </tr>
-
-            </table>
-        </div>
-
     </div>
 
 
@@ -177,16 +179,79 @@
 
 
 
-            <style>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: separate;
+            width: 100%;
+            border-spacing: 0px 6px !important;
+        }
+        .fade:not(.show) {
+            opacity: 10;
+        }
+
+        .container {
+
+            padding-right: 0px;
+            padding-left: 0px;
+
+        }
+        .col-lg-5{
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .col-lg-1 {
+
+           background-image: url("https://i.imgur.com/NYAOWGv.png");
+            background-size: auto;
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .row {
+
+            margin-right: -100px;
+
+        }
+                .pen {
+                    margin-left: 20px;
+                    margin-top: 10px;
+                  font-size: 20px;
+                  font-color : #033981; !important;
+                }
+                th {
+                    background-color: #DFDFDF ; !important;
+                }
+
+                .in {
+                    display: inline-block;
+                }
+                .ma {
+                    margin-left: 80%;
+                    margin-top: 10px;
+                }
+                .jumbotrons{
+                    padding-right: 0px;
+                    padding-left: 0px;
+                    height: 280px; !important;
+                    width: 100%; !important;
+                    background-image: url("https://i.imgur.com/wJabvyb.png");
+                    background-size: auto;
+
+                }
+                .btn-primary-outline {
+                    background-color: transparent;
+                    border-color: #ccc;
+                }
+                .btn-round-lg{
+                    border-radius: 20.5px;
+
+                }
+
                 button {
                     display: inline-block;
                 }
 
-                table {
-                    font-family: arial, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                }
+
 
                 td,
                 th {
@@ -195,16 +260,13 @@
                     padding: 8px;
                 }
 
-                th {
-                    background-color: #ccd;
-                }
 
                 tr:nth-child(even) {
-                    background-color: #ecf6fc;
+                    background-color: #e6eaed;
                 }
 
                 tr:nth-child(odd) {
-                    background-color: #ddeedd;
+
                 }
 
                 .input[type=text] {

@@ -79,11 +79,6 @@ Route::get('/race_popquiz', function(){
     return view('Race/race_popquiz');
 });
 
-/* 2-6 Blind Race : Race_popquiz  -> 교사 쪽지시험 부분 */
-Route::get('/race_content', function(){
-    return view('Race/race_content');
-});
-
 /* 2-7 Blind Race : Race_popquiz  -> 학생 웹 쪽지시험 */
 Route::get('/race_student_popquiz', function(){
     return view('Race/race_student_popquiz');
@@ -107,6 +102,16 @@ Route::get('/recordbox', function(){
 /* 4-1. Record Box : test */
 Route::get('/recordbox_main', function(){
     return view('Recordbox/recordbox_main');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox/sidebar', function(){
+    return view('Recordbox/sidebar');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox_main/sidebar', function(){
+    return view('Recordbox/sidebar');
 });
 
 /* 4-2. Record Box : Record List */
@@ -212,7 +217,6 @@ Route::post('/groupController/studentGroupExchange','GroupController@studentGrou
 Route::post('/groupController/studentGroupsGet','GroupController@studentGroupsGet');
 // 모바일용
 Route::post('/mobileStudentGroupsGet','GroupController@mobileStudentGroupsGet');
-Route::post('/mobileGroupsGet','GroupController@mobileGroupsGet');
 ?>
 
 

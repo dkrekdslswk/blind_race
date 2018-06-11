@@ -84,7 +84,7 @@
 </style>
 <body>
 <div class="">
-    <nav class="navbar navbar-default" style="margin: 0;">
+    <nav class="navbar navbar-default" style="margin: 0;width: 100%;">
         <div class="">
             <div class="navbar-header">
                 <button

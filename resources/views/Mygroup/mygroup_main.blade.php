@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Document</title>
@@ -12,10 +13,11 @@
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <style>
         body {
             font-family: arial, sans-serif;
-            background-color: #f7f8fa;
+            background-color: white;
             font-size: 13px;
             color: #5f5f5f;
             margin: 0;
@@ -61,7 +63,8 @@
             /*     min-height: 1000px; */
             top: 0;
             transition: all 0.4s ease 0s;
-            background-color: #ffffff;
+            background-image: url("https://i.imgur.com/14SXK4U.png");
+            background-size: cover;
             border-left: 1px solid #e1e2e3;
             border-right: 1px solid #e1e2e3;
             border-bottom: 1px solid #e1e2e3;
@@ -72,9 +75,12 @@
     <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
+   
 
 </head>
+<nav>
+    @include('Navigation.main_nav')
+</nav>
 
 <body onload="getValue()">
 
@@ -84,9 +90,7 @@
 
 
 
-<nav>
-    @include('Navigation.main_nav')
-</nav>
+
 <div class="main-body">
     {{--사이드바 불러오기--}}
     <aside id="menu-main" class="">
@@ -143,7 +147,7 @@
 
                     student_list += '<tr><td>'
 
-                        + student[i].name
+                        + student[i].name+""+
                         + '</td><td id="delete' + i + '">'
                         + student[i].id
                         + '</td><td>' +
@@ -152,7 +156,7 @@
                         ' 비밀번호 변경\n' +
                         ' </button>' +
                         '</td><td>' +
-                        '<button onclick="Delete(' + i + ')">제외하기</button>' +
+                        '<button  class="btn btn-primary-outline btn-round-lg btn-sm "onclick="Delete(' + i + ')">제외좀하기</button>' +
                         '</td></tr>'
                 }
 
@@ -165,6 +169,7 @@
         });
 
         searching_Student(groupIds);
+
     }
 
 
@@ -191,6 +196,7 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: "groupId=" + groupIds+"&userId="+userId,
             success: function (data) {
+
                 alert("성공적으로 삭제했습니다.");
                 window.location.href = "{{url('mygroup')}}";
             },
@@ -203,6 +209,7 @@
 
     //그룹ID
     function add_student(st_made_number){
+        searching_Student(groupIds);
 
         var student_number_zip = [{
          "id":""+st_made_number
@@ -224,6 +231,7 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: "groupId="+groupIds+"&students="+student_number_zip,
             success: function (data) {
+
                 window.location.href = "{{url('mygroup')}}";
             },
             error: function (data) {
@@ -257,6 +265,7 @@
 
                 Myclass = GroupData['groups'];
                 groupIds = Myclass[0].groupId;
+
 
                 var class_list = '';
 
@@ -391,17 +400,17 @@
                 for (var i = 0; i < student.length; i++) {
 
                     student_list += '<tr><td>'
-
+                        +'<i class="fas fa-user"> </i>'
                         + student[i].name
                         + '</td><td id="delete' + i + '">'
                         + student[i].id
                         + '</td><td>' +
-                        ' <button type="button"  data-toggle="modal" ' +
+                        ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
                         '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
                         ' 비밀번호 변경\n' +
                         ' </button>' +
                         '</td><td>' +
-                        '<button onclick="Delete(' + i + ')">제외하기</button>' +
+                        '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +
                         '</td></tr>'
                 }
 
@@ -436,11 +445,12 @@
                     for( var i = 0 ; i < search_studentJSON.length; i++){
 
                         student_list +='<tr><td>'
+                            +'<i class="fas fa-user"> </i>'
                             +search_studentJSON[i].name
                             +'</td><td id="st'+i+'">'
                             +search_studentJSON[i].id
                             //                        +'</td><td><button onclick="add_student('+i+')">+</button></td></tr>'
-                            +'</td><td><input id="checkBox" type="checkbox" value="'+search_studentJSON[i].id+'" ></td></tr>'
+                            +'</td><td><center><input id="checkBox" type="checkbox" value="'+search_studentJSON[i].id+'" ></center></td></tr>'
                     }
 
 

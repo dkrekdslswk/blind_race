@@ -16,59 +16,18 @@
             margin: 0;
             padding: 0;
         }
-        body.disabled { overflow: hidden; }
-
-        .main-body {
-            max-width: 1220px;
-            min-width: 955px;
-            /*     overflow: hidden; */
-            margin: 0 auto;
-            position: relative;
-            height: 1024px;
-        }
-        .page-small .main-body {
-            max-width: 768px;
-            min-width: 320px;
-        }
-
-
-        #wrapper {
-            margin: 0 0 0 220px;
+        .changePages {
             padding: 0;
+            margin: 0;
             position: relative;
-            /*     min-height: 100% */
-            min-height: 705px;
-            min-width: 1000px;
-        }
-
-        #menu-main {
-            width: 220px;
-            hegight:100%;
-            left: 0;
-            bottom: 0;
             float: left;
-            position: relative;
-            /*     min-height: 1000px; */
-            top: 0px;
-            transition: all 0.4s ease 0s;
-            background-color: #ffffff;
-            border-left: 1px solid #e1e2e3;
-            border-right: 1px solid #e1e2e3;
-            border-bottom: 1px solid #e1e2e3;
-        }
-
-        #group_chart, #record_history , #record_students, #record_feedback {
-            margin-left: 10px;
-            margin-right: 10px;
-            min-height: 700px;
-            min-width: 700px;
-            display: block;
+            width: 88%;
+            height: 100%;
         }
 
         #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
         }
-
         #modal_allWrongAnswerList tr td , #details_record tr td , #wrongQuestions tr td {
             border-left: 1px solid #e5e6e8;
         }
@@ -178,7 +137,7 @@
             var userId = "";
 
             //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
-            $(document).on('click','#radio_changeDateToChart',function () {
+            $(document).on('click','.radio_changeDateToChart',function () {
 
                 var selectedradio = $("input[type=radio][name=optradio]:checked").val();
                 var startDate = "";
@@ -298,7 +257,15 @@
 
             });
 
+            //스크롤 할 때마다 레코드박스 메뉴바 위치 변경
+            $(window).scroll(function (event) {
 
+                if($(window).scrollTop() == 0){
+                    $('.recordbox_navbar').removeClass('nav-up');
+                }else {
+                    $('.recordbox_navbar').addClass('nav-up');
+                }
+            });
         });
 
         //날짜 조회 눌렀을 때 차트 출력
@@ -526,20 +493,30 @@
                     }
 
                     for( var i = 0 ; i < data['races'].length ; i++ ){
-                        $('#history_list_tr'+i).append($('<td>').text(i+1));
-                        $('#history_list_tr'+i).append($('<td>').append($('<a href="#" onclick="checkHomework(this.id)">')
-                                                                .attr('id',data['races'][i]['raceId'])
-                                                                .text(data['races'][i]['listName'])));
+
+                        $('#history_list_tr'+i).append($('<td>').attr('id','history_id_'+data['races'][i]['raceId'])
+                            .text(i+1).attr('value',data['races'][i]['raceId']));
+
+                        $('#history_list_tr'+i).append($('<td>').attr('id','history_name_'+data['races'][i]['raceId'])
+                            .text(data['races'][i]['listName']).attr('value',data['races'][i]['listName']));
 
                         $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['date']));
-                        $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['retestClearCount']+"/"+data['races'][i]['retestCount']));
-
-                        $('#history_list_tr'+i).append($('<td>').text(data['races'][i]['wrongClearCount']+"/"+data['races'][i]['wrongCount']));
 
                         $('#history_list_tr'+i).append($('<td>').attr('class','history_list_gradeCard')
                             .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
                                 .attr('id',data['races'][i]['raceId'])
                             .text("성적표")));
+
+                        if(data['races'][i]['retestClearCount'] == data['races'][i]['retestCount'] &&
+                            data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
+
+                            $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
+                                .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")));
+                        }else{
+                            $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
+                                .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료")));
+                        }
+
 
                     }
 
@@ -548,59 +525,6 @@
                     alert("최근 기록 불러오기 실패");
                 }
             });
-
-
-            /*var data = {
-                "races": {
-                    0 : {
-                        "raceId": 2,
-                        "listName": "스쿠스쿠3",
-                        "date": "2018년 1월 16일",
-                        "studentCount": 5,
-                        "retestClearCount": 0,
-                        "retestCount": 4,
-                        "wrongClearCount": 0,
-                        "wrongCount": 4,
-                    },
-
-                    1 : {
-                        "raceId": 1,
-                        "listName": "스쿠스쿠4",
-                        "date": "2018년 4월 46일",
-                        "studentCount": 5,
-                        "retestClearCount": 0,
-                        "retestCount": 3,
-                        "wrongClearCount": 0,
-                        "wrongCount": 3,
-                    }
-                }
-            };*/
-            /*for(var i = 0 ; i < 2 ; i++ ){
-                if (group_id == data['races'][i]['raceId']){
-                    raceData = data['races'][i];
-                }else {
-                    raceData = null;
-                }
-            }*/
-
-            /*if(raceData != null){
-                for( var i = 0 ; i < 1 ; i++ ){
-                    $('#history_list').append($('<tr>').attr('id','history_list_tr'+i));
-                }
-
-                for( var i = 0 ; i < 1 ; i++ ){
-                    $('#history_list_tr'+i).append($('<td>').text(i+1));
-                    $('#history_list_tr'+i).append($('<td>').append($('<a href="#" onclick="checkHomework()">').text(raceData['listName'])));
-
-                    $('#history_list_tr'+i).append($('<td>').text(raceData['date']));
-                    $('#history_list_tr'+i).append($('<td>').text(raceData['retestClearCount']+"/"+raceData['retestCount']));
-
-                    $('#history_list_tr'+i).append($('<td>').text(raceData['wrongClearCount']+"/"+raceData['wrongCount']));
-
-                    $('#history_list_tr'+i).append($('<td>').append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#Modal">').text("성적표")));
-
-                }
-            }*/
 
         }
 
@@ -1035,6 +959,8 @@
                     // }
 
                     var stdHomework = data['students'];
+                    $('#historyListNumber').empty();
+                    $('#historyListRaceName').empty();
                     $('#history_homework').empty();
 
                     for (var i = 0 ; i < stdHomework.length ; i++ ) {
@@ -1042,7 +968,10 @@
                     }
 
                     for (var i = 0; i < stdHomework.length ; i ++) {
-                        $('#history_homework_tr' + i).append($('<td>').text(i + 1));
+
+                        $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
+                        $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
+
                         $('#history_homework_tr' + i).append($('<td>').text(stdHomework[i]['userName']));
 
                         switch (stdHomework[i]['retestState']){
@@ -1057,7 +986,7 @@
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
 
                                 break;
                         }
@@ -1169,7 +1098,7 @@
                             case "clear" :
                                 $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceData[i]['raceId']).attr('name',userId).text("응시")));
+                                        .attr('id',raceData[i]['raceId']).attr('name',userId).text("응시완료")));
 
                                 break;
                         }
@@ -1399,7 +1328,7 @@
                 title:{},
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: "MMM DD (HH:ss)",
+                    valueFormatString: "MM월 DD일 (HH:ss)",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -1424,10 +1353,8 @@
                     type: "line",
                     showInLegend: true,
                     xValueFormatString: "DD, DD MMM, YYYY, HH, mm ,ss",
-                    axisYType: "secondary",
                     // name: "전체 평균 점수",
                     name: data['total_data'][0],
-
                     markerType: "square",
                     toolTipContent: "{label}" + "<br>" + "<span class='chart_total'>{name}:</span> {y}",
                     color: "#F08080",
@@ -1864,43 +1791,23 @@
 <body>
 
 {{--메인 네비바 불러오기--}}
-<div id="main-navbar" >
-    @include('Navigation.main_nav')
-</div>
-
+@include('Navigation.main_nav')
 {{--사이드바 불러오기--}}
-<aside id="menu-main" class="">
-    @include('Recordbox.record_sidebar')
-</aside>
+@include('Recordbox.record_sidebar')
 
-
-{{--첫 화면 레이스 목록--}}
-<div id="wrapper" class="">
+<div class="changePages">
 
     {{--레코드 네비바 불러오기--}}
-    <div id="main-recordnav" style="margin-bottom: 20px;">
-        @include('Recordbox.record_recordnav')
-    </div>
+    @include('Recordbox.record_recordnav')
 
-    <div id="group_chart">
-        @include('Recordbox.record_chart')
-    </div>
+    {{--레코드 차트페이지 불러오기--}}
+    @include('Recordbox.record_chart')
 
-    <div class="hidden" id="record_history">
-        @include('Recordbox.record_history')
-    </div>
+    @include('Recordbox.record_history')
 
-    <div class="hidden" id="record_students">
-        @include('Recordbox.record_studentslist')
-    </div>
-
-    <div class="hidden" id="record_feedback">
-        @include('Recordbox.record_feedback')
-    </div>
+    @include('Recordbox.record_studentslist')
 
 </div>
-
-
 
 <div class="modal_page">
     {{--Modal : Race Record--}}

@@ -2,6 +2,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+        #make {
+            width: 250px;
+            height: 70px;
+            background-image: url(https://i.imgur.com/8QcmVFs.png);
+            background-repeat: no-repeat;
+            background-size: width 250px;
+            margin-top: -10px;
+
+        }
+        .w3-light-grey {
+            background-image: url("https://i.imgur.com/HSrLDSe.png");
+            background-size: 100%;
+        }
         .page-small .learn-small,
         .page-small .main-small,
         .page-small .set-small {
@@ -137,8 +150,15 @@
         .w3-card-2 {
             position: absolute !important;
         }
-        .margins {
-
+        .tablede {
+            background-image: url("https://i.imgur.com/fFksbHc.png");
+            border:1px solid transparent !important;
+            padding: 8px;
+            width: 100%;
+            font-family: arial, sans-serif;
+            border-collapse: collapse; !important;
+            background-size: cover;
+            border-spacing: 0px 0px !important;
         }
 
 
@@ -161,29 +181,34 @@
             style="text-align: center; margin-top: 10px; margin-bottom:10px;"></div>
 
 
-    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card">
+    <div class>
         <!-- <form> -->
         <!-- <input type="text" name="search" placeholder="학생 찿기" class="input"></form>
         -->
 
-        <button class="w3-bar-item w3-button">
-            <!-- <a href="#" class="class=" w3-bar-item="w3-bar-item"
-            w3-button""="w3-button""">미등록 학생</a> -->
-        </button>
+
 
         <button
+                id ="make"
                 type="button"
-
                 data-toggle="modal"
-                data-target="#create">
-            클래스 생성
+                data-target="#create"
+                class="classmake">클래스 생성
         </button>
 
-        <div class="w3-dropdown-hover">
-            <h2>나의 클래스</h2>
+        <div>
+           <div style="width: 300px ; height: 100px">
+               <p></p>
+               <p></p>
+               <p></p>
+               <h2><i>  </i> My Class</h2>
+               <p></p>
+               <p></p>
+               <p></p>
+           </div>
 
 
-            <table id="Myclass">
+            <table class="tablede" id="Myclass">
             </table>
 
 

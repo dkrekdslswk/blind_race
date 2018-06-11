@@ -1,13 +1,25 @@
 <head>
 
     <style>
+        .recordSidebar {
+            margin: 0;
+            padding: 0;
+            display: block;
+            position: relative;
+            width: 12%;
+            height:100%;
+            float: left;
+            border: 1px solid #e5e6e8;
+        }
+        .recordSidebar .innerContents {
+
+        }
         .page-small {
             display: none !important;
         }
         .page-small {
             width: 100% !important;
         }
-
         .m-t-lg {
             margin-top: 30px !important;
         }
@@ -22,32 +34,6 @@
         .main-left-menu > li.active.class-toggle > a:hover { color: #8ebd4d; }
         .main-left-menu > li.active > a > .icon:before { content: "▲"; }
         .main-left-menu > li.active .toggle-class > a, .main-left-menu > li:hover .toggle-class > a { color: #8ebd4d; }
-
-        .sidebar_main {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            color: #5f5f5f;
-            font-size: 13px;
-            line-height: 18px;
-            margin-top: 30px;
-        }
-
-        .sidebar_footer {
-            text-align: center;
-            padding: 50px 16px 10px 16px;
-        }
-
-        .news {
-            width: 100%;
-            text-align: left;
-        }
-        .news_image {
-            border: 1px solid #e1e2e3;
-        }
-        .news_contents {
-            margin-top: 10px;
-        }
 
         #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
             padding: 8px 10px 8px 20px;
@@ -72,27 +58,28 @@
 
 </head>
 
-<div id="navigation" style="min-height: 600px;height:100%">
+<div class="recordSidebar" id="navigation">
 
-    <!--네비바 위부분 공백-->
-    <div class="page-small" style="text-align: center; margin-top: 10px; margin-bottom:10px;">
-    </div>
+    <div class="innerContents">
+        <!--네비바 위부분 공백-->
+        <div class="page-small" style="text-align: center; margin-top: 10px; margin-bottom:10px;">
+        </div>
 
-    <div class="m-t-lg">
-        <ul class="main-left-menu" id="side-menu2">
+        <div class="m-t-lg">
+            <ul class="main-left-menu" id="side-menu2">
 
-            {{--그룹 파트--}}
-            <li class="" id="side-menu3_li" style=" margin-top: 20px;margin-left: 10px;">
+                {{--그룹 파트--}}
+                <li class="" id="side-menu3_li" style=" margin-top: 20px;margin-left: 10px;">
                     나의 클래스
-            </li>
+                </li>
 
-            <li class="class-toggle">
-                {{--클래스 이름 리스트 들어갈 자리--}}
-                <div class="nav-second-level class_list" id="group_names">
+                <li class="class-toggle">
+                    {{--클래스 이름 리스트 들어갈 자리--}}
+                    <div class="nav-second-level class_list" id="group_names">
 
-                </div>
-            </li>
-        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-
 </div>
