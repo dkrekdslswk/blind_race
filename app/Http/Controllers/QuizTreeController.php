@@ -10,25 +10,36 @@ use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
-    // 공개된 레이스의 숫자 및 가상 폴더의 번호
+    // 공유 레이스 번호
     const OPEN_STATE = 0;
     const OPEN_NOT_STATE = 1;
 
-    // 폴더목록과 선택된 폴더의 리스트 목록을 반납
+    /****
+     * 폴더목록과 선택된 폴더의 리스트 목록을 반납
+     *
+     * @param Request $request->input()
+     *      ['folderId'] 선택된 폴더
+     *
+     * @return array(
+     *      'folders'       => $this->getFolders(세션 아이디)
+     *      'lists'         => $this->getLists(선택된 폴더 아이디, 세션 아이디)
+     *      'selectFolder'  선택된 폴더
+     *      'check'         검색 성공 여부
+     *  )
+     */
     public function getfolderLists(Request $request)
     {
-        // 들어올 정보
-//        $postData = array('folderId' => 'base');
-        $postData = array('folderId' => $request->post('folderId'));
+        $postData = array(
+            'folderId' => $request->has('folderId') ? $request->input('folderId') : false
+        );
 
         // 유저의 폴더 정보 가져오기
         $folders = $this->getFolders($request->session()->get('sessionId'));
 
         // 요구하는 폴더가 없을경우 기본 폴더를 가져옴
-        if ($postData['folderId'] == 'base'){
+        if ($postData['folderId'] == 'base' || ($postData['folderId'] == false)){
             $selectFolderId = $folders[0]['folderId'];
-        }
-        else{
+        } else {
             $selectFolderId = $postData['folderId'];
         }
 
@@ -46,7 +57,17 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 폴더목록 가져오기
+    /****
+     * 폴더목록 가져오기
+     *
+     * @param $sessionId //세션 아이디
+     * @return array(
+     *      0 => array(
+     *          'folderId' 폴더 아이디
+     *          'folderName' 폴더 이름
+     *      )
+     *  )
+     */
     private function getFolders($sessionId){
         // 폴더목록 가져오기
         $folderData = DB::table('folders as f')
@@ -111,7 +132,28 @@ class QuizTreeController extends Controller
         return $folders;
     }
 
-    // 리스트 목록 가져오기
+    /****
+     * 리스트 목록 가져오기
+     *
+     * @param $selectFolderId //폴더 아이디
+     * @param $sessionId // 세션 아이디
+     * @return array(
+     *      'listId' 리스트 아이디
+     *      'listName' 라스트 이름
+     *      'quizCount' 문항수
+     *      'createdDate' 만들어진 날짜
+     *      'openState' 공유 폴더 여부
+     *      // 레이스 출제된 기록
+     *      'races' => array(
+     *          0 => array(
+     *              'date' 출제된 날짜
+     *              'type' 출제한 방식
+     *              'groupName' 출제된 그룹
+     *              'teacherName' 출제한 교사
+     *          )
+     *      )
+     *  )
+     */
     private function getLists($selectFolderId, $sessionId){
         // 공개된 리스트 목록 가져오기
         if ($selectFolderId == self::OPEN_STATE){
@@ -192,7 +234,19 @@ class QuizTreeController extends Controller
         return $lists;
     }
 
-    // 리스트 폴더 만들기
+    /****
+     * 리스트 폴더 만들기
+     *
+     * @param Request $request->input()
+     *      'folderName' 만들 폴더의 이름
+     *
+     * @return array(
+     *      'folders'    => $this->getFolders(세션 아이디),
+     *      'lists'      => array() 호완용 변수 레이스가 없음
+     *      'selectFolder' 해당 폴더를 선택
+     *      'check' 생성 성공여부
+     *  )
+     */
     public function createFolder(Request $request){
         // 보내진 값 받기
         $postData = array(
@@ -229,11 +283,23 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 리스트 만들기
+    /****
+     * 리스트 만들기
+     *
+     * @param Request $request
+     *      'folderId' 리스트를 만들 폴더
+     *
+     * @return view($view)->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'listId' 호완용 변수 - 수정시 사용되는 변수
+     *          'listName' 호완용 변수 - 수정시 사용되는 변수
+     *          'folderId' 폴더 아이디
+     *          'bookList' => $this->getBookGet();
+     *          'quizs' 호완용 변수 - 수정시 사용되는 변수,
+     *          'check' 권한 환인 성공 여부
+     *      )
+     */
     public function createList(Request $request){
-//        $postData = array(
-//            'folderId' => 1
-//        );
         $postData = array(
             'folderId' => $request->input('folderId')
         );
@@ -265,17 +331,30 @@ class QuizTreeController extends Controller
                 'check'     => true
             );
 
-            return view('QuizTree/quiz_making')->with('response', $returnValue);
+            $view = 'QuizTree/quiz_making';
         }else{
             $returnValue = array(
                 'check' => false
             );
 
-            return view('homepage')->with('response', $returnValue);
+            $view = 'homepage';
         }
+
+        return view($view)->with('response', $returnValue);
     }
 
-    // 교재목록 가져오기
+    /****
+     * 교재목록 가져오기
+     *
+     * @return array(
+     *  0 => array(
+     *          'bookId' 교재 아이디
+     *          'bookName' 교재 이름
+     *          'pageMax' 교재 최대 페이지
+     *          'pageMin' 교재 최소 페이지
+     *      )
+     *  )
+     */
     private function getBookGet(){
 
         // 교재목록 검색
@@ -303,14 +382,36 @@ class QuizTreeController extends Controller
         return $bookList;
     }
 
-    // 문제 검색하기
+    /****
+     * 문제 검색하기
+     *
+     * @param Request $request->input()
+     *      'bookId' 교재 번호
+     *      'pageStart' 페이지 시작
+     *      'pageEnd' 페이지 끝
+     *      'level' 문제 난이도
+     *
+     * @return array(
+     *      'listId' => array(
+     *          0 => array(
+     *              'quizId' 퀴즈 번호
+     *              'bookId' 교재 번호
+     *              'page' 페이지 번호
+     *              'question' 문제
+     *              'hint' 힌트
+     *              'right' 정답
+     *              'example1' 예문1
+     *              'example2' 예문2
+     *              'example3' 예문3
+     *              'quizType' 문제 종류
+     *              'makeType' 주관식, 객관식 구분
+     *              'level' 문제 난이도
+     *          )
+     *      ),
+     *      'check' 조회 성공 여부
+     *  )
+     */
     public function getQuiz(Request $request){
-//        $postData     = array(
-//            'bookId'        => 2,
-//            'pageStart'     => 17,
-//            'pageEnd'       => 20,
-//            'level'         => 1
-//        );
         $postData = array(
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),
@@ -378,34 +479,30 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 만든 리스트 저장하기
+    /****
+     * 만든 리스트 저장하기
+     *
+     * @param Request $request->input()
+     *  'listId' 리스트 아이디 - 수정 용
+     *  'listName' 리스트 이름
+     *  'quizs' => array(
+     *      0 => array(
+     *          'question' 문제
+     *          'right' 정답
+     *          'hint' 힌트
+     *          'example1' 예문1
+     *          'example2' 예문2
+     *          'example3' 예문3
+     *          'quizType' 퀴즈 타입
+     *          'makeType' 주관식 객관식 구분
+     *      )
+     *  )
+     * @return array(
+     *      'check' 입력 성공여부
+     *      'errorQuiz' 입력 실패시 입력 실패한 목록 위의 'quizs'와 동일한 양식
+     *  )
+     */
     public function insertList(Request $request){
-//        $postData     = array(
-//            'listId' => 9,
-//            'listName' => '리얼리즘',
-//            'quizs' => array(
-//                [
-//                    'question' => '1',
-//                    'right' => '1',
-//                    'hint' => '1',
-//                    'example1' => '2',
-//                    'example2' => '3',
-//                    'example3' => '4',
-//                    'quizType'  => '',
-//                    'makeType'  => ''
-//                ],
-//                [
-//                    'question' => '1',
-//                    'right' => '1',
-//                    'hint' => '1',
-//                    'example1' => '2',
-//                    'example2' => '3',
-//                    'example3' => '4',
-//                    'quizType'  => '',
-//                    'makeType'  => ''
-//                ]
-//            )
-//        );
         $postData = array(
             'listId' => $request->input('listId'),
             'quizs' => $request->input('quizs'),
@@ -529,12 +626,17 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 삭제
+    /****
+     * 리스트 삭제
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 번호
+     * 
+     * @return array(
+     *      'check' 삭제 성공 여부
+     *  )
+     */
     public function deleteList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -591,7 +693,11 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 문제들 삭제
+    /****
+     * 리스트를 삭제하기 전에 문제들 삭제
+     *
+     * @param $listId // 리스트 아이디
+     */
     private function deleteListQuiz($listId){
         // 문제 리스트 받아오기
         $listQuizs = DB::table('listQuizs')
@@ -614,12 +720,23 @@ class QuizTreeController extends Controller
             ->delete();
     }
 
-    // 수정
+    /****
+     * 리스트 수정 준비하기
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 번호
+     *
+     * @return view($view)->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'listId' 리스트 아이디
+     *          'listName' 리스트 이름
+     *          'folderId' 폴더 아이디
+     *          'bookList' => $this->getBookGet()
+     *          'quizs' => $this->getListQuiz(리스트 아이디)
+     *          'check' 성공 여부
+     *      )
+     */
     public function updateList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -667,16 +784,28 @@ class QuizTreeController extends Controller
             );
         }
 
-//        return $returnValue;
-        return view('QuizTree/quiz_making')->with('response', $returnValue);
+        if ($returnValue['check']) {
+            $view = 'QuizTree/quiz_making';
+        } else {
+            $view = 'homepage';
+        }
+
+        return view($view)->with('response', $returnValue);
     }
 
-    // 미리보기
+    /****
+     * 리스트 미리보기
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 아이디
+     *
+     * @return array(
+     *      'listName' 리스트 이름
+     *      'quizs'     => $this->getListQuiz(리스트 아이디)
+     *      'check' 조회 성공 여부
+     *  )
+     */
     public function showList(Request $request){
-        // 요구하는 값
-//        $postData = array(
-//            'listId' => 1
-//        );
         $postData = array(
             'listId' => $request->input('listId')
         );
@@ -719,20 +848,40 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 공개여부설정
+    /****
+     * 리스트 공개 여부 설정
+     *
+     * @param Request $request->input()
+     *      'listId' 리스트 아이디
+     *
+     * @return array(
+     *      'listId' => 리스트 아이디,
+     *      'check' => 성공 여부
+     *  )
+     */
     public function updateOpenState(Request $request){
         $postData = array(
-            'listId' => $request->has('listId') ? $request->input('listId') : false,
-            'openState' => $request->has('openState') ? $request->input('openState') : false
+            'listId' => $request->has('listId') ? $request->input('listId') : false
         );
 
         // 유저정보 읽어오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
-        if ($userData['check'] && $postData['listId'] && (($postData['openState'] == self::OPEN_STATE) || ($postData['openState'] == self::OPEN_NOT_STATE))){
+        if ($userData['check'] && $postData['listId']){
             switch ($userData['classification'] == 'teacher'){
                 case 'teacher':
                 case 'root':
+                    $listData = DB::table('lists as l')
+                        ->select(
+                            'l.openState as openState'
+                        )
+                        ->where([
+                            'l.number' => $postData['listId'],
+                            'f.teacherNumber' => $userData['userId']
+                        ])
+                        ->join('folders as f', 'f.number', '=', 'l.folderNumber')
+                        ->first();
+
                     $updateData = DB::table('lists as l')
                         ->where([
                             'l.number' => $postData['listId'],
@@ -740,7 +889,7 @@ class QuizTreeController extends Controller
                         ])
                         ->join('folders as f', 'f.number', '=', 'l.folderNumber')
                         ->update([
-                            'openState' => $postData['openState']
+                            'openState' => ($listData->openState == self::OPEN_STATE ? self::OPEN_NOT_STATE : self::OPEN_STATE)
                         ]);
                     break;
                 default:
@@ -767,7 +916,24 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 문제가져오기
+    /****
+     * 리스트에 저장된 문제 조회 하기
+     * 
+     * @param $listId // 리스트 아이디
+     * @return array(
+     *      0 => array(
+     *          'quizId' 퀴즈 아이디
+     *          'question' 문제
+     *          'hint' 힌트
+     *          'right' 정답
+     *          'example1' 예문1
+     *          'example2' 예문2
+     *          'example3' 예문3
+     *          'quizType' 문제 타입
+     *          'makeType' 주관식 객관식 구분
+     *      )
+     *  )
+     */
     private function getListQuiz($listId){
         // 저장된 문제들 읽어오기
         $quizData = DB::table('quizBanks as qb')

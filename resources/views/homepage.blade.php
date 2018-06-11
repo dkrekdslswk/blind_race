@@ -115,7 +115,9 @@
         id="top"
         onload="loginCheck()";
         class="bgded fixed"
-        style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">
+        {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
+        style="background-color:white">
+
 
 <div class="wrapper row1">
     <header id="header" class="clear">
@@ -138,6 +140,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('race_list') }}">레이스
 
                 </li>
+
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('recordbox') }}">레코드박스
@@ -171,294 +174,130 @@
     </header>
 </div>
 
+<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var $ = jQuery.noConflict();
+    $(window).load(function() {
+        $('.flexslider').flexslider({
+            animation: "fade"
+        });
 
-<div class="wrapper row2">
-    <div id="pageintro" class="clear">
+        $(function() {
+            $('.show_menu').click(function(){
+                $('.menu').fadeIn();
+                $('.show_menu').fadeOut();
+                $('.hide_menu').fadeIn();
+            });
+            $('.hide_menu').click(function(){
+                $('.menu').fadeOut();
+                $('.show_menu').fadeIn();
+                $('.hide_menu').fadeOut();
+            });
+        });
+    });
+</script>
+</head>
+<body>
 
-        <ul class="nospace group">
-            <li>
-                <a class="mt-purple" href="/mygroup">
-                    <i class="fa fa-5x fa-child"></i>
-                    <em>My Class</em>
-                </a>
-            </li>
+<div class="flexslider">
 
-            <li>
-                {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
+            <a href="http://www.naver.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+            <div class="flex-caption">
 
-                <a class='mt-green' id="home_race">
-                    <i class="fa fa-5x fa-gamepad"></i>
-                    <em>Race</em>
-                </a>
-            </li>
-            <li>
-                <a class="mt-red" href="/recordbox">
-                    <i class="fa fa-5x fa-box-open"></i>
-                    <em>Record Box</em>
-                </a>
-            </li>
-            <li>
-                <a class="mt-yellow" href="{{ url('quiz_list') }}">
-                    <i class="fa fa-5x fa-tree"></i>
-                    <em>Quiz Tree</em>
-                </a>
-            </li>
-
-
-            <li>
-                <a class="mt-orange" href="/raid">
-                    <i class="fa fa-5x fa-comments"></i>
-                    <em>Feedback</em>
-                </a>
-            </li>
-
-
-
-        </ul>
-
-    </div>
-</div>
-
-{{--<div class="wrapper row3">--}}
-{{--<div class="lrspace">--}}
-{{--<main class="container clear">--}}
-{{--<!-- main body -->--}}
-
-{{--<figure class="group">--}}
-{{--<div class="one_half first"><img src="https://i.imgur.com/YfSCTE0.png" alt=""></div>--}}
-{{--<figcaption class="one_half">--}}
-{{--<h1 class="xxl">十分十分--}}
-{{--</h1>--}}
-{{--<h1 class="xxl">--}}
-{{--Free download Now!</h1>--}}
-{{--<p></p>--}}
-
-{{--</figcaption>--}}
-{{--</figure>--}}
-
-{{--<!----}}
-{{--################################################################################################--}}
-{{---->--}}
-{{--<!-- / main body -->--}}
-{{--<div class="clear"></div>--}}
-{{--</main>--}}
-{{--</div>--}}
-{{--</div>--}}
-
-
-
-<div class="wrapper row3">
-    <div class="lrspace">
-
-
-        <!-- Team member -->
-    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
-    {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
-    {{--<div class="mainflip">--}}
-    {{--<div class="frontside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<p><img class=" img-fluid" src="https://i.imgur.com/baXiQ1M.jpg" alt="card image"></p>--}}
-    {{--<h4 class="card-title">to 성 형 석 길 이 맞  </h4>--}}
-    {{--<p class="card-text">집에가고싶다.</p>--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="backside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<h4 class="card-title">My class</h4>--}}
-    {{--<p class="card-text">영어로 se..brother suck.</p>--}}
-    {{--<ul class="list-inline">--}}
-
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
-    {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
-    {{--<div class="mainflip">--}}
-    {{--<div class="frontside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<p><img class=" img-fluid" src="https://i.imgur.com/QUJ0Ak1.jpg" alt="card image"></p>--}}
-    {{--<h4 class="card-title">to 김 승 목 길 이 맞  </h4>--}}
-    {{--<p class="card-text">집에가고싶다.</p>--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="backside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<h4 class="card-title">My class</h4>--}}
-    {{--<p class="card-text">머리 몇시간쨰만지는중.</p>--}}
-    {{--<ul class="list-inline">--}}
-
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
-    {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
-    {{--<div class="mainflip">--}}
-    {{--<div class="frontside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<p><img class=" img-fluid" src="https://i.imgur.com/JBe6gnm.jpg" alt="card image"></p>--}}
-    {{--<h4 class="card-title">to 최 병 찬 길 이 맞   </h4>--}}
-    {{--<p class="card-text">?????????</p>--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="backside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<h4 class="card-title">My class</h4>--}}
-    {{--<p class="card-text">병찬이 갈리는소리골골  .</p>--}}
-    {{--<ul class="list-inline">--}}
-
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
-    {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
-    {{--<div class="mainflip">--}}
-    {{--<div class="frontside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<p><img class=" img-fluid" src="https://i.imgur.com/LlQi7HQ.jpg" alt="card image"></p>--}}
-    {{--<h4 class="card-title">to 시 뮤 림 레 기 다</h4>--}}
-    {{--<p class="card-text">집에가고싶다.</p>--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="backside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<h4 class="card-title">My class</h4>--}}
-    {{--<p class="card-text">마인크래프트보는초딩 ㅇㅈ?.</p>--}}
-    {{--<ul class="list-inline">--}}
-
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="col-xs-12 col-sm-6 col-md-4 inli">--}}
-    {{--<div class="image-flip" ontouchstart="this.classList.toggle('hover');">--}}
-    {{--<div class="mainflip">--}}
-    {{--<div class="frontside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<p><img class=" img-fluid" src="https://i.imgur.com/7FoPGzz.jpg" alt="card image"></p>--}}
-    {{--<h4 class="card-title">to안준휘(김하온)</h4>--}}
-    {{--<p class="card-text">집에가고싶다.</p>--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="backside">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body text-center mt-4">--}}
-    {{--<h4 class="card-title">My class</h4>--}}
-    {{--<p class="card-text">사랑해.</p>--}}
-    {{--<ul class="list-inline">--}}
-
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-
-    <!-- main body -->
-        <!-- ################################################################################################ -->
-
-        <ul class="nospace group services">
-            <div class="col-xs-12 col-sm-6 col-md-4 ">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <p>영상으로 설명 예정</p>
-                                <div class="card-body text-center mt-4">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-
-                                <h1 class="card-title">My class</h1>
-                                <h2 class="card-text">My Class를 이용하여 학생들의 쉽게 관리할수 있으며 원하는 클래스를 생성할수 있습니다.</h2>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-4 ">
-                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                    <div class="mainflip">
-                        <div class="frontside">
-                            <div class="card">
-                                <p><img  src="https://i.imgur.com/IeUty5n.png" ></p>
-                                <div class="card-body text-center mt-4">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="backside">
-                            <div class="card">
-
-                                <h1 class="card-title">My class</h1>
-                                <h2 class="card-text">My Class를 이용하여 학생들의 쉽게 관리할수 있으며 원하는 클래스를 생성할수 있습니다.</h2>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </ul>
-        <!-- ################################################################################################ -->
-        <!-- / main body -->
-        <div class="clear"></div>
-
-
-
-        </main>
-    </div>
+        {{--</li>--}}
+        {{--<li>--}}
+            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+            {{--<div class="flex-caption">--}}
+            {{--</div>--}}
+        {{--</li>--}}
+        {{--<li>--}}
+            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+            {{--<div class="flex-caption">--}}
+            {{--</div>--}}
+        {{--</li>--}}
+        {{--<li>--}}
+            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+            {{--<div class="flex-caption">--}}
+            {{--</div>--}}
+        {{--</li>--}}
+    </ul>
 </div>
-
 </div>
 </div>
 </div>
 
 
+<div id="pageintro" >
 
-<div class="wrapper row5">
+
+    <ul class="nospace group">
+
+        <li>
+            <i>MY Class</i>
+            <a class="mt-purple" href="/mygroup">
+                <i class="fa fa-5x fa-child"></i>
+
+            </a>
+        </li>
+
+        <li>
+            {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
+            <i >Race</i>
+            <a class='mt-green' id="home_race">
+                <i class="fa fa-5x fa-gamepad"></i>
+
+            </a>
+        </li>
+        <li>
+            <i>Record Box</i>
+            <a class="mt-red" href="/recordbox">
+                <i class="fa fa-5x fa-box-open"></i>
+
+            </a>
+        </li>
+        <li>
+            <i>Quiz Tree</i>
+            <a class="mt-yellow" href="{{ url('quiz_list') }}">
+                <i class="fa fa-5x fa-tree"></i>
+
+            </a>
+        </li>
+
+
+        <li>
+            <i>Feedback</i>
+            <a class="mt-orange" href="/raid">
+                <i class="fa fa-5x fa-comments"></i>
+
+            </a>
+        </li>
+
+
+
+    </ul>
+
+
+    </ul>
+
+</div>
+
+
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+<div class="row5">
     <div class="lrspace">
         <div id="copyright" class="clear">
 
-            <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
+            <p class="fl_left">Copyright &copy; 2018 - WDJ 17조 -
                 <a href="#">캡스톤 디자인</a>
             </p>
             <p class="fl_right">Template By
@@ -586,6 +425,20 @@
     }
 
 </script>
+<style>
+    img {
+        width: 1700px; !important;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        line-height: normal;
+        vertical-align: middle;
+    }
+
+    #pageintro ul {
+    }
+</style>
 
 </body>
 

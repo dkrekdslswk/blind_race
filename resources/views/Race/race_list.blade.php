@@ -422,7 +422,7 @@
                         <span style="text-align: center; display:block;">(사용할 모드를 클릭해주세요) </span>
 
                         <label class="race_menu_button" id="Race">
-                            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+                            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
                             <img  class="race_menu_img" src="/img/race_student/blind_race.png" alt=""><br>
                             <span class="race_menu_span">Race</span>
                             <input class="magic-radio" type="radio" name="race_mode"/>
@@ -430,7 +430,7 @@
 
 
                         <label class="race_menu_button" id="Exam" >
-                            <img class="menu_time_img" src="/img/race_student/realtime.png" alt=""><br>
+                            <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
                             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
                             <span class="race_menu_span">PopQuiz</span>
                             <input class="magic-radio" type="radio" name="race_mode"/>

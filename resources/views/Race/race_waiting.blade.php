@@ -100,6 +100,12 @@
 
         var real_A = new Array();
 
+        var A_count=0;
+        var B_count=0;
+        var C_count=0;
+        var D_count=0;
+
+
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
         var t_sessionId = '<?php echo $response['sessionId']; ?>';
@@ -188,7 +194,29 @@
 
             socket.on('leaveRoom', function(user_num){
                 $('#'+user_num).remove();
-            })
+                quiz_member--;
+                $('#student_count').text(quiz_member);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentOut')}}",
+                    dataType: 'json',
+                    async: false ,
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin="+roomPin+"&sessionId="+user_num,
+                    success: function (result) {
+                        console.log("학생퇴장"+user_num);
+
+                        if( result['characters'] != 'false'){
+                            socket.emit('enable_character',roomPin,result['characters']);
+                        }
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+            });
         };
         //정답뒤섞기
         function shuffle(a) {
@@ -213,31 +241,37 @@
 
                 var rank = i+1;
 
-                changehtml +='<li data-toggle="collapse" data-target="#products" class="box collapsed active "';
+                changehtml +='<tr class="rank_hr"><td  style="width:50px; height:50px; text-align:center;">';
+                changehtml +='<div style="width:30px; height:30px; background-color:white;">'+rank+'</div></td>';
+
                 switch(i){
-                    case 0: changehtml += 'style="background-color:gold;"><img src="https://i.imgur.com/guhQqnS.png" width="40px" alt=""/>'; break;
-                    case 1: changehtml += 'style="background-color:silver;"><img src="https://i.imgur.com/KARrYZA.png" width="40px" alt=""/>'; break;
-                    case 2: changehtml += 'style="background-color:saddlebrown;"><img src="https://i.imgur.com/ageVYAE.png" width="40px" alt=""/>'; break;
-                    default : changehtml += '>';
+                    case 0: changehtml += '<td style="width:50px; height: 50px; background-color:skyblue;">'; break;
+                    case 1: changehtml += '<td style="width:50px; height: 50px; background-color:yellow;">'; break;
+                    case 2: changehtml += '<td style="width:50px; height: 50px; background-color:#e75480;">'; break;
+                    default : changehtml += '<td style="width:50px; height: 50px; background-color:silver;">'; break;
                 }
-                changehtml+=
-                    +rank
-                    +" 등"
-                    + ranking_JSON[i].nick
-                    +'<i class="magin fas fa-trophy"></i><span >'
-                    + ranking_JSON[i].rightCount*100
-                    +" point"
-                    +'</span><i class="margin"><img src="/img/character/char'
-                    +ranking_JSON[i].characterId
-                    +'.png" style="width:40px; height:40px;">'
-                    +'</i></a>'
-                    +'</li>' ;
+                changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">'
+                    + '</td>'
+                    + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
+                    + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
+                    + '<td style=" background-color:white;">';
+
+                switch(ranking_JSON[i].answerCheck){
+                    case "O":
+                        changehtml+='<img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        break;
+                    case "X" :
+                        changehtml+='<img src="/img/wrong.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        break;
+
+                }
             }
-            $(".nav-side-menu").html(changehtml);
+            $('#student_rank').html(changehtml);
         }
 
 
         function btn_click(){
+
             (function($) {
                 if ($.fn.style) {
                     return;
@@ -308,15 +342,6 @@
             body.style('background-color', 'whitesmoke', 'important');
 
 
-            //var quiz_JSON = JSON.parse('<?php //echo json_encode($json['quizData']); ?>');
-            // var quiz_JSON = [
-            //     {"quizCount":"1", "question":"1번문제",　"right":"あ", "example1":"い",	"example2":"い","example3":"お","quizId":"5","quizType":"vocabulary","makeType":"sub","hint":""},
-            //     {"quizCount":"2", "question":"2번문제",　"right":"か", "example1":"き",	"example2":"く","example3":"け","quizId":"4","quizType":"word","makeType":"obj","hint":""},
-            //     {"quizCount":"3", "question":"3번문제","right":"さ", "example1":"し",	"example2":"す","example3":"せ","quizId":"3","quizType":"grammar","makeType":"sub","hint":""},
-            //     {"quizCount":"4", "question":"4번문제","right":"た", "example1":"ち",	"example2":"つ","example3":"て","quizId":"2","quizType":"vocabulary","makeType":"obj","hint":""},
-            //     {"quizCount":"5", "question":"5번문제","right":"はい", "example1":"いいえ",	"example2":"分からない","example3":"分かる","quizId":"1","quizType":"word","makeType":"obj","hint":""}
-            // ];
-
             var Mid_result_Timer;
 
             var socket = io(':8890'); //14
@@ -338,6 +363,16 @@
             socket.on('answer-sum', function(answer ,sessionId , quizId){
                 if(answer == 1 || answer == 2||answer == 3 || answer == 4)
                 {
+                    switch(answer){
+                        case '1': A_count++;
+                            break;
+                        case '2': B_count++;
+                            break;
+                        case '3': C_count++;
+                            break;
+                        case '4': D_count++;
+                            break;
+                    }
                     if( answer == rightAnswer)
                         answer = real_A[rightAnswer];
                     else{
@@ -408,100 +443,43 @@
                             var correct_count = result['rightAnswer'];
                             var incorrect_count =result['wrongAnswer'];
 
-                            if(correct_count == 0)
-                                incorrect_count = 1 ;
+                            // if(correct_count == 0)
+                            //     incorrect_count = 1 ;
 
-                            $("#quiz_number").text(quizId+"번 문제 결과");
-
-                            $("#winners").text("정답자:"+correct_count+"명");
-                            $("#fail_count").text("오답자:"+incorrect_count+"명");
-
-                            $("#right").text(correct_count);
-                            $("#wrong").text(incorrect_count);
+                            $("#quiz_number").text(quizId);
 
                             var correct_percentage =Math.floor(correct_count / (correct_count + incorrect_count) * 100);
 
-                            // $('.pie::before').css('content',correct_percentage);
-
-
-
+                            // correct_percentage
                             $("#Mid_Q_Name").text(quiz_JSON[quizId-1].question);
-                            $("#Mid_A_Right").text(correct_percentage+"%정답 / "+quiz_JSON[quizId-1].right);
+                            $("#Mid_A_Right").text(quiz_JSON[quizId-1].right);
 
-                            function sliceSize(dataNum, dataTotal) {
-                                return (dataNum / dataTotal) * 360;
-                            }
-                            function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-                                $(pieElement).append(
-                                    "<div class='slice " + sliceID + "'><span></span></div>"
-                                );
-                                var offset = offset - 1;
-                                var sizeRotation = -179 + sliceSize;
-                                $("." + sliceID).css({
-                                    "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-                                });
-                                $("." + sliceID + " span").css({
-                                    "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-                                    "background-color": color
-                                });
+                            $('#mid_percent').text(correct_percentage+"%");
+                            $('#mid_circle').attr('class','c100 p'+correct_percentage+' green');
 
-                            }
-                            function iterateSlices(
-                                sliceSize,
-                                pieElement,
-                                offset,
-                                dataCount,
-                                sliceCount,
-                                color
-                            ) {
-                                var sliceID = "s" + dataCount + "-" + sliceCount;
-                                var maxSize = 179;
-                                if (sliceSize <= maxSize) {
-                                    addSlice(sliceSize, pieElement, offset, sliceID, color);
-                                } else {
-                                    addSlice(maxSize, pieElement, offset, sliceID, color);
-                                    iterateSlices(
-                                        sliceSize - maxSize,
-                                        pieElement,
-                                        offset + maxSize,
-                                        dataCount,
-                                        sliceCount + 1,
-                                        color
-                                    );
-                                }
-                            }
-                            function createPie(dataElement, pieElement) {
-                                var listData = [];
-                                $(dataElement + " span").each(function () {
-                                    listData.push(Number($(this).html()));
-                                });
-                                var listTotal = 0;
-                                for (var i = 0; i < listData.length; i++) {
-                                    listTotal += listData[i];
-                                }
-                                var offset = 0;
-                                var color = [
-                                    "green",
-                                    "silver",
-                                    "orange",
-                                    "tomato",
-                                    "crimson",
-                                    "purple",
-                                    "turquoise",
-                                    "forestgreen",
-                                    "navy",
-                                    "gray"
-                                ];
-                                for (var i = 0; i < listData.length; i++) {
-                                    var size = sliceSize(listData[i], listTotal);
-                                    iterateSlices(size, pieElement, offset, i, 0, color[i]);
-                                    $(dataElement + " li:nth-child(" + (
-                                        i + 1
-                                    ) + ")").css("border-color", color[i]);
-                                    offset += size;
-                                }
-                            }
-                            createPie(".pieID.legend", ".pieID.pie");
+
+
+                            //통계 부분
+                            $('#A_count').text(A_count);
+                            $('#B_count').text(B_count);
+                            $('#C_count').text(C_count);
+                            $('#D_count').text(D_count);
+
+                            var sum_count = A_count+B_count+C_count+D_count;
+                            var A_mark = Math.floor(A_count / sum_count * 100 / 5 * 9 );
+                            var B_mark = Math.floor(B_count / sum_count * 100 / 5 * 9 );
+                            var C_mark = Math.floor(C_count / sum_count * 100 / 5 * 9 );
+                            var D_mark = Math.floor(D_count / sum_count * 100 / 5 * 9 );
+
+                            $('li:nth-child(1):before').css('height',A_mark+"px");
+                            $('li:nth-child(2):before').css('height',B_mark+"px");
+                            $('li:nth-child(3):before').css('height',C_mark+"px");
+                            $('li:nth-child(4):before').css('height',D_mark+"px");
+
+                            A_count = 0;
+                            B_count = 0;
+                            C_count = 0;
+                            D_count = 0;
 
                             ranking_process(result['studentResults']);
 
@@ -530,7 +508,7 @@
 
                     if(quiz_continue == true)
                         socket.emit('android_next_quiz',roomPin);
-                }, 30000);
+                }, 99999999999);
             });
 
 
