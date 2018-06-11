@@ -98,6 +98,7 @@ io.on('connection', function (socket){
     //대기방에서 퇴장시 캐릭터 활성화 하는 함수
     socket.on('enable_character',function(roomPin,char_num){
         io.sockets.in(roomPin).emit('enable_character',char_num);
+        console.log("방이탈 "+roomPin+","+char_num)
     });
 
 
