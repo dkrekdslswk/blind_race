@@ -27,7 +27,7 @@
 
         /*modal-page*/
         .modal-dialog {
-            width: 1000px;
+            width: 1200px;
         }
         .modal-content.studentGrade ,.modal-content.detail {
             margin: auto;
@@ -44,6 +44,7 @@
             text-align: left;
         }
         .modal-footer #modal_total_grades{
+            width: 30%;
             float: right;
         }
 
@@ -82,12 +83,11 @@
         }
 
         .table_wrongList tbody ul{
-            list-style-type: circle;
+            list-style-type: upper-alpha;
             padding: 0 0 0 15px;
             margin: 0;
         }
         .table_wrongList tbody ul > li:first-child{
-            list-style-type: disc;
             color: red;
             margin-bottom: 3px;
         }
@@ -1882,7 +1882,7 @@
 <div class="modal_page">
     {{--Modal : Race Record--}}
     <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="width: 1000px;" >
+        <div class="modal-dialog" role="document" style="width: 1200px;" >
 
             {{--PAGE SPLIT 1. 모달 학생점수 페이지--}}
             <div class="modal-content studentGrade">
@@ -1952,45 +1952,10 @@
                         <div class="wrong_left">
                             <table class="table_wrongList" id="wrongList">
                                 <thead>
-                                <tr>
-                                    {{--INSERT NEW DATA 01--}}
-                                    <td>
-                                        <div>
-                                            1.
-                                        </div>
-                                    </td>
-                                    {{--INSERT NEW DATA 02--}}
-                                    <td>
-                                        <div>
-                                            <b>
-                                                와타시와 텐뿌라데스. 혼또니 오이시크테 이츠모 타베타이또 오모이마스. 데모 타베스기루토 후톳쨔으노데 이빠이 타베떼와 다메데스. 이키시노 나가레데 카키마시따.
-                                            </b>
-                                        </div>
-                                    </td>
-                                </tr>
+
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    {{--INSERT NEW DATA 03--}}
-                                    <td colspan="2">
-                                        <div class="wrongExamples">
-                                            <ul>
-                                                <li>
-                                                    와타시와 텐뿌라데스. (1명)
-                                                </li>
-                                                <li>
-                                                    혼또니 오이시크테 이츠모 타베타이또 오모이마스. (2명)
-                                                </li>
-                                                <li>
-                                                    데모 타베스기루토 후톳쨔으노데 이빠이 타베떼와 다메데스. (1명)
-                                                </li>
-                                                <li>
-                                                    이키시노 나가레데 카키마시따. (1명)
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>

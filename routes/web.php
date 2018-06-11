@@ -104,6 +104,16 @@ Route::get('/recordbox_main', function(){
     return view('Recordbox/recordbox_main');
 });
 
+/* 4-1. Record Box : test */
+Route::get('/recordbox/sidebar', function(){
+    return view('Recordbox/sidebar');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox_main/sidebar', function(){
+    return view('Recordbox/sidebar');
+});
+
 /* 4-2. Record Box : Record List */
 Route::get('/recordbox_student', function(){
     return view('Recordbox/recordbox_student_main');
