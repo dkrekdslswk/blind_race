@@ -206,6 +206,10 @@
                     data:"roomPin"+roomPin+"&sessionId"+user_num,
                     success: function (result) {
                         console.log("학생퇴장"+user_num);
+
+                       if( result['characters'] != 'false'){
+                           alert('character가있었음'+result['characters']);
+                       }
                     },
                     error: function(request, status, error) {
                         alert("AJAX 에러입니다. ");
