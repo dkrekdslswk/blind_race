@@ -95,6 +95,11 @@ io.on('connection', function (socket){
         io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
     });
 
+    //대기방에서 퇴장시 캐릭터 활성화 하는 함수
+    socket.on('enable_character',function(roomPin,char_num){
+        io.sockets.in(roomPin).emit('enable_character',char_num);
+    });
+
 
     //웹 학생 접속성공여부
     socket.on('web_enter_room',function(roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
