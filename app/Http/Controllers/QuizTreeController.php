@@ -238,13 +238,14 @@ class QuizTreeController extends Controller
      * 리스트 폴더 만들기
      *
      * @param Request $request->input()
+     *      'folderName' 만들 폴더의 이름
      *
      * @return array(
-    'folders'    => $this->getFolders(세션 아이디),
-    'lists'      => array(),
-    'selectFolder'  => $folderId,
-    'check'         => true
-    )
+     *      'folders'    => $this->getFolders(세션 아이디),
+     *      'lists'      => array() 호완용 변수 레이스가 없음
+     *      'selectFolder' 해당 폴더를 선택
+     *      'check' 생성 성공여부
+     *  )
      */
     public function createFolder(Request $request){
         // 보내진 값 받기
@@ -282,11 +283,23 @@ class QuizTreeController extends Controller
         return $returnValue;
     }
 
-    // 리스트 만들기
+    /****
+     * 리스트 만들기
+     *
+     * @param Request $request
+     *      'folderId' 리스트를 만들 폴더
+     *
+     * @return view($view)->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'listId' 호완용 변수 - 수정시 사용되는 변수
+     *          'listName' 호완용 변수 - 수정시 사용되는 변수
+     *          'folderId' 폴더 아이디
+     *          'bookList' => $this->getBookGet();
+     *          'quizs' 호완용 변수 - 수정시 사용되는 변수,
+     *          'check' 권한 환인 성공 여부
+     *      )
+     */
     public function createList(Request $request){
-//        $postData = array(
-//            'folderId' => 1
-//        );
         $postData = array(
             'folderId' => $request->input('folderId')
         );
@@ -318,17 +331,30 @@ class QuizTreeController extends Controller
                 'check'     => true
             );
 
-            return view('QuizTree/quiz_making')->with('response', $returnValue);
+            $view = 'QuizTree/quiz_making';
         }else{
             $returnValue = array(
                 'check' => false
             );
 
-            return view('homepage')->with('response', $returnValue);
+            $view = 'homepage';
         }
+
+        return view($view)->with('response', $returnValue);
     }
 
-    // 교재목록 가져오기
+    /****
+     * 교재목록 가져오기
+     *
+     * @return array(
+     *  0 => array(
+     *          'bookId' 교재 아이디
+     *          'bookName' 교재 이름
+     *          'pageMax' 교재 최대 페이지
+     *          'pageMin' 교재 최소 페이지
+     *      )
+     *  )
+     */
     private function getBookGet(){
 
         // 교재목록 검색
@@ -356,14 +382,36 @@ class QuizTreeController extends Controller
         return $bookList;
     }
 
-    // 문제 검색하기
+    /****
+     * 문제 검색하기
+     *
+     * @param Request $request->input()
+     *      'bookId' 교재 번호
+     *      'pageStart' 페이지 시작
+     *      'pageEnd' 페이지 끝
+     *      'level' 문제 난이도
+     *
+     * @return array(
+     *      'listId' => array(
+     *          0 => array(
+     *              'quizId' 퀴즈 번호
+     *              'bookId' 교재 번호
+     *              'page' 페이지 번호
+     *              'question' 문제
+     *              'hint' 힌트
+     *              'right' 정답
+     *              'example1' 예문1
+     *              'example2' 예문2
+     *              'example3' 예문3
+     *              'quizType' 문제 종류
+     *              'makeType' 주관식, 객관식 구분
+     *              'level' 문제 난이도
+     *          )
+     *      ),
+     *      'check' 조회 성공 여부
+     *  )
+     */
     public function getQuiz(Request $request){
-//        $postData     = array(
-//            'bookId'        => 2,
-//            'pageStart'     => 17,
-//            'pageEnd'       => 20,
-//            'level'         => 1
-//        );
         $postData = array(
             'bookId'    => $request->input('bookId'),
             'pageStart' => $request->input('pageStart'),

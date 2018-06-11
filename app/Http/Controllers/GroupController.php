@@ -56,6 +56,7 @@ class GroupController extends Controller{
                         'g.teacherNumber' => $userData['userId']
                     ])
                     ->leftJoin('races as r', 'r.groupNumber', '=', 'g.number')
+                    ->leftJoin('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
                     ->leftJoin('raceUsers as ru', function ($join){
                         $join->on('ru.raceNumber', '=', 'r.number');
                         $join->on('ru.userNumber', '=', 'gs.userNumber');
