@@ -83,15 +83,30 @@
     #student_rank td{
         border-right:5px solid deepskyblue;
     }
+    .big_font_70{
+        font-size:70px;
+        color:white;
+    }
 </style>
 
     <div class="block" style="display:inline-block; margin-left:15%; width:70%; height:20%; ">
-        <h2 class='titular' style="line-height:30px;">
-            <span id="quiz_number">1번</span>
-            문제 및 정답
-        </h2>
+        <h2 class='titular' style="line-height:30px; color:white;">정답</h2>
 
-        <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-right:30px;" >
+
+        <div style=" display:inline-block; margin-left:3%; margin-right:3%;">
+            <sup><span class="big_font_70" id="quiz_number">1</span></sup>
+            <span   class="big_font_70" > / </span>
+            <span id="mid_all_quiz" class="big_font_70">30</span>
+        </div>
+
+
+            <div class="" style="border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
+                <div style="width:15%; height:100%; display:inline-block; border-radius:8px; background-color:red; font-size:30px; color:white;">正答</div>
+                <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
+            </div>
+
+
+        <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-left:1%;" >
             <div id="mid_circle" class="c100 p50 green">
                 <span id="mid_percent"></span>
                 <div class="slice">
@@ -100,37 +115,20 @@
                 </div>
             </div>
         </div>
-
-        <div class="divss" style="display:inline-block;">
-
-
-            <div class="" style="border-radius:10px; background-color: white; display:inline-block; width:700px; height:70px; margin-bottom:10px;">
-                <div style="width:100px; height:70px; display:inline-block; border-radius:8px; background-color:rebeccapurple; font-size:50px; color:white;">問題</div>
-                <div style="width:550px; height:70px; display:inline-block;">
-                    <span  id="Mid_Q_Name" style="font-size:20px; color:black;">姉は市役所に勤める（　　）、ボランティアで日本語を教えています。dddddddddddddddddddddddddddddddddd</span>
-                </div>
-            </div>
-
-            <div class="" style="border-radius:10px;  background-color: white; display:block; width:700px; height:40px;">
-                <div style="width:100px; height:40px; display:inline-block; border-radius:8px; background-color:red; font-size:30px; color:white;">正答</div>
-                <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
-            </div>
-
-        </div>
     </div>
 
 <div id="mid_content" >
 
-    <div id="buttons" style="position:absolute; top:30%; right: 3%;">
+    <div id="buttons" style="position:absolute; top:8%; right: 3%;">
         <a id="Mid_skip_btn" class="btn btn-lg nextbutton orange" href="#" role="button">Next</a>
     </div>
 
 
 
 
-    <div class="block" style="display: inline-block; width:46%; margin-left:15%;">
-        <h2 class='titular'>Ranking board</h2>
-        <table id="student_rank" style="width:100%; border-collapse: separate; border-spacing:5px 10px;">
+    <div class="block" style="display: inline-block; width:45%; height:70%; position:absolute; right:8%;">
+        <h2 class='titular'>중간 합산 결과</h2>
+        <table id="student_rank" style="width:100%; border-collapse: separate; border-spacing:0px 10px;">
             <tr>
                 <th></th>
                 <th></th>
@@ -140,11 +138,11 @@
             </tr>
 
             <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center;">
+                <td  style="width:50px; height:50px; text-align:center; border:none;">
                     <div style="width:30px; height:30px; background-color:white;">1</div>
                 </td>
 
-                <td style="width:50px; height: 50px; background-color:skyblue;">
+                <td style="width:50px; height: 50px; background-color:skyblue; ">
                     <img src="/img/character/char1.png" style="width:50px; height: 50px;"  alt="">
                 </td>
                 <td style="width:350px; background-color:white;">LONDON SPITFIRE</td>
@@ -153,7 +151,7 @@
             </tr>
 
             <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center;">
+                <td  style="width:50px; height:50px; text-align:center; border:none;">
                     <div style="width:30px; height:30px; background-color:white;">2</div>
                 </td>
 
@@ -166,7 +164,7 @@
             </tr>
 
             <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center;">
+                <td  style="width:50px; height:50px; text-align:center; border:none;">
                     <div style="width:30px; height:30px; background-color:white;">3</div>
                 </td>
 
@@ -179,44 +177,33 @@
             </tr>
         </table>
     </div>
-            <div class="bar-chart-block block" style="height:450px; display:inline-block; position:absolute; right:12%;">
-                <h2 class='titular'>보기 선택 현황</h2>
-                <h2 class='titular'>가장많이나온답 </h2>
-                <div class='grafico bar-chart'>
-                    <ul class='eje-y'>
-                        <li data-ejeY='100'></li>
-                        <li data-ejeY='80'></li>
-                        <li data-ejeY='60'></li>
-                        <li data-ejeY='40'></li>
-                        <li data-ejeY='20'></li>
-                        <li data-ejeY='0'></li>
-                    </ul>
-                    <ul class='eje-x'>
-                        <li id="A_mark"><i>A</i></li>
-                        <li id="B_mark"><i>B</i></li>
-                        <li id="C_mark"><i>C</i></li>
-                        <li id="D_mark"><i>D</i></li>
-                    </ul>
-                </div>
 
-                <ul class="os-percentages horizontal-list">
-                    <li>
-                        <p class="ios os scnd-font-color">A</p>
-                        <p class="os-percentage" id="A_count">21<sup>명</sup></p>
-                    </li>
-                    <li>
-                        <p class="mac os scnd-font-color">B</p>
-                        <p class="os-percentage" id="B_count">39<sup>명</sup></p>
-                    </li>
-                    <li>
-                        <p class="linux os scnd-font-color">C</p>
-                        <p class="os-percentage" id="C_count">9<sup>명</sup></p>
-                    </li>
-                    <li>
-                        <p class="win os scnd-font-color">D</p>
-                        <p class="os-percentage" id="D_count">31<sup>명</sup></p>
-                    </li>
-                </ul>
+            <div id="mid_q" class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
+                <h2 class='titular'>문제 풀이</h2>
+                <div style="margin-left:10%; width:80%; height:30%; border-radius:10px; background:white;">
+                    <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; ">姉は市役所に勤める（　　）、ボランティアで日本語を教えています。</span>
+                </div>
+                <div class='grafico bar-chart'>
+                    <div class="choice_status" style="background: #9e7ac2;">
+                        <div  class="choice_two_tone" style="background: #8361ba;">A</div>
+                        <div class="B_class" id="B1">1</div>
+                    </div>
+
+                    <div class="choice_status" style="background: #f36174;">
+                        <div  class="choice_two_tone" style="background: #e24d66;">B</div>
+                        <div  class="B_class" id="B2">2</div>
+                    </div>
+
+                    <div class="choice_status" style="background: #42ce91;">
+                        <div class="choice_two_tone" style="background: #55dea8;">C</div>
+                        <div class="B_class" id="B3">3</div>
+                    </div>
+
+                    <div class="choice_status" style="background: #fcb029;">
+                        <div class="choice_two_tone" style="background: #f9cd36;">D</div>
+                        <div class="B_class" id="B4">4</div>
+                    </div>
+                </div>
             </div>
 
 </div>
@@ -225,6 +212,26 @@
     /************************
     Css orignal https://codepen.io/jlalovi/details/bIyAr
     ************************/
+    .choice_status{
+        width:80%;
+        height:20%;
+        margin-top:3%;
+        margin-left:10%;
+        border-radius:10px;
+    }
+    .choice_two_tone{
+        width:15%;
+        height:100%;
+        font-size:30px;
+        border-radius: 10px 0px 0px 10px;
+        display:inline-block;
+    }
+    .B_class{
+        display:inline-block;
+        font-size:30px;
+        width:70%;
+    }
+
     @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700);
     * {
         -webkit-box-sizing: border-box;
@@ -303,16 +310,16 @@
         font-size: 15px;
     }
     .os.ios {
-        border-top: 4px solid #11a8ab;
+        border-top: 4px solid #9e7ac2;
     }
     .os.mac {
-        border-top: 4px solid #4fc4f6;
+        border-top: 4px solid #e24d66;
     }
     .os.linux {
-        border-top: 4px solid #fcb150;
+        border-top: 4px solid #55dea8;
     }
     .os.win {
-        border-top: 4px solid #e64c65;
+        border-top: 4px solid #f9cd36;
     }
     .os-percentage {
         margin: 0;
@@ -877,11 +884,6 @@
         display: inline-block;
         font-size: 20px;
         text-align:center;
-    }
-
-    .divss {
-        display: inline-block;
-        height:150px;
     }
     .nextbutton {
         margin-left: 550px;

@@ -142,10 +142,16 @@
         line-height:100px;
     }
 </style>
-
+<script>
+ 
+</script>
 <div id="client">
     <script>
     </script>
+
+    <div id="buttons" style="position:absolute; top:8%; right: 3%;">
+        <a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>
+    </div>
 
     <div class="main" style="">
         <div id='content'>
@@ -187,7 +193,7 @@
         </div>
     </div>
 
-    <div id='mid_result' style='display:block; display:none;' >
+    <div id='mid_result' style='display:none;' >
         <div>
             @include('Race.mid_result')
         </div>
