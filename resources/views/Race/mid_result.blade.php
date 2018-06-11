@@ -178,7 +178,7 @@
         </table>
     </div>
 
-            <div class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
+            <div id="mid_q" class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
                 <h2 class='titular'>문제 풀이</h2>
                 <div style="margin-left:10%; width:80%; height:30%; border-radius:10px; background:white;">
                     <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; ">姉は市役所に勤める（　　）、ボランティアで日本語を教えています。</span>
@@ -204,25 +204,6 @@
                         <div class="B_class" id="B4">4</div>
                     </div>
                 </div>
-
-                {{--<ul class="os-percentages horizontal-list">--}}
-                    {{--<li>--}}
-                        {{--<p class="ios os scnd-font-color">A</p>--}}
-                        {{--<p class="os-percentage" id="A_count">21</p>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<p class="mac os scnd-font-color">B</p>--}}
-                        {{--<p class="os-percentage" id="B_count">39</p>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<p class="linux os scnd-font-color">C</p>--}}
-                        {{--<p class="os-percentage" id="C_count">9</p>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<p class="win os scnd-font-color">D</p>--}}
-                        {{--<p class="os-percentage" id="D_count">31</p>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
             </div>
 
 </div>

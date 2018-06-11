@@ -447,6 +447,17 @@
                     data:"quizId="+quiz_JSON[quizId-1].quizId+"&sessionId="+t_sessionId,
                     success: function (result) {
                         if(result['check'] == true) {
+
+                            switch(quiz_JSON[quizId-1].makeType){
+                                case 'sub':
+                                    $('#mid_q').hide();
+                                    break;
+                                case 'obj':
+                                    $('#mid_q').show();
+                                    break;
+                            }
+
+
                             console.log("성공" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
 
                             //학생들에게 정답이 뭐였었는지 전달
