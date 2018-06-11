@@ -117,14 +117,15 @@
         var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
         window.onload = function() {
 
-
-
             var socket = io(':8890');
 
             $('#race_name').html(listName);
             $('#race_count').html(quizCount);
             $('#group_name').html(groupName);
             $('#group_student_count').html(groupStudentCount);
+
+            $('#mid_all_quiz').text('<?php echo $response['list']['quizCount']; ?>');
+
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
@@ -138,6 +139,8 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
+
+
 
 
                         var character_info = result['characters'].toString();
@@ -218,6 +221,15 @@
 
             });
         };
+
+        // function quiz_skip(){
+        //     var socket = io(':8890'); //14
+        //
+        //     if( quiz_numbar == quiz_JSON.length )
+        //         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+        //     else
+        //         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
+        // }
         //정답뒤섞기
         function shuffle(a) {
             var j, x, i;
@@ -256,6 +268,7 @@
                     + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
                     + '<td style=" background-color:white;">';
 
+
                 switch(ranking_JSON[i].answerCheck){
                     case "O":
                         changehtml+='<img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
@@ -268,7 +281,6 @@
             }
             $('#student_rank').html(changehtml);
         }
-
 
         function btn_click(){
 
@@ -458,23 +470,12 @@
                             $('#mid_circle').attr('class','c100 p'+correct_percentage+' green');
 
 
-
                             //통계 부분
                             $('#A_count').text(A_count);
                             $('#B_count').text(B_count);
                             $('#C_count').text(C_count);
                             $('#D_count').text(D_count);
 
-                            var sum_count = A_count+B_count+C_count+D_count;
-                            var A_mark = Math.floor(A_count / sum_count * 100 / 5 * 9 );
-                            var B_mark = Math.floor(B_count / sum_count * 100 / 5 * 9 );
-                            var C_mark = Math.floor(C_count / sum_count * 100 / 5 * 9 );
-                            var D_mark = Math.floor(D_count / sum_count * 100 / 5 * 9 );
-
-                            $('li:nth-child(1):before').css('height',A_mark+"px");
-                            $('li:nth-child(2):before').css('height',B_mark+"px");
-                            $('li:nth-child(3):before').css('height',C_mark+"px");
-                            $('li:nth-child(4):before').css('height',D_mark+"px");
 
                             A_count = 0;
                             B_count = 0;
@@ -488,6 +489,8 @@
                                 quiz_continue = false;
                             }
 
+
+
                             socket.emit('android_mid_result', roomPin, quiz_JSON[quiz_numbar-1].quizId ,quiz_JSON[quiz_numbar-1].makeType , JSON.stringify(result['studentResults']) );
                         }
                     },
@@ -497,6 +500,7 @@
                 });
 
                 $("#mid_result").show();
+                $("#wait_room_nav").hide();
 
                 Mid_result_Timer = setTimeout(function(){
                     $('#mid_result_bgm').remove();
@@ -505,6 +509,7 @@
                     $("#content").show();
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
                     $("#mid_result").hide();
+                    $("#wait_room_nav").show();
 
                     if(quiz_continue == true)
                         socket.emit('android_next_quiz',roomPin);
@@ -519,7 +524,7 @@
                 $('#mid_result_bgm').remove();
                 socket.emit('count','time on',roomPin);
 
-
+                $("#wait_room_nav").show();
                 $("#content").show();
                 $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
@@ -585,6 +590,11 @@
                             A[ quiz_answer_list[2] ].innerText = quiz_JSON[data].example2;
                             A[ quiz_answer_list[3] ].innerText = quiz_JSON[data].example3;
 
+                            $('#B'+quiz_answer_list[0]).html(quiz_JSON[data].right+'<img src="/img/right_circle.png" style="display:inline-block; width:10%; height:100%;" >');
+                            $('#B'+quiz_answer_list[1]).html(quiz_JSON[data].example1);
+                            $('#B'+quiz_answer_list[2]).html(quiz_JSON[data].example2);
+                            $('#B'+quiz_answer_list[3]).html(quiz_JSON[data].example3);
+
                             real_A[quiz_answer_list[0]] = quiz_JSON[data].right;
                             real_A[quiz_answer_list[1]] = quiz_JSON[data].example1;
                             real_A[quiz_answer_list[2]] = quiz_JSON[data].example2;
@@ -637,7 +647,6 @@
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
 
     </div>
-
 
     <ul id="messages"></ul>
 
