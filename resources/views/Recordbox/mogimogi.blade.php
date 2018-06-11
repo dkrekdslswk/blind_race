@@ -27,10 +27,10 @@
 
         /*modal-page*/
         .modal-dialog {
-            width: 1200px;
+            width: 1000px;
         }
         .modal-content.studentGrade ,.modal-content.detail {
-            margin: auto;
+            margin-bottom: 5px;
             padding: 10px 20px 0 20px;
 
         }
@@ -44,7 +44,6 @@
             text-align: left;
         }
         .modal-footer #modal_total_grades{
-            width: 30%;
             float: right;
         }
 
@@ -83,11 +82,13 @@
         }
 
         .table_wrongList tbody ul{
-            list-style-type: upper-alpha;
-            padding: 0 0 0 15px;
+            list-style-type: circle;
+            padding: 0 0 0 25px;
             margin: 0;
+            font-size: 15px;
         }
         .table_wrongList tbody ul > li:first-child{
+            list-style-type: disc;
             color: red;
             margin-bottom: 3px;
         }
@@ -1341,20 +1342,28 @@
             var vocabulary_Points = [];
             var word_data_Points = [];
             var AllChartData = [];
+            var categoryCount = 0;
+            var gradeByOne = 0;
+
+            if(raceData[0]['grammarCount'] =! 0){ ++categoryCount;}
+            if(raceData[0]['vocabularyCount'] =! 0){ ++categoryCount;}
+            if(raceData[0]['wordCount'] =! 0){ ++categoryCount;}
+            gradeByOne = 100 / categoryCount;
 
             for(var i = 0 ; i < raceData.length ; i++){
 
                 //총점 구하기
-                var total_grade = ((100 / raceData[i]['allCount']).toFixed(1) *  raceData[i]['allRightCount']).toFixed(0);
+                var total_grade =((100 / raceData[i]['allCount']) * raceData[i]['allRightCount']).toPrecision(3);
 
                 //문법 총점 구하기
-                var grammer_grade = ((33 / raceData[i]['grammarCount']).toFixed(1) *  raceData[i]['grammarRightCount']).toFixed(0);
+                var grammar_grade = Math.floor((gradeByOne / raceData[i]['grammarCount']) * raceData[i]['grammarRightCount']);
 
                 //어휘 총점 구하기
-                var vocabulary_grade = ((33 / raceData[i]['vocabularyCount']).toFixed(1) *  raceData[i]['vocabularyRightCount']).toFixed(0);
+                var vocabulary_grade = Math.floor((gradeByOne / raceData[i]['vocabularyCount']) * raceData[i]['vocabularyRightCount']);
 
                 //단어 총점 구하기
-                var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
+                var word_grade = Math.floor((gradeByOne / raceData[i]['wordCount']) * raceData[i]['vocabularyRightCount']);
+
 
                 //차트 데이터 배열 만들기
                 total_data_Points.push({ x      : new Date(raceData[i]['date']),
@@ -1362,7 +1371,7 @@
                     label  : raceData[i]['listName']});
 
                 grammer_data_Points.push({ x    : new Date(raceData[i]['date']),
-                    y    : parseInt(grammer_grade) ,
+                    y    : parseInt(grammar_grade) ,
                     label: raceData[i]['listName']});
 
                 vocabulary_Points.push({ x      : new Date(raceData[i]['date']),
@@ -1383,6 +1392,7 @@
 
             return AllChartData;
         }
+
 
         //차트 만들 데이터
         function makingChart(data){
@@ -1882,7 +1892,8 @@
 <div class="modal_page">
     {{--Modal : Race Record--}}
     <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="width: 1200px;" >
+        <div class="modal-dialog" role="document" style="width: 1000px
+        ;" >
 
             {{--PAGE SPLIT 1. 모달 학생점수 페이지--}}
             <div class="modal-content studentGrade">
@@ -1952,17 +1963,6 @@
                         <div class="wrong_left">
                             <table class="table_wrongList" id="wrongList">
                                 <thead>
-
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="wrong_right">
-
-                            <table class="table_wrongList" id="wrongList">
-                                <thead>
                                 <tr>
                                     {{--INSERT NEW DATA 01--}}
                                     <td>
@@ -1974,7 +1974,7 @@
                                     <td>
                                         <div>
                                             <b>
-                                                와타시와 텐뿌라데스. 혼또니 오이시크테 이츠모 타베타이또 오모이마스. 데모 타베스기루토 후톳쨔으노데 이빠이 타베떼와 다메데스. 이키시노 나가레데 카키마시따.
+                                                周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。
                                             </b>
                                         </div>
                                     </td>
@@ -1987,16 +1987,62 @@
                                         <div class="wrongExamples">
                                             <ul>
                                                 <li>
-                                                    와타시와 텐뿌라데스. (1명)
+                                                    かたわら (1명)
                                                 </li>
                                                 <li>
-                                                    혼또니 오이시크테 이츠모 타베타이또 오모이마스. (2명)
+                                                    かたがた (2명)
                                                 </li>
                                                 <li>
-                                                    데모 타베스기루토 후톳쨔으노데 이빠이 타베떼와 다메데스. (1명)
+                                                    こととて (1명)
                                                 </li>
                                                 <li>
-                                                    이키시노 나가레데 카키마시따. (1명)
+                                                    うちに (1명)
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wrong_right">
+
+                            <table class="table_wrongList" id="wrongList">
+                                <thead>
+                                <tr>
+                                    {{--INSERT NEW DATA 01--}}
+                                    <td>
+                                        <div>
+                                            2.
+                                        </div>
+                                    </td>
+                                    {{--INSERT NEW DATA 02--}}
+                                    <td>
+                                        <div>
+                                            <b>
+                                                姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
+                                            </b>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    {{--INSERT NEW DATA 03--}}
+                                    <td colspan="2">
+                                        <div class="wrongExamples">
+                                            <ul>
+                                                <li>
+                                                    かたわら (1명)
+                                                </li>
+                                                <li>
+                                                    かたがた (1명)
+                                                </li>
+                                                <li>
+                                                    こととて (1명)
+                                                </li>
+                                                <li>
+                                                    うちに (2명)
                                                 </li>
                                             </ul>
                                         </div>

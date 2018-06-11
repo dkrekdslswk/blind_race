@@ -24,6 +24,76 @@
             width: 88%;
             height: 100%;
         }
+        /*modal-page*/
+        .modal-dialog {
+            width: 1000px;
+        }
+        .modal-content.studentGrade ,.modal-content.detail {
+            margin-bottom: 5px;
+            padding: 10px 20px 0 20px;
+
+        }
+        .modal-header {
+            text-align: center;
+        }
+        .modal-header #modal_date{
+            text-align: right;
+        }
+        .modal-body {
+            text-align: left;
+        }
+        .modal-footer #modal_total_grades{
+            float: right;
+        }
+
+        .modal_wrong {
+            width: 100%;
+            clear: both;
+        }
+        .wrong_left ,.wrong_right{
+            float: left;
+            position: relative;
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #e5e6e8;
+        }
+        .table_wrongList{
+            margin-bottom: 30px;
+            width: auto;
+            height: 100px;
+            padding: 0;
+        }
+
+        .table_wrongList thead tr {
+            vertical-align: top;
+        }
+        .table_wrongList thead tr > th:first-child{
+            width: 30px;
+        }
+        .table_wrongList thead tr > th:first-child div{
+            margin-top: 3px;
+        }
+        .table_wrongList thead tr > th:last-child{
+            margin-top: 3px;
+        }
+        .table_wrongList thead tr > th:last-child div{
+            margin-bottom: 10px;
+        }
+
+        .table_wrongList tbody ul{
+            list-style-type: circle;
+            padding: 0 0 0 25px;
+            margin: 0;
+            font-size: 15px;
+        }
+        .table_wrongList tbody ul > li:first-child{
+            list-style-type: disc;
+            color: red;
+            margin-bottom: 3px;
+        }
+        .table_wrongList tbody .wrongExamples{
+            margin-left: 20px;
+        }
 
         #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
@@ -31,6 +101,7 @@
         #modal_allWrongAnswerList tr td , #details_record tr td , #wrongQuestions tr td {
             border-left: 1px solid #e5e6e8;
         }
+
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -62,8 +133,8 @@
 
         /***********************************날짜 구하기**************************************************************************************************/
 
-        //group_id에 세션값을 받아서 넣어주기
-        //teacher에 세션값을 받아서 넣어주기
+            //group_id에 세션값을 받아서 넣어주기
+            //teacher에 세션값을 받아서 넣어주기
         var group_id = 0;
         var teacher = 1;
         var chartData = "";
@@ -90,9 +161,9 @@
 
                         $('#group_names').append($('<a href="#">')
                             .append($('<div>').attr('class','groups')
-                                              .attr('name',GroupData['groups'][i]['groupName'])
-                                              .attr('id',GroupData['groups'][i]['groupId'])
-                                              .text(GroupData['groups'][i]['groupName'])));
+                                .attr('name',GroupData['groups'][i]['groupName'])
+                                .attr('id',GroupData['groups'][i]['groupId'])
+                                .text(GroupData['groups'][i]['groupName'])));
                     }
 
                     //가장 상단에 위치한 클래스
@@ -190,6 +261,10 @@
 
                 var reqGroupId = $(this).attr('id');
                 var reqGroupName = $(this).attr('name');
+
+                $('#historyListNumber').empty();
+                $('#historyListRaceName').empty();
+                $('#history_homework').empty();
 
                 group_id = reqGroupId;
 
@@ -334,53 +409,53 @@
 
         }
 
-/*        //클래스 가져오기
-        //차트 그리기
-        //학생 명단 가져오기
-        function getGroups_and_loadChart(groupId) {
+        /*        //클래스 가져오기
+                //차트 그리기
+                //학생 명단 가져오기
+                function getGroups_and_loadChart(groupId) {
 
-            $.ajax({
-                type: 'POST',
+                    $.ajax({
+                        type: 'POST',
 
-                url: "{ {url('/groupController/groupsGet')} }",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                //data: {_token: CSRF_TOKEN, 'post':params},
-                data: groupId,
-                success: function (data) {
+                        url: "{ {url('/groupController/groupsGet')} }",
+                        //processData: false,
+                        //contentType: false,
+                        dataType: 'json',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        //data: {_token: CSRF_TOKEN, 'post':params},
+                        data: groupId,
+                        success: function (data) {
 
-                    var GroupData = data;
+                            var GroupData = data;
 
-                    for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
+                            for( var i = 0 ; i < GroupData['groups'].length ; i++ ){
 
-                        $('#group_names').append($('<a href="#">')
-                            .append($('<div class="groups" name="'+GroupData['groups'][i].groupName+'" id="'+ GroupData['groups'][i].groupId +'">')
-                                .text(GroupData['groups'][i].groupName)));
+                                $('#group_names').append($('<a href="#">')
+                                    .append($('<div class="groups" name="'+GroupData['groups'][i].groupName+'" id="'+ GroupData['groups'][i].groupId +'">')
+                                        .text(GroupData['groups'][i].groupName)));
 
-                    }
+                            }
 
-                    //가장 상단에 위치한 클래스
-                    var firstGroup = $('.groups:first-child');
+                            //가장 상단에 위치한 클래스
+                            var firstGroup = $('.groups:first-child');
 
-                    //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
-                    $('#nav_group_name').text(firstGroup.attr('name'));
+                            //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
+                            $('#nav_group_name').text(firstGroup.attr('name'));
 
-                    //가장 상단에 있는 클래스 ID값으로 차트 만들기
-                    getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
-                    getStudents(firstGroup.attr('id'));
-                    getHistory(firstGroup.attr('id'));
+                            //가장 상단에 있는 클래스 ID값으로 차트 만들기
+                            getChartData_and_loadChart(firstGroup.attr('id'),defaultStartDate,defaultEndDate);
+                            getStudents(firstGroup.attr('id'));
+                            getHistory(firstGroup.attr('id'));
 
-                    group_id = firstGroup.attr('id');
+                            group_id = firstGroup.attr('id');
 
-                },
-                error: function (data) {
-                    alert("그룹겟 에러");
-                }
-            });
+                        },
+                        error: function (data) {
+                            alert("그룹겟 에러");
+                        }
+                    });
 
-        }*/
+                }*/
 
         //그룹에 속한 학생들 가져오기
         //최근기록 -> 성적표(토글)페이지
@@ -420,11 +495,11 @@
 
                             $('#student_list_' + i).append($('<td>').text(i+1));
                             $('#student_list_' + i).append($('<td>')
-                                                    .append($('<a href="#">')
-                                                        .text(student[i]['name']))
-                                                    .attr('id',student[i]['id'])
-                                                    .attr('name',student[i]['name'])
-                                                    .attr('class','stdList'));
+                                .append($('<a href="#">')
+                                    .text(student[i]['name']))
+                                .attr('id',student[i]['id'])
+                                .attr('name',student[i]['name'])
+                                .attr('class','stdList'));
                         }
                     }
 
@@ -436,20 +511,20 @@
 
         }
 
-/*        function toggle_detailStudent_and_Wrong(value) {
+        /*        function toggle_detailStudent_and_Wrong(value) {
 
-            if($("#checkbox_0").is(":checked")){
-                $('#toggle_only_students').attr('class','');
-            }else{
-                $('#toggle_only_students').attr('class','hidden');
-            }
+                    if($("#checkbox_0").is(":checked")){
+                        $('#toggle_only_students').attr('class','');
+                    }else{
+                        $('#toggle_only_students').attr('class','hidden');
+                    }
 
-            if($("#checkbox_1").is(":checked")){
-                $('#toggle_only_wrong_answers').attr('class','');
-            }else{
-                $('#toggle_only_wrong_answers').attr('class','hidden');
-            }
-        }*/
+                    if($("#checkbox_1").is(":checked")){
+                        $('#toggle_only_wrong_answers').attr('class','');
+                    }else{
+                        $('#toggle_only_wrong_answers').attr('class','hidden');
+                    }
+                }*/
 
 
         function getHistory(group_id){
@@ -505,7 +580,7 @@
                         $('#history_list_tr'+i).append($('<td>').attr('class','history_list_gradeCard')
                             .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
                                 .attr('id',data['races'][i]['raceId'])
-                            .text("성적표")));
+                                .text("성적표")));
 
                         if(data['races'][i]['retestClearCount'] == data['races'][i]['retestCount'] &&
                             data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
@@ -684,55 +759,49 @@
                             }
                     */
 
-
-                    //오답리스트 로드할 위치(id값)를 변수에 담기
-                    var WrongList = "modal_allWrongAnswerList";
                     var wrongsData = data['wrongs'];
+                    var leftOrRight = "";
 
-                    $('#'+WrongList).empty();
+                    $('.wrong_left').empty();
+                    $('.wrong_right').empty();
+
+                    //나중에 페이지 네이션용
+                    if (wrongsData.length > 10){
+                        wrongsData.length = 9;
+                    }
 
                     for(var i = 0 ; i < wrongsData.length ; i++ ){
 
-                        for(var j = 0 ; j < 3 ; j++) {
-                            $('#' + WrongList).append($('<tr>').attr('id', WrongList + wrongsData[i]['number']+"_"+ j));
-
-                            switch (j) {
-                                case 0 :
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['rightAnswerCount']+" / "+wrongsData[i]['userCount']).attr('rowSpan',3));
-
-                                    break;
-                                case 1 :
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 0));
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 1));
-
-                                    break;
-                                case 2 :
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 2));
-                                    $('#'+WrongList+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id', 'wrongExample_'+wrongsData[i]['number']+"_"+ 3));
-                                    break;
-                            }
+                        if(i < 5){
+                            leftOrRight = "wrong_left";
+                        }else{
+                            leftOrRight = "wrong_right";
                         }
 
-                        for(var j = 0 ; j < 4 ; j++){
-
-                            //정답 부분은 색깔 주기
-                            if (j == 0){
-                                $('#wrongExample_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
-
-                            }else {
-                                //지문에 오답자가 한명도 없을 때
-                                if(wrongsData[i]['example'+j+"Count"] == 0){
-                                    $('#wrongExample_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
-
-                                }else {
-                                    //오답자가 있는경우
-                                    $('#wrongExample_' + wrongsData[i]['number'] + "_" + j).text(wrongsData[i]['example' + j])
-                                        .append($('<div>').css({display:"inline",float:"right"}).text(wrongsData[i]['example' + j + "Count"] + "명"));
-                                }
-                            }
-                        }
+                        $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
+                            .append($('<thead>')
+                                .append($('<tr>')
+                                    .append($('<th>')
+                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                    .append($('<th>')
+                                        .append($('<div>')
+                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                            .append($('<tbody>')
+                                .append($('<tr>')
+                                    .append($('<td colspan="2">')
+                                        .append($('<div>').attr('class','wrongExamples')
+                                            .append($('<ul>')
+                                                .append($('<li>').text(wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)"))
+                                                .append($('<li>').text(wrongsData[i]['example1']+" ("+ wrongsData[i]['example1Count'] +"명)"))
+                                                .append($('<li>').text(wrongsData[i]['example2']+" ("+ wrongsData[i]['example2Count'] +"명)"))
+                                                .append($('<li>').text(wrongsData[i]['example3']+" ("+ wrongsData[i]['example3Count'] +"명)")
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
                     }
 
                 },
@@ -784,48 +853,54 @@
                                     }
                             }
                     */
-
-                    $('#' + where).empty();
+                    //오답리스트 로드할 위치(id값)를 변수에 담기
+                    var WrongList = "modal_allWrongAnswerList";
                     var wrongsData = data['wrongs'];
+                    var leftOrRight = "";
+
+                    $('.wrong_left').empty();
+                    $('.wrong_right').empty();
+
+                    //나중에 페이지 네이션용
+                    if (wrongsData.length > 10){
+                        wrongsData.length = 9;
+                    }
 
                     for(var i = 0 ; i < wrongsData.length ; i++ ){
 
-                        for(var j = 0 ; j < 3 ; j++) {
-                            $('#' + where).append($('<tr>').attr('id', 'detail_wrong_'+wrongsData[i]['number']+"_"+ j));
-
-                            switch (j) {
-                                case 0 :
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
-
-                                    break;
-                                case 1 :
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+0));
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+1));
-
-                                    break;
-                                case 2 :
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+2));
-                                    $('#detail_wrong_'+wrongsData[i]['number']+"_"+ j).append($('<td>').attr('id','detail_'+wrongsData[i]['number']+"_"+3));
-                                    break;
-                            }
+                        if (i < 5){
+                            leftOrRight = "wrong_left";
+                        }else{
+                            leftOrRight = "wrong_right";
                         }
 
-                        for(var j = 0 ; j < 4 ; j++){
+                        $('.'+leftOrRight).append($('<table>').attr('class', 'table_wrongList')
+                            .append($('<thead>')
+                                .append($('<tr>')
+                                    .append($('<th>')
+                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                    .append($('<th>')
+                                        .append($('<div>')
+                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                            .append($('<tbody>')
+                                .append($('<tr>')
+                                    .append($('<td colspan="2">')
+                                        .append($('<div>').attr('class','wrongExamples')
+                                            .append($('<ul>')
+                                                .append($('<li>').text(wrongsData[i]['rightAnswer']))
+                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class','example_'+i+'_1'))
+                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class','example_'+i+'_2'))
+                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class','example_'+i+'_3'))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
 
-                            if (j == 0){
-                                $('#detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
-
-                            }else{
-                                $('#detail_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
-
-                                if(wrongsData[i]['example'+j+'Count'] == 1){
-                                    $('#detail_'+wrongsData[i]['number']+"_"+ j).css('background-color','#e5e6e8');
-                                }
-
-                            }
+                        for(var j = 1 ; j < 4 ; j++){
+                            if(wrongsData[i]['example'+j+'Count'] == 1){ $('.example_'+i+'_'+j).css('color','blue'); }
                         }
-
                     }
 
                 },
@@ -1207,20 +1282,20 @@
 
                 //차트 데이터 배열 만들기
                 total_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
-                                         y : parseInt(total_grade) ,
-                                         label : raceData[i]['listName']});
+                    y : parseInt(total_grade) ,
+                    label : raceData[i]['listName']});
 
                 grammer_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
-                                           y : parseInt(grammer_grade) ,
-                                           label : raceData[i]['listName']});
+                    y : parseInt(grammer_grade) ,
+                    label : raceData[i]['listName']});
 
                 vocabulary_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
-                                         y : parseInt(vocabulary_grade) ,
-                                         label : raceData[i]['listName']});
+                    y : parseInt(vocabulary_grade) ,
+                    label : raceData[i]['listName']});
 
                 word_data_Points.push({ x : new Date(raceData[i]['date'].replace('-','/','g')),
-                                        y : parseInt(word_grade) ,
-                                        label : raceData[i]['listName']});
+                    y : parseInt(word_grade) ,
+                    label : raceData[i]['listName']});
             }
 
             //차트 데이터 합치기
@@ -1271,48 +1346,57 @@
             var vocabulary_Points = [];
             var word_data_Points = [];
             var AllChartData = [];
+            var categoryCount = 0;
+            var gradeByOne = 0;
+
+            if(raceData[0]['grammarCount'] =! 0){ ++categoryCount;}
+            if(raceData[0]['vocabularyCount'] =! 0){ ++categoryCount;}
+            if(raceData[0]['wordCount'] =! 0){ ++categoryCount;}
+            gradeByOne = 100 / categoryCount;
 
             for(var i = 0 ; i < raceData.length ; i++){
 
                 //총점 구하기
-                var total_grade = ((100 / raceData[i]['allCount']).toFixed(1) *  raceData[i]['allRightCount']).toFixed(0);
+                var total_grade =((100 / raceData[i]['allCount']) * raceData[i]['allRightCount']).toPrecision(3);
 
                 //문법 총점 구하기
-                var grammer_grade = ((33 / raceData[i]['grammarCount']).toFixed(1) *  raceData[i]['grammarRightCount']).toFixed(0);
+                var grammar_grade = Math.floor((gradeByOne / raceData[i]['grammarCount']) * raceData[i]['grammarRightCount']);
 
                 //어휘 총점 구하기
-                var vocabulary_grade = ((33 / raceData[i]['vocabularyCount']).toFixed(1) *  raceData[i]['vocabularyRightCount']).toFixed(0);
+                var vocabulary_grade = Math.floor((gradeByOne / raceData[i]['vocabularyCount']) * raceData[i]['vocabularyRightCount']);
 
                 //단어 총점 구하기
-                var word_grade = ((33 / raceData[i]['wordCount']).toFixed(1) *  raceData[i]['wordRightCount']).toFixed(0);
+                var word_grade = Math.floor((gradeByOne / raceData[i]['wordCount']) * raceData[i]['vocabularyRightCount']);
+
 
                 //차트 데이터 배열 만들기
                 total_data_Points.push({ x      : new Date(raceData[i]['date']),
-                                         y      : parseInt(total_grade) ,
-                                         label  : raceData[i]['listName']});
+                    y      : parseInt(total_grade) ,
+                    label  : raceData[i]['listName']});
 
                 grammer_data_Points.push({ x    : new Date(raceData[i]['date']),
-                                           y    : parseInt(grammer_grade) ,
-                                           label: raceData[i]['listName']});
+                    y    : parseInt(grammar_grade) ,
+                    label: raceData[i]['listName']});
 
                 vocabulary_Points.push({ x      : new Date(raceData[i]['date']),
-                                         y      : parseInt(vocabulary_grade) ,
-                                         label  : raceData[i]['listName']});
+                    y      : parseInt(vocabulary_grade) ,
+                    label  : raceData[i]['listName']});
 
                 word_data_Points.push({ x       : new Date(raceData[i]['date']),
-                                        y       : parseInt(word_grade) ,
-                                        label   : raceData[i]['listName']});
+                    y       : parseInt(word_grade) ,
+                    label   : raceData[i]['listName']});
             }
 
             //차트 데이터 합치기
             AllChartData = { "total_data"   : ["전체 평균 점수" , total_data_Points] ,
-                             "voca_data"    : ["어학 점수", vocabulary_Points] ,
-                             "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-                             "word_data"    : ["단어 점수" , word_data_Points]
+                "voca_data"    : ["어학 점수", vocabulary_Points] ,
+                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
+                "word_data"    : ["단어 점수" , word_data_Points]
             };
 
             return AllChartData;
         }
+
 
         //차트 만들 데이터
         function makingChart(data){
@@ -1419,8 +1503,6 @@
                 animationEnabled: true,
                 theme: "light2",
                 title:{},
-                width:1300,
-                height:500,
                 axisX:{
                     labelFontSize: 15,
                     valueFormatString: "MMM DD (HH:ss)",
@@ -1566,6 +1648,8 @@
                     $('.modal-content.detail .modal_checkbox').show();                //체크박스 표시하기
                     $('.modal-content.detail #toggle_only_students').show();          //학생별 오답체트 표시하기
                     $('#wrongPercent').show();                                        //오답률 표시
+                    $('.modal #modal_total_students').empty();
+                    $('.modal-content.detail .modal-title').text('오답 문제');
 
                     var totalGrade = 0;
                     var totalVoca = 0;
@@ -1581,26 +1665,20 @@
                     $('#modal_date').text(StudentData[0]['year'] + "년 " + StudentData[0]['month'] + "월 " + StudentData[0]['day'] + "일");
                     $('#modal_raceName_teacher').text(StudentData[0]['listName'] + "  /  " + StudentData[0]['teacherName']);
 
+                    $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
+
                     for(var i = 0 ; i < StudentData.length ; i++){
 
                         $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
 
-                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData[i]['userName']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').append($('<a href="#">').text(StudentData[i]['userName']))
+                            .attr('id',StudentData[i]['userId']).attr('name',StudentData[i]['raceId']).attr('class','toggle_stdList'));
+
                         $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
                         $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
                         $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
                         $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
                         $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData[i]['allRightCount']+"/"+StudentData[i]['allCount']));
-
-                        //시험친 학생들 명단 출력
-                        $('#modal_studentList').append($('<tr>').attr('id', MODALID_studentList_tr + i));
-
-                        $('#' + MODALID_studentList_tr + i).append($('<td>').text(i+1));
-                        $('#' + MODALID_studentList_tr + i).append($('<td>')
-                            .attr('id',StudentData[i]['userId'])
-                            .attr('name',StudentData[i]['raceId'])
-                            .attr('class','toggle_stdList')
-                            .append($('<a href="#">').text(StudentData[i]['userName'])));
 
                         totalGrade += StudentScore['total_data'][1][i]['y'];
                         totalVoca += StudentScore['voca_data'][1][i]['y'];
@@ -1631,6 +1709,9 @@
                     $('.modal-content.detail .modal_checkbox').hide();              //체크박스 빼기
                     $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
                     $('#wrongPercent').hide();                                      //오답률 빼기
+                    $('.modal #modal_total_students').empty();
+                    $('.modal #modal_total_students').text("전체 학생");
+                    $('.modal-content.detail .modal-title').text('오답 문제');
 
                     //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
                     StudentData = allData['races'];
@@ -1812,28 +1893,29 @@
 <div class="modal_page">
     {{--Modal : Race Record--}}
     <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="width: 1200px">
+        <div class="modal-dialog" role="document" style="width: 1000px
+        ;" >
 
             {{--PAGE SPLIT 1. 모달 학생점수 페이지--}}
-            <div class="modal-content studentGrade" style="padding: 10px 20px 0 20px;">
+            <div class="modal-content studentGrade">
 
                 <div class="modal-header">
-                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">학생 점수</h3>
+                    <h3 class="modal-title" id="ModalLabel" >학생 점수</h3>
 
                     {{--INSERT DATA 1. 날짜--}}
-                    <div id="modal_date" style="text-align: right;"> </div>
+                    <div id="modal_date"> </div>
 
                     {{--INSERT DATA 2. 레이스이름과 교수님 성함--}}
-                    <div id="modal_raceName_teacher" style="text-align:center;"></div>
+                    <div id="modal_raceName_teacher"></div>
 
                 </div>
 
-                <div class="modal-body" style="text-align: left;margin: 0;">
+                <div class="modal-body">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>
-                                학생
+                            <th id="modal_total_students">
+
                             </th>
                             <th>
                                 평균점수
@@ -1864,108 +1946,121 @@
 
                     {{--PAGE SPLIT 2. 모달 전체 평균 점수들--}}
                     {{--INSERT DATA 4. 전체 평균 점수들--}}
-                    <div id="modal_total_grades" style="width: 30%;float: right;"> </div>
+                    <div id="modal_total_grades"> </div>
                 </div>
             </div>
 
             {{--PAGE SPLIT 3. 모달 상세보기 페이지--}}
-            <div class="modal-content detail" style="margin-top: 10px;padding: 10px 20px 0 20px;">
+            <div class="modal-content detail">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="ModalLabel" style="text-align: center;">상세 보기</h3>
+                    <h3 class="modal-title" id="ModalLabel">상세 보기</h3>
                 </div>
 
-                <div class="modal-body" style="text-align: left;margin: 0;">
-
-                    {{--PAGE SPLIT 4. 모달 학생과 오답문제 선택하는 체크박스--}}
-                    {{--INSERT DATA 5. 학생과 오답문제 선택하는 체크박스--}}
-                    <div class="modal_checkbox" style="text-align: center;">
-                        <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_students">학생
-                        <input type="checkbox" class="checkbox-grade" checked="checked" name="gradeCase" id="checkbox" value="toggle_only_wrong_answers">오답 문제
-                    </div>
-
-                    {{--PAGE SPLIT 5. 모달 학생리스트와 학생별 오답노트 리스트--}}
-                    <div id="toggle_only_students">
-                        <div class="gradeDetail_student" style="height: 550px;width: 100%;">
-                            <div class="modal_list_student" style="width: 100%;margin-top: 10px;">학생</div>
-
-                            <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
-                                <div id="stdAllList" style="width: 250px;">
-                                    <table class="table table-hover table-bordered" style="width: 100%;height: 0;">
-                                        <thead>
-                                        <tr>
-                                            <th width="50px">
-                                                번호
-                                            </th>
-                                            <th>
-                                                이름
-                                            </th>
-                                        </tr>
-                                        </thead>
-
-                                        {{--INSERT DATA 6. 해당 레이스를 시험친 학생리스트--}}
-                                        <tbody id="modal_studentList">
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: 50px;margin-left: 50px;margin-right: 50px;float: left;">
-                                >
-                            </div>
-
-                            <div class="stdAllList_scroll" style="float: left;overflow-y: scroll;margin-left: 60px;height: 500px;border: 1px solid #e5e6e8;">
-                                <div id="stdAllList" style="width: 600px;">
-                                    <table class="table table-hover table-bordered" style="width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <th width="50px">
-                                                번호
-                                            </th>
-                                            <th colspan="3">
-                                                정답
-                                            </th>
-                                        </tr>
-                                        </thead>
-
-                                        {{--INSERT DATA 7. 해당 학생의 오답 리스트--}}
-                                        <tbody id="modal_studentWrongAnswers">
-
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="modal-body">
 
                     {{--PAGE SPLIT 6. 모달 레이스 전체 오답노트 리스트--}}
-                    <div id="toggle_only_wrong_answers" class="" style="width: 100%;clear: left">
+                    <div id="toggle_only_wrong_answers" class="modal_wrong">
 
-                        <div class="modal_list_wrong" style="width: 100%;margin-top: 10px;text-align: left;">오답 문제</div>
+                        <div class="wrong_left">
+                            <table class="table_wrongList" id="wrongList">
+                                <thead>
+                                <tr>
+                                    {{--INSERT NEW DATA 01--}}
+                                    <th>
+                                        <div>
+                                            1.
+                                        </div>
+                                    </th>
+                                    {{--INSERT NEW DATA 02--}}
+                                    <th>
+                                        <div>
+                                            <b>
+                                                周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。
+                                            </b>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    {{--INSERT NEW DATA 03--}}
+                                    <td colspan="2">
+                                        <div class="wrongExamples">
+                                            <ul>
+                                                <li>
+                                                    かたわら (1명)
+                                                </li>
+                                                <li>
+                                                    かたがた (2명)
+                                                </li>
+                                                <li>
+                                                    こととて (1명)
+                                                </li>
+                                                <li>
+                                                    うちに (1명)
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="wrong_right">
+                            <table class="table_wrongList" id="wrongList">
+                                <thead>
+                                <tr>
+                                    {{--INSERT NEW DATA 01--}}
+                                    <td>
+                                        <div>
+                                            2.
+                                        </div>
+                                    </td>
+                                    {{--INSERT NEW DATA 02--}}
+                                    <td>
+                                        <div>
+                                            <b>
+                                                姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
+                                            </b>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    {{--INSERT NEW DATA 03--}}
+                                    <td colspan="2">
+                                        <div class="wrongExamples">
+                                            <ul>
+                                                <li>
+                                                    かたわら (1명)
+                                                </li>
+                                                <li>
+                                                    かたがた (1명)
+                                                </li>
+                                                <li>
+                                                    こととて (1명)
+                                                </li>
+                                                <li>
+                                                    うちに (2명)
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                        <table class="table table-hover">
-                            <thead>
-                            <tr id="race_detail_record">
-                                <th style="width: 50px">
-                                    번호
-                                </th>
-                                <th colspan="2">
-                                    문제
-                                </th>
-                                <th id="wrongPercent" style="width: 100px">
-                                    오답률
-                                </th>
-                            </tr>
-                            </thead>
+                        <div>
+                            <table class="table table-hover">
+                                <tbody id="modal_allWrongAnswerList">
 
-                            {{--INSERT DATA 8. 해당 레이스의 오답 리스트--}}
-                            <tbody id="modal_allWrongAnswerList">
+                                </tbody>
 
-                            </tbody>
+                            </table>
+                        </div>
 
-                        </table>
                     </div>
 
                 </div>
