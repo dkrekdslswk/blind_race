@@ -10,7 +10,31 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+<style>
+    .btn-primary-outline {
+        background-color: transparent;
+        border-color: #ccc;
+    }
+    .btn-round-lg{
+        border-radius: 20.5px;
 
+    }
+
+    button {
+        display: inline-block;
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: #D5C5E6;
+        margin: auto;
+        padding: 0;
+        border: 5px solid #D5C5E6; !important;
+        width: 80%;
+
+    }
+
+</style>
 <!-- careate Modal -->
 
                     <div
@@ -28,11 +52,12 @@
                                         <b>클래스 생성</b>
                                     </label>
                                     <input id="groupNameValue" type="text"
-                                           placeholder="클래스 입력"
+                                           placeholder="클래스 이름 입력"
                                            name="groupName"
                                            required="required"
+                                           style="margin-left: 50px"
                                     >
-                                    <button onclick="createGroup()" style ="color : black">클래스 생성</button>
+                                    <button class="btn btn-primary-outline btn-round-lg" onclick="createGroup()" style ="color : black; margin-left: 85px">클래스 생성</button>
 
                             </div>
 
@@ -189,7 +214,7 @@
                                 window.location.href = "{{url('mygroup')}}";
                             },
                             error: function (data) {
-                                alert("클래스찾기 에러");
+                                alert("클래스 이름을 입력해 주세요");
                             }
                         });
                     }

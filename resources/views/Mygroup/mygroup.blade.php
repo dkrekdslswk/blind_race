@@ -3,9 +3,9 @@
     <title>My group</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <body  >
+    <body style="background-color: #f9f9f9"  >
     <!--그룹이 아무것도 없을때의 경우를 생각하지않았음 -->
 
         <!-- Sidebar -->
@@ -30,16 +30,11 @@
                 <div class="modal fade" id="studnetchange" tabindex="-1" role="dialog" aria-labelledby="studnetchange1" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="studnetchange1">비밀번호 초기화</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+
                             <div class="modal-body">
-                                <label for="studentnumber"><b>이름</b> </label>
-                                <input type="text"  name="studentnumber"  id="studentnumbers"  required>
-                                <p></p>
+                                {{--<label for="studentnumber"><b>이름</b> </label>--}}
+                                {{--<input type="text"  name="studentnumber"  id="studentnumbers"  required>--}}
+
 
 
                                 {{--<label for="name"><b>이름</b></label>--}}
@@ -48,13 +43,11 @@
                                 {{--<p></p>--}}
 
                                 {{--<input id="checkBox" type="checkbox">--}}
-                                <label for="psw"><b>비밀번호 바꾸기</b></label>
-                                <input type="text" placeholder="새로운 비밀번호 변경" id="psw" required>
+
+                                <input type="text" placeholder="새로운 비밀번호 입력" id="psw" required>
+                                <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 120px" type="button" onclick="update('#')">변경하기</button>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                                <button type="button" onclick="update('#')">변경하기</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -82,12 +75,11 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div >
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <textarea id="cmemo" cols="30" rows="10"></textarea>
+                                <textarea id="cmemo" cols="70" rows="10"></textarea>
                                 <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
-                                <button type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
-                                <button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>
-                                <button type="button" onclick="excel('cview')">저장</button>
+                                {{--<button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>--}}
+                                <button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
+                                <button style="border: 1px solid white; margin-left: 10px; margin-top: 10px" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="excel('cview')">저장</button>
                                 <div id="cview"></div>
 
                             </div>
@@ -136,8 +128,8 @@
                 {{--<input type="button" id="selectBtn" value="추가">--}}
             </div>
         </div>
-        <div class="col col-lg-1">
-            
+        <div class="col col-lg-1" >
+            <button class="centerbutton"></button>
         </div>
         <div class="col col-lg-5">
 
@@ -180,9 +172,18 @@
 
 
     <style>
+        p ,div ,th ,tr  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        .centerbutton{
+            width: 100% ;
+            height: 100% ;
+            background-size: contain;
+            background-image: url("https://i.imgur.com/NYAOWGv.png");
+            border: 0px;
+        }
         table {
             font-family: arial, sans-serif;
-            border-collapse: separate;
             width: 100%;
             border-spacing: 0px 6px !important;
         }
@@ -201,6 +202,7 @@
             padding-left: 0px;
         }
         .col-lg-1 {
+
 
            background-image: url("https://i.imgur.com/NYAOWGv.png");
             background-size: auto;
@@ -234,9 +236,10 @@
                     padding-right: 0px;
                     padding-left: 0px;
                     height: 280px; !important;
-                    width: 120%; !important;
-                    background-image: url("https://i.imgur.com/DCn3r3r.png");
-                    background-size: 83%;
+                    width: 105%; !important;
+                    background-image: url("https://i.imgur.com/f22XeGk.png");
+
+                    background-size: contain;
 
                 }
                 .btn-primary-outline {
@@ -267,7 +270,7 @@
                 }
 
                 tr:nth-child(odd) {
-
+                    background-color: #ffffff;
                 }
 
                 .input[type=text] {
@@ -503,7 +506,7 @@
                 groupId : groupIds,
                 students :JSON.stringify(studentlist)
             };
-            alert(JSON.stringify(studentlist))
+//            alert(JSON.stringify(studentlist))
             jQuery.ajaxSettings.traditional = true;
 
 
@@ -519,7 +522,7 @@
 
                 },
                 error: function (data) {
-                    alert("엑셀등록 에러");
+                    alert("엑셀등록 에러! 올바르게 입력하세요");
                 }
             });
         }

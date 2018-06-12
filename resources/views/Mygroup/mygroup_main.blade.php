@@ -1,6 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
@@ -15,6 +16,18 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <style>
+        p ,div ,th ,tr  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        .button1:hover {
+            opacity: 0.6 !important;
+
+        }
+        .table_color {
+            background-image: url("https://i.imgur.com/fFksbHc.png"); !important;
+            background-size: 100%;
+        }
         body {
             font-family: arial, sans-serif;
             background-color: white;
@@ -69,6 +82,15 @@
             border-right: 1px solid #e1e2e3;
             border-bottom: 1px solid #e1e2e3;
         }
+
+        .btn-primary-outline {
+            background-color: transparent;
+            border-color: #ccc;
+        }
+        .btn-round-lg{
+            border-radius: 20.5px;
+
+        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -114,10 +136,11 @@
 
 </body>
 <script>
-    var groupIds ;
+    var groupIds = 0;
 
-    function getAnothergroup(groupIds) {
+    function getAnothergroup(inputGroupIds) {
 
+        groupIds = inputGroupIds;
         $.ajax({
             type: 'POST',
             url: "{{url('/groupController/groupDataGet')}}",
@@ -127,7 +150,7 @@
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId=" + groupIds,
+            data: "groupId=" + inputGroupIds,
             success: function (data) {
 
                 GroupData = data;
@@ -135,13 +158,13 @@
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
-                groupIds = GroupData['group']['id'];
+//                groupIds = GroupData['group']['id'];
                 student = GroupData['students'];
 
                 $('#teacher').html(teacher);
                 $('#group').html(group);
 
-                $('#groupIds').val(groupIds);
+//                $('#groupIds').val(groupIds);
                 var student_list = '';
 
                 for (var i = 0; i < student.length; i++) {
@@ -170,7 +193,7 @@
             }
         });
 
-        searching_Student(groupIds);
+        searching_Student(inputGroupIds);
 
     }
 
@@ -233,7 +256,7 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: "groupId="+groupIds+"&students="+student_number_zip,
             success: function (data) {
-
+//                alert(groupIds);
                 window.location.href = "{{url('mygroup')}}";
             },
             error: function (data) {
@@ -267,6 +290,7 @@
 
                 Myclass = GroupData['groups'];
                 groupIds = Myclass[0].groupId;
+                console.log(groupIds)
 
 
                 var class_list = '';
@@ -276,8 +300,8 @@
                     buttonGroupID = Myclass[i].groupId;
 //                        class_list +=Myclass[i].groupName
                     class_list
-                        += '<tr><td>'
-                        + '<button class="btn btn-link" id="' + buttonGroupID + '" onclick="getAnothergroup(this.id)">' + Myclass[i].groupName + '</button>'
+                        += '<tr class="table_color"><td>'
+                        + '<button class="button1 btn btn-link" id="' + buttonGroupID + '" onclick="getAnothergroup(this.id)">' + Myclass[i].groupName + '</button>'
                         + '</td><tr>'
 
 
@@ -421,12 +445,13 @@
 
             },
             error: function (data) {
-                alert("에러");
+                alert("로그인 후 사용 가능");
+                window.location.href = "{{url('/')}}";
             }
         });
     }
 
-        function searching_Student(groupIds){
+        function searching_Student(groupIds2){
             // 검색하기
             $.ajax({
                 type: 'POST',
@@ -436,9 +461,9 @@
                 async:false,
                 dataType: 'json',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: "search=&groupId="+ groupIds,
+                data: "search=&groupId="+ groupIds2,
                 success: function (data) {
-//                    alert(groupIds)
+//                   alert(groupIds2)
                     GroupData = data;
 
                     search_studentJSON = GroupData['users'];
@@ -457,6 +482,7 @@
 
 
                     $('#myTable').html(student_list);
+                    return groupIds2;
 
                 },
                 error: function (data) {
