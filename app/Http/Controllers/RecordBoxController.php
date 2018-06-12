@@ -430,12 +430,15 @@ class RecordBoxController extends Controller{
                                 DB::raw('dayofmonth(r.created_at) as day'),
                                 DB::raw('count(re.quizNo) as allCount'),
                                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" THEN 1 END) as vocabularyCount'),
-                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O"  THEN 1 END) as vocabularyRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type like "word%" THEN 1 END) as wordCount'),
-                                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O"  THEN 1 END) as wordRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type like "grammar%" THEN 1 END) as grammarCount'),
-                                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O"  THEN 1 END) as grammarRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type = "vocabulary obj" THEN 1 END) as vocabularyObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "vocabulary sub" THEN 1 END) as vocabularySubCount'),
+                                DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O" THEN 1 END) as vocabularyRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type = "word obj" THEN 1 END) as wordObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "word sub" THEN 1 END) as wordSubCount'),
+                                DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O" THEN 1 END) as wordRightAnswerCount'),
+                                DB::raw('count(CASE WHEN qb.type = "grammar obj" THEN 1 END) as grammarObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "grammar sub" THEN 1 END) as grammarSubCount'),
+                                DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O" THEN 1 END) as grammarRightAnswerCount'),
                                 'ru.retestState as retestState',
                                 'ru.wrongState as wrongState',
                                 'ru.wrong_at as wrongDate'
@@ -470,11 +473,11 @@ class RecordBoxController extends Controller{
                                 'day' => $race->day,
                                 'allCount' => $race->allCount,
                                 'allRightCount' => $race->allRightAnswerCount,
-                                'vocabularyCount' => $race->vocabularyCount,
+                                'vocabularyCount' => $race->vocabularyObjCount + $race->vocabularySubCount,
                                 'vocabularyRightCount' => $race->vocabularyRightAnswerCount,
-                                'wordCount' => $race->wordCount,
+                                'wordCount' => $race->wordObjCount + $race->wordSubCount,
                                 'wordRightCount' => $race->wordRightAnswerCount,
-                                'grammarCount' => $race->grammarCount,
+                                'grammarCount' => $race->grammarObjCount + $race->grammarSubCount,
                                 'grammarRightCount' => $race->grammarRightAnswerCount,
                                 'retestState' => $race->retestState,
                                 'wrongState' => $race->wrongState,
@@ -738,17 +741,16 @@ class RecordBoxController extends Controller{
 
                                 // 학생 조회일 경우 오답노트도 출력
                                 if ($postData['userId']){
-                                    $wrongText = DB::table()
+                                    $wrongText = DB::table('records as re')
                                         ->select(
-                                            'wrongAnswerNote'
+                                            're.wrongAnswerNote as wrongAnswerNote'
                                         )
                                         ->where([
-                                            'quizNumber' => $raceQuizs[$i]->quizId
+                                            're.quizNo' => $raceQuizs[$i]->quizId
                                         ])
                                         ->where($typeWhere)
                                         ->first();
                                 }
-
 
                                 if (count($wrongData) > 0) {
                                     array_push($wrongs, array(

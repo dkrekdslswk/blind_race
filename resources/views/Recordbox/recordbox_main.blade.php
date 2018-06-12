@@ -652,6 +652,8 @@
                                         }
                     */
 
+                    console.log(data);
+
                     //전체 점수와 평균 점수들 로드하기
                     //0은 전체 성적표
                     makingModalPage(raceId,data,0);
