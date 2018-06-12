@@ -14,7 +14,30 @@
         width: 100%;
         height: 500px;
         text-align: center;
+        margin-bottom: 50px;
     }
+
+    .stdAllList_scroll {
+        width: 250px;
+        height: 500px;
+        border: 1px solid #e5e6e8;
+        float: left;
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+    .stdAllList {
+        height: 500px;
+        width: 100%;
+        overflow-y: scroll;
+    }
+    .stdAllList .studentList {
+        width: 100%;
+    }
+    .stdAllList .studentList thead tr th ,.stdAllList .studentList thead tr td{
+        width: 50px;
+    }
+
     .chartArea{
         float: left;
         position: relative;
@@ -59,12 +82,12 @@
     <div class="studentContainer">
 
         <div class="studentChart">
-            <div class="stdAllList_scroll" style="overflow-y: scroll;width: 250px;height: 500px;border: 1px solid #e5e6e8;float: left;position: relative;margin-bottom: 50px;">
-                <div id="stdAllList">
-                    <table class="table table-hover table-bordered" style="width: 250px;height: 0;">
+            <div class="stdAllList_scroll">
+                <div class="stdAllList">
+                    <table class="studentList table table-hover table-bordered">
                         <thead>
                         <tr>
-                            <th width="50px">
+                            <th>
                                 번호
                             </th>
                             <th>
