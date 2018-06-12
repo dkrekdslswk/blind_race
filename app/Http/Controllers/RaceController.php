@@ -760,6 +760,7 @@ class RaceController extends Controller{
                         'sessionId' => $student->sessionId,
                         'nick' => $student->nick,
                         'characterId' => $student->characterId,
+                        'quizCount' => $raceData->quizCount,
                         'rightCount' => $student->rightCount,
                         'retestState' => in_array($student->userId, $retestTargets),
                         'wrongState' => in_array($student->userId, $wrongTargets)
