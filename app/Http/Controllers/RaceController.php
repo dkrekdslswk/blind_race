@@ -10,42 +10,40 @@ use App\Http\Controllers\QuizTreeController;
 use App\Http\Controllers\RecordBoxController;
 
 class RaceController extends Controller{
-    // 리스트 선택 후 레이스 혹은 테스트를 생성
+
+    /****
+     * 리스트 선택 후 레이스 혹은 테스트를 생성
+     *
+     * @param Request $request->input()
+     *      'groupId' 출제할 그룹 아이디
+     *      'raceType' 레이스 타입
+     *      'listId' 출제할 리스트 아이디
+     *      'passingMark' 재시험을 위한 커트라인
+     *
+     * @return view('homepage')->with('response', $returnValue)
+     *      $returnValue => array(
+     *          'list'=>array(
+     *              'listName' 리스트 이름
+     *              'quizCount' 리스트 문제 수
+     *          ),
+     *          'group'=>array(
+     *              'groupName' 그룹 이름
+     *              'groupStudentCount' 그룹의 학생 수
+     *          ),
+     *          'sessionId' 교사의 세션 아이디
+     *          'check' 레이스 생성 성공 여부
+     *          'roomPin' 방 아이디
+     *          'quizs' => $this->quizGet(리스트 아이디);
+     *      )
+     */
     public function createRace(Request $request)
     {
-        // 받을 값 설정.
-//        $postData     = array(
-//            'groupId'   => 1,
-//            'raceType'  => 'race',
-//            'listId'    => 1
-//        );
         $postData = array(
             'groupId'       => $request->input('groupId'),
             'raceType'      => $request->input('raceType'),
             'listId'        => $request->input('listId'),
             'passingMark'   => $request->input('passingMark')
         );
-
-        // 유저가 선생인지 확인하고 선생이 아니면 강퇴
-        // test 임시로 유저 세션 부여
-        // $userData = DB::table('users as u')
-        //     ->select([
-        //         'u.number   as userId',
-        //         's.number   as sessionId'
-        //     ])
-        //     ->where('u.number', '=', 123456789)
-        //     ->leftJoin('sessionDatas as s', 's.userNumber', '=', 'u.number')
-        //     ->first();
-
-        // if(!isset($userData->sessionId)){
-        //     $request->session()->put('sessionId', DB::table('sessionDatas')
-        //         ->insertGetId([
-        //             'userNumber' => $userData->userId
-        //         ], 'number'));
-        // }else{
-        //     $request->session()->put('sessionId', $userData->sessionId);
-        // }
-        // test
 
         // 로그인된 유저의 세션 정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -161,16 +159,23 @@ class RaceController extends Controller{
         }
     }
 
-    // 레이스 혹은 테스트에서 학생이 방에 입장할 때
+    /****
+     * 레이스 혹은 테스트에서 학생이 방에 입장할 때
+     *
+     * @param Request $request
+     *      'roomPin' 레이스 방 아이디
+     *      'sessionId' 세션 아이디
+     *
+     * @return array(
+     *      'sessionId' 세션 아이디
+     *      'characters' 이미 선택된 캐릭터 아이디 목록
+     *      'check' 방에 입장 성공 여부 설정
+     *  )
+     */
     public function studentIn(Request $request){
-        // 받아야하는 값
-//        $postData = array(
-//            'roomPin'       => 123456,
-//            'sessionId'     => 2
-//        );
         $postData = array(
             'roomPin'       => $request->input('roomPin'),
-            'sessionId'     => $request->input('sessionId') == 0 ? $request->session()->get('sessionId') : $request->input('sessionId')
+            'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 앱 로그인인지 웹 로그인인지 확인
@@ -241,13 +246,20 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 시작전에 학생이 나갔을 경우
+    /****
+     * 레이스 시작전에 학생이 나갔을 경우
+     *
+     * @param Request $request->input()
+     *      'roomPin' 레이스 방 번호
+     *      'sessionId' 세션 아이디
+     *
+     * @return array(
+     *      'sessionId' 세션 아이디
+     *      'characters' 유저가 선택했던 캐릭터 아이디
+     *      'check' 성공 여부
+     *  )
+     */
     public function studentOut(Request $request){
-        // 받아야하는 값
-//        $postData = array(
-//            'roomPin'       => 123456,
-//            'sessionId'     => 2
-//        );
         $postData = array(
             'roomPin'       => $request->input('roomPin'),
             'sessionId'     => $request->input('sessionId')
@@ -316,14 +328,22 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 에서 학생이 닉네임과 캐릭터를 설정할 때
+    /****
+     * 레이스 에서 학생이 닉네임과 캐릭터를 설정할 때
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *      'nick' 닉네임
+     *      'characterId' 캐릭터 번호
+     *
+     * @return array(
+     *      'nickCheck' 닉네임 중복 확인 - 성공 여부
+     *      'characterCheck' 캐릭터 종복 확인 - 성공 여부
+     *      'characterId' 선택한 캐릭터 아이디
+     *      'check' 쿼리 성공 여부
+     *  )
+     */
     public function studentSet(Request $request){
-        // 받아야하는 값
-//        $postData = array(
-//            'sessionId'     => 2,
-//            'nick'          => 'temp3',
-//            'characterId'   => 1
-//        );
         $postData = array(
             'sessionId'     => $request->input('sessionId'),
             'nick'          => $request->input('nick'),
@@ -386,15 +406,20 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 혹은 테스트에서 학생들의 정답들을 DB에 입력
+    /****
+     * 레이스 혹은 테스트에서 학생들의 정답들을 DB에 입력
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *      'roomPin' 방 아이디
+     *      'quizId' 퀴즈 아이디
+     *      'answer' 학생이 입력한 정답
+     *
+     * @return array(
+     *      'check' 문제 입력 성공 여부
+     *  )
+     */
     public function answerIn(Request $request){
-        // 학생의 세션 아이디 필요
-//        $postData     = array(
-//            'sessionId' => 2,
-//            'roomPin'   => 123456,
-//            'quizId'    => 1,
-//            'answer'    => 1
-//        );
         $postData     = array(
             'sessionId' => $request->input('sessionId'),
             'roomPin'   => $request->input('roomPin'),
@@ -482,14 +507,30 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스에서 중간 및 최종 결과용
-    public function result(Request $request)
-    {
-        // 선생 세션아이디 필요
-//        $postData = array(
-//            'sessionId' => 1,
-//            'quizId' => 1
-//        );
+    /****
+     * 레이스에서 중간 및 최종 결과용
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *      'quizId' 퀴즈 아이디
+     *
+     * @return array(
+     *      'studentResults'    => array(
+     *          0 => array(
+     *              'sessionId' 새션 아이디
+     *              'nick' 닉네임
+     *              'characterId' 선택한 캐릭터 번호
+     *              'rightCount' 현재까지 정답 갯수
+     *              'answer' 지금 입력한 정답
+     *              'answerCheck' 지금 문제 정답 여부
+     *          )
+     *      ),
+     *      'rightAnswer' 정답자 수
+     *      'wrongAnswer' 오답자 수
+     *      'check' 조회 성공 여부
+     *  )
+     */
+    public function result(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId'),
             'quizId'    => $request->input('quizId')
@@ -607,7 +648,26 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 레이스 혹은 테스트에서 종료 후 세션 정리
+    /****
+     * 레이스 혹은 테스트에서 종료 후 세션 정리
+     *
+     * @param Request $request
+     *     로그인 되어있기만 하면되고 요구하는 값은 없음
+     *
+     * @return array(
+     *      'students' => array(
+     *          0 => array(
+     *              'sessionId' 세션 아이디
+     *              'nick' 닉네임
+     *              'characterId' 케릭터 번호
+     *              'rightCount' 정답 갯수
+     *              'retestState' 재시험 여부
+     *              'wrongState' 오답노트 여부
+     *          )
+     *      ),
+     *      'check' 결과 조회 성공 여부
+     *  )
+     */
     public function raceEnd(Request $request)
     {
         // 선생정보 가져오기기
