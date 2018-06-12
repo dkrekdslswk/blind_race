@@ -361,16 +361,9 @@ class RecordBoxController extends Controller{
      *  );
      */
     public function getStudents(Request $request){
-//        $postData = array(
-//            'userId'        => $request->has('userId') ? $request->input('userId') : false,
-//            'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
-//            'retestState'   => $request->has('retestState') ? $request->input('retestState') : self::RETEST_NOT_STATE,
-//            'groupId'       => $request->has('groupId') ? $request->input('groupId') : false,
-//            'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
-//        );
         $postData = array(
             'userId'        => $request->has('userId') ? $request->input('userId') : false,
-            'raceId'        => 7,
+            'raceId'        => $request->has('raceId') ? $request->input('raceId') : false,
             'retestState'   => $request->has('retestState') ? $request->input('retestState') : self::RETEST_NOT_STATE,
             'groupId'       => $request->has('groupId') ? $request->input('groupId') : false,
             'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
