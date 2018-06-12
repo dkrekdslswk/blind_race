@@ -656,9 +656,12 @@ class RecordBoxController extends Controller{
                         // 오답노트 불러오기용 변수
                         $wrongText = false;
 
+                        // 타입 구분용
+                        $type = explode(' ', $raceQuizs[$i]->type);
+
                         // 오답 확인
                         if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
-                            if (preg_match('/^(.)+ obj$/', $raceQuizs[0]->type)) {
+                            if ($type[1] == 'obj') {
                                 // 객관식 처리
                                 $quizData = DB::table('records as re')
                                     ->select(
@@ -689,6 +692,7 @@ class RecordBoxController extends Controller{
                                 array_push($wrongs, array(
                                     'number' => $i + 1,
                                     'id' => $raceQuizs[$i]->quizId,
+                                    'type' => $type[1],
                                     'question' => $raceQuizs[$i]->question,
                                     'hint' => $raceQuizs[$i]->hint,
                                     'rightAnswer' => $raceQuizs[$i]->rightAnswer,
@@ -703,7 +707,7 @@ class RecordBoxController extends Controller{
                                     'userCount' => $raceQuizs[$i]->userCount,
                                     'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
                                 ));
-                            } else if (preg_match('/^(.)+ sub$/', $raceQuizs[0]->type)) {
+                            } else if ($type[1] == 'sub') {
                                 // 주관식 처리
                                 $quizData = DB::table('records as re')
                                     ->select(
@@ -750,6 +754,7 @@ class RecordBoxController extends Controller{
                                     array_push($wrongs, array(
                                         'number' => $i + 1,
                                         'id' => $raceQuizs[$i]->quizId,
+                                        'type' => $type[1],
                                         'question' => $raceQuizs[$i]->question,
                                         'hint' => $raceQuizs[$i]->hint,
                                         'rightAnswer' => $raceQuizs[$i]->rightAnswer,

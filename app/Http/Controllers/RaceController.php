@@ -784,7 +784,14 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 대상 레이스 목록 가져오기 웹 용
+    /****
+     * 웹 용 재시험 대상 레이스 목록 가져오기
+     *
+     * @param Request $request->input()
+     *     로그인 되어있기만 하면되고 요구하는 값은 없음
+     *
+     * @return array
+     */
     public function getRetestListWeb(Request $request){
         // 유저 정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
