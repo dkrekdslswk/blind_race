@@ -115,7 +115,7 @@
         id="top"
         onload="loginCheck()";
         class="bgded fixed"
-        {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
+        style="background-image:url('https://i.imgur.com/JBe6gnm.jpg');">
         style="background-color:white">
 
 
@@ -201,7 +201,7 @@
 
 <div class="flexslider">
 
-            <a href="http://www.naver.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+            <a href="https://youtu.be/8qyEpngu6lc"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
             <div class="flex-caption">
 
             </div>
@@ -427,7 +427,7 @@
 </script>
 <style>
     img {
-        width: 1700px; !important;
+        width: 100%; !important;
         height: auto;
         margin: 0;
         padding: 0;

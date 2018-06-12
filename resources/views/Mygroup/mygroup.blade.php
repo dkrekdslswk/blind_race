@@ -5,7 +5,7 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <body >
+    <body  >
     <!--그룹이 아무것도 없을때의 경우를 생각하지않았음 -->
 
         <!-- Sidebar -->
@@ -21,7 +21,7 @@
 
         <!-- Page Content -->
 
-        <div class="container">
+        <div >
             <div class="jumbotrons">
                 <!-- Button trigger modal -->
 
@@ -68,9 +68,9 @@
                     </div> -->
 
 
-                    <i>  <p style="font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
-                    <i>  <p style="font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
-                <button type="button" style="color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
+                    <i>  <p style="margin-left : 15px ; font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
+                    <i>  <p style="margin-left : 15px ; font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
+                <button type="button" style="margin-left: 15px ; color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
 
                 <!-- Button trigger modal -->
 
@@ -233,7 +233,7 @@
                     padding-right: 0px;
                     padding-left: 0px;
                     height: 280px; !important;
-                    width: 100%; !important;
+                    width: 120%; !important;
                     background-image: url("https://i.imgur.com/wJabvyb.png");
                     background-size: auto;
 

@@ -75,12 +75,10 @@
     <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-   
+
 
 </head>
-<nav>
-    @include('Navigation.main_nav')
-</nav>
+
 
 <body onload="getValue()">
 
@@ -90,15 +88,18 @@
 
 
 
-
-<div class="main-body">
+<aside id="menu-main" class="">
+    @include('Mygroup.mygroup_sidebar')
+</aside>
+    <nav>
+        @include('Navigation.main_nav')
+    </nav>
     {{--사이드바 불러오기--}}
-    <aside id="menu-main" class="">
-        @include('Mygroup.mygroup_sidebar')
-    </aside>
+
 
     {{--첫 화면 레이스 목록--}}
     <div id="wrapper" style="min-height: 1024px;">
+
 
         {{--나의 그룹 불러오기--}}
         <div id="myrace">
@@ -147,16 +148,17 @@
 
                     student_list += '<tr><td>'
 
-                        + student[i].name+""+
+                        +'<i class="fas fa-user"> </i>'
+                        + student[i].name
                         + '</td><td id="delete' + i + '">'
                         + student[i].id
                         + '</td><td>' +
-                        ' <button type="button"  data-toggle="modal" ' +
+                        ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
                         '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
                         ' 비밀번호 변경\n' +
                         ' </button>' +
                         '</td><td>' +
-                        '<button  class="btn btn-primary-outline btn-round-lg btn-sm "onclick="Delete(' + i + ')">제외좀하기</button>' +
+                        '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +
                         '</td></tr>'
                 }
 

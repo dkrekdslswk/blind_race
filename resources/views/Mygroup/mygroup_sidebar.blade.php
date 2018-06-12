@@ -135,7 +135,9 @@
             margin-top: 10px;
         }
 
-        #navigation {}
+        #navigation {
+            position: fixed;
+        }
 
         @media (max-width: 768px) {
             .page-small #wrapper-class .content,
@@ -173,7 +175,7 @@
     </script>
 </head>
 
-<div id="navigation" style="min-height: 600px;">
+<div id="navigation" style="min-height: 600px; margin-top :60px">
 
     <!--네비바 위부분 공백-->
     <div
