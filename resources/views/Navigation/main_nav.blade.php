@@ -73,13 +73,13 @@
 <style>
     .navbar.navbar-default {
         margin: 0;
-
+        padding: 0;
         width: 100%;
         position: relative;
     }
     .invi {
         background-color: transparent !important;
-        border: 0px;
+        border: 0;
     }
     .btn-primary-outline {
         background-color: transparent;
