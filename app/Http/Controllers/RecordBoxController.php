@@ -430,11 +430,14 @@ class RecordBoxController extends Controller{
                                 DB::raw('dayofmonth(r.created_at) as day'),
                                 DB::raw('count(re.quizNo) as allCount'),
                                 DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as allRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type = "vocabulary obj" OR qb.type = "vocabulary sub" THEN 1 END) as vocabularyCount'),
+                                DB::raw('count(CASE WHEN qb.type = "vocabulary obj" THEN 1 END) as vocabularyObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "vocabulary sub" THEN 1 END) as vocabularySubCount'),
                                 DB::raw('count(CASE WHEN qb.type like "vocabulary%" AND re.answerCheck = "O" THEN 1 END) as vocabularyRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type = "word obj" OR qb.type = "word sub" THEN 1 END) as wordCount'),
+                                DB::raw('count(CASE WHEN qb.type = "word obj" THEN 1 END) as wordObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "word sub" THEN 1 END) as wordSubCount'),
                                 DB::raw('count(CASE WHEN qb.type like "word%" AND re.answerCheck = "O" THEN 1 END) as wordRightAnswerCount'),
-                                DB::raw('count(CASE WHEN qb.type = "grammar obj" OR qb.type = "grammar sub" THEN 1 END) as grammarCount'),
+                                DB::raw('count(CASE WHEN qb.type = "grammar obj" THEN 1 END) as grammarObjCount'),
+                                DB::raw('count(CASE WHEN qb.type = "grammar sub" THEN 1 END) as grammarSubCount'),
                                 DB::raw('count(CASE WHEN qb.type like "grammar%" AND re.answerCheck = "O" THEN 1 END) as grammarRightAnswerCount'),
                                 'ru.retestState as retestState',
                                 'ru.wrongState as wrongState',
@@ -470,11 +473,11 @@ class RecordBoxController extends Controller{
                                 'day' => $race->day,
                                 'allCount' => $race->allCount,
                                 'allRightCount' => $race->allRightAnswerCount,
-                                'vocabularyCount' => $race->vocabularyCount,
+                                'vocabularyCount' => $race->vocabularyObjCount + $race->vocabularySubCount,
                                 'vocabularyRightCount' => $race->vocabularyRightAnswerCount,
-                                'wordCount' => $race->wordCount,
+                                'wordCount' => $race->wordObjCount + $race->wordSubCount,
                                 'wordRightCount' => $race->wordRightAnswerCount,
-                                'grammarCount' => $race->grammarCount,
+                                'grammarCount' => $race->grammarObjCount + $race->grammarSubCount,
                                 'grammarRightCount' => $race->grammarRightAnswerCount,
                                 'retestState' => $race->retestState,
                                 'wrongState' => $race->wrongState,
@@ -525,7 +528,7 @@ class RecordBoxController extends Controller{
      *
      * @return $this->>getStudents(Request $request)
      */
-    public function mobileGetStudents(Request $request){
+65    public function mobileGetStudents(Request $request){
         return $this->getStudents($request);
     }
 
