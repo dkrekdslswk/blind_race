@@ -528,7 +528,7 @@ class RecordBoxController extends Controller{
      *
      * @return $this->>getStudents(Request $request)
      */
-65    public function mobileGetStudents(Request $request){
+    public function mobileGetStudents(Request $request){
         return $this->getStudents($request);
     }
 
