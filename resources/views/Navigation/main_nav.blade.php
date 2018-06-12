@@ -71,6 +71,12 @@
     </div>
 </nav>
 <style>
+    .navbar.navbar-default {
+        margin: 0;
+
+        width: 100%;
+        position: relative;
+    }
     .invi {
         background-color: transparent !important;
         border: 0px;

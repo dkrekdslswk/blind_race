@@ -7,6 +7,12 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
     <style>
         body {
             font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -104,11 +110,6 @@
 
     </style>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 
     <script type="text/javascript">
 
@@ -142,6 +143,7 @@
         //처음 화면 로드
         window.onload = function() {
 
+            console.log("ads");
             //클래스 불러오기 and 차트 로드하기 and 학생 명단 출력하기 and 피드백 가져오기
             $.ajax({
                 type: 'POST',
@@ -1947,6 +1949,7 @@
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
+
 {{--사이드바 불러오기--}}
 @include('Recordbox.record_sidebar')
 

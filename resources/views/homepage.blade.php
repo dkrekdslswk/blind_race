@@ -25,7 +25,6 @@
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 success: function (result) {
                     if(result['check'] == true) {
-
                         switch(result['classification'])
                         {
                             case 'student' :
@@ -35,17 +34,14 @@
                                 $('#home_race').attr("href", "/race_list");
                                 break;
                         }
-
                         $('#login_button').text("Log-Out");
                         $('#login_button').attr("onclick","tryLogout()");
                     }
                     else{
                         $('#home_race').attr("href", "#");
                     }
-
                 },
                 error: function(request, status, error) {
-
                 }
             });
             //ajax끝
@@ -62,7 +58,6 @@
                 data:"p_ID="+p_id+"&p_PW="+p_pw,
                 success: function (result) {
                     if(result['check'] == true) {
-
                         switch(result['classification'])
                         {
                             case 'student' :
@@ -72,24 +67,19 @@
                                 $('#home_race').attr("href", "/race_list");
                                 break;
                         }
-
                         document.getElementById('id01').style.display='none';
                         $('#login_button').text("Log-Out");
                         $('#login_button').attr("onclick","tryLogout()");
-
                     }
                     else{
                         alert("로그인실패");
                     }
-
                 },
                 error: function(request, status, error) {
-
                 }
             });
             //ajax끝
         }
-
         function tryLogout(){
             $.ajax({
                 type: 'POST',
@@ -115,8 +105,8 @@
         id="top"
         onload="loginCheck()";
         class="bgded fixed"
-        style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">
-     
+        style="background-image:url('https://i.imgur.com/JBe6gnm.jpg');">
+style="background-color:white">
 
 
 <div class="wrapper row1">
@@ -181,7 +171,6 @@
         $('.flexslider').flexslider({
             animation: "fade"
         });
-
         $(function() {
             $('.show_menu').click(function(){
                 $('.menu').fadeIn();
@@ -201,26 +190,26 @@
 
 <div class="flexslider">
 
-            <a href="http://www.naver.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
-            <div class="flex-caption">
+    <a href="https://youtu.be/8qyEpngu6lc"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+    <div class="flex-caption">
 
-            </div>
-        {{--</li>--}}
-        {{--<li>--}}
-            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
-            {{--<div class="flex-caption">--}}
-            {{--</div>--}}
-        {{--</li>--}}
-        {{--<li>--}}
-            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
-            {{--<div class="flex-caption">--}}
-            {{--</div>--}}
-        {{--</li>--}}
-        {{--<li>--}}
-            {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
-            {{--<div class="flex-caption">--}}
-            {{--</div>--}}
-        {{--</li>--}}
+    </div>
+    {{--</li>--}}
+    {{--<li>--}}
+    {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+    {{--<div class="flex-caption">--}}
+    {{--</div>--}}
+    {{--</li>--}}
+    {{--<li>--}}
+    {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+    {{--<div class="flex-caption">--}}
+    {{--</div>--}}
+    {{--</li>--}}
+    {{--<li>--}}
+    {{--<a href="http://www.freshdesignweb.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>--}}
+    {{--<div class="flex-caption">--}}
+    {{--</div>--}}
+    {{--</li>--}}
     </ul>
 </div>
 </div>
@@ -403,31 +392,24 @@
 
 
 <script>
-
     //    alert(JSON.stringify( $returnvalue));
     // alert('<?php //echo $returnvalue; ?>');
     var modal = document.getElementById('id01');
-
-
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
-
     var modal = document.getElementById('id02');
-
-
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
-
 </script>
 <style>
     img {
-        width: 1700px; !important;
+        width: 100%; !important;
         height: auto;
         margin: 0;
         padding: 0;
@@ -435,7 +417,6 @@
         line-height: normal;
         vertical-align: middle;
     }
-
     #pageintro ul {
     }
 </style>

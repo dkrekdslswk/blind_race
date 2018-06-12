@@ -140,7 +140,7 @@
         var chartData = "";
 
         //처음 화면 로드
-        window.onload = function() {
+       function OnLoadRecord() {
 
             //클래스 불러오기 and 차트 로드하기 and 학생 명단 출력하기 and 피드백 가져오기
             $.ajax({
@@ -1871,7 +1871,7 @@
     </script>
 
 </head>
-<body>
+<body onload="OnLoadRecord();">
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
