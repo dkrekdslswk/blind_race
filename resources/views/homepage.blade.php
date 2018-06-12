@@ -111,20 +111,67 @@
     </script>
 
 </head>
-<nav>
-    @include('Navigation.main_nav')
-</nav>
 <body
         id="top"
         onload="loginCheck()";
         class="bgded fixed"
-        style="background-image:url('https://i.imgur.com/JBe6gnm.jpg');">
+        style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">
+     
 
 
 <div class="wrapper row1">
-    <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
-    <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
+    <header id="header" class="clear">
 
+        <div id="logo" class="fl_left">
+            <h1>
+                <a href="#">
+                    <em>十</em>分<em>十</em>分</a>
+            </h1>
+        </div>
+        <nav id="mainav" class="fl_right">
+            <ul class="clear">
+                <li class="active">
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url('mygroup') }}">나의 그룹</a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('race_list') }}">레이스
+
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('recordbox') }}">레코드박스
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ url('recordbox') }}">레코드 박스</a>
+                        </li>
+                        <li>
+                            <a href="#">오답노트</a>
+                        </li>
+                        <li>
+                            <a href="/Feedback">피드백</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ url('quiz_list') }}">문제 나무</a>
+                </li>
+                <li>
+
+                    <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
+                </li>
+                <li>
+
+                    <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
+                </li>
+                <ul></ul>
+        </nav>
+
+    </header>
 </div>
 
 <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
@@ -154,7 +201,7 @@
 
 <div class="flexslider">
 
-            <a href="https://youtu.be/8qyEpngu6lc"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+            <a href="http://www.naver.com"><img src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
             <div class="flex-caption">
 
             </div>
@@ -380,7 +427,7 @@
 </script>
 <style>
     img {
-        width: 100%; !important;
+        width: 1700px; !important;
         height: auto;
         margin: 0;
         padding: 0;
