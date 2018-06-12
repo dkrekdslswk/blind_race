@@ -3,17 +3,18 @@
 
     <style>
         #make {
-            width: 250px;
+            width: 73%;
             height: 70px;
             background-image: url(https://i.imgur.com/8QcmVFs.png);
-            background-repeat: no-repeat;
             background-size: width 250px;
-            margin-top: -10px;
+
+            margin-top: -20px;
 
         }
         .w3-light-grey {
             background-image: url("https://i.imgur.com/HSrLDSe.png");
             background-size: 100%;
+            background-repeat: repeat;
         }
         .page-small .learn-small,
         .page-small .main-small,
@@ -154,9 +155,10 @@
         }
         .tablede {
             background-image: url("https://i.imgur.com/fFksbHc.png");
+
             border:1px solid transparent !important;
             padding: 8px;
-            width: 100%;
+            width: 73%;
             font-family: arial, sans-serif;
             border-collapse: collapse; !important;
             background-size: cover;

@@ -59,7 +59,7 @@
             left: 0;
             bottom: 0;
             float: left;
-            position: absolute;
+            position: fixed;
             /*     min-height: 1000px; */
             top: 0;
             transition: all 0.4s ease 0s;

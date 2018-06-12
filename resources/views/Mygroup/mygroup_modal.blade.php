@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>YourChoice</title>
+    <meta charset="utf-8">
+
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>

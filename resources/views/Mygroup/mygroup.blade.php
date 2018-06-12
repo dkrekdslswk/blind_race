@@ -230,12 +230,13 @@
                     margin-top: 10px;
                 }
                 .jumbotrons{
+                    margin-top: -20px;
                     padding-right: 0px;
                     padding-left: 0px;
                     height: 280px; !important;
                     width: 120%; !important;
-                    background-image: url("https://i.imgur.com/wJabvyb.png");
-                    background-size: auto;
+                    background-image: url("https://i.imgur.com/DCn3r3r.png");
+                    background-size: 83%;
 
                 }
                 .btn-primary-outline {
