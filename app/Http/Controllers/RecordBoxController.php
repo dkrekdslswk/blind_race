@@ -724,10 +724,10 @@ class RecordBoxController extends Controller{
                                 $wrongData = array();
                                 $rights = explode(',', $raceQuizs[$i]->rightAnswer);
                                 foreach ($quizData as $quiz) {
-                                    $check = false;
+                                    $check = true;
                                     foreach ($rights as $right){
                                         if ($quiz->answer == $right){
-                                            $check = true;
+                                            $check = false;
                                             break;
                                         }
                                     }
