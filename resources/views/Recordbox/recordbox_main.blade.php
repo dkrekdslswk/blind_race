@@ -16,13 +16,17 @@
             margin: 0;
             padding: 0;
         }
+        .RECORDBOX {
+            clear: both;
+            width: 100%;
+            height: 100%;
+        }
         .changePages {
             padding: 0;
             margin: 0;
             position: relative;
             float: left;
             width: 88%;
-            height: 100%;
         }
         /*modal-page*/
         .modal-dialog {
@@ -1871,25 +1875,30 @@
     </script>
 
 </head>
-<body onload="OnLoadRecord();">
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
+
+<body onload="OnLoadRecord();">
+
+<div class="RECORDBOX">
+
 {{--사이드바 불러오기--}}
 @include('Recordbox.record_sidebar')
 
-<div class="changePages">
+    <div class="changePages">
 
-    {{--레코드 네비바 불러오기--}}
-    @include('Recordbox.record_recordnav')
+        {{--레코드 네비바 불러오기--}}
+        @include('Recordbox.record_recordnav')
 
-    {{--레코드 차트페이지 불러오기--}}
-    @include('Recordbox.record_chart')
+        {{--레코드 차트페이지 불러오기--}}
+        @include('Recordbox.record_chart')
 
-    @include('Recordbox.record_history')
+        @include('Recordbox.record_history')
 
-    @include('Recordbox.record_studentslist')
+        @include('Recordbox.record_studentslist')
 
+    </div>
 </div>
 
 <div class="modal_page">

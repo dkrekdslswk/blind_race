@@ -75,7 +75,8 @@
         margin: 0;
         padding: 0;
         width: 100%;
-        position: relative;
+        height: 50px;
+        display: block;
     }
     .invi {
         background-color: transparent !important;
