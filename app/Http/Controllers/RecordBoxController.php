@@ -724,15 +724,19 @@ class RecordBoxController extends Controller{
                                 $wrongData = array();
                                 $rights = explode(',', $raceQuizs[$i]->rightAnswer);
                                 foreach ($quizData as $quiz) {
+                                    $check = false;
                                     foreach ($rights as $right){
                                         if ($quiz->answer == $right){
-                                            array_push($wrongData, array(
-                                                'userId' => $quiz->userId,
-                                                'userName' => $quiz->userName,
-                                                'answer' => $quiz->answer
-                                            ));
+                                            $check = true;
                                             break;
                                         }
+                                    }
+                                    if ($check){
+                                        array_push($wrongData, array(
+                                            'userId' => $quiz->userId,
+                                            'userName' => $quiz->userName,
+                                            'answer' => $quiz->answer
+                                        ));
                                     }
                                 }
 
