@@ -5,11 +5,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Race list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
 </head>
 
