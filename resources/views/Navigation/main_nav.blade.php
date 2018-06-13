@@ -1,180 +1,129 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-<body onload="loginCheck()";>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
+<html>
+<head>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+</head>
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a  href="#"><img src="{{ asset('https://i.imgur.com/dmXfbDm.png') }}" style="width:125px; height:50px; "/></a>
-        </div>
-
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a></a>
-                </li>
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="{{ url('mygroup') }}">My Class</a>
-                </li>
-                <li>
-                    <a href="{{ url('race_list') }}">Race</a>
-                </li>
-                <li>
-                    <a href="{{ url('recordbox') }}">RecordBox</a>
-                </li>
-                <li>
-                    <a href="{{ url('quiz_list') }}">QuizTree</a>
-                </li>
-            </ul>
-            <form id="signin" class="navbar-form navbar-right" role="form">
-                <div class="input-group">
-                    <span ></span>
-                    <input id="web_ID"   name="p_ID" value="" placeholder="ID" class="invi">
-                </div>
-
-                <div class="input-group">
-                    <span ></span>
-                    <input  id="web_PW" name="p_PW" value="" placeholder="PASSWORD" class="invi">
-                </div>
-                <button type="button" class="btn-primary-outline btn-round-lg" style ="color : black" onclick="tryLogin()">Login</button>
-
-            </form>
-
-        </div>
-    </div>
-</nav>
 <style>
-    .invi {
-        background-color: transparent !important;
-        border: 0px;
+    .navbar-brand {
+        position: relative;
+        z-index: 2;
     }
-    .btn-primary-outline {
+    .navbar-nav.navbar-right .btn {
+        position: relative;
+        z-index: 2;
+        padding: 4px 20px;
+        margin: 10px auto;
+    }
+    .navbar .navbar-collapse {
+        position: relative;
+    }
+    .navbar .navbar-collapse .navbar-right > li:last-child {
+        padding-left: 22px;
+    }
+    .navbar .nav-collapse {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding-right: 120px;
+        padding-left: 80px;
+        width: 100%;
+    }
+    .navbar.navbar-default .nav-collapse {
+        background-color: #f8f8f8;
+        margin: 0;
+    }
+    .navbar.navbar-inverse .nav-collapse {
+        background-color: #222;
+    }
+    .navbar .nav-collapse .navbar-form {
+        border-width: 0;
+        box-shadow: none;
+    }
+    .nav-collapse > li {
+        float: right;
+    }
+    .btn.btn-circle {
+        border-radius: 50px;
+    }
+    .btn.btn-outline {
         background-color: transparent;
-        border-color: #ccc;
     }
-    .btn-round-lg {
-        border-radius: 20.5px;
+    @media screen and (max-width: 767px) {
+        .navbar .navbar-collapse .navbar-right > li:last-child {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .navbar .nav-collapse {
+            margin: 7.5px auto;
+            padding: 0;
+        }
+        .navbar .nav-collapse .navbar-form {
+            margin: 0;
+        }
+        .nav-collapse > li {
+            float: none;
+        }
     }
 </style>
-<script>
-    function loginCheck(){
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/userController/loginCheck')}}",
-            dataType: 'json',
-            async:false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            success: function (result) {
-                if(result['check'] == true) {
+<body>
+<div class="">
+    <nav class="navbar navbar-default" style="margin: 0;width: 100%;">
+        <div class="">
+            <div class="navbar-header">
+                <button
+                        type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target="#navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="{{ asset('img/logo.png') }}" style="width:125px; height:50px; "/>
+            </div>
 
-                    switch(result['classification'])
-                    {
-                        case 'student' :
-                            $('#home_race').attr("href", "/race_student");
-                            break;
-                        case 'teacher' :
-                            $('#home_race').attr("href", "/race_list");
-                            break;
-                    }
+            <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('mygroup') }}">MyGroup</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('race_list') }}">Race</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('recordbox') }}">RecordBox</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('quiz_list') }}">QuizTree</a>
+                    </li>
 
-                    $('#login_button').text("Log-Out");
-                    $('#login_button').attr("onclick","tryLogout()");
-                }
-                else{
-                    $('#home_race').attr("href", "#");
-                }
+                    <li>
+                        <a
+                                class="btn btn-default btn-outline btn-circle"
+                                aria-expanded="false"
+                                aria-controls="nav-collapse2">Sign in</a>
+                    </li>
+                </ul>
 
-            },
-            error: function(request, status, error) {
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
 
-            }
-        });
-        //ajax끝
-    }
-    function tryLogin(){
-        var p_id = $('#web_ID').val();
-        var p_pw = $('#web_PW').val();
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/userController/webLogin')}}",
-            dataType: 'json',
-            async:false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data:"p_ID="+p_id+"&p_PW="+p_pw,
-            success: function (result) {
-                if(result['check'] == true) {
-
-                    switch(result['classification'])
-                    {
-                        case 'student' :
-                            $('#home_race').attr("href", "/race_student");
-                            break;
-                        case 'teacher' :
-                            $('#home_race').attr("href", "/race_list");
-                            break;
-                    }
-
-//                    document.getElementById('id01').style.display='none';
-//                    준휘야 여기 머들어가야 되노 ?
-                    $('#login_button').text("Log-Out");
-                    $('#login_button').attr("onclick","tryLogout()");
-
-                }
-                else{
-                    alert("로그인실패");
-                }
-
-            },
-            error: function(request, status, error) {
-
-            }
-        });
-        //ajax끝
-    }
-
-    function tryLogout(){
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/userController/webLogout')}}",
-            dataType: 'json',
-            async:false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            success: function (result) {
-                $('#login_button').text("Log-in");
-                $('#login_button').attr("onclick","tryLogin()");
-                alert("로그아웃되었습니다.");
-                window.location.reload();
-            },
-            error: function(request, status, error) {
-                alert("로그아웃 실패 ");
-            }
-        });
-    }
-</script>
+</html>
