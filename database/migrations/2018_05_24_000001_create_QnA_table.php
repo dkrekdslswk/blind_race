@@ -23,6 +23,9 @@ class CreateQnATable extends Migration
             $table->unsignedInteger('teacherNumber');
             $table->foreign('teacherNumber')->references('number')->on('users');
 
+            $table->unsignedInteger('groupNumber');
+            $table->foreign('groupNumber')->references('number')->on('groups');
+
             $table->string('title', 50);
             $table->text('question');
             $table->text('answer')->nullable();
