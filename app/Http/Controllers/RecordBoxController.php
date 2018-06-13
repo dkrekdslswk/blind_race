@@ -990,19 +990,36 @@ class RecordBoxController extends Controller{
         if ($userData['check'] && $postData['title'] && $postData['question'] && $postData['teacherId']){
             switch ($userData['classification']){
                 case 'student':
-                    DB::table('QnAs')
-                        ->insert([
-                            'userNumber' => $userData['userId'],
-                            'teacherNumber' => $postData['teacherId'],
-                            'groupNumber' => $postData['groupId'],
-                            'title' => $postData['title'],
-                            'question' => $postData['question']
-                        ]);
+                    // 자기 그룹인지 확인
+                    $groupCheck = DB::table('groups as g')
+                        ->select(DB::raw('count(*) as check'))
+                        ->where([
+                            'g.number' => $postData['groupId'],
+                            'g.teacherNumber' => $postData['teacherId'],
+                            'gs.userNumber' => $userData['userId']
+                        ])
+                        ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
+                        ->first();
 
-                    // 반납값 정리
-                    $returnValue = array(
-                        'check' => true
-                    );
+                    if ($groupCheck && ($groupCheck->check == 1)) {
+                        DB::table('QnAs')
+                            ->insert([
+                                'userNumber' => $userData['userId'],
+                                'teacherNumber' => $postData['teacherId'],
+                                'groupNumber' => $postData['groupId'],
+                                'title' => $postData['title'],
+                                'question' => $postData['question']
+                            ]);
+
+                        // 반납값 정리
+                        $returnValue = array(
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
                     break;
                 default:
 
@@ -1030,14 +1047,12 @@ class RecordBoxController extends Controller{
      *
      * @return array(
      *      'QnAs' => array(
-     *              0 => array(
-     *                  'QnAId'         질문 아이디
-     *                  'userName'      질문한 학생 이름
-     *                  'teacherName'   질문받은 교사 이름
-     *                  'title'         질문 제목
-     *                  'question_at'   질문한 날짜
-     *                  'answer_at'     답변한 날짜
-     *              )
+     *              'QnAId'         질문 아이디
+     *              'userName'      질문한 학생 이름
+     *              'teacherName'   질문받은 교사 이름
+     *              'title'         질문 제목
+     *              'question_at'   질문한 날짜
+     *              'answer_at'     답변한 날짜
      *          ),
      *          'check' 조회 성공 여부
      *      )
@@ -1095,15 +1110,20 @@ class RecordBoxController extends Controller{
                 ->first();
 
             // 반납값 정리
+            $QnAs = array();
+            foreach($QnAData as $QnA){
+                array_push($QnAs, array(
+                    'QnAId' => $QnA->QnAId,
+                    'userName' => $QnA->userName,
+                    'teacherName' => $QnA->teacherName,
+                    'title' => $QnA->title,
+                    'question_at' => $QnA->question_at,
+                    'answer_at' => $QnA->answer_at
+                ));
+            }
+
             $returnValue = array(
-                'QnA' => array(
-                    'QnAId' => $QnAData->QnAId,
-                    'userName' => $QnAData->userName,
-                    'teacherName' => $QnAData->teacherName,
-                    'title' => $QnAData->title,
-                    'question_at' => $QnAData->question_at,
-                    'answer_at' => $QnAData->answer_at
-                ),
+                'QnAs' => $QnAs,
                 'check' => true
             );
         } else {
