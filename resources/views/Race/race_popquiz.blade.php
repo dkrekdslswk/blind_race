@@ -101,7 +101,7 @@
 
         var answer_count = 0;
         window.onload = function() {
-            
+
 
             //정답뒤섞기
             function shuffle(a) {
@@ -159,7 +159,7 @@
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
-            
+
             socket.on('android_join',function(roomPin,sessionId){
 
                 $.ajax({
@@ -189,17 +189,12 @@
                 quiz_member++;
                 $('#member_count').text(quiz_member);
             });
-
-
-            socket.on('leaveRoom', function(user_num){
-                $('#'+user_num).remove();
-            })
         };
 
         function pop_end(){
-                // window.loaction.href="/race_result?roomPin="+roomPin;
-                $(location).attr('href', "/race_result?roomPin="+roomPin);
-        }  
+            // window.loaction.href="/race_result?roomPin="+roomPin;
+            $(location).attr('href', "/race_result?roomPin="+roomPin);
+        }
         function btn_click(){
 
             var h1 = document.getElementsByTagName('h1')[0],
@@ -257,7 +252,7 @@
                 console.log('답변자수 ' , answer_count);
                 console.log('입장플레이어수 ', quiz_member);
             });
-            
+
             socket.on('pop_quiz_status',function(roomPin){
                 submit_count++;
                 $('#submit_count').text(submit_count);
