@@ -178,68 +178,147 @@ class RaceController extends Controller{
             'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
-        // 앱 로그인인지 웹 로그인인지 확인
+        // 로그인 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
-
-        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $raceData = DB::table('races as r')
-            ->select([
-                'r.number as raceId',
-                'r.type as raceType'
-            ])
-            ->where([
-                'gs.userNumber'         => $userData['userId'],
-                's2.PIN'                => $postData['roomPin'],
-                's2.nick'               => ''
-            ])
-            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
-            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
-            ->first();
-
-        if ($raceData) {
-            // 유저 세션 갱신
-            $sessionUpdate = DB::table('sessionDatas')
+        if ($userData['check'] && ($userData['roomPin'] == $postData['roomPin'])) {
+            $raceData = DB::table('races')
+                ->select(
+                    'listNumber as listId',
+                    'type'
+                )
                 ->where([
-                    'number' => $postData['sessionId']
+                    'number' => $userData['raceId']
                 ])
-                ->update([
-                    'PIN'               => $postData['roomPin'],
-                    'raceNumber'        => $raceData->raceId,
-                    'characterNumber'   => null,
-                    'nick'              => $raceData->raceType == 'race' ? null : $userData['userName'],
-                ]);
-            $sessionCheck = ($sessionUpdate == 1);
+                ->first();
 
-            // 갱신 성공시 유저정보 입력
-            $characters = array();
-            if ($sessionCheck){
-                DB::table('raceUsers')
-                    ->insert([
-                        'raceNumber'    => $raceData->raceId,
-                        'userNumber'    => $userData['userId'],
-                        'retestState'   => 'not',
-                        'wrongState'   => 'not'
-                    ]);
+            if ($raceData && $raceData['type'] == 'popQuiz'){
 
-                $characters = DB::table('sessionDatas')
-                    ->where([
-                        'PIN' => $postData['roomPin']
-                    ])
-                    ->whereNotNull('characterNumber')
-                    ->pluck('characterNumber')
-                    ->toArray();
+                $quizData = DB::table('quizBanks as qb')
+                ->select(
+                    'qb.number          as number',
+                    'qb.question        as question',
+                    'qb.hint            as hint',
+                    'qb.rightAnswer     as rightAnswer',
+                    'qb.example1        as example1',
+                    'qb.example2        as example2',
+                    'qb.example3        as example3',
+                    'qb.type            as type',
+                    DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
+                )
+                ->where([
+                    're.raceNo' => $userData['raceId'],
+                    're.retest' => RecordBoxController::RETEST_NOT_STATE
+                ])
+                ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+                ->leftJoin('records as re', function ($join) {
+                    $join->on('re.quizNo', '=', 'lq.quizNumber');
+                    $join->on('re.listNo', '=', 'lq.listNumber');
+                })
+                ->groupBy('qb.number')
+                ->get();
+
+                // 반납값 정리
+                $quizs = array();
+                foreach ($quizData as $quiz) {
+                    if ($quiz->omissionCheck == 0) {
+                        $type = explode(' ', $quiz->type);
+                        array_push($quizs, array(
+                            'quizId' => $quiz->number,
+                            'question' => $quiz->question,
+                            'hint' => $quiz->hint,
+                            'right' => $quiz->rightAnswer,
+                            'example1' => $quiz->example1,
+                            'example2' => $quiz->example2,
+                            'example3' => $quiz->example3,
+                            'quizType' => $type[0],
+                            'makeType' => $type[1]
+                        ));
+                    }
+                }
+
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'characters' => array(),
+                    'quizs' => $quizs,
+                    'check' => true
+                );
+            } else if ($raceData){
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
+            } else {
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
             }
+        } else if($userData['check']){
+            // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
+            $raceData = DB::table('races as r')
+                ->select([
+                    'r.number as raceId',
+                    'r.type as raceType'
+                ])
+                ->where([
+                    'gs.userNumber' => $userData['userId'],
+                    's2.PIN' => $postData['roomPin'],
+                    's2.nick' => ''
+                ])
+                ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
+                ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
+                ->first();
 
-            // 반납값 정리
-            $returnValue = array(
-                'sessionId'     => $postData['sessionId'],
-                'characters'    => $characters,
-                'check'         => $sessionCheck
-            );
+            if ($raceData) {
+                // 유저 세션 갱신
+                $sessionUpdate = DB::table('sessionDatas')
+                    ->where([
+                        'number' => $postData['sessionId']
+                    ])
+                    ->update([
+                        'PIN' => $postData['roomPin'],
+                        'raceNumber' => $raceData->raceId,
+                        'characterNumber' => null,
+                        'nick' => $raceData->raceType == 'race' ? null : $userData['userName'],
+                    ]);
+                $sessionCheck = ($sessionUpdate == 1);
+
+                // 갱신 성공시 유저정보 입력
+                $characters = array();
+                if ($sessionCheck) {
+                    DB::table('raceUsers')
+                        ->insert([
+                            'raceNumber' => $raceData->raceId,
+                            'userNumber' => $userData['userId'],
+                            'retestState' => 'not',
+                            'wrongState' => 'not'
+                        ]);
+
+                    $characters = DB::table('sessionDatas')
+                        ->where([
+                            'PIN' => $postData['roomPin']
+                        ])
+                        ->whereNotNull('characterNumber')
+                        ->pluck('characterNumber')
+                        ->toArray();
+                }
+
+                // 반납값 정리
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'characters' => $characters,
+                    'check' => $sessionCheck
+                );
+            } else {
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
-                'sessionId'     => $postData['sessionId'],
-                'check'         => false
+                'sessionId' => $postData['sessionId'],
+                'check' => false
             );
         }
 
