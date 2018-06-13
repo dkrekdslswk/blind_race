@@ -170,7 +170,7 @@
             <div id="mid_q" class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
                 <h2 class='titular'>문제 풀이</h2>
                 <div style="margin-left:10%; width:80%; height:30%; border-radius:10px; background:white;">
-                    <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; ">姉は市役所に勤める（　　）、ボランティアで日本語を教えています。</span>
+                    <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
                 </div>
                 <div class='grafico bar-chart'>
                     <div class="choice_status" style="background: #9e7ac2;">
