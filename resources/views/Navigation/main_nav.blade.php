@@ -113,10 +113,7 @@
                     </li>
 
                     <li>
-                        <a
-                                class="btn btn-default btn-outline btn-circle"
-                                aria-expanded="false"
-                                aria-controls="nav-collapse2">Sign in</a>
+                       
                     </li>
                 </ul>
 

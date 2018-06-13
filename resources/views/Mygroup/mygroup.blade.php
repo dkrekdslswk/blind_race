@@ -218,7 +218,7 @@
         margin-left: 20px;
         margin-top: 10px;
         font-size: 20px;
-        font-color : #033981; !important;
+        color : #203a8e; !important;
     }
     th {
         background-color: #DFDFDF ; !important;

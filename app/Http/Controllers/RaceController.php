@@ -169,7 +169,7 @@ class RaceController extends Controller{
      * @return array(
      *      'sessionId' 세션 아이디
      *      'characters' 이미 선택된 캐릭터 아이디 목록
-     *      ['quizs'] 쪽지시험 재접속 시 안푼 문제 목록
+     *      ['quizs'][ 쪽지시험 재접속 시 안푼 문제 목록
      *      'check' 방에 입장 성공 여부 설정
      *  )
      */
@@ -194,7 +194,7 @@ class RaceController extends Controller{
                 ])
                 ->first();
 
-            if ($raceData['type'] == 'popQuiz'){
+            if ($raceData->type == 'popQuiz'){
 
                 $quizData = DB::table('quizBanks as qb')
                     ->select(
