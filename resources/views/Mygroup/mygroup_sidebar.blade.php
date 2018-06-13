@@ -197,7 +197,9 @@
                 type="button"
                 data-toggle="modal"
                 data-target="#create"
-                class="classmake">클래스 생성
+                class="classmake">
+                <p style="margin-left: 25px;
+                            margin-top: 8px;">클래스 생성</p>
         </button>
 
         <div>
@@ -205,14 +207,14 @@
                <p></p>
                <p></p>
                <p></p>
-               <h2><i>  </i> My Class</h2>
+               <h2> <p style="margin-left: 25px;">My Class</h2>
                <p></p>
                <p></p>
                <p></p>
            </div>
 
 
-            <table class="tablede" id="Myclass">
+            <table class="tablede " id="Myclass">
             </table>
 
 
