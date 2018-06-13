@@ -76,6 +76,12 @@
         font-size:70px;
         color:white;
     }
+    .opinion{
+        font-size: 20px;
+        border-bottom: 2px solid navy;
+        padding-top: 10px;
+        text-align:center;
+    }
 </style>
 
     <div class="block" style="display:inline-block; margin-left:15%; width:70%; height:20%; ">
@@ -169,30 +175,39 @@
 
             <div id="mid_q" class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
                 <h2 class='titular'>문제 풀이</h2>
-                <div style="margin-left:10%; width:80%; height:30%; border-radius:10px; background:white;">
+                <div style="margin-left:10%; width:80%; height:30%; min-height:200px; border-radius:10px; background:white;">
                     <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
                 </div>
+
+
                 <div class='grafico bar-chart'>
-                    <div class="choice_status" style="background: #9e7ac2;">
-                        <div  class="choice_two_tone" style="background: #8361ba;">A</div>
-                        <div class="B_class" id="B1">1</div>
-                    </div>
+                    <div id="obj_opinion" style="display: none;">
+                        <div class="choice_status" style="background: #9e7ac2;">
+                            <div  class="choice_two_tone" style="background: #8361ba;">A</div>
+                            <div class="B_class" id="B1">1</div>
+                        </div>
 
-                    <div class="choice_status" style="background: #f36174;">
-                        <div  class="choice_two_tone" style="background: #e24d66;">B</div>
-                        <div  class="B_class" id="B2">2</div>
-                    </div>
+                        <div class="choice_status" style="background: #f36174;">
+                            <div  class="choice_two_tone" style="background: #e24d66;">B</div>
+                            <div  class="B_class" id="B2">2</div>
+                        </div>
 
-                    <div class="choice_status" style="background: #42ce91;">
-                        <div class="choice_two_tone" style="background: #55dea8;">C</div>
-                        <div class="B_class" id="B3">3</div>
-                    </div>
+                        <div class="choice_status" style="background: #42ce91;">
+                            <div class="choice_two_tone" style="background: #55dea8;">C</div>
+                            <div class="B_class" id="B3">3</div>
+                        </div>
 
-                    <div class="choice_status" style="background: #fcb029;">
-                        <div class="choice_two_tone" style="background: #f9cd36;">D</div>
-                        <div class="B_class" id="B4">4</div>
+                        <div class="choice_status" style="background: #fcb029;">
+                            <div class="choice_two_tone" style="background: #f9cd36;">D</div>
+                            <div class="B_class" id="B4">4</div>
+                        </div>
                     </div>
-                </div>
+                    <div id="sub_opinion" style="display: none;">
+                        <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
+                        <div id="opinion_box" style="margin-left:10%; width:80%; height:30%; min-height:200px; border-radius:10px; background:white;">
+                            </div>
+                        </div>
+                    </div>
             </div>
 
 </div>

@@ -209,6 +209,7 @@
         var C_count=0;
         var D_count=0;
 
+        var opinion_counting=4;
 
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
@@ -441,6 +442,11 @@
                         else {
                             answer = real_A[answer];
                         }
+                    }else{
+                        if(opinion_counting != 0){
+                            $('<p class="opinion" style="color:navy">'+answer+'</p>').appendTo('#opinion_box');
+                            opinion_counting--;
+                        }
                     }
 
                     $.ajax({
@@ -495,10 +501,12 @@
 
                                 switch (quiz_JSON[quizId - 1].makeType) {
                                     case 'sub':
-                                        $('#mid_q').hide();
+                                        $('#sub_opinion').show();
+                                        $('#obj_opinion').hide();
                                         break;
                                     case 'obj':
-                                        $('#mid_q').show();
+                                        $('#sub_opinion').hide();
+                                        $('#obj_opinion').show();
                                         break;
                                 }
 
@@ -556,33 +564,23 @@
 
                     $("#mid_result").show();
                     $("#wait_room_nav").hide();
-
-                    Mid_result_Timer = setTimeout(function () {
-                        $('#mid_result_bgm').remove();
-                        socket.emit('count', 'time on', roomPin);
-
-                        $("#content").show();
-                        $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-                        $("#mid_result").hide();
-                        $("#wait_room_nav").show();
-
-                        if (quiz_continue == true)
-                            socket.emit('android_next_quiz', roomPin);
-                    }, 99999999999);
+                    $("#play_frame").hide();
+                    opinion_counting=5;
                 });
 
 
                 $("#Mid_skip_btn").click(function () {
 
-                    clearTimeout(Mid_result_Timer);
+                    // clearTimeout(Mid_result_Timer);
 
                     $('#mid_result_bgm').remove();
                     socket.emit('count', 'time on', roomPin);
 
                     $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
-
+                    $("#play_frame").show();
                     $("#wait_room_nav").show();
                     $("#content").show();
+
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                     $("#mid_result").hide();
