@@ -23,6 +23,7 @@ class RecordBoxController extends Controller{
      *              'group' => array(
      *                  'id'    그룹 아이디
      *                  'name'  그룹 이름
+     *                  'teacherId' 해당 그룹의 선생 아이디
      *              ),
      *              'races'     $this->selectGroupRecords('groupId', 'startDate', 'endDate');
      *              'startDate' 검색된 값의 시작 날짜
@@ -55,7 +56,8 @@ class RecordBoxController extends Controller{
                     $groupData = DB::table('groups')
                         ->select(
                             'number as groupId',
-                            'name   as groupName'
+                            'name   as groupName',
+                            'teacherNumber as teacherId'
                         )
                         ->where([
                             'number' => $postData['groupId']
@@ -70,7 +72,8 @@ class RecordBoxController extends Controller{
                         $returnValue = array(
                             'group' => array(
                                 'id'    => $groupData->groupId,
-                                'name'  => $groupData->groupName
+                                'name'  => $groupData->groupName,
+                                'teacherId'  => $groupData->teacherId
                             ),
                             'races'     => $races,
                             'startDate' => $postData['startDate'],

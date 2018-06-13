@@ -169,6 +169,7 @@ class RaceController extends Controller{
      * @return array(
      *      'sessionId' 세션 아이디
      *      'characters' 이미 선택된 캐릭터 아이디 목록
+     *      ['quizs'] 쪽지시험 재접속 시 안푼 문제 목록
      *      'check' 방에 입장 성공 여부 설정
      *  )
      */
@@ -180,6 +181,8 @@ class RaceController extends Controller{
 
         // 로그인 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
+        
+        // 재입장시
         if ($userData['check'] && ($userData['roomPin'] == $postData['roomPin'])) {
             $raceData = DB::table('races')
                 ->select(
@@ -191,31 +194,31 @@ class RaceController extends Controller{
                 ])
                 ->first();
 
-            if ($raceData && $raceData['type'] == 'popQuiz'){
+            if ($raceData['type'] == 'popQuiz'){
 
                 $quizData = DB::table('quizBanks as qb')
-                ->select(
-                    'qb.number          as number',
-                    'qb.question        as question',
-                    'qb.hint            as hint',
-                    'qb.rightAnswer     as rightAnswer',
-                    'qb.example1        as example1',
-                    'qb.example2        as example2',
-                    'qb.example3        as example3',
-                    'qb.type            as type',
-                    DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
-                )
-                ->where([
-                    're.raceNo' => $userData['raceId'],
-                    're.retest' => RecordBoxController::RETEST_NOT_STATE
-                ])
-                ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
-                ->leftJoin('records as re', function ($join) {
-                    $join->on('re.quizNo', '=', 'lq.quizNumber');
-                    $join->on('re.listNo', '=', 'lq.listNumber');
-                })
-                ->groupBy('qb.number')
-                ->get();
+                    ->select(
+                        'qb.number          as number',
+                        'qb.question        as question',
+                        'qb.hint            as hint',
+                        'qb.rightAnswer     as rightAnswer',
+                        'qb.example1        as example1',
+                        'qb.example2        as example2',
+                        'qb.example3        as example3',
+                        'qb.type            as type',
+                        DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
+                    )
+                    ->where([
+                        're.raceNo' => $userData['raceId'],
+                        're.retest' => RecordBoxController::RETEST_NOT_STATE
+                    ])
+                    ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+                    ->leftJoin('records as re', function ($join) {
+                        $join->on('re.quizNo', '=', 'lq.quizNumber');
+                        $join->on('re.listNo', '=', 'lq.listNumber');
+                    })
+                    ->groupBy('qb.number')
+                    ->get();
 
                 // 반납값 정리
                 $quizs = array();
@@ -241,11 +244,6 @@ class RaceController extends Controller{
                     'characters' => array(),
                     'quizs' => $quizs,
                     'check' => true
-                );
-            } else if ($raceData){
-                $returnValue = array(
-                    'sessionId' => $postData['sessionId'],
-                    'check' => false
                 );
             } else {
                 $returnValue = array(
