@@ -785,35 +785,19 @@ class RaceController extends Controller{
     }
 
     /****
-     * 웹 용 재시험 대상 레이스 목록 가져오기
+     * 웹용 재시험 대상 레이스 목록 가져오기
      *
      * @param Request $request->input()
-     *     로그인 되어있기만 하면되고 요구하는 값은 없음
+     *     ['sessionId'] 모바일용 변수
      *
-     * @return array
+     * @return array(
+     *      'lists' => $this->selectRetestList(유저 아이디),
+     *      'check' 조회 성공 여부
+     *  )
      */
     public function getRetestListWeb(Request $request){
-        // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-
-        if ($userData['check']) {
-            $returnValue = array(
-                'lists' => $this->selectRetestList($userData['userId']),
-                'check' => true
-            );
-        } else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
-
-        return $returnValue;
-    }
-
-    // 재시험 대상 레이스 목록 가져오기 어플 용
-    public function getRetestListMobile(Request $request){
         $postData = array(
-            'sessionId' => $request->input('sessionId')
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저 정보 가져오기
@@ -833,11 +817,37 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 준비 웹 전용
+    /****
+     * 모바일용 재시험 대상 레이스 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *
+     * @return $this->getRetestListWeb(세션 아이디);
+     */
+    public function getRetestListMobile(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
+
+        return $this->getRetestListWeb($postData['sessionId']);
+    }
+
+    /****
+     * 웹 용 재시험 준비
+     *
+     * @param Request $request->input()
+     *      'raceId' 레이스 아이디
+     *
+     * @return view('Race/race_retest')->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'sessionId' 세션 아이디
+     *          'raceId' 레이스 아이디
+     *          ['retestState' => $raceCheck->retestState,] 대상자가 아닐경우
+     *          'check' 준비 성공여부
+     *      ).
+     */
     public function retestSet(Request $request){
-//        $postData = array(
-//            'raceId' => 1
-//        );
         $postData = array(
             'raceId' => $request->input('raceId')
         );
@@ -895,8 +905,22 @@ class RaceController extends Controller{
         return view('Race/race_retest')->with('response', $returnValue);
     }
 
-    // 재시험 문제 받아오기 모바일은 바로 시작 가능
-    // 해당 문제 리스트 비우기
+    /****
+     * 재시험 문제 받아오기 - 웹은 위의 retestSet부터 실행할 것
+     * 
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *      'raceId' 레이스 아이디
+     * 
+     * @return array(
+     *      'userName' 유저 이름
+     *      'listName' 리스트 이름
+     *      'groupName' 그룹 이름
+     *      'quizCount' 퀴즈의 수
+     *      'passingMark' 넘겨야할 점수
+     *      'quizs' => $this->quizGet(리스트 아이디)
+     *  )
+     */
     public function retestStart(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId'),
@@ -954,14 +978,19 @@ class RaceController extends Controller{
         return $retrunValue;
     }
 
-    // 재시험 정답 입력
+    /****
+     * 재시험 정답 입력
+     *
+     * @param Request $request
+     *      'sessionId' 세션 아이디
+     *      'quizId' 퀴즈 아이디
+     *      'answer' 입력한 정답
+     *
+     * @return array(
+     *      'check' 입력 성공 여부
+     *  )
+     */
     public function retestAnswerIn(Request $request){
-        // 학생의 세션 아이디 필요
-//        $postData     = array(
-//            'sessionId' => 2,
-//            'quizId'    => 1,
-//            'answer'    => 1
-//        );
         $postData     = array(
             'sessionId' => $request->has('sessionId'),
             'quizId'    => $request->has('quizId') ? $request->input('quizId') : false,
@@ -1053,7 +1082,18 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험에서 종료 후 세션 정리
+    /****
+     * 재시험에서 종료 후 세션 정리
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *
+     * @return array(
+     *      'score' 점수
+     *      'passingMark' 기준 점수
+     *      'check' 종료 성공 여부
+     *  )
+     */
     public function retestEnd(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId')
@@ -1146,7 +1186,28 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 해당 리스트에서 모든 문제를 가져오는 구문
+    /****
+     * 해당 리스트에서 모든 문제를 가져오는 구문
+     * 
+     * @param $listId // 리스트 아이디
+     * 
+     * @return array(
+     *      'quiz' => array(
+     *          0 => array(
+     *              'quizId' 퀴즈 아이디
+     *              'question' 문제
+     *              'hint' 힌트
+     *              'right' 정답
+     *              'example1' 보기1
+     *              'example2' 보기2
+     *              'example3' 보기3
+     *              'quizType' 퀴즈타입
+     *              'makeType' 주관식, 객관식
+     *          )
+     *      ),
+     *      'check' 성공 여부
+     *  )
+     */
     private function quizGet($listId){
 
         // 문제 가져오기
@@ -1198,7 +1259,20 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 대상 레이스 목록을 검색
+    /****
+     * 재시험 대상 레이스 목록을 검색
+     *
+     * @param $userId // 유저 아이디
+     * @return array(
+     *      0 => array(
+     *          'raceId' 레이스 아이디
+     *          'listName' 리스트 이름
+     *          'quizCount' 퀴즈의 수
+     *          'passingMark' 기준 점수
+     *          'rightCount' 기존 점수
+     *      )
+     *  )
+     */
     private function selectRetestList($userId){
         $retestData = DB::table('raceUsers as ru')
             ->select(
@@ -1238,7 +1312,13 @@ class RaceController extends Controller{
         return $retests;
     }
 
-    // 재시험 혹은 테스트에서 미제출 문제 처리
+    /****
+     * 재시험 혹은 테스트에서 미제출 문제 처리
+     * 
+     * @param $userId // 유저 아이디
+     * @param $raceId // 레이스 아이디
+     * @param $type // 레이스 유형
+     */
     private function omission($userId, $raceId, $type)
     {
         $raceData = DB::table('races')
