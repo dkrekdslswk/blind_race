@@ -262,6 +262,35 @@
                 submit_count++;
                 $('#submit_count').text(submit_count);
             });
+
+            socket.on('leaveRoom', function(user_num) {
+                quiz_member--;
+
+                $('#member_count').text(quiz_member);
+                if(quiz_member < 1){
+                    $('#member_count').text("Player");
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentOut')}}",
+                    dataType: 'json',
+                    async: false ,
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin="+roomPin+"&sessionId="+user_num,
+                    success: function (result) {
+                        console.log("학생퇴장"+user_num);
+
+                        if( result['characters'] != 'false'){
+                            socket.emit('enable_character',roomPin,result['characters']);
+                        }
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+            });
+
         };
     </script>
 </head>
