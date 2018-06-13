@@ -47,15 +47,3 @@
     </nav>
 </div>
 
-<script>
-
-    $(window).scroll(function (event) {
-
-        if($(window).scrollTop() == 0){
-            $('.recordbox_navbar').removeClass('nav-up');
-        }else {
-            $('.recordbox_navbar').addClass('nav-up');
-        }
-    });
-
-</script>
