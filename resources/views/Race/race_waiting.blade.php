@@ -396,9 +396,9 @@
         }
 
         function btn_click(){
-            // if(quiz_member == 0 ){
-            //     alert("참여한 인원이 없습니다.");
-            // }else {
+            if(quiz_member == 0 ){
+                alert("참여한 인원이 없습니다.");
+            }else {
 
                 $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
                 $('#all_member').text("/"+quiz_member);
@@ -677,7 +677,7 @@
                     }
 
                 });
-            //}
+            }
         };
     </script>
 </head>
