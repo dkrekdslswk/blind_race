@@ -6,7 +6,19 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
-    // 웹용 홈페이지 호출
+    /****
+     * 웹용 로그인 확인
+     *
+     * @param Request $request->input()
+     *      로그인 만 있으면 됨.
+     *
+     * @return array(
+     *      'check' 로그인 조회 성공 여부
+     *      'loginCheck' 로그인 여부
+     *      'userName' 유저 이름
+     *      'classification' 유저 권한
+     *  )
+     */
     public function loginCheck(Request $request){
         // 유저정보 가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -28,7 +40,22 @@ class UserController extends Controller{
         return $returnValue;
     }
 
-    // 모바일 로그인
+    /****
+     * 모바일 로그인
+     *
+     * @param Request $request->input()
+     *      'p_ID' 유저 아이디
+     *      'p_PW' 유저 페스워드
+     *
+     * @return json_encode(array(
+     *          'check' 쿼리 성공 여부
+     *          'loginCheck' 로그인 성공 여부
+     *          'sessionId' 세션 아이디
+     *          'userName' 유저 이름
+     *          'classification' 유저 권한
+     *      )
+     *  )
+     */
     public function mobileLogin(Request $request){
         $userData = $this->userLogin(
             $request->input('p_ID'),
@@ -64,7 +91,20 @@ class UserController extends Controller{
         return json_encode($returnValue);
     }
 
-    // 웹 로그인
+    /****
+     * 웹 로그인
+     *
+     * @param Request $request->input()
+     *      'p_ID' 유저 아이디
+     *      'p_PW' 유저 페스워드
+     *
+     * @return array(
+     *      'check' 쿼리 성공 여부
+     *      'loginCheck' 로그인 성공 여부
+     *      'userName' 유저 이름
+     *      'classification' 유저 권한
+     *  )
+     */
     public function webLogin(Request $request){
         $userData = $this->userLogin(
             $request->input('p_ID'),
@@ -102,7 +142,14 @@ class UserController extends Controller{
         return $returnValue;
     }
 
-    // 회원 정보 수정
+    /****
+     * 회원 정보 수정
+     *
+     * @param Request $request->input()
+     *
+     *
+     * @return array
+     */
     public function userUpdate(Request $request){
         $postData = array(
             'name'              => $request->input('name'),
