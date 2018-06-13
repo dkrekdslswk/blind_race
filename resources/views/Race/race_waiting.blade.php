@@ -565,8 +565,7 @@
                     $("#mid_result").show();
                     $("#wait_room_nav").hide();
                     $("#play_frame").hide();
-                    $("#opinion_box").empty();
-                    opinion_counting=5;
+
                 });
 
 
@@ -581,6 +580,8 @@
                     $("#play_frame").show();
                     $("#wait_room_nav").show();
                     $("#content").show();
+                    $("#opinion_box").empty();
+                    opinion_counting=5;
 
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
