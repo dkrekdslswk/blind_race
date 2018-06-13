@@ -1107,7 +1107,7 @@ class RecordBoxController extends Controller{
                 ])
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
-                ->first();
+                ->get();
 
             // 반납값 정리
             $QnAs = array();
