@@ -1,12 +1,11 @@
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         #make {
-            width: 73% ;
+            width: 73%;
             height: 70px;
-            background-image: url(https://i.imgur.com/8QcmVFs.png) !important;
+            background-image: url(https://i.imgur.com/8QcmVFs.png);
             background-size: width 250px;
 
             margin-top: -20px;
@@ -155,7 +154,7 @@
             position: absolute !important;
         }
         .tablede {
-            background-image: url("https://i.imgur.com/fFksbHc.png"); !important;
+            background-image: url("https://i.imgur.com/fFksbHc.png");
 
             border:1px solid transparent !important;
             padding: 8px;
@@ -166,12 +165,6 @@
             border-spacing: 0px 0px !important;
         }
 
-       .table_color {
-           background-image: url("https://i.imgur.com/fFksbHc.png"); !important;
-       }
-        p ,div ,th ,tr  {
-            font-family: 'Nanum Gothic', sans-serif;
-        }
 
 
 
@@ -204,18 +197,15 @@
                 type="button"
                 data-toggle="modal"
                 data-target="#create"
-                class="classmake"><p style="margin-top: 10px; margin-left: 30px  ; font-family: 'Nanum Gothic', sans-serif;
-        }">클래스 생성</p>
+                class="classmake">클래스 생성
         </button>
-
 
         <div>
            <div style="width: 300px ; height: 100px">
                <p></p>
                <p></p>
                <p></p>
-               <h2  STYLE="font-family: 'Nanum Gothic', sans-serif  ; margin-left: 15px"; >
-               <i>  </i> My Class</h2>
+               <h2><i>  </i> My Class</h2>
                <p></p>
                <p></p>
                <p></p>
