@@ -1,7 +1,10 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
     <style>
+        p ,div ,th ,tr,button  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
         #make {
             width: 73%;
             height: 70px;
@@ -199,7 +202,10 @@
                 data-target="#create"
                 class="classmake">
                 <p style="margin-left: 25px;
-                            margin-top: 8px;">클래스 생성</p>
+                            margin-top: 8px;
+                            color : #203a8e; !important;
+                             font-family: 'Nanum Gothic', sans-serif;
+                 ">클래스 생성</p>
         </button>
 
         <div>
@@ -207,7 +213,7 @@
                <p></p>
                <p></p>
                <p></p>
-               <h2> <p style="margin-left: 25px;">My Class</h2>
+               <h2> <p style="margin-left: 25px; color : #203a8e; !important;">My Class</h2>
                <p></p>
                <p></p>
                <p></p>
