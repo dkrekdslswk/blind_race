@@ -967,6 +967,7 @@ class RecordBoxController extends Controller{
      *      'title'     재목
      *      'question'  질문
      *      'teacherId' 질문할 선생의 아이디
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return array(
@@ -978,6 +979,7 @@ class RecordBoxController extends Controller{
             'title' => $request->has('title') ? $request->input('title') : false,
             'question' => $request->has('question') ? $request->input('question') : false,
             'teacherId' => $request->has('teacherId') ? $request->input('teacherId') : false,
+            'groupId' => $request->has('groupId') ? $request->input('groupId') : false,
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -992,6 +994,7 @@ class RecordBoxController extends Controller{
                         ->insert([
                             'userNumber' => $userData['userId'],
                             'teacherNumber' => $postData['teacherId'],
+                            'groupNumber' => $postData['groupId'],
                             'title' => $postData['title'],
                             'question' => $postData['question']
                         ]);
@@ -1022,6 +1025,7 @@ class RecordBoxController extends Controller{
      * 웹 용 QnA 목록 가져오기
      *
      * @param Request $request->input
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return array(
@@ -1040,6 +1044,7 @@ class RecordBoxController extends Controller{
      */
     public function selectQnAs(Request $request){
         $postData = array(
+            'groupId' => $request->input('groupId'),
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -1082,6 +1087,9 @@ class RecordBoxController extends Controller{
                     'QnAs.answer_at as answer_at'
                 )
                 ->where($where)
+                ->where([
+                    'groupNumber' => $postData['groupId']
+                ])
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
                 ->first();
@@ -1278,6 +1286,7 @@ class RecordBoxController extends Controller{
      *      'title' 재목
      *      'question' 질문
      *      'teacherId' 질문할 선생의 아이디
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return $this->insertQuestion(Request $request);
@@ -1290,6 +1299,7 @@ class RecordBoxController extends Controller{
      * 모바일 용 QnA 목록 가져오기
      *
      * @param Request $request->input
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return $this->selectQnAs(Request $request);
