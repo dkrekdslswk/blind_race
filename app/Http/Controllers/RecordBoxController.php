@@ -967,6 +967,7 @@ class RecordBoxController extends Controller{
      *      'title'     재목
      *      'question'  질문
      *      'teacherId' 질문할 선생의 아이디
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return array(
@@ -978,6 +979,7 @@ class RecordBoxController extends Controller{
             'title' => $request->has('title') ? $request->input('title') : false,
             'question' => $request->has('question') ? $request->input('question') : false,
             'teacherId' => $request->has('teacherId') ? $request->input('teacherId') : false,
+            'groupId' => $request->has('groupId') ? $request->input('groupId') : false,
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -988,18 +990,36 @@ class RecordBoxController extends Controller{
         if ($userData['check'] && $postData['title'] && $postData['question'] && $postData['teacherId']){
             switch ($userData['classification']){
                 case 'student':
-                    DB::table('QnAs')
-                        ->insert([
-                            'userNumber' => $userData['userId'],
-                            'teacherNumber' => $postData['teacherId'],
-                            'title' => $postData['title'],
-                            'question' => $postData['question']
-                        ]);
+                    // 자기 그룹인지 확인
+                    $groupCheck = DB::table('groups as g')
+                        ->select(DB::raw('count(*) as check'))
+                        ->where([
+                            'g.number' => $postData['groupId'],
+                            'g.teacherNumber' => $postData['teacherId'],
+                            'gs.userNumber' => $userData['userId']
+                        ])
+                        ->join('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
+                        ->first();
 
-                    // 반납값 정리
-                    $returnValue = array(
-                        'check' => true
-                    );
+                    if ($groupCheck && ($groupCheck->check == 1)) {
+                        DB::table('QnAs')
+                            ->insert([
+                                'userNumber' => $userData['userId'],
+                                'teacherNumber' => $postData['teacherId'],
+                                'groupNumber' => $postData['groupId'],
+                                'title' => $postData['title'],
+                                'question' => $postData['question']
+                            ]);
+
+                        // 반납값 정리
+                        $returnValue = array(
+                            'check' => true
+                        );
+                    } else {
+                        $returnValue = array(
+                            'check' => false
+                        );
+                    }
                     break;
                 default:
 
@@ -1022,24 +1042,24 @@ class RecordBoxController extends Controller{
      * 웹 용 QnA 목록 가져오기
      *
      * @param Request $request->input
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return array(
      *      'QnAs' => array(
-     *              0 => array(
-     *                  'QnAId'         질문 아이디
-     *                  'userName'      질문한 학생 이름
-     *                  'teacherName'   질문받은 교사 이름
-     *                  'title'         질문 제목
-     *                  'question_at'   질문한 날짜
-     *                  'answer_at'     답변한 날짜
-     *              )
+     *              'QnAId'         질문 아이디
+     *              'userName'      질문한 학생 이름
+     *              'teacherName'   질문받은 교사 이름
+     *              'title'         질문 제목
+     *              'question_at'   질문한 날짜
+     *              'answer_at'     답변한 날짜
      *          ),
      *          'check' 조회 성공 여부
      *      )
      */
     public function selectQnAs(Request $request){
         $postData = array(
+            'groupId' => $request->input('groupId'),
             'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
@@ -1082,13 +1102,16 @@ class RecordBoxController extends Controller{
                     'QnAs.answer_at as answer_at'
                 )
                 ->where($where)
+                ->where([
+                    'groupNumber' => $postData['groupId']
+                ])
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
-                ->first();
+                ->get();
 
             // 반납값 정리
             $QnAs = array();
-            foreach ($QnAData as $QnA){
+            foreach($QnAData as $QnA){
                 array_push($QnAs, array(
                     'QnAId' => $QnA->QnAId,
                     'userName' => $QnA->userName,
@@ -1278,6 +1301,7 @@ class RecordBoxController extends Controller{
      *      'title' 재목
      *      'question' 질문
      *      'teacherId' 질문할 선생의 아이디
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return $this->insertQuestion(Request $request);
@@ -1290,6 +1314,7 @@ class RecordBoxController extends Controller{
      * 모바일 용 QnA 목록 가져오기
      *
      * @param Request $request->input
+     *      'groupId'   질문한 그룹 아이디
      *      ['sessionId'] 모바일용 변수
      *
      * @return $this->selectQnAs(Request $request);

@@ -1,18 +1,23 @@
 <head>
 
     <style>
-        .recordSidebar {
+        .recordbox_sidebar {
             margin: 0;
             padding: 0;
-            display: block;
             position: relative;
             width: 12%;
             height:100%;
             float: left;
             border: 1px solid #e5e6e8;
         }
-        .recordSidebar .innerContents {
-
+        .sidenav-up {
+            margin: 0;
+            padding: 0;
+            top: 0;
+            left: 0;
+            width: 12%;
+            position: fixed;
+            z-index: 2;
         }
         .page-small {
             display: none !important;
@@ -58,7 +63,7 @@
 
 </head>
 
-<div class="recordSidebar" id="navigation">
+<div class="recordbox_sidebar" id="navigation">
 
     <div class="innerContents">
         <!--네비바 위부분 공백-->
@@ -83,3 +88,17 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    $(window).scroll(function (event) {
+
+        if($(window).scrollTop() == 0){
+            $('.recordbox_navbar').removeClass('nav-up');
+            $('.recordbox_navbar').removeClass('nav-up');
+        }else {
+            $('.recordbox_navbar').addClass('nav-up');
+        }
+    });
+
+</script>

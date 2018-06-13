@@ -90,6 +90,10 @@ io.on('connection', function (socket){
         io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName);
     });
 
+    socket.on('re_join_pop_quiz',function(roomPin,quizData,listName,sessionId){
+        io.sockets.in(roomPin).emit('re_join_pop_quiz',quizData,listName , sessionId);
+    });
+
     socket.on('pop_quiz_status',function(roomPin){
         console.log('쪽지시험 끝남 ++');
         io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);

@@ -178,68 +178,147 @@ class RaceController extends Controller{
             'sessionId'     => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
-        // 앱 로그인인지 웹 로그인인지 확인
+        // 로그인 확인
         $userData = UserController::sessionDataGet($postData['sessionId']);
-
-        // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
-        $raceData = DB::table('races as r')
-            ->select([
-                'r.number as raceId',
-                'r.type as raceType'
-            ])
-            ->where([
-                'gs.userNumber'         => $userData['userId'],
-                's2.PIN'                => $postData['roomPin'],
-                's2.nick'               => ''
-            ])
-            ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
-            ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
-            ->first();
-
-        if ($raceData) {
-            // 유저 세션 갱신
-            $sessionUpdate = DB::table('sessionDatas')
+        if ($userData['check'] && ($userData['roomPin'] == $postData['roomPin'])) {
+            $raceData = DB::table('races')
+                ->select(
+                    'listNumber as listId',
+                    'type'
+                )
                 ->where([
-                    'number' => $postData['sessionId']
+                    'number' => $userData['raceId']
                 ])
-                ->update([
-                    'PIN'               => $postData['roomPin'],
-                    'raceNumber'        => $raceData->raceId,
-                    'characterNumber'   => null,
-                    'nick'              => $raceData->raceType == 'race' ? null : $userData['userName'],
-                ]);
-            $sessionCheck = ($sessionUpdate == 1);
+                ->first();
 
-            // 갱신 성공시 유저정보 입력
-            $characters = array();
-            if ($sessionCheck){
-                DB::table('raceUsers')
-                    ->insert([
-                        'raceNumber'    => $raceData->raceId,
-                        'userNumber'    => $userData['userId'],
-                        'retestState'   => 'not',
-                        'wrongState'   => 'not'
-                    ]);
+            if ($raceData && $raceData['type'] == 'popQuiz'){
 
-                $characters = DB::table('sessionDatas')
-                    ->where([
-                        'PIN' => $postData['roomPin']
-                    ])
-                    ->whereNotNull('characterNumber')
-                    ->pluck('characterNumber')
-                    ->toArray();
+                $quizData = DB::table('quizBanks as qb')
+                ->select(
+                    'qb.number          as number',
+                    'qb.question        as question',
+                    'qb.hint            as hint',
+                    'qb.rightAnswer     as rightAnswer',
+                    'qb.example1        as example1',
+                    'qb.example2        as example2',
+                    'qb.example3        as example3',
+                    'qb.type            as type',
+                    DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
+                )
+                ->where([
+                    're.raceNo' => $userData['raceId'],
+                    're.retest' => RecordBoxController::RETEST_NOT_STATE
+                ])
+                ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
+                ->leftJoin('records as re', function ($join) {
+                    $join->on('re.quizNo', '=', 'lq.quizNumber');
+                    $join->on('re.listNo', '=', 'lq.listNumber');
+                })
+                ->groupBy('qb.number')
+                ->get();
+
+                // 반납값 정리
+                $quizs = array();
+                foreach ($quizData as $quiz) {
+                    if ($quiz->omissionCheck == 0) {
+                        $type = explode(' ', $quiz->type);
+                        array_push($quizs, array(
+                            'quizId' => $quiz->number,
+                            'question' => $quiz->question,
+                            'hint' => $quiz->hint,
+                            'right' => $quiz->rightAnswer,
+                            'example1' => $quiz->example1,
+                            'example2' => $quiz->example2,
+                            'example3' => $quiz->example3,
+                            'quizType' => $type[0],
+                            'makeType' => $type[1]
+                        ));
+                    }
+                }
+
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'characters' => array(),
+                    'quizs' => $quizs,
+                    'check' => true
+                );
+            } else if ($raceData){
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
+            } else {
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
             }
+        } else if($userData['check']){
+            // 해당 학생이 참가한 레이스의 정보 및 해당 그룹 학생인지 확인
+            $raceData = DB::table('races as r')
+                ->select([
+                    'r.number as raceId',
+                    'r.type as raceType'
+                ])
+                ->where([
+                    'gs.userNumber' => $userData['userId'],
+                    's2.PIN' => $postData['roomPin'],
+                    's2.nick' => ''
+                ])
+                ->join('groupStudents as gs', 'gs.groupNumber', '=', 'r.groupNumber')
+                ->join('sessionDatas as s2', 's2.raceNumber', '=', 'r.number')
+                ->first();
 
-            // 반납값 정리
-            $returnValue = array(
-                'sessionId'     => $postData['sessionId'],
-                'characters'    => $characters,
-                'check'         => $sessionCheck
-            );
+            if ($raceData) {
+                // 유저 세션 갱신
+                $sessionUpdate = DB::table('sessionDatas')
+                    ->where([
+                        'number' => $postData['sessionId']
+                    ])
+                    ->update([
+                        'PIN' => $postData['roomPin'],
+                        'raceNumber' => $raceData->raceId,
+                        'characterNumber' => null,
+                        'nick' => $raceData->raceType == 'race' ? null : $userData['userName'],
+                    ]);
+                $sessionCheck = ($sessionUpdate == 1);
+
+                // 갱신 성공시 유저정보 입력
+                $characters = array();
+                if ($sessionCheck) {
+                    DB::table('raceUsers')
+                        ->insert([
+                            'raceNumber' => $raceData->raceId,
+                            'userNumber' => $userData['userId'],
+                            'retestState' => 'not',
+                            'wrongState' => 'not'
+                        ]);
+
+                    $characters = DB::table('sessionDatas')
+                        ->where([
+                            'PIN' => $postData['roomPin']
+                        ])
+                        ->whereNotNull('characterNumber')
+                        ->pluck('characterNumber')
+                        ->toArray();
+                }
+
+                // 반납값 정리
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'characters' => $characters,
+                    'check' => $sessionCheck
+                );
+            } else {
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
-                'sessionId'     => $postData['sessionId'],
-                'check'         => false
+                'sessionId' => $postData['sessionId'],
+                'check' => false
             );
         }
 
@@ -429,6 +508,11 @@ class RaceController extends Controller{
 
         // 유저 정보 가져오기
         $userData = UserController::sessionDataGet($postData['sessionId']);
+
+        // 정답 미입력시 오답처리
+        if (!$postData['answer']){
+            $postData['answer'] = '';
+        }
 
         // 레이스 정보 가져오기
         $raceData = DB::table('races as r')
@@ -709,10 +793,10 @@ class RaceController extends Controller{
                 ->groupBy('s.userNumber')
                 ->get();
 
-//            // 미제출 문제 처리하기
-//            foreach ($students as $student) {
-//                $this->omission($student->userId, $userData['raceId'], 0);
-//            }
+            // 미제출 문제 처리하기
+            foreach ($students as $student) {
+                $this->omission($student->userId, $userData['raceId'], RecordBoxController::RETEST_NOT_STATE);
+            }
 
             // 재시험 여부 확인하기
             $retestTargets = array();
@@ -785,35 +869,19 @@ class RaceController extends Controller{
     }
 
     /****
-     * 웹 용 재시험 대상 레이스 목록 가져오기
+     * 웹용 재시험 대상 레이스 목록 가져오기
      *
      * @param Request $request->input()
-     *     로그인 되어있기만 하면되고 요구하는 값은 없음
+     *     ['sessionId'] 모바일용 변수
      *
-     * @return array
+     * @return array(
+     *      'lists' => $this->selectRetestList(유저 아이디),
+     *      'check' 조회 성공 여부
+     *  )
      */
     public function getRetestListWeb(Request $request){
-        // 유저 정보 가져오기
-        $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-
-        if ($userData['check']) {
-            $returnValue = array(
-                'lists' => $this->selectRetestList($userData['userId']),
-                'check' => true
-            );
-        } else {
-            $returnValue = array(
-                'check' => false
-            );
-        }
-
-        return $returnValue;
-    }
-
-    // 재시험 대상 레이스 목록 가져오기 어플 용
-    public function getRetestListMobile(Request $request){
         $postData = array(
-            'sessionId' => $request->input('sessionId')
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : $request->session()->get('sessionId')
         );
 
         // 유저 정보 가져오기
@@ -833,11 +901,37 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 준비 웹 전용
+    /****
+     * 모바일용 재시험 대상 레이스 목록 가져오기
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *
+     * @return $this->getRetestListWeb(세션 아이디);
+     */
+    public function getRetestListMobile(Request $request){
+        $postData = array(
+            'sessionId' => $request->input('sessionId')
+        );
+
+        return $this->getRetestListWeb($postData['sessionId']);
+    }
+
+    /****
+     * 웹 용 재시험 준비
+     *
+     * @param Request $request->input()
+     *      'raceId' 레이스 아이디
+     *
+     * @return view('Race/race_retest')->with('response', $returnValue);
+     *      $returnValue => array(
+     *          'sessionId' 세션 아이디
+     *          'raceId' 레이스 아이디
+     *          ['retestState' => $raceCheck->retestState,] 대상자가 아닐경우
+     *          'check' 준비 성공여부
+     *      ).
+     */
     public function retestSet(Request $request){
-//        $postData = array(
-//            'raceId' => 1
-//        );
         $postData = array(
             'raceId' => $request->input('raceId')
         );
@@ -895,8 +989,22 @@ class RaceController extends Controller{
         return view('Race/race_retest')->with('response', $returnValue);
     }
 
-    // 재시험 문제 받아오기 모바일은 바로 시작 가능
-    // 해당 문제 리스트 비우기
+    /****
+     * 재시험 문제 받아오기 - 웹은 위의 retestSet부터 실행할 것
+     * 
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *      'raceId' 레이스 아이디
+     * 
+     * @return array(
+     *      'userName' 유저 이름
+     *      'listName' 리스트 이름
+     *      'groupName' 그룹 이름
+     *      'quizCount' 퀴즈의 수
+     *      'passingMark' 넘겨야할 점수
+     *      'quizs' => $this->quizGet(리스트 아이디)
+     *  )
+     */
     public function retestStart(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId'),
@@ -954,14 +1062,19 @@ class RaceController extends Controller{
         return $retrunValue;
     }
 
-    // 재시험 정답 입력
+    /****
+     * 재시험 정답 입력
+     *
+     * @param Request $request
+     *      'sessionId' 세션 아이디
+     *      'quizId' 퀴즈 아이디
+     *      'answer' 입력한 정답
+     *
+     * @return array(
+     *      'check' 입력 성공 여부
+     *  )
+     */
     public function retestAnswerIn(Request $request){
-        // 학생의 세션 아이디 필요
-//        $postData     = array(
-//            'sessionId' => 2,
-//            'quizId'    => 1,
-//            'answer'    => 1
-//        );
         $postData     = array(
             'sessionId' => $request->has('sessionId'),
             'quizId'    => $request->has('quizId') ? $request->input('quizId') : false,
@@ -1053,7 +1166,18 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험에서 종료 후 세션 정리
+    /****
+     * 재시험에서 종료 후 세션 정리
+     *
+     * @param Request $request->input()
+     *      'sessionId' 세션 아이디
+     *
+     * @return array(
+     *      'score' 점수
+     *      'passingMark' 기준 점수
+     *      'check' 종료 성공 여부
+     *  )
+     */
     public function retestEnd(Request $request){
         $postData = array(
             'sessionId' => $request->input('sessionId')
@@ -1146,7 +1270,28 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 해당 리스트에서 모든 문제를 가져오는 구문
+    /****
+     * 해당 리스트에서 모든 문제를 가져오는 구문
+     * 
+     * @param $listId // 리스트 아이디
+     * 
+     * @return array(
+     *      'quiz' => array(
+     *          0 => array(
+     *              'quizId' 퀴즈 아이디
+     *              'question' 문제
+     *              'hint' 힌트
+     *              'right' 정답
+     *              'example1' 보기1
+     *              'example2' 보기2
+     *              'example3' 보기3
+     *              'quizType' 퀴즈타입
+     *              'makeType' 주관식, 객관식
+     *          )
+     *      ),
+     *      'check' 성공 여부
+     *  )
+     */
     private function quizGet($listId){
 
         // 문제 가져오기
@@ -1198,7 +1343,20 @@ class RaceController extends Controller{
         return $returnValue;
     }
 
-    // 재시험 대상 레이스 목록을 검색
+    /****
+     * 재시험 대상 레이스 목록을 검색
+     *
+     * @param $userId // 유저 아이디
+     * @return array(
+     *      0 => array(
+     *          'raceId' 레이스 아이디
+     *          'listName' 리스트 이름
+     *          'quizCount' 퀴즈의 수
+     *          'passingMark' 기준 점수
+     *          'rightCount' 기존 점수
+     *      )
+     *  )
+     */
     private function selectRetestList($userId){
         $retestData = DB::table('raceUsers as ru')
             ->select(
@@ -1238,7 +1396,13 @@ class RaceController extends Controller{
         return $retests;
     }
 
-    // 재시험 혹은 테스트에서 미제출 문제 처리
+    /****
+     * 재시험 혹은 테스트에서 미제출 문제 처리
+     * 
+     * @param $userId // 유저 아이디
+     * @param $raceId // 레이스 아이디
+     * @param $type // 레이스 유형
+     */
     private function omission($userId, $raceId, $type)
     {
         $raceData = DB::table('races')

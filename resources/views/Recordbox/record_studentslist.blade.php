@@ -36,7 +36,9 @@
     }
     .stdAllList .studentList thead tr th ,.stdAllList .studentList thead tr td{
         width: 50px;
+
     }
+
 
     .chartArea{
         float: left;

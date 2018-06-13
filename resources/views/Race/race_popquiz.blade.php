@@ -99,9 +99,10 @@
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
 
+        var start_check = false;
         var answer_count = 0;
         window.onload = function() {
-            
+
 
             //정답뒤섞기
             function shuffle(a) {
@@ -159,7 +160,7 @@
 
             $('#room_Pin').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
-            
+
             socket.on('android_join',function(roomPin,sessionId){
 
                 $.ajax({
@@ -174,6 +175,12 @@
                             socket.emit('android_join_check', true, sessionId, "popQuiz");
                             quiz_member++;
                             $('#member_count').text(quiz_member);
+
+                            if(start_check){
+                                quiz_JSON = json_encode(result['quizs']['quiz']);
+                                socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
+                            }
+
                         }
                         else
                             socket.emit('android_join_check',false, sessionId ,"popQuiz");
@@ -189,18 +196,14 @@
                 quiz_member++;
                 $('#member_count').text(quiz_member);
             });
-
-
-            socket.on('leaveRoom', function(user_num){
-                $('#'+user_num).remove();
-            })
         };
 
         function pop_end(){
-                // window.loaction.href="/race_result?roomPin="+roomPin;
-                $(location).attr('href', "/race_result?roomPin="+roomPin);
-        }  
+            // window.loaction.href="/race_result?roomPin="+roomPin;
+            $(location).attr('href', "/race_result?roomPin="+roomPin);
+        }
         function btn_click(){
+            start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
                 seconds = 0, minutes = 0, hours = 0,
@@ -257,11 +260,40 @@
                 console.log('답변자수 ' , answer_count);
                 console.log('입장플레이어수 ', quiz_member);
             });
-            
+
             socket.on('pop_quiz_status',function(roomPin){
                 submit_count++;
                 $('#submit_count').text(submit_count);
             });
+
+            socket.on('leaveRoom', function(user_num) {
+                quiz_member--;
+
+                $('#member_count').text(quiz_member);
+                if(quiz_member < 1){
+                    $('#member_count').text("Player");
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('/raceController/studentOut')}}",
+                    dataType: 'json',
+                    async: false ,
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data:"roomPin="+roomPin+"&sessionId="+user_num,
+                    success: function (result) {
+                        console.log("학생퇴장"+user_num);
+
+                        if( result['characters'] != 'false'){
+                            socket.emit('enable_character',roomPin,result['characters']);
+                        }
+                    },
+                    error: function(request, status, error) {
+                        alert("AJAX 에러입니다. ");
+                    }
+                });
+
+            });
+
         };
     </script>
 </head>
