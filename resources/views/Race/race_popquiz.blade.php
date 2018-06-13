@@ -99,6 +99,7 @@
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
 
+        var start_check = false;
         var answer_count = 0;
         window.onload = function() {
 
@@ -174,6 +175,12 @@
                             socket.emit('android_join_check', true, sessionId, "popQuiz");
                             quiz_member++;
                             $('#member_count').text(quiz_member);
+
+                            if(start_check){
+                                quiz_JSON = json_encode(result['quizs']['quiz']);
+                                socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
+                            }
+
                         }
                         else
                             socket.emit('android_join_check',false, sessionId ,"popQuiz");
@@ -196,6 +203,7 @@
             $(location).attr('href', "/race_result?roomPin="+roomPin);
         }
         function btn_click(){
+            start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
                 seconds = 0, minutes = 0, hours = 0,

@@ -130,6 +130,10 @@ Route::get('/cbcSocketTest', function(){
     return view('cbcSocketTest');
 });
 
+Route::get('/race_content', function(){
+    return view('Race/race_content');
+});
+
 
 /* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
 
