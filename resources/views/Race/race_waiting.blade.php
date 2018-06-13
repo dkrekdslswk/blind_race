@@ -18,6 +18,10 @@
     <script type="text/javascript"></script>
 
     <style>
+        html{
+            width:100%;
+            height:100%;
+        }
         body{
             background-image: url("/img/race_waiting/wait_bg.png");
             min-height: 100%;
@@ -26,8 +30,7 @@
         }
 
         .shadow {
-            box-shadow: -60px 0px 100px -90px #000000,
-            60px 0px 100px -90px #000000;
+            box-shadow: -60px 0px 100px -90px #000000, 70px 60px 100px -90px #000000;
         }
 
         #start_btn {
@@ -39,17 +42,18 @@
             border-radius: 20px;
             height: 80px;
             text-align: left;
-            top: 21%;
-            right: 14%;
+            top: 12%;
+            right: 15%;
             border:none;
         }
 
         #waiting_area {
             width: 90%;
-            height: 550px;
+            height: 100%;
             margin-left: 5%;
             border-radius: 30px;
             background-color: #ebfaff;
+            padding:100px;
         }
 
         #race_name{
@@ -67,10 +71,21 @@
             text-align: center;
             line-height: 70px;
         }
+        #wait_room{
+            position: absolute;
+            width: 100%;
+            height: 70%;
+            top: 10%;
+        }
+
+        .nick_content{
+            text-align: center;
+            color: black;
+            font-size: 10px;
+        }
+
         #wait_room_nav {
-            box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-            /* background-color: rgba(255,255,255,.84); */
-            background-image: url(/img/race_waiting/race_waiting_nav.png);
+            background-image: url("/img/race_waiting/race_waiting_nav.png");
             width: 100%;
             height: 125px;
             border-radius: 0px 0px 70px 70px;
@@ -79,7 +94,6 @@
         }
         .user_in_room{
             display:inline-block;
-            margin-right:50px;
             border-radius: 15px 50px 30px;
         }
         .student {
@@ -121,7 +135,7 @@
             border-radius: 10px;
             line-height: 80px;
             position: absolute;
-            top: 21%;
+            top: 12%;
             left: 15%;
         }
 
@@ -144,22 +158,37 @@
         #room_Pin {
             width: 467px;
             height: 200px;
-            z-index:0;
+            z-index: 0;
             font-size: 40px;
             color: white;
             position: absolute;
-            top: 10%;
+            top: -5%;
             left: 35%;
             display: table-cell;
             line-height: 280px;
-            background-image: url(/img/race_waiting/pin_case.png);
+            background-image: url("/img/race_waiting/pin_case.png");
             background-position: center;
             background-size: cover;
         }
 
-        .user_character{
-            width:50px;
-            height:50px;
+        .user_character {
+            width: 50px;
+            height: 50px;
+            margin-left: 30px;
+            vertical-align: middle;
+            border-radius: 50px;
+            background: white;
+            border: 3px solid yellow;
+        }
+        .nick_space {
+            display: inline-block;
+            min-width: 100px;
+            height: 35px;
+            border: 3px solid yellow;
+            vertical-align: middle;
+            border-radius: 30px;
+            background-color: white;
+            text-align:center;
         }
         #messages { list-style-type: none; }
         #messages li { padding: 5px 10px; }
@@ -244,8 +273,14 @@
                         if( result['nickCheck'] && result['characterCheck'] )
                         {
                             //정상작동
-                            $('<li class="user_in_room" id="'+ sessionId +'"><img class="user_character" src="/img/character/char'+characterId+'.png"><span style="text-align:center; color:white; background-color:black;">' + nick
-                                + '</span></li>').appendTo('body');
+                            $('<li class="user_in_room" id="'+ sessionId +'">'
+                                +'<img class="user_character" src="/img/character/char'+characterId+'.png">'
+                                +'<div class="nick_space">'
+                                +'<span class="nick_content" style="text-align:center; color:white; background-color:black;">'
+                                + nick
+                                +'</span>'
+                                +'</div>'
+                                +'</li>').appendTo('body');
 
                             quiz_member++;
                             $('#student_count').html(quiz_member);
@@ -711,10 +746,10 @@
 <body>
 
 <div id="wait_room_nav" class="inline-class shadow">
-    
+
     <img  class="inline-class" src="/img/blind_race.png" style="width:100px; height:100px; z-index:2;">
-    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 14.5%; top: 6%; z-index: 3; " alt="">
-    <span  class="nav_info" id="group_name" style="position: absolute;  left:15%; top:4%; font-size:20px;"> groovyroom </span>
+
+    <span  class="nav_info" id="group_name" style="position: absolute; width:15%; left:10%; top:4%; font-size:20px;"> groovyroom </span>
     <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 24%; top: 6%; z-index: 3; " alt="">
 
 
@@ -751,17 +786,23 @@
         </table>
     </div>
 
-    <div id="waiting_area">
+    <div id="counting_student">
+        <span>PLAYER:</span>
+        <span id="student_count"> 1</span>
+    </div>
 
-        <div id="counting_student">
-            <span>PLAYER:</span>
-            <span id="student_count"> 1</span>
-        </div>
+    <button onclick="btn_click();" id="start_btn" style="">
+        <img style="display:inline-block; width:220px; height:80px;" src="/img/race_waiting/start_btn.png" alt="">
+    </button>
 
-        <button onclick="btn_click();" id="start_btn" style="">
-            <img style="display:inline-block; width:220px; height:80px;" src="/img/race_waiting/start_btn.png" alt="">
-        </button>
+    <div id="waiting_area" class="shadow">
 
+        <li class="user_in_room" id="'+ sessionId +'">
+            <img class="user_character" src="/img/character/char'+characterId1">
+            <div class="nick_space">
+                <span class="nick_content">이길의끝에뭐가</span>
+            </div>
+        </li>
     </div>
 
     <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
