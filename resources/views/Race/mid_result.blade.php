@@ -69,17 +69,6 @@
     .rank_hr{
 
     }
-    #wait_room_nav{
-        box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-        /*background-color: rgba(255,255,255,.84);*/
-        background-color:white;
-        width: 100%;
-        height: 100px;
-        border-radius: 10px;
-        font-weight:bold;
-        font-size:50px;
-    }
-
     #student_rank td{
         border-right:5px solid deepskyblue;
     }

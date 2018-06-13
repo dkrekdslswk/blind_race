@@ -19,30 +19,72 @@
 
     <style>
         body{
-            background-color:#4ac3d5 !important;
-
+            background-image: url("/img/race_waiting/wait_bg.png");
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
         }
-        #wait_room_nav{
-            box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-            /*background-color: rgba(255,255,255,.84);*/
-            background-color:white;
+
+        .shadow {
+            box-shadow: -60px 0px 100px -90px #000000,
+            60px 0px 100px -90px #000000;
+        }
+
+        #start_btn {
+
+            background: #75459f;
+            display: inline-block;
+            position: absolute;
+            width: 220px;
+            border-radius: 20px;
+            height: 80px;
+            text-align: left;
+            top: 21%;
+            right: 14%;
+            border:none;
+        }
+
+        #waiting_area {
+            width: 90%;
+            height: 550px;
+            margin-left: 5%;
+            border-radius: 30px;
+            background-color: #ebfaff;
+        }
+
+        #race_name{
+            position: absolute;
+            left: 33%;
+            top: 2%;
+            width: 33%;
+            height: 90px;
+            z-index:2;
+            border-radius: 100px;
+            background-color: #033981;
+            color: white;
+            background: linear-gradient(to right, #033981 , #2571b7);
+            font-size: 35px;
+            text-align: center;
+            line-height: 70px;
+        }
+        #wait_room_nav {
+            box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+            /* background-color: rgba(255,255,255,.84); */
+            background-image: url(/img/race_waiting/race_waiting_nav.png);
             width: 100%;
-            height: 100px;
-            border-radius: 10px;
-            font-weight:bold;
-            font-size:50px;
+            height: 125px;
+            border-radius: 0px 0px 70px 70px;
+            font-weight: bold;
+            font-size: 50px;
         }
-
         .user_in_room{
             display:inline-block;
-
             margin-right:50px;
             border-radius: 15px 50px 30px;
         }
         .student {
             display: block;
             text-align: right;
-            background-color: #6ecfdd;
             padding-top: 50px;
         }
 
@@ -51,11 +93,36 @@
             background-color: white;
             margin-right: 1%;
         }
-        #counting_student{
-            text-align:center;
-            font-size:30px;
-            position:absolute;
-            left:5%;
+
+        #student_count{
+            color:red;
+        }
+
+        .nav_info {
+            width: 10%;
+            height: 60px;
+            background-color: #54ace2;
+            border-radius: 40px;
+            text-align: center;
+            color: black;
+            border-bottom: 6px solid #3c98c6;
+            line-height: 60px;
+        }
+
+        #counting_student {
+            text-align: center;
+            font-size: 25px;
+            width: 220px;
+            height: 80px;
+            background: linear-gradient(to right, #683792, #5a3182);
+            border-bottom: 5px solid #4A148C;
+            display: inline-block;
+            color: white;
+            border-radius: 10px;
+            line-height: 80px;
+            position: absolute;
+            top: 21%;
+            left: 15%;
         }
 
         .counting{
@@ -74,12 +141,20 @@
             margin-left: 2%;
             margin-right: 2%;
         }
-        #room_Pin{
-            background-color:white;
-            width: 35%;
-            height: 100px;
-            font-size:70px;
-            margin:auto;
+        #room_Pin {
+            width: 467px;
+            height: 200px;
+            z-index:0;
+            font-size: 40px;
+            color: white;
+            position: absolute;
+            top: 10%;
+            left: 35%;
+            display: table-cell;
+            line-height: 280px;
+            background-image: url(/img/race_waiting/pin_case.png);
+            background-position: center;
+            background-size: cover;
         }
 
         .user_character{
@@ -114,7 +189,7 @@
         var listName = '<?php echo $response['list']['listName']; ?>';
         var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
-        var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
+        var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "명"; ?>';
         window.onload = function() {
 
             var socket = io(':8890');
@@ -127,7 +202,7 @@
             $('#mid_all_quiz').text('<?php echo $response['list']['quizCount']; ?>');
 
 
-            $('#room_Pin').html("PIN:"+roomPin);
+            $('#room_Pin').html(roomPin);
             socket.emit('join', roomPin);
 
             socket.on('android_join',function(roomPin,sessionId){
@@ -139,9 +214,6 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
-
-
-
 
                         var character_info = result['characters'].toString();
                         if(result['check'] == true)
@@ -230,6 +302,7 @@
         //     else
         //         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
         // }
+
         //정답뒤섞기
         function shuffle(a) {
             var j, x, i;
@@ -637,13 +710,28 @@
 </head>
 <body>
 
-<div id="wait_room_nav" class="inline-class">
-    <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
-    <span>Race</span>
-    <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-    <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
-    <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
-    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
+<div id="wait_room_nav" class="inline-class shadow">
+    
+    <img  class="inline-class" src="/img/blind_race.png" style="width:100px; height:100px; z-index:2;">
+    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 14.5%; top: 6%; z-index: 3; " alt="">
+    <span  class="nav_info" id="group_name" style="position: absolute;  left:15%; top:4%; font-size:20px;"> groovyroom </span>
+    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 24%; top: 6%; z-index: 3; " alt="">
+
+
+    <img src="/img/race_waiting/left_tob.png" style="position: absolute;  left: 25%; top: 7%; z-index: 0; width: 250px; height: 10px;" alt="">
+    <img src="/img/race_waiting/big_tob.png" style="position: absolute; left: 32%; top: 4%;  z-index: 3;" alt="">
+    <span  class="nav_info" id="race_name">레이스 제목 </span>
+    <img src="/img/race_waiting/big_tob.png" style="position: absolute; left: 64%; top: 4%;  z-index: 3;" alt="">
+    <img src="/img/race_waiting/right_tob.png" style="position: absolute;  left: 64%; top: 7%; z-index: 0; width: 250px; height: 10px;" alt="">
+
+    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 72.5%; top: 6%; z-index: 3; " alt="">
+    <span  class="nav_info" id="race_count" style="position: absolute;  right:17%; top:4%; font-size:20px;" > 문제수 </span>
+    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 82%; top: 6%; z-index: 3; " alt="">
+
+    <img src="/img/race_waiting/small_tob_line.png" style="position: absolute;  left: 82%; top: 7%; z-index: 0; width: 100px; height: 10px;" alt="">
+
+    <span  class="nav_info" id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
+    <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 87.5%; top: 6%; z-index: 3; " alt="">
 </div>
 
 <div id="wait_room">
@@ -652,14 +740,9 @@
         <div id="room_Pin" class="counting">
         </div>
 
-        <div id="counting_student">
-            <span id="student_count" > 학생 수</span>
-        </div>
-        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시작하기</button>
-
     </div>
 
-    <ul id="messages"></ul>
+
 
 
     <div class="waitingTable">
@@ -668,10 +751,26 @@
         </table>
     </div>
 
-    <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
+    <div id="waiting_area">
+
+        <div id="counting_student">
+            <span>PLAYER:</span>
+            <span id="student_count"> 1</span>
+        </div>
+
+        <button onclick="btn_click();" id="start_btn" style="">
+            <img style="display:inline-block; width:220px; height:80px;" src="/img/race_waiting/start_btn.png" alt="">
+        </button>
+
+    </div>
+
+    <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
+        <img src="/img/Info.png" style="width:30px; height:30px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
     </div>
 </div>
+
+
+
 <div id="playing_contents" style="display:none;">
     @include('Race.race_content')
 </div>
