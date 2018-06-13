@@ -1095,20 +1095,15 @@ class RecordBoxController extends Controller{
                 ->first();
 
             // 반납값 정리
-            $QnAs = array();
-            foreach ($QnAData as $QnA){
-                array_push($QnAs, array(
-                    'QnAId' => $QnA->QnAId,
-                    'userName' => $QnA->userName,
-                    'teacherName' => $QnA->teacherName,
-                    'title' => $QnA->title,
-                    'question_at' => $QnA->question_at,
-                    'answer_at' => $QnA->answer_at
-                ));
-            }
-
             $returnValue = array(
-                'QnAs' => $QnAs,
+                'QnA' => array(
+                    'QnAId' => $QnAData->QnAId,
+                    'userName' => $QnAData->userName,
+                    'teacherName' => $QnAData->teacherName,
+                    'title' => $QnAData->title,
+                    'question_at' => $QnAData->question_at,
+                    'answer_at' => $QnAData->answer_at
+                ),
                 'check' => true
             );
         } else {
