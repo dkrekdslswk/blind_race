@@ -565,6 +565,7 @@
                     $("#mid_result").show();
                     $("#wait_room_nav").hide();
                     $("#play_frame").hide();
+                    $("#opinion_box").empty();
                     opinion_counting=5;
                 });
 
