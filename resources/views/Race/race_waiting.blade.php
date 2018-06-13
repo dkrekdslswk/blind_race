@@ -272,6 +272,7 @@
                         console.log(result['nickCheck']);
                         if( result['nickCheck'] && result['characterCheck'] )
                         {
+
                             //정상작동
                             $('<li class="user_in_room" id="'+ sessionId +'">'
                                 +'<img class="user_character" src="/img/character/char'+characterId+'.png">'
@@ -280,7 +281,7 @@
                                 + nick
                                 +'</span>'
                                 +'</div>'
-                                +'</li>').appendTo('body');
+                                +'</li>').appendTo('#waiting_area');
 
                             quiz_member++;
                             $('#student_count').html(quiz_member);
