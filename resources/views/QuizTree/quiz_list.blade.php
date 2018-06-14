@@ -372,8 +372,8 @@
                         //data: {_token: CSRF_TOKEN, 'post':params},
                         data: params,
                         success: function (data) {
-                            alert(JSON.stringify(data));
-                            //alert("공개 ON");
+                            //alert(JSON.stringify(data));
+                            alert("공개 ON");
                         },
                         error: function (data) {
                             alert("error");
@@ -398,8 +398,8 @@
                         //data: {_token: CSRF_TOKEN, 'post':params},
                         data: params,
                         success: function (data) {
-                            alert(JSON.stringify(data));
-                            //alert("공개 OFF");
+                            //alert(JSON.stringify(data));
+                            alert("공개 OFF");
                         },
                         error: function (data) {
                             alert("error");
