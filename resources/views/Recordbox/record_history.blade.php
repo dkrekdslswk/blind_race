@@ -27,7 +27,6 @@
 
 </style>
 
-<div class="record_history">
     <div class="recordbox-history">
         <div class="historyContainer">
 
@@ -68,7 +67,6 @@
             </div>
 
             <div style="display: block;float: left;margin: 2%;">
-                >
             </div>
 
             {{--과제 목록 보기--}}
@@ -106,4 +104,3 @@
         </div>
     </div>
 
-</div>
