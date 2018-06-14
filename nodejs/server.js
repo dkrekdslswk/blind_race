@@ -8,22 +8,6 @@ var mysql      = require('mysql');
 var dbconfig   = require('./config/database.js');
 var connection = mysql.createConnection(dbconfig);
 
-
-
-app.get('/', function(req, res){
-    res.send('Root');
-});
-
-app.post('/persons', function(req, res){
-    connection.query('SELECT * from users ', function(err, rows) {
-        if(err) throw err;
-
-        console.log('로그인 쿼리전달완료');
-//   var row = JSON.parse(rows);
-        res.send(rows);
-    });
-});
-
 //소켓아이오 -------------------------------------------------------------------
 server.listen(8890);
 
@@ -40,67 +24,67 @@ io.on('connection',function(socket){
 // ---------------------------------------------- 연결처리작업
 //changes
 
-
-var count=1;
-var answer_c = 0;
-var quiz = 0;
-
 io.on('connection', function (socket){
-    var TimerOn = false;
     var Timer ;
     var countdown = 30000;
-    var group_num ="";
 
     //대기방 참가 (인수 room : 참가하려는 방의 이름 )
     socket.on('join',function (room) {
         socket.join(room);
         console.log('join',room);
-        // group_num = room;
     });
+
+
+    //웹에서 학생이 입장할 때 사용하는 함수
+    socket.on('web_test_enter',function(roomPin){
+        io.sockets.emit('web_test_enter',roomPin);
+    });
+
+
 
     socket.on('android_join',function(roomPin , sessionId){
         io.sockets.emit('android_join',roomPin,sessionId);
         console.log('안드조인',roomPin+","+sessionId);
     });
 
-    socket.on('web_test_enter',function(roomPin){
-        io.sockets.emit('web_test_enter',roomPin);
-    });
-
+    //방에 입장하려할 때 핀번호를 검사하기위해 쓰는 함수 (true , false): (입장 ,입장실패)
     socket.on('android_join_check',function(join_boolean , sessionId ,raceType,character_info){
         console.log(join_boolean+","+character_info);
         io.sockets.emit('android_join_result',join_boolean,sessionId , raceType , character_info);
     });
 
 
-    // 대기방 이탈
+    // 대기방에서 이탈하는 경우 실행되는 함수
     socket.on('leaveRoom', function( group_num, user_num){
         io.sockets.in(group_num).emit('leaveRoom',user_num);
         console.log('danger', group_num+","+user_num);
     });
 
-    //대기방 인원 추가
+    //대기방 인원 입장시 실행되는 함수
     socket.on('user_in',function(pin,nickname,session_id,character_num){
         console.log('유저참가', '핀번호:'+pin+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
 
+    //쪽지시험 시작을 동시에 할 수 있게 해주는 함수
     socket.on('pop_quiz_start',function(roomPin,quizData,listName){
         console.log('PopQuiz시작',roomPin+","+quizData)
         io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName);
     });
 
+    //쪽지시험 도중 재입장할 시 쪽지시험을 시작하게 하는 함수
     socket.on('re_join_pop_quiz',function(roomPin,quizData,listName,sessionId){
         io.sockets.in(roomPin).emit('re_join_pop_quiz',quizData,listName , sessionId);
         console.log('리조인보내짐');
     });
 
+    //쪽지시험이 끝났음을 알리는 함수
     socket.on('pop_quiz_status',function(roomPin){
         console.log('쪽지시험 끝남 ++');
         io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
     });
 
-    //대기방에서 퇴장시 캐릭터 활성화 하는 함수
+    //대기방에서 퇴장한 유저의 캐릭터를 다시 활성화 시키는 함수
     socket.on('enable_character',function(roomPin,char_num){
         io.sockets.in(roomPin).emit('enable_character',char_num);
         console.log("방이탈 "+roomPin+","+char_num)
@@ -112,26 +96,30 @@ io.on('connection', function (socket){
         io.sockets.in(roomPin).emit('web_enter_room',listName,quizCount,groupName,groupStudentCount, sessionId,enter_check);
     });
 
+    //안드로이드에서 레이스를 시작시키는 함수
     socket.on('android_game_start',function(roomPin, quizId ,makeType){
         io.sockets.in(roomPin).emit('android_game_start', quizId , makeType);
         console.log("안드스타트",quizId+","+makeType);
     });
 
-    //안드로이드에서 다음 퀴즈로 간다는 것을 전달하기 위한 함수
+    //안드로이드에서 중간결과를 받게 하는 함수
     socket.on('android_mid_result',function(roomPin, quizId ,makeType ,ranking ){
         io.sockets.in(roomPin).emit('android_mid_result',quizId, makeType, ranking);
         console.log("안드 중간결과 ", quizId +","+ makeType+","+ranking);
     });
 
+    //레이스 중간결과에서 정답정보를 따로 보내주는 함수
     socket.on('race_mid_correct',function(roomPin,correct){
         io.sockets.in(roomPin).emit('race_mid_correct',correct);
     });
 
+    //다음 문제로 넘어가게 하는 함수
     socket.on('android_next_quiz',function(roomPin){
         io.sockets.in(roomPin).emit('android_next_quiz',roomPin);
         console.log("안드로이드 다음문제 " );
     });
 
+    //안드로이드에서 Pin번호를 체크받게 하는 함수
     socket.on('android_enter_room',function(roomPin , check , session_id){
         io.sockets.in(roomPin).emit('android_enter_room',roomPin,check,session_id);
     });
@@ -171,12 +159,13 @@ io.on('connection', function (socket){
         console.log("답한 퀴즈  =",quizId+":"+answer_num);
     });
 
-
+    //레이스가 끝난 것을 알려주는 함수
     socket.on('race_ending',function(roomPin){
         clearInterval(Timer);
         io.sockets.in(roomPin).emit('race_ending',roomPin);
     });
 
+    //레이스 결과 정보들을 배열로 전송하는 함수
     socket.on('race_result',function(roomPin, race_result){
         io.sockets.in(roomPin).emit('race_result',race_result);
     });

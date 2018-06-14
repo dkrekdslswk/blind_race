@@ -515,7 +515,7 @@
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
     <div>
-        @include('Navigation.main_nav')
+        @include('Navigation.student_main_nav')
     </div>
 
     <div id="race_menu">
