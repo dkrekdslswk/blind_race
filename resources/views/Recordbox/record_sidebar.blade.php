@@ -28,7 +28,11 @@
         .m-t-lg {
             margin-top: 30px !important;
         }
-        .main-left-menu { list-style-type: none; margin: 0px; padding: 0px; }
+        .main-left-menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
         .main-left-menu > li > a.noaction { cursor: default; font-size: 12px; font-weight: normal; padding-bottom: 3px; padding-top: 30px; color: #a2a2a1; }
         .main-left-menu > li > a.noaction:hover { background: transparent; color: #a2a2a1; cursor: default; }
         .main-left-menu > li > a { position: relative; display: block; padding: 8px 15px; color: #5f5f5f; font-weight: normal; border-left: 3px solid transparent; font-size: 14px; }

@@ -3,6 +3,7 @@
         margin: 0;
         padding: 0;
         height: 50px;
+        min-width: 700px;
         width: 100%;
         transition: top 0.2s ease-in-out;
         position: relative;
@@ -31,7 +32,6 @@
 
 </style>
 
-<div class="recordbox_navbar">
     <nav class="recordbox navbar navbar-default">
         <div class="container-fluid" >
             <div class="navbar-header">
@@ -45,5 +45,4 @@
             </ul>
         </div>
     </nav>
-</div>
 

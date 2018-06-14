@@ -76,10 +76,14 @@
         position: relative;
         margin: 0;
     }
+    .student_grade table tr{
+        height: 50px;
+    }
+    .studentGradeList{
+    }
 
 </style>
 
-<div class="record_student">
 
     <div class="studentContainer">
 
@@ -118,38 +122,38 @@
 
         <div class="student_grade">
 
-            <div id="std_grade_list_table">
+            <div id="std_grade_list_table" >
                 <table class="table table-hover table-bordered" >
                     <thead>
                     <tr>
                         <th width="50px" style=" text-align: center;">
                             번호
                         </th>
-                        <th width="200px" style=" text-align: center;">
+                        <th width="140px" style=" text-align: center;">
                             날짜
                         </th>
-                        <th style=" text-align: center;">
+                        <th style="text-align: center;">
                             문제 이름
                         </th>
-                        <th width="150px" style=" text-align: center;">
+                        <th width="80px" style=" text-align: center;">
                             총 점수
                         </th>
-                        <th width="100px" style=" text-align: center;">
+                        <th width="60px" style=" text-align: center;">
                             어휘
                         </th>
-                        <th width="100px" style=" text-align: center;">
+                        <th width="60px" style=" text-align: center;">
                             독해
                         </th>
-                        <th width="100px" style=" text-align: center;">
+                        <th width="60px" style=" text-align: center;">
                             단어
                         </th>
-                        <th width="110px" style=" text-align: center;">
+                        <th width="80px" style=" text-align: center;">
                             재시험
                         </th>
-                        <th width="110px" style=" text-align: center;">
+                        <th width="100px" style=" text-align: center;">
                             오답노트
                         </th>
-                        <th width="110px" style=" text-align: center;">
+                        <th width="80px" style=" text-align: center;">
                             성적표
                         </th>
                     </tr>
@@ -164,4 +168,3 @@
             </div>
         </div>
     </div>
-</div>
