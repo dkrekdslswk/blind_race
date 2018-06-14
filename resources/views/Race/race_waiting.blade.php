@@ -301,7 +301,7 @@
 
                     },
                     error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
+                        alert("Student Set Error ");
                     }
                 });
             });
@@ -327,7 +327,7 @@
                         }
                     },
                     error: function(request, status, error) {
-                        alert("AJAX 에러입니다. ");
+                        alert("Student Out Error");
                     }
                 });
 
@@ -462,7 +462,7 @@
                             document.getElementById('answer_c').innerText = answer_count;
                         },
                         error: function (request, status, error) {
-                            alert("AJAX 에러입니다. ");
+                            alert("AnswerIn Error ");
                         }
                     });
 
@@ -559,6 +559,7 @@
                         },
                         error: function (request, status, error) {
                             console.log("ajax실패" + t_sessionId + "," + quiz_JSON[quizId - 1].quizId);
+                            alert("result Error");
                         }
                     });
 
