@@ -1232,8 +1232,6 @@
                                 break;
                         }
 
-                        //임의로 값수정
-                        raceData['wrongState'] = "clear";
 
                         switch (raceData['wrongState']){
                             case "not" :
