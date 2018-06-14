@@ -1447,17 +1447,15 @@ class RaceController extends Controller{
 
         $insert = array();
         foreach ($quizData as $quiz) {
-            if ($quiz->omissionCheck == 0) {
-                array_push($insert, array(
-                    'userNo' => $userId,
-                    'raceNo' => $raceId,
-                    'listNo' => $raceData->listId,
-                    'quizNo' => $quiz->quizId,
-                    'retest' => $type,
-                    'answer' => '',
-                    'answerCheck' => 'X'
-                ));
-            }
+            array_push($insert, array(
+                'userNo' => $userId,
+                'raceNo' => $raceId,
+                'listNo' => $raceData->listId,
+                'quizNo' => $quiz->quizId,
+                'retest' => $type,
+                'answer' => '',
+                'answerCheck' => 'X'
+            ));
         }
 
         if (count($insert) > 0) {
