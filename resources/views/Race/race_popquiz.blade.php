@@ -176,8 +176,10 @@
                             quiz_member++;
                             $('#member_count').text(quiz_member);
 
+                            console.log(start_check);
+                            console.log(result);
                             if(start_check){
-                                quiz_JSON = json_encode(result['quizs']['quiz']);
+                                quiz_JSON = alert(JSON.stringify(result['quizs']));
                                 socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
                             }
 
