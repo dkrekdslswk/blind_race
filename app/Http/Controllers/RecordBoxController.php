@@ -464,7 +464,7 @@ class RecordBoxController extends Controller{
                         // 반납할 정보 정리
                         $races = array();
                         foreach ($raceData as $race) {
-                            array_push($races, array(
+                            array_push($races, json_encode(array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
                                 'teacherName' => $race->teacherName,
@@ -485,11 +485,11 @@ class RecordBoxController extends Controller{
                                 'retestState' => $race->retestState,
                                 'wrongState' => $race->wrongState,
                                 'wrongDate' => $race->wrongDate
-                            ));
+                            )));
                         }
 
                         $returnValue = array(
-                            'races' => json_encode($races),
+                            'races' => $races,
                             'check' => true
                         );
                         break;
