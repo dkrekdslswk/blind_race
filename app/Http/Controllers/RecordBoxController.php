@@ -1106,7 +1106,7 @@ class RecordBoxController extends Controller{
                 )
                 ->where($where)
                 ->where([
-                    'groupNumber' => $postData['groupId']
+                    'QnAs.groupNumber' => $postData['groupId']
                 ])
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
