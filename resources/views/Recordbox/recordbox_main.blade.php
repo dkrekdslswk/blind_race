@@ -111,6 +111,13 @@
             border:1px solid #e5e6e8;
         }
 
+        .btnHomeworkCheck {
+            color: black;
+            text-align: center;
+            border: solid 2px grey;
+            border-radius: 12px;
+        }
+
         #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
         }
@@ -357,6 +364,13 @@
 
             $(document).on('click','.modal-footer .btn.btn-primary',function () {
                 changeCheck($('.request_date').attr('id'));
+            });
+
+
+            //과제 확인하기
+            $(document).on('click','.btnHomeworkCheck',function () {
+                checkHomework($(this).attr('id'));
+
             });
 
             //스크롤 할 때마다 레코드박스 메뉴바 위치 변경
@@ -621,7 +635,8 @@
                                 .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")));
                         }else{
                             $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                                .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료")));
+                                .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료"))
+                                .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
                         }
 
 
