@@ -104,6 +104,12 @@
         .table_wrongList tbody .wrongExamples{
             margin-left: 20px;
         }
+        .table_wrongList tbody .wrongWriting {
+            width: 440px;
+            min-height: 70px;
+            margin-top: 10px;
+            border:1px solid #e5e6e8;
+        }
 
         #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
@@ -799,6 +805,7 @@
                     if(wrongsData.length == 0){
                         $('.modal_wrong').text("오답 내용이 없습니다.");
                         $('.wrong_left').addClass("noBoardLine");
+                        $('.wrong_right').addClass("noBoardLine");
 
                     }else{
 
@@ -899,6 +906,7 @@
                     if(wrongsData.length == 0){
                         $('.wrong_left').text("오답 내용이 없습니다.");
                         $('.wrong_left').addClass("noBoardLine");
+                        $('.wrong_right').addClass("noBoardLine");
 
                     }else{
 
@@ -1023,7 +1031,7 @@
                     };
                     */
 
-                    var resData = data['races'];
+                    var resData = data;
 
                     makingModalPage(raceId,resData,2);
 
@@ -1108,6 +1116,7 @@
 
                                 break;
                         }
+
 
                         switch (stdHomework[i]['wrongState']){
                             case "not" :
@@ -1224,7 +1233,7 @@
                         }
 
                         //임의로 값수정
-                        raceData['wrongState'] = "order";
+                        raceData['wrongState'] = "clear";
 
                         switch (raceData['wrongState']){
                             case "not" :
@@ -1805,56 +1814,67 @@
                     $('.modal-content.detail .modal-title').text('오답 노트');
 
                     wrongsData = allData['wrongs'];
+                    var leftOrRight = "";
 
-                    for(var i = 0 ; i < wrongsData.length ; i++ ){
+                    $('.wrong_left').empty();
+                    $('.wrong_right').empty();
 
-                        if (wrongsData[i]['wrong'] == null){
-                            wrongsData[i]['wrong'] = "이러이러저러저러하다.";
-                        }
+                    if (wrongsData.length == 0) {
+                        $('.modal_wrong').text("오답 내용이 없습니다.");
+                        $('.wrong_left').addClass("noBoardLine");
+                        $('.wrong_right').addClass("noBoardLine");
 
-                        for(var j = 0 ; j < 4 ; j++) {
+                    } else {
 
-                            $('#modal_allWrongAnswerList').append($('<tr>').attr('id', MODALID_wrongList_tr+ i + "_" + j));
+                        for (var i = 0; i < wrongsData.length; i++) {
 
-                            switch (j) {
-                                case 0 :
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text(wrongsData[i]['number']).attr('rowSpan',3));
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text(wrongsData[i]['question']).attr('colSpan',2));
-
-                                    break;
-                                case 1 :
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+0));
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+1));
-
-                                    break;
-                                case 2 :
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+2));
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('id','example_'+wrongsData[i]['number']+"_"+3));
-
-                                    break;
-                                case 3 :
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').text("풀이"));
-                                    $('#'+MODALID_wrongList_tr + i + "_" + j).append($('<td>').attr('colSpan',2).text(wrongsData[i]['wrong']));
-
-                                    break;
+                            if (wrongsData[i]['wrong'] == null) {
+                                wrongsData[i]['wrong'] = wrongsData[i]['number']+"번은 이러이러저러저러하다.";
                             }
-                        }
-                        for(var j = 0 ; j < 4 ; j++){
-                            if (j == 0){
-                                $('#example_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['rightAnswer']).css('background-color','#ffa500');
 
+                            if(i < 5){
+                                leftOrRight = "wrong_left";
+                                $('.wrong_left').removeClass("noBoardLine");
+                                $('.wrong_right').addClass("noBoardLine");
                             }else{
-                                $('#example_'+wrongsData[i]['number']+"_"+ j).text(wrongsData[i]['example'+j]);
+                                leftOrRight = "wrong_right";
+                                $('.wrong_right').removeClass("noBoardLine");
+                            }
 
-                                if(wrongsData[i]['example'+j+'Count'] == 1){
-                                    $('#example_'+wrongsData[i]['number']+"_"+ j).css('background-color','#e5e6e8');
+                            $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
+                                .append($('<thead>')
+                                    .append($('<tr>')
+                                        .append($('<th>')
+                                            .append($('<div>').text(wrongsData[i]['number'])))
+                                        .append($('<th>')
+                                            .append($('<div>')
+                                                .append($('<b>').text(wrongsData[i]['question']))))))
+                                .append($('<tbody>')
+                                    .append($('<tr>')
+                                        .append($('<td colspan="2">')
+                                            .append($('<div>').attr('class', 'wrongExamples')
+                                                .append($('<ul>')
+                                                    .append($('<li>').text(wrongsData[i]['rightAnswer'] + " (" + wrongsData[i]['rightAnswerCount'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example1'] + " (" + wrongsData[i]['example1Count'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example2'] + " (" + wrongsData[i]['example2Count'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example3'] + " (" + wrongsData[i]['example3Count'] + "명)")
+                                                    )
+                                                )
+                                            )
+                                            .append($('<div>').attr('class','wrongWriting').text(wrongsData[i]['wrong']))
+                                        )
+                                    )
+                                )
+                            );
+
+                            for (var j = 1; j < 4; j++) {
+                                if (wrongsData[i]['example' + j + 'Count'] == 1) {
+                                    $('.example_' + i + '_' + j).css('color', 'blue');
                                 }
                             }
                         }
 
                     }
-                    break;
-
             }
         }
 
