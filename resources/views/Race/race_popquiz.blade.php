@@ -171,14 +171,20 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
-                        socket.emit('android_join_check', true, sessionId, "popQuiz");
 
                         if(result['check'] == true) {
                             if(start_check){
-                                quiz_JSON = alert(JSON.stringify(result['quizs']));
-                                socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
-                            }else{
+                                socket.emit('android_join_check', true, sessionId, "popQuiz");
 
+                                setTimeout(function(){
+
+
+                                    socket.emit('pop_quiz_start',roomPin,JSON.stringify(result['quizs']), listName, sessionId);
+
+                                }, 3000);
+
+                            }else{
+                                socket.emit('android_join_check', true, sessionId, "popQuiz");
                                 quiz_member++;
                                 $('#member_count').text(quiz_member);
 
@@ -241,7 +247,7 @@
             socket.emit('join', roomPin);
 
             //socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
-            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName);
+            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName,"X");
 
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
@@ -455,7 +461,7 @@
     </style>
     <div class="container">
         <h1><time>00:00:00</time></h1>
-        <div>시험 제출자 수<span id="submit_count"></span> </div>
+        <div><span id="submit_count"></span> </div>
     </div>
 </div>
 
