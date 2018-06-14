@@ -172,15 +172,16 @@
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
                         if(result['check'] == true) {
-                            socket.emit('android_join_check', true, sessionId, "popQuiz");
-                            quiz_member++;
-                            $('#member_count').text(quiz_member);
-
-                            console.log(start_check);
-                            console.log(result);
                             if(start_check){
                                 quiz_JSON = alert(JSON.stringify(result['quizs']));
                                 socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
+                            }else{
+                                socket.emit('android_join_check', true, sessionId, "popQuiz");
+                                quiz_member++;
+                                $('#member_count').text(quiz_member);
+
+                                console.log(start_check);
+                                console.log(result);
                             }
 
                         }
