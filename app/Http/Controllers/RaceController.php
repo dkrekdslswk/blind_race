@@ -196,6 +196,19 @@ class RaceController extends Controller{
 
             if ($raceData->type == 'popQuiz'){
 
+                $playData = DB::table('listQuizs as lq')
+                    ->where([
+                        're.raceNo' => $userData['raceId'],
+                        're.userNo' => $userData['userId'],
+                        're.retest' => RecordBoxController::RETEST_NOT_STATE
+                    ])
+                    ->leftJoin('records as re', function ($join) {
+                        $join->on('re.quizNo', '=', 'lq.quizNumber');
+                        $join->on('re.listNo', '=', 'lq.listNumber');
+                    })
+                    ->pluck('lq.quizNumber')
+                    ->toArray();
+
                 $quizData = DB::table('quizBanks as qb')
                     ->select(
                         'qb.number          as number',
@@ -205,41 +218,30 @@ class RaceController extends Controller{
                         'qb.example1        as example1',
                         'qb.example2        as example2',
                         'qb.example3        as example3',
-                        'qb.type            as type',
-                        DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
+                        'qb.type            as type'
                     )
                     ->where([
-                        'lq.listNumber' => $raceData->listId,
+                        'lq.listNumber' => $raceData->listId
                     ])
-                    ->where(function ($query) use ($userData){
-                        $query->whereNull('re.raceNo')
-                            ->orWhere('re.raceNo', '=', $userData['raceId']);
-                    })
+                    ->whereNotIn('lq.quizNumber', $playData)
                     ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
-                    ->leftJoin('records as re', function ($join) {
-                        $join->on('re.quizNo', '=', 'lq.quizNumber');
-                        $join->on('re.listNo', '=', 'lq.listNumber');
-                    })
-                    ->groupBy('qb.number')
                     ->get();
 
                 // 반납값 정리
                 $quizs = array();
                 foreach ($quizData as $quiz) {
-                    if ($quiz->omissionCheck == 0) {
-                        $type = explode(' ', $quiz->type);
-                        array_push($quizs, array(
-                            'quizId' => $quiz->number,
-                            'question' => $quiz->question,
-                            'hint' => $quiz->hint,
-                            'right' => $quiz->rightAnswer,
-                            'example1' => $quiz->example1,
-                            'example2' => $quiz->example2,
-                            'example3' => $quiz->example3,
-                            'quizType' => $type[0],
-                            'makeType' => $type[1]
-                        ));
-                    }
+                    $type = explode(' ', $quiz->type);
+                    array_push($quizs, array(
+                        'quizId' => $quiz->number,
+                        'question' => $quiz->question,
+                        'hint' => $quiz->hint,
+                        'right' => $quiz->rightAnswer,
+                        'example1' => $quiz->example1,
+                        'example2' => $quiz->example2,
+                        'example3' => $quiz->example3,
+                        'quizType' => $type[0],
+                        'makeType' => $type[1]
+                    ));
                 }
 
                 $returnValue = array(
@@ -1420,35 +1422,40 @@ class RaceController extends Controller{
             ])
             ->first();
 
-        $quizs = DB::table('listQuizs as lq')
-            ->select(
-                'lq.quizNumber as quizId',
-                DB::raw('COUNT(CASE WHEN re.userNo = ' . $userId . ' THEN 1 END) as omissionCheck')
-            )
+        $playData = DB::table('listQuizs as lq')
             ->where([
                 're.raceNo' => $raceId,
+                're.userNo' => $userId,
                 're.retest' => $type
             ])
             ->leftJoin('records as re', function ($join) {
                 $join->on('re.quizNo', '=', 'lq.quizNumber');
                 $join->on('re.listNo', '=', 'lq.listNumber');
             })
-            ->groupBy('lq.quizNumber')
+            ->pluck('lq.quizNumber')
+            ->toArray();
+
+        $quizData = DB::table('listQuizs')
+            ->select(
+                'quizNumber as quizId'
+            )
+            ->where([
+                'listNumber' => $raceData->listId
+            ])
+            ->whereNotIn('quizNumber', $playData)
             ->get();
 
         $insert = array();
-        foreach ($quizs as $quiz) {
-            if ($quiz->omissionCheck == 0) {
-                array_push($insert, array(
-                    'userNo' => $userId,
-                    'raceNo' => $raceId,
-                    'listNo' => $raceData->listId,
-                    'quizNo' => $quiz->quizId,
-                    'retest' => $type,
-                    'answer' => '',
-                    'answerCheck' => 'X'
-                ));
-            }
+        foreach ($quizData as $quiz) {
+            array_push($insert, array(
+                'userNo' => $userId,
+                'raceNo' => $raceId,
+                'listNo' => $raceData->listId,
+                'quizNo' => $quiz->quizId,
+                'retest' => $type,
+                'answer' => '',
+                'answerCheck' => 'X'
+            ));
         }
 
         if (count($insert) > 0) {

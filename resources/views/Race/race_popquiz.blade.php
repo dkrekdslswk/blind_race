@@ -171,12 +171,14 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
+                        socket.emit('android_join_check', true, sessionId, "popQuiz");
+
                         if(result['check'] == true) {
                             if(start_check){
                                 quiz_JSON = alert(JSON.stringify(result['quizs']));
                                 socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
                             }else{
-                                socket.emit('android_join_check', true, sessionId, "popQuiz");
+
                                 quiz_member++;
                                 $('#member_count').text(quiz_member);
 
@@ -206,6 +208,8 @@
             $(location).attr('href', "/race_result?roomPin="+roomPin);
         }
         function btn_click(){
+
+            $('#start_btn').remove;
             start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],

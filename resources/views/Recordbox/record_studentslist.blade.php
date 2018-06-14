@@ -40,7 +40,7 @@
     }
 
 
-    .chartArea{
+    .chartArea_student{
         float: left;
         position: relative;
         height: 500px;
@@ -48,19 +48,19 @@
         margin: 0;
         padding: 0;
     }
-    .chartWrapper {
-        margin-left: 10%;
-        margin-right: 10%;
-        width: 100%;
+    .chartWrapper_student {
+        width: 90%;
         height: 100%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
-    .chartAreaWrapper {
+    .chartAreaWrapper_student {
         margin: 0;
         width: 100%;
         height: 100%;
         overflow-x: scroll;
     }
-    .canvaschart{
+    .canvaschart_student{
         position: relative;
         padding-top: 10px;
         left: 0;
@@ -111,10 +111,10 @@
                 </div>
             </div>
 
-            <div class="chartArea">
-                <div class="chartWrapper">
-                    <div class="chartAreaWrapper">
-                        <div class="canvaschart" id="chartContainer_privacy_student"></div>
+            <div class="chartArea_student">
+                <div class="chartWrapper_student">
+                    <div class="chartAreaWrapper_student">
+                        <div class="canvaschart_student" id="chartContainer_privacy_student"></div>
                     </div>
                 </div>
             </div>
