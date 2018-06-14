@@ -211,9 +211,9 @@ class RaceController extends Controller{
                     ->where([
                         'lq.listNumber' => $raceData->listId,
                     ])
-                    ->where(function ($query) {
-                        $query->whereNull('re.retest')
-                            ->orWhere('re.retest', '=', RecordBoxController::RETEST_NOT_STATE);
+                    ->where(function ($query) use ($userData){
+                        $query->whereNull('re.raceNo')
+                            ->orWhere('re.raceNo', '=', $userData['raceId']);
                     })
                     ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
                     ->leftJoin('records as re', function ($join) {
