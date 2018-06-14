@@ -1,12 +1,13 @@
+
+
 <html>
 <head>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <style>
         body {
             font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -16,13 +17,21 @@
             margin: 0;
             padding: 0;
         }
+        .recordbox_main {
+            clear: both;
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: relative;
+        }
+        .insertMargin {
+            margin-left: 12%;
+        }
         .changePages {
             padding: 0;
-            margin: 0;
             position: relative;
             float: left;
             width: 88%;
-            height: 100%;
         }
         /*modal-page*/
         .modal-dialog {
@@ -105,7 +114,6 @@
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -133,14 +141,14 @@
 
         /***********************************날짜 구하기**************************************************************************************************/
 
-            //group_id에 세션값을 받아서 넣어주기
-            //teacher에 세션값을 받아서 넣어주기
+        //group_id에 세션값을 받아서 넣어주기
+        //teacher에 세션값을 받아서 넣어주기
         var group_id = 0;
         var teacher = 1;
         var chartData = "";
 
         //처음 화면 로드
-        window.onload = function() {
+        function OnLoadRecordbox() {
 
             //클래스 불러오기 and 차트 로드하기 and 학생 명단 출력하기 and 피드백 가져오기
             $.ajax({
@@ -337,14 +345,15 @@
 
                 if($(window).scrollTop() == 0){
                     $('.recordbox_navbar').removeClass('nav-up');
+                    $('.recordbox_sidebar').removeClass('sidenav-up');
+                    $('.changePages').removeClass('insertMargin');
                 }else {
                     $('.recordbox_navbar').addClass('nav-up');
+                    $('.recordbox_sidebar').addClass('sidenav-up');
+                    $('.changePages').addClass('insertMargin');
                 }
             });
 
-            document.on('click','.recordbox_navbar a',function () {
-                alert("ads");
-            });
         });
 
         //날짜 조회 눌렀을 때 차트 출력
@@ -656,6 +665,9 @@
                                         }
                     */
 
+                    console.log(data);
+
+
                     //전체 점수와 평균 점수들 로드하기
                     //0은 전체 성적표
                     makingModalPage(raceId,data,0);
@@ -708,12 +720,15 @@
 
                                                 wordCount:2,
                                                 wordRightCount:1.4,
-
+4y4y\
                                                 retestState:"not",
                                                 wrongState:"not"
                                               }
                                         }
                     */
+
+                    console.log(data);
+
 
                     //1은 학생개인 성적표
                     makingModalPage(raceId,data,1);
@@ -1665,6 +1680,9 @@
                     StudentData = allData['races'];
                     StudentScore = makingStudentChartData(allData);
 
+                    console.log("allData->",allData);
+                    console.log("StudentScore->",StudentScore);
+
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
                     $('#modal_date').text(StudentData[0]['year'] + "년 " + StudentData[0]['month'] + "월 " + StudentData[0]['day'] + "일");
                     $('#modal_raceName_teacher').text(StudentData[0]['listName'] + "  /  " + StudentData[0]['teacherName']);
@@ -1808,47 +1826,32 @@
             }
         }
 
-        function getQuestion(groupId){
-
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/recordBoxController/selectQnAs')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: reqData,
-                success: function (data) {
-
-                },
-                error: function (data) {
-                    alert("학생별 최근 레이스 값 불러오기 에러");
-                }
-
-            });
-        }
-
     </script>
 
 </head>
-<body>
+<body onload="OnLoadRecordbox();">
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
-{{--사이드바 불러오기--}}
-@include('Recordbox.record_sidebar')
 
-<div class="changePages">
+<div class="recordbox_main">
 
-    {{--레코드 네비바 불러오기--}}
-    @include('Recordbox.record_recordnav')
+    {{--사이드바 불러오기--}}
+    @include('Recordbox.record_sidebar')
 
-    {{--레코드 차트페이지 불러오기--}}
-    @include('Recordbox.record_chart')
+    <div class="changePages">
 
-    {{--레코드 차트페이지 불러오기--}}
-    @include('Recordbox.record_history')
+        {{--레코드 네비바 불러오기--}}
+        @include('Recordbox.record_recordnav')
 
+        {{--레코드 차트페이지 불러오기--}}
+        @include('Recordbox.record_chart')
+
+        {{--레코드 최근기록페이지 불러오기--}}
+        @include('Recordbox.record_history')
+
+
+    </div>
 </div>
 
 <div class="modal_page">
