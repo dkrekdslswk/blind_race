@@ -464,7 +464,7 @@ class RecordBoxController extends Controller{
                         // 반납할 정보 정리
                         $races = array();
                         foreach ($raceData as $race) {
-                            array_push($races, array(
+                            array_push($races, json_encode(array(
                                 'raceId' => $race->raceId,
                                 'listName' => $race->listName,
                                 'teacherName' => $race->teacherName,
@@ -474,18 +474,18 @@ class RecordBoxController extends Controller{
                                 'year' => $race->year,
                                 'month' => $race->month,
                                 'day' => $race->day,
-                                'allCount' => $race->allCount,
-                                'allRightCount' => $race->allRightAnswerCount,
-                                'vocabularyCount' => $race->vocabularyObjCount + $race->vocabularySubCount,
-                                'vocabularyRightCount' => $race->vocabularyRightAnswerCount,
-                                'wordCount' => $race->wordObjCount + $race->wordSubCount,
-                                'wordRightCount' => $race->wordRightAnswerCount,
-                                'grammarCount' => $race->grammarObjCount + $race->grammarSubCount,
-                                'grammarRightCount' => $race->grammarRightAnswerCount,
+                                'allCount' => (int)($race->allCount),
+                                'allRightCount' => (int)($race->allRightAnswerCount),
+                                'vocabularyCount' => (int)($race->vocabularyObjCount + $race->vocabularySubCount),
+                                'vocabularyRightCount' => (int)($race->vocabularyRightAnswerCount),
+                                'wordCount' => (int)($race->wordObjCount + $race->wordSubCount),
+                                'wordRightCount' => (int)($race->wordRightAnswerCount),
+                                'grammarCount' => (int)($race->grammarObjCount + $race->grammarSubCount),
+                                'grammarRightCount' => (int)($race->grammarRightAnswerCount),
                                 'retestState' => $race->retestState,
                                 'wrongState' => $race->wrongState,
                                 'wrongDate' => $race->wrongDate
-                            ));
+                            )));
                         }
 
                         $returnValue = array(
@@ -1106,7 +1106,7 @@ class RecordBoxController extends Controller{
                 )
                 ->where($where)
                 ->where([
-                    'groupNumber' => $postData['groupId']
+                    'QnAs.groupNumber' => $postData['groupId']
                 ])
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')

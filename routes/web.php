@@ -119,6 +119,12 @@ Route::get('/recordbox_student', function(){
     return view('Recordbox/recordbox_student_main');
 });
 
+/* 4-3. student: student_homepage */
+Route::get('/student', function(){
+    return view('homepage_studnet');
+});
+
+
 
 
 

@@ -41,13 +41,12 @@
     .column {
         float: left;
         width: 45%;
-        padding: 20px;
-        height: 40%;
-        margin-left:20px;
-        margin-top:10px;
-        border-radius: 10px;
-        border-right:5px solid #DCDCDC;
-        border-bottom:5px solid #DCDCDC;
+        height: 10%;
+        margin-left: 1%;
+        margin-top: 15px;
+        background-position: center;
+        background-size: cover;
+        border-radius: 20px;
     }
 
     @media screen and (max-height: 450px) {
@@ -58,48 +57,53 @@
             font-size: 18px;
         }
     }
-    #counter{
-
-        margin-top:50px;
-        color:black;
-        width:150px;
-        height:150px;
-        font-size:40px;
-        font-weight:bold;
-        line-height:100px;
-        border: 20px solid purple;
+    #answer_cap{
+        position: absolute;
+        top: 30%;
+        right: 7%;
+        z-index: 5;
+    }
+    #answer_circle {
+        margin-top: 50px;
+        color: black;
+        width: 100px;
+        height: 100px;
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 100px;
+        border: 10px solid orange;
         border-radius: 50%;
+        position: absolute;
+        right: 8%;
         background-color: rgba(255,255,255,.84);
-        position:absolute;
-        left:5%;
-        top:25%;
+        top: 27%;
     }
     #mondai {
-        top: 20%;
+        top: 25%;
         position: absolute;
-        left: 25%;
-        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
+        left: 22%;
         background-color: rgba(255,255,255,.84);
         width: 55%;
-        height: 35%;
+        height: 30%;
         border-radius: 20px;
         font-weight: bold;
         font-size: 40px;
     }
     .obj{
-        margin-top:12%;
+        position:absolute;
+        width:80%;
+        top:55%;
+        left:12%;
     }
     #sub{
-        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-        background-color: rgba(255,255,255,.84);
         width: 55%;
-        height: 35%;
-        border-radius: 20px;
+        height: 10%;
         font-weight: bold;
         font-size: 30px;
         position: absolute;
-        left: 25%;
+        left: 22%;
         top: 60%;
+        border-bottom: 5px solid navy;
     }
     .inline-class{
         display:inline-block;
@@ -108,23 +112,22 @@
 
     }
     #answer_c {
-        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
-        background-color: rgba(255,255,255,.84);
-        width: 150px;
-        height: 150px;
-        border-radius: 20px;
-        font-size: 30px;
-        position: absolute;
-        right: 5%;
-        top: 30%;
+        font-size:40px;
+        color:#ef8747;
+    }
+
+    #all_member{
+        color:#ffbd6e;
+        font-size:25px;
     }
     progress {
         text-align:left;
         width: 300px;
-        padding: 4px;
         border: 0 none;
-
-        background: silver;
+        position:absolute;
+        top:15%;
+        left:7.5%;
+        background: #e6e6e6;
         border-radius: 14px;
         box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
     }
@@ -133,13 +136,33 @@
     }
     progress::-webkit-progress-value {
         border-radius: 12px;
-        background: #4CAF50;
+        background: #f27281;
         box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
     }
     .answer_font{
         font-size:45px;
         text-align:center;
-        line-height:100px;
+        color:white;
+    }
+
+    #play_frame{
+        width: 90%;
+        height: 70%;
+        background-color: white;
+        position: absolute;
+        top: 25%;
+        left: 5%;
+        border-radius: 50px;
+        box-shadow: 60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000
+    }
+    .progress_timer{
+        width: 70px;
+        height: 70px;
+        position: absolute;
+        left: 7.5%;
+        top: 14%;
+        z-index: 3;
+        line-height: 70px;
     }
 </style>
 <script>
@@ -153,41 +176,61 @@
         <a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>
     </div>
 
+    <div id="play_frame">
+
+    </div>
+
+
+
     <div class="main" style="">
         <div id='content'>
 
             <center>
-                <progress style="width:100%;  height:30px;"  value="0" max="30" id="progressBar"></progress>
+
+                    <span class="progress_timer" id="counter" style="z-index:8; color:#ff923a;"></span>
+                    <img class="progress_timer" src="/img/race_play/timer.png" alt="">
+
+                <progress style="width:85%;  height:30px; margin-top:20px;"  value="0" max="30" id="progressBar"></progress>
                 <div id="questions" style="height:250px;">
 
-                    <div class="inline-class" id="counter"></div>
 
-                    <div class="inline-class" id="mondai"><br><span id="mondai-content"></span></div>
 
-                    <div class="inline-class" id="answer_c">Answers</div>
+                    <div class="inline-class" id="mondai">
+                        <br>
+                        <span id="mondai-content">
+                            姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
+                        </span>
+                    </div>
+
+                    <img id="answer_cap" src="/img/race_play/answer_cap.png" alt="">
+                    <div id="answer_circle" class="inline-class">
+                        <span id="answer_c" >0</span>
+                        <span id="all_member">/0</span>
+                    </div>
 
                 </div>
             </center>
 
             <!--문제 번호-->
-            <div class="obj" style="margin-left:4%; display:none;">
+            <div class="obj" style="display:none;">
                 <!-- style="margin-left:10%;" -->
-                <div class="column" style="background-color:#1bbc9b; ">
+                <div class="column" style="background-image:url('/img/race_play/answer_a.png'); ">
                     <p class="answer_font" id="answer1">1번</p>
                 </div>
-                <div class="column" style="background-color:#3598db;">
+                <div class="column" style="background-image:url('/img/race_play/answer_b.png'); ">
                     <p class="answer_font" id="answer2">2번</p>
                 </div>
-                <div class="column" style="background-color:#f1c40f;">
+                <div class="column" style="background-image:url('/img/race_play/answer_c.png'); "">
                     <p class="answer_font" id="answer3">3번</p>
                 </div>
-                <div class="column" style="background-color:#e84c3d;">
+                <div class="column" style="background-image:url('/img/race_play/answer_d.png'); ">
                     <p class="answer_font" id="answer4">4번</p>
                 </div>
             </div>
 
-            <div id="sub" style="display:none; text-align:center">
-                <p class="answer_font" id="hint">주관식문제입니다.<br> 작성해서보내주세요 </p>
+            <div id="sub" style=" text-align:center">
+                <span style="font-size:40px; color:navy; left:0; position:absolute;">Hint:</span>
+                <span class="answer_font" id="hint" style="color:navy;">ありません。</span>
             </div>
 
         </div>

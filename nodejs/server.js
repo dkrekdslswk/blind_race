@@ -92,6 +92,7 @@ io.on('connection', function (socket){
 
     socket.on('re_join_pop_quiz',function(roomPin,quizData,listName,sessionId){
         io.sockets.in(roomPin).emit('re_join_pop_quiz',quizData,listName , sessionId);
+        console.log('리조인보내짐');
     });
 
     socket.on('pop_quiz_status',function(roomPin){

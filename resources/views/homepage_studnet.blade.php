@@ -114,6 +114,10 @@
                 }
             });
         }
+
+        function button1_click() {
+            alert("접근 권한이 없습니다.");
+        }
     </script>
 
 </head>
@@ -125,52 +129,52 @@
         style="background-color: #9fcdff">
 <div class="">
     <nav class="navbar navbar-default" style="margin: 0;width: 100%;  background-image: url("https://i.imgur.com/kwsWub8.png")">
-        <div class="">
-            <div class="navbar-header">
-                <button
-                        type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img src="{{ asset('https://i.imgur.com/dmXfbDm.png') }}" style="width:125px; height:50px; "/>
-            </div>
-
-            <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('mygroup') }}">MyGroup</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('race_list') }}">Race</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('recordbox') }}">RecordBox</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('quiz_list') }}">QuizTree</a>
-                    </li>
-
-                    <li>
-
-                        <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
-                    </li>
-                    <li>
-
-                        <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
-                    </li>
-
-                </ul>
-
-            </div>
+    <div class="">
+        <div class="navbar-header">
+            <button
+                    type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="{{ asset('https://i.imgur.com/dmXfbDm.png') }}" style="width:125px; height:50px; "/>
         </div>
+
+        <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a  href="{{ url('/student') }}">Home</a>
+                </li>
+                <li>
+                    <a onclick="button1_click();" href="{{ url('/student') }}">MyGroup</a>
+                </li>
+                <li>
+                    <a href="{{ url('race_student') }}">Race</a>
+                </li>
+                <li>
+                    <a href="{{ url('recordbox_student') }}">RecordBox</a>
+                </li>
+                <li>
+                    <a onclick="button1_click();" href="{{ url('/student') }}">QuizTree</a>
+                </li>
+
+                <li>
+
+                    <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
+                </li>
+                <li>
+
+                    <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
     </nav>
 </div>
 
@@ -203,10 +207,10 @@
 
 <div class="flexslider">
 
-            <a href="/"><img style="width: 100%" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
-            <div class="flex-caption">
+    <a href="/"><img style="width: 100%" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+    <div class="flex-caption">
 
-            </div>
+    </div>
 
     </ul>
 </div>
@@ -219,39 +223,30 @@
 
 
     <ul class="nospace group">
+        <li>
+            <i>Quiz Tree</i>
+            <a class="mt-yellow" onclick="button1_click();" href="{{ url('/student') }}">
 
+                <i class="fa fa-5x fa-tree"></i>
+
+            </a>
+        </li>
         <li>
             <i>MY Class</i>
-            <a class="mt-purple" href="/mygroup">
+            <a class="mt-purple" onclick="button1_click();" href="{{ url('/student') }}">
                 <i class="fa fa-5x fa-child"></i>
 
             </a>
         </li>
 
         <li>
-            {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
+
             <i >Race</i>
-            <a class='mt-green' id="home_race">
+            <a class='mt-green'  href="{{ url('race_student') }}">
                 <i class="fa fa-5x fa-gamepad"></i>
 
             </a>
         </li>
-        <li>
-            <i>Record Box</i>
-            <a class="mt-red" href="/recordbox">
-                <i class="fa fa-5x fa-box-open"></i>
-
-            </a>
-        </li>
-        <li>
-            <i>Quiz Tree</i>
-            <a class="mt-yellow" href="{{ url('quiz_list') }}">
-                <i class="fa fa-5x fa-tree"></i>
-
-            </a>
-        </li>
-
-
         <li>
             <i>Feedback</i>
             <a class="mt-orange" href="/raid">
@@ -259,6 +254,17 @@
 
             </a>
         </li>
+        <li>
+            <i>Record Box</i>
+            <a class="mt-red" href="/recordbox_student">
+                <i class="fa fa-5x fa-box-open"></i>
+
+            </a>
+        </li>
+
+
+
+
 
 
 

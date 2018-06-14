@@ -209,9 +209,12 @@ class RaceController extends Controller{
                         DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
                     )
                     ->where([
-                        're.raceNo' => $userData['raceId'],
-                        're.retest' => RecordBoxController::RETEST_NOT_STATE
+                        'lq.listNumber' => $raceData->listId,
                     ])
+                    ->where(function ($query) {
+                        $query->whereNull('re.retest')
+                            ->orWhere('re.retest', '=', RecordBoxController::RETEST_NOT_STATE);
+                    })
                     ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
                     ->leftJoin('records as re', function ($join) {
                         $join->on('re.quizNo', '=', 'lq.quizNumber');
@@ -244,6 +247,11 @@ class RaceController extends Controller{
                     'characters' => array(),
                     'quizs' => $quizs,
                     'check' => true
+                );
+            } else if ($raceData->type == 'race'){
+                $returnValue = array(
+                    'sessionId' => $postData['sessionId'],
+                    'check' => false
                 );
             } else {
                 $returnValue = array(

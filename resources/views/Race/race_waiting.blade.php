@@ -209,6 +209,7 @@
         var C_count=0;
         var D_count=0;
 
+        var opinion_counting=4;
 
         var answer_count = 0;
         var roomPin ='<?php echo $response['roomPin']; ?>';
@@ -219,6 +220,7 @@
         var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "명"; ?>';
+
         window.onload = function() {
 
             var socket = io(':8890');
@@ -227,6 +229,7 @@
             $('#race_count').html(quizCount);
             $('#group_name').html(groupName);
             $('#group_student_count').html(groupStudentCount);
+
 
             $('#mid_all_quiz').text('<?php echo $response['list']['quizCount']; ?>');
 
@@ -307,6 +310,7 @@
                 $('#'+user_num).remove();
                 quiz_member--;
                 $('#student_count').text(quiz_member);
+                $('#all_member').text("/"+quiz_member);
 
                 $.ajax({
                     type: 'POST',
@@ -395,75 +399,9 @@
             if(quiz_member == 0 ){
                 alert("참여한 인원이 없습니다.");
             }else {
-                (function ($) {
-                    if ($.fn.style) {
-                        return;
-                    }
 
-                    // Escape regex chars with \
-                    var escape = function (text) {
-                        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-                    };
-
-                    // For those who need them (< IE 9), add support for CSS functions
-                    var isStyleFuncSupported = !!CSSStyleDeclaration.prototype.getPropertyValue;
-                    if (!isStyleFuncSupported) {
-                        CSSStyleDeclaration.prototype.getPropertyValue = function (a) {
-                            return this.getAttribute(a);
-                        };
-                        CSSStyleDeclaration.prototype.setProperty = function (styleName, value, priority) {
-                            this.setAttribute(styleName, value);
-                            var priority = typeof priority != 'undefined' ? priority : '';
-                            if (priority != '') {
-                                // Add priority manually
-                                var rule = new RegExp(escape(styleName) + '\\s*:\\s*' + escape(value) +
-                                    '(\\s*;)?', 'gmi');
-                                this.cssText =
-                                    this.cssText.replace(rule, styleName + ': ' + value + ' !' + priority + ';');
-                            }
-                        };
-                        CSSStyleDeclaration.prototype.removeProperty = function (a) {
-                            return this.removeAttribute(a);
-                        };
-                        CSSStyleDeclaration.prototype.getPropertyPriority = function (styleName) {
-                            var rule = new RegExp(escape(styleName) + '\\s*:\\s*[^\\s]*\\s*!important(\\s*;)?',
-                                'gmi');
-                            return rule.test(this.cssText) ? 'important' : '';
-                        }
-                    }
-
-                    // The style function
-                    $.fn.style = function (styleName, value, priority) {
-                        // DOM node
-                        var node = this.get(0);
-                        // Ensure we have a DOM node
-                        if (typeof node == 'undefined') {
-                            return this;
-                        }
-                        // CSSStyleDeclaration
-                        var style = this.get(0).style;
-                        // Getter/Setter
-                        if (typeof styleName != 'undefined') {
-                            if (typeof value != 'undefined') {
-                                // Set style property
-                                priority = typeof priority != 'undefined' ? priority : '';
-                                style.setProperty(styleName, value, priority);
-                                return this;
-                            } else {
-                                // Get style property
-                                return style.getPropertyValue(styleName);
-                            }
-                        } else {
-                            // Get CSSStyleDeclaration
-                            return style;
-                        }
-                    };
-                })(jQuery);
-
-
-                var body = $("body");
-                body.style('background-color', 'whitesmoke', 'important');
-
+                $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
+                $('#all_member').text("/"+quiz_member);
 
                 var Mid_result_Timer;
 
@@ -504,6 +442,11 @@
                         else {
                             answer = real_A[answer];
                         }
+                    }else{
+                        if(opinion_counting != 0){
+                            $('<p class="opinion" style="color:navy">'+answer+'</p>').appendTo('#opinion_box');
+                            opinion_counting--;
+                        }
                     }
 
                     $.ajax({
@@ -533,7 +476,7 @@
                             socket.emit('count_off', quiz_numbar, roomPin, quiz_JSON[quiz_numbar].makeType);
 
 
-                        document.getElementById('answer_c').innerText = "Answers";
+                        document.getElementById('answer_c').innerText = "0";
                     }
                 });
 
@@ -542,10 +485,10 @@
 
                     document.getElementById('counter').innerText = " ";
                     $("#content").hide();
-                    document.getElementById('answer_c').innerText = "Answers";
+                    document.getElementById('answer_c').innerText = "0";
                     $('#play_bgm').remove();
                     $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
-
+                    $("body").css('background-image', 'url("/img/race_play/mid_bg.png")', 'important');
                     // ranking_process(ranking_j);
                     $.ajax({
                         type: 'POST',
@@ -558,10 +501,12 @@
 
                                 switch (quiz_JSON[quizId - 1].makeType) {
                                     case 'sub':
-                                        $('#mid_q').hide();
+                                        $('#sub_opinion').show();
+                                        $('#obj_opinion').hide();
                                         break;
                                     case 'obj':
-                                        $('#mid_q').show();
+                                        $('#sub_opinion').hide();
+                                        $('#obj_opinion').show();
                                         break;
                                 }
 
@@ -619,31 +564,25 @@
 
                     $("#mid_result").show();
                     $("#wait_room_nav").hide();
+                    $("#play_frame").hide();
 
-                    Mid_result_Timer = setTimeout(function () {
-                        $('#mid_result_bgm').remove();
-                        socket.emit('count', 'time on', roomPin);
-
-                        $("#content").show();
-                        $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
-                        $("#mid_result").hide();
-                        $("#wait_room_nav").show();
-
-                        if (quiz_continue == true)
-                            socket.emit('android_next_quiz', roomPin);
-                    }, 99999999999);
                 });
 
 
                 $("#Mid_skip_btn").click(function () {
 
-                    clearTimeout(Mid_result_Timer);
+                    // clearTimeout(Mid_result_Timer);
 
                     $('#mid_result_bgm').remove();
                     socket.emit('count', 'time on', roomPin);
 
+                    $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
+                    $("#play_frame").show();
                     $("#wait_room_nav").show();
                     $("#content").show();
+                    $("#opinion_box").empty();
+                    opinion_counting=5;
+
                     $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
                     $("#mid_result").hide();
@@ -728,9 +667,9 @@
                             case "sub" :
 
                                 if (quiz_JSON[data].hint == null)
-                                    quiz_JSON[data].hint = "없음";
+                                    quiz_JSON[data].hint = "ありません。";
 
-                                $('#sub').html('주관식문제 <br>Hint : ' + quiz_JSON[data].hint);
+                                $('#hint').text(quiz_JSON[data].hint);
 
                                 $(".obj").hide();
                                 $("#sub").show();
@@ -788,7 +727,7 @@
 
     <div id="counting_student">
         <span>PLAYER:</span>
-        <span id="student_count"> 1</span>
+        <span id="student_count"></span>
     </div>
 
     <button onclick="btn_click();" id="start_btn" style="">
@@ -797,12 +736,6 @@
 
     <div id="waiting_area" class="shadow">
 
-        <li class="user_in_room" id="'+ sessionId +'">
-            <img class="user_character" src="/img/character/char'+characterId1">
-            <div class="nick_space">
-                <span class="nick_content">이길의끝에뭐가</span>
-            </div>
-        </li>
     </div>
 
     <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">

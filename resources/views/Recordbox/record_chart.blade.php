@@ -9,7 +9,8 @@
             clear: both;
         }
         .chartAttribute {
-            height : 120px;
+            margin-top: 10px;
+            height : 80px;
             width: 100%;
         }
         .attributeContainer {
@@ -31,9 +32,7 @@
             margin-right:7%;
             vertical-align: middle;
         }
-        .recordbox-radio h3,.chooseDate h3{
-            margin-left: 10px;
-            margin-right: 10px;
+        .recordbox-radio h4,.chooseDate h4{
         }
         .recordbox-radioButtons {
             vertical-align: middle;
@@ -61,8 +60,8 @@
             padding: 0;
         }
         .chartWrapper {
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-left: 5%;
+            margin-right: 5%;
             width: 80%;
             height: 100%;
         }
@@ -82,11 +81,13 @@
             margin: 0;
         }
 
+        .student_race_chart{
+
+        }
     </style>
 
 </head>
 
-<div class="record_chart">
     <div class="recordbox-chartContainer">
 
         <div class="chartAttribute">
@@ -94,7 +95,7 @@
             <div class="attributeContainer">
 
                 <div class="recordbox-radio">
-                    <h3>보기</h3>
+                    <h4>보기</h4>
 
                     <div class="recordbox-radioButtons">
                         <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">일주일</label>
@@ -106,7 +107,7 @@
                 </div>
 
                 <div class="chooseDate" >
-                    <h3>기간</h3>
+                    <h4>기간</h4>
 
                     <input type="date" name="chooseday" id="startDate"></input>
 
@@ -129,6 +130,5 @@
         </div>
 
     </div>
-</div>
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
