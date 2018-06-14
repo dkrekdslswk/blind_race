@@ -209,7 +209,7 @@ class RaceController extends Controller{
                         DB::raw('COUNT(CASE WHEN re.userNo = ' . $userData['userId'] . ' THEN 1 END) as omissionCheck')
                     )
                     ->where([
-                        'lq.number' => $raceData->listId,
+                        'lq.listNumber' => $raceData->listId,
                     ])
                     ->where(function ($query) {
                         $query->whereNull('re.retest')
