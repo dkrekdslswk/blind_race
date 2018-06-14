@@ -6,6 +6,8 @@
     <title>Quiz list</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <style type="text/css">
 
@@ -69,6 +71,66 @@
             position: relative;
             min-height: 705px;
             min-width: 1000px;
+        }
+
+        /* 토글 버튼용 */
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
         }
 
     </style>
@@ -136,7 +198,9 @@
             success: function (data) {
 
                 //★★★★★ 출력 테스트 ★★★★★
-                //alert(JSON.stringify(data));
+                /*for (var i = 0; i < data['lists'].length; i++) {
+                    alert(data['lists'][i]['openState']);
+                }*/
 
                 folderListData = data;
                 quizlistData = data;
@@ -176,18 +240,39 @@
         // <----- 퀴즈 리스트 ----->
         for(var i = 0; i < quizlistData['lists'].length; i++) {
 
+            var toggle = "";
+
+            // 공개된 리스트일 경우, 토글 체크버튼 on
+            if(quizlistData['lists'][i]['openState'] == 0) {
+                toggle += "<label class='switch'>";
+                toggle += "<input type='checkbox' id='test" + quizlistData['lists'][i]['listId'] + "' data-toggle='toggle' checked>";
+                toggle += "<span class='slider round'></span>";
+                toggle += "</label>";
+            }
+
+            // 공개된 리스트가 아닐 경우, 토글 체크버튼 off
+            else if(quizlistData['lists'][i]['openState'] == 1) {
+                toggle += "<label class='switch'>";
+                toggle += "<input type='checkbox' id='test" + quizlistData['lists'][i]['listId'] + "' data-toggle='toggle'>";
+                toggle += "<span class='slider round'></span>";
+                toggle += "</label>";
+            }
+
             // 1. 레이스로 활용되지 않은 문제만 수정・삭제 가능
             // showQuizDiv Modal 호출
             if(quizlistData['lists'][i]['races'].length == 0) {
                 $("#list").append(
                     "<tr>" +
-                    "<td align='center'>" +
-                    "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-trash'></em></a>" +
+                    "<td style='text-align: center'>" +
+                    toggle +
                     "</td>" +
                     "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate'] + "</td>" +
                     "<td style='text-align: center'>" +
                     "<a href='#showModal" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                     "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                    "<td align='center'>" +
+                    "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-trash'></em></a>" +
+                    "</td>" +
                     "</tr>"
                 );
 
@@ -210,6 +295,68 @@
                     "</div>"
                 );
 
+                // 토글 버튼 : 공개 여부
+                /* ★★★토글 테스트★★★ */
+//                $("#test").change(function () {
+//                    if ($(this).is(':checked')) alert(0);
+//                    else alert(1);
+//                });
+
+                
+                $("#test" + quizlistData['lists'][i]['listId']).change(function () {
+
+                    // 공개 버튼(on) 눌렀을 경우
+                    if($(this).is(':checked')) {
+
+                        var params = {
+                            listId: quizlistData['lists'][0]['listId']
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{url('quizTreeController/updateOpenState')}}",
+                            //processData: false,
+                            //contentType: false,
+                            dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            //data: {_token: CSRF_TOKEN, 'post':params},
+                            data: params,
+                            success: function (data) {
+                                alert(JSON.stringify(data));
+                            },
+                            error: function (data) {
+                                alert("error");
+                            }
+                        });
+                    }
+
+                    // 공개 버튼(off) 눌렀을 경우
+                    else {
+
+                        var params = {
+                            listId: quizlistData['lists'][0]['listId']
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{url('quizTreeController/updateOpenState')}}",
+                            //processData: false,
+                            //contentType: false,
+                            dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            //data: {_token: CSRF_TOKEN, 'post':params},
+                            data: params,
+                            success: function (data) {
+                                alert(JSON.stringify(data));
+                            },
+                            error: function (data) {
+                                alert("error");
+                            }
+                        });
+                    }
+
+                });
+
             }
 
             // 2. 레이스로 활용된 문제 : 수정 삭제 불가능 -> 대신에 누가 언제 사용했는지 나타낼 것
@@ -217,13 +364,16 @@
             else {
                 $("#list").append(
                     "<tr>" +
-                    "<td align='center'>" +
-                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정・삭제 불가능</button>" +
+                    "<td style='text-align: center'>" +
+                    toggle +
                     "</td>" +
                     "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate']+ "</td>" +
                     "<td style='text-align: center'>" +
                     "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                     "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                    "<td align='center'>" +
+                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정・삭제 불가능</button>" +
+                    "</td>" +
                     "</tr>"
                 );
             }
@@ -517,10 +667,11 @@
                     <table class="table table-striped table-bordered table-list">
                         <thead>
                         <tr>
-                            <th style="width: 15%;"><em class="fa fa-cog"></em></th>
+                            <th style="width: 10%">공개여부</th>
                             <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
                             <th style="text-align: center; width: 50%;">퀴즈명</th>
-                            <th style="text-align: center; width: 15%;">문항수</th>
+                            <th style="text-align: center; width: 10%;">문항수</th>
+                            <th style="width: 10%; text-align: center"><em class="fa fa-cog"></em></th>
                         </tr>
                         </thead>
                         <tbody id="list">
