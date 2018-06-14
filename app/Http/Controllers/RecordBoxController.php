@@ -489,7 +489,7 @@ class RecordBoxController extends Controller{
                         }
 
                         $returnValue = array(
-                            'races' => $races,
+                            'races' => json_encode($races),
                             'check' => true
                         );
                         break;
