@@ -351,13 +351,15 @@
 //                    else alert(1);
 //                });
 
-            $("#test" + quizlistData['lists'][i]['listId']).change(function () {
+
+            $("#test" + quizlistData['lists'][i]['listId']).change(function (e) {
 
                 // 공개 버튼(on) 눌렀을 경우
                 if($(this).is(':checked')) {
 
+
                     var params = {
-                        listId: quizlistData['lists'][0]['listId']
+                        listId: e.target.id.slice(4)
                     };
 
                     $.ajax({
@@ -383,7 +385,7 @@
                 else {
 
                     var params = {
-                        listId: quizlistData['lists'][0]['listId']
+                        listId: e.target.id.slice(4)
                     };
 
                     $.ajax({
