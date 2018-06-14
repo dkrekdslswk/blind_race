@@ -230,20 +230,18 @@ class RaceController extends Controller{
                 // 반납값 정리
                 $quizs = array();
                 foreach ($quizData as $quiz) {
-                    if ($quiz->omissionCheck == 0) {
-                        $type = explode(' ', $quiz->type);
-                        array_push($quizs, array(
-                            'quizId' => $quiz->number,
-                            'question' => $quiz->question,
-                            'hint' => $quiz->hint,
-                            'right' => $quiz->rightAnswer,
-                            'example1' => $quiz->example1,
-                            'example2' => $quiz->example2,
-                            'example3' => $quiz->example3,
-                            'quizType' => $type[0],
-                            'makeType' => $type[1]
-                        ));
-                    }
+                    $type = explode(' ', $quiz->type);
+                    array_push($quizs, array(
+                        'quizId' => $quiz->number,
+                        'question' => $quiz->question,
+                        'hint' => $quiz->hint,
+                        'right' => $quiz->rightAnswer,
+                        'example1' => $quiz->example1,
+                        'example2' => $quiz->example2,
+                        'example3' => $quiz->example3,
+                        'quizType' => $type[0],
+                        'makeType' => $type[1]
+                    ));
                 }
 
                 $returnValue = array(
