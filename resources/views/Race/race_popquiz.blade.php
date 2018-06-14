@@ -209,7 +209,7 @@
         }
         function btn_click(){
 
-            $('#start_btn').remove;
+            $('#start_btn').hide();
             start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
