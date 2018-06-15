@@ -171,16 +171,25 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
-                        if(result['check'] == true) {
-                            socket.emit('android_join_check', true, sessionId, "popQuiz");
-                            quiz_member++;
-                            $('#member_count').text(quiz_member);
 
-                            console.log(start_check);
-                            console.log(result);
+                        if(result['check'] == true) {
                             if(start_check){
-                                quiz_JSON = alert(JSON.stringify(result['quizs']));
-                                socket.emit('re_join_pop_quiz',roomPin,JSON.stringify(quiz_JSON), listName, sessionId);
+                                socket.emit('android_join_check', true, sessionId, "popQuiz");
+
+                                setTimeout(function(){
+
+
+                                    socket.emit('pop_quiz_start',roomPin,JSON.stringify(result['quizs']), listName, sessionId);
+
+                                }, 3000);
+
+                            }else{
+                                socket.emit('android_join_check', true, sessionId, "popQuiz");
+                                quiz_member++;
+                                $('#member_count').text(quiz_member);
+
+                                console.log(start_check);
+                                console.log(result);
                             }
 
                         }
@@ -205,6 +214,8 @@
             $(location).attr('href', "/race_result?roomPin="+roomPin);
         }
         function btn_click(){
+
+            $('#start_btn').hide();
             start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
@@ -236,7 +247,7 @@
             socket.emit('join', roomPin);
 
             //socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
-            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName);
+            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName,"X");
 
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
@@ -450,7 +461,7 @@
     </style>
     <div class="container">
         <h1><time>00:00:00</time></h1>
-        <div>시험 제출자 수<span id="submit_count"></span> </div>
+        <div><span id="submit_count"></span> </div>
     </div>
 </div>
 

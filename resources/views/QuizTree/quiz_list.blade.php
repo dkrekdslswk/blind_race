@@ -197,15 +197,14 @@
             data: params,
             success: function (data) {
 
-                //★★★★★ 출력 테스트 ★★★★★
-                /*for (var i = 0; i < data['lists'].length; i++) {
-                    alert(data['lists'][i]['openState']);
-                }*/
-
                 folderListData = data;
                 quizlistData = data;
 
-                listValue();
+                // 공유 폴더일 경우
+                if(idNum == 0) listValueS();
+
+                // 공유 폴더가 아닐 경우
+                else listValue();
             },
             error: function (data) {
                 alert("error");
@@ -214,7 +213,35 @@
 
     }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌 (공유폴더 O)
+    function listValueS() {
+
+        // 퀴즈 값이 쌓이지 않게 초기화
+        $("#list").empty();
+
+        for(var i = 0; i < quizlistData['lists'].length; i++) {
+
+            $("#list").append(
+                "<tr>" +
+                "<td style='text-align: center'>" +
+                "<label class='switch'>" +
+                "<input type='checkbox' id='shareToggle' data-toggle='toggle' checked disabled>" +
+                "<span class='slider round'></span>" +
+                "</label>" +
+                "</td>" +
+                "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate']+ "</td>" +
+                "<td style='text-align: center'>" +
+                "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
+                "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                "<td align='center'>" +
+                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정・삭제 불가능</button>" +
+                "</td>" +
+                "</tr>"
+            );
+        }
+    }
+
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌 (공유폴더 X)
     function listValue() {
 
         // 폴더 & 퀴즈 값이 쌓이지 않게 초기화
@@ -295,68 +322,6 @@
                     "</div>"
                 );
 
-                // 토글 버튼 : 공개 여부
-                /* ★★★토글 테스트★★★ */
-//                $("#test").change(function () {
-//                    if ($(this).is(':checked')) alert(0);
-//                    else alert(1);
-//                });
-
-                
-                $("#test" + quizlistData['lists'][i]['listId']).change(function () {
-
-                    // 공개 버튼(on) 눌렀을 경우
-                    if($(this).is(':checked')) {
-
-                        var params = {
-                            listId: quizlistData['lists'][0]['listId']
-                        };
-
-                        $.ajax({
-                            type: 'POST',
-                            url: "{{url('quizTreeController/updateOpenState')}}",
-                            //processData: false,
-                            //contentType: false,
-                            dataType: 'json',
-                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                            //data: {_token: CSRF_TOKEN, 'post':params},
-                            data: params,
-                            success: function (data) {
-                                alert(JSON.stringify(data));
-                            },
-                            error: function (data) {
-                                alert("error");
-                            }
-                        });
-                    }
-
-                    // 공개 버튼(off) 눌렀을 경우
-                    else {
-
-                        var params = {
-                            listId: quizlistData['lists'][0]['listId']
-                        };
-
-                        $.ajax({
-                            type: 'POST',
-                            url: "{{url('quizTreeController/updateOpenState')}}",
-                            //processData: false,
-                            //contentType: false,
-                            dataType: 'json',
-                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                            //data: {_token: CSRF_TOKEN, 'post':params},
-                            data: params,
-                            success: function (data) {
-                                alert(JSON.stringify(data));
-                            },
-                            error: function (data) {
-                                alert("error");
-                            }
-                        });
-                    }
-
-                });
-
             }
 
             // 2. 레이스로 활용된 문제 : 수정 삭제 불가능 -> 대신에 누가 언제 사용했는지 나타낼 것
@@ -377,7 +342,78 @@
                     "</tr>"
                 );
             }
+
+
+            // 토글 버튼 : 공개 여부
+            /* ★★★토글 테스트★★★ */
+//                $("#test").change(function () {
+//                    if ($(this).is(':checked')) alert(0);
+//                    else alert(1);
+//                });
+
+
+            $("#test" + quizlistData['lists'][i]['listId']).change(function (e) {
+
+                // 공개 버튼(on) 눌렀을 경우
+                if($(this).is(':checked')) {
+
+
+                    var params = {
+                        listId: e.target.id.slice(4)
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('quizTreeController/updateOpenState')}}",
+                        //processData: false,
+                        //contentType: false,
+                        dataType: 'json',
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        //data: {_token: CSRF_TOKEN, 'post':params},
+                        data: params,
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            alert("공개 ON");
+                        },
+                        error: function (data) {
+                            alert("error");
+                        }
+                    });
+                }
+
+                // 공개 버튼(off) 눌렀을 경우
+                else {
+
+                    var params = {
+                        listId: e.target.id.slice(4)
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('quizTreeController/updateOpenState')}}",
+                        //processData: false,
+                        //contentType: false,
+                        dataType: 'json',
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        //data: {_token: CSRF_TOKEN, 'post':params},
+                        data: params,
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            alert("공개 OFF");
+                        },
+                        error: function (data) {
+                            alert("error");
+                        }
+                    });
+                }
+
+            });
         }
+    }
+
+    // ALERT (수정 삭제 불가능한 이유 : 공유 폴더)
+    function shareFolderMsg() {
+        alert("공유 폴더에 있는 리스트는 삭제할 수 없습니다.");
     }
 
     // ALERT (수정 삭제 불가능한 이유 : 언제 누가 사용했는지?)
@@ -387,7 +423,7 @@
         var raceSaveData = new Array();
 
         for(var i = 0; i < raceInfoData.length; i++) {
-            raceSaveData= "플레이 된 레이스는 수정・삭제 할 수 없습니다.\n"
+            raceSaveData= "플레이 된 리스트는 수정・삭제할 수 없습니다.\n"
                 + "- 총 플레이 횟수: " + raceInfoData.length +"회\n"
                 + "<최근 플레이 기록>\n"
                 + "날짜: " + raceInfoData[i]['date'] + "\n"
