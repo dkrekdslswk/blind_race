@@ -95,7 +95,7 @@
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         var listName = '<?php echo $response['list']['listName']; ?>';
-        var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
 
@@ -154,7 +154,7 @@
             var socket = io(':8890');
 
             $('#race_name').html(listName);
-            $('#race_count').html(quizCount);
+            $('#race_count').html(quizCount+"명");
             $('#group_name').html(groupName);
             $('#group_student_count').html(groupStudentCount);
 
@@ -179,7 +179,7 @@
                                 setTimeout(function(){
 
 
-                                    socket.emit('pop_quiz_start',roomPin,JSON.stringify(result['quizs']), listName, sessionId);
+                                    socket.emit('pop_quiz_start',roomPin,JSON.stringify(result['quizs']), listName, sessionId , quizCount);
 
                                 }, 3000);
 
@@ -247,7 +247,7 @@
             socket.emit('join', roomPin);
 
             //socket.emit('web_enter_room',roomPin,listName,quizCount,groupName,groupStudentCount, sessionId,true);
-            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName,"X");
+            socket.emit('pop_quiz_start',roomPin,JSON.stringify(quiz_JSON),listName,"X",quizCount);
 
             // $('<audio id="play_bgm" autoplay><source src="/bgm/sound.mp3"></audio>').appendTo('body');
 
