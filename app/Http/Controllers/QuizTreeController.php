@@ -565,7 +565,7 @@ class QuizTreeController extends Controller
                             'example1' => $quiz['example1'] ? $quiz['example1'] : ($valueCheck = false),
                             'example2' => $quiz['example2'] ? $quiz['example2'] : ($valueCheck = false),
                             'example3' => $quiz['example3'] ? $quiz['example3'] : ($valueCheck = false),
-                            'type' => $quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false) . ' ' . $quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false),
+                            'type' => ($quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false)) . ' ' . ($quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false)),
                             'teacherNumber' => $userData['userId']
                         );
 
@@ -580,7 +580,7 @@ class QuizTreeController extends Controller
                             'question' => $quiz['question'] ? $quiz['question'] : ($valueCheck = false),
                             'hint' => $quiz['hint'] ? $quiz['hint'] : ($valueCheck = false),
                             'rightAnswer' => $quiz['right'] ? $quiz['right'] : ($valueCheck = false),
-                            'type' => $quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false) . ' ' . $quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false),
+                            'type' => ($quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false)) . ' ' . ($quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false)),
                             'teacherNumber' => $userData['userId']
                         );
 
