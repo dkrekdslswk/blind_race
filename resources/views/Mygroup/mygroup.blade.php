@@ -507,6 +507,8 @@
             students :JSON.stringify(studentlist)
         };
 //            alert(JSON.stringify(studentlist))
+        alert("학생을 등록하였습니다.");
+        window.location.href = "{{url('mygroup')}}";
         jQuery.ajaxSettings.traditional = true;
 
 
