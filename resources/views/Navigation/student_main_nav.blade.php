@@ -8,10 +8,12 @@
     <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <script>
     function button1_click() {
-        alert("접근 권한이 없습니다.");
+        swal("권한이 없습니다.", " ", "error");
     }
 </script>
 <style>

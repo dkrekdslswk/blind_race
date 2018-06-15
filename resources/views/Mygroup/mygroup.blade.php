@@ -5,6 +5,7 @@
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <body style="background-color: #f9f9f9"  >
 <!--그룹이 아무것도 없을때의 경우를 생각하지않았음 -->
 
