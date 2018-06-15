@@ -67,16 +67,10 @@ io.on('connection', function (socket){
     });
 
     //쪽지시험 시작을 동시에 할 수 있게 해주는 함수
-    socket.on('pop_quiz_start',function(roomPin,quizData,listName,sessionId){
+    socket.on('pop_quiz_start',function(roomPin,quizData,listName,sessionId,quizCount){
         console.log('PopQuiz시작',roomPin+","+quizData)
-        io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName,sessionId);
+        io.sockets.in(roomPin).emit('pop_quiz_start',quizData,listName,sessionId,quizCount);
     });
-
-    //쪽지시험 도중 재입장할 시 쪽지시험을 시작하게 하는 함수
-    // socket.on('re_join_pop_quiz',function(roomPin,quizData,listName,sessionId){
-    //     io.sockets.in(roomPin).emit('re_join_pop_quiz',quizData,listName , sessionId);
-    //     console.log('리조인보내짐', quizData+","+listName+","+sessionId);
-    // });
 
     //쪽지시험이 끝났음을 알리는 함수
     socket.on('pop_quiz_status',function(roomPin){
