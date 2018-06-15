@@ -552,29 +552,45 @@ class QuizTreeController extends Controller
                     // 문제들 삭제
                     $this->deleteListQuiz($postData['listId']);
                 }
+
                 foreach ($postData['quizs'] as $quiz) {
                     // 문제를 저장
                     // 주관식 객관식 구분
+                    $valueCheck = true;
                     if ($quiz['makeType'] == 'obj') {
-                        $quizIds = DB::table('quizBanks')
-                            ->insertGetId([
-                                'question' => $quiz['question'],
-                                'rightAnswer' => $quiz['right'],
-                                'example1' => $quiz['example1'],
-                                'example2' => $quiz['example2'],
-                                'example3' => $quiz['example3'],
-                                'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
-                                'teacherNumber' => $userData['userId']
-                            ], 'number');
+                        // 모든 값이 정의 되어있는지 확인
+                        $insert = array(
+                            'question' => $quiz['question'] ? $quiz['question'] : ($valueCheck = false),
+                            'rightAnswer' => $quiz['right'] ? $quiz['right'] : ($valueCheck = false),
+                            'example1' => $quiz['example1'] ? $quiz['example1'] : ($valueCheck = false),
+                            'example2' => $quiz['example2'] ? $quiz['example2'] : ($valueCheck = false),
+                            'example3' => $quiz['example3'] ? $quiz['example3'] : ($valueCheck = false),
+                            'type' => $quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false) . ' ' . $quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false),
+                            'teacherNumber' => $userData['userId']
+                        );
+
+                        if ($valueCheck) {
+                            $quizIds = DB::table('quizBanks')
+                                ->insertGetId($insert, 'number');
+                        } else {
+                            $quizIds = false;
+                        }
                     } else if ($quiz['makeType'] == 'sub') {
-                        $quizIds = DB::table('quizBanks')
-                            ->insertGetId([
-                                'question' => $quiz['question'],
-                                'hint' => $quiz['hint'],
-                                'rightAnswer' => $quiz['right'],
-                                'type' => $quiz['quizType'] . ' ' . $quiz['makeType'],
-                                'teacherNumber' => $userData['userId']
-                            ], 'number');
+                        $insert = array(
+                            'question' => $quiz['question'] ? $quiz['question'] : ($valueCheck = false),
+                            'hint' => $quiz['hint'] ? $quiz['hint'] : ($valueCheck = false),
+                            'rightAnswer' => $quiz['right'] ? $quiz['right'] : ($valueCheck = false),
+                            'type' => $quiz['quizType'] ? $quiz['quizType'] : ($valueCheck = false) . ' ' . $quiz['makeType'] ? $quiz['makeType'] : ($valueCheck = false),
+                            'teacherNumber' => $userData['userId']
+                        );
+
+
+                        if ($valueCheck) {
+                            $quizIds = DB::table('quizBanks')
+                                ->insertGetId($insert, 'number');
+                        } else {
+                            $quizIds = false;
+                        }
                     } else {
                         $quizIds = false;
                     }
