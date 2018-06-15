@@ -8,6 +8,7 @@
             src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
             integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
             crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>충분충분</title>
     <meta charset="utf-8">
     <meta
@@ -20,7 +21,7 @@
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link href="{{url('css/homemain.css')}}" rel="stylesheet" type="text/css" media="all">
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         function loginCheck(){
             $.ajax({
@@ -85,7 +86,7 @@
 
                     }
                     else{
-                        alert("로그인실패");
+                        swal("로그인 실패", " ", "error");
                     }
 
                 },
@@ -116,7 +117,7 @@
         }
 
         function button1_click() {
-            alert("접근 권한이 없습니다.");
+            swal("권한이 없습니다.", " ", "error");
         }
     </script>
 
@@ -147,10 +148,10 @@
         <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a  href="{{ url('/student') }}">Home</a>
+                    <a onclick="button1_click();" >Home</a>
                 </li>
                 <li>
-                    <a onclick="button1_click();" href="{{ url('/student') }}">MyGroup</a>
+                    <a onclick="button1_click();" >MyGroup</a>
                 </li>
                 <li>
                     <a href="{{ url('race_student') }}">Race</a>
@@ -159,7 +160,7 @@
                     <a href="{{ url('recordbox_student') }}">RecordBox</a>
                 </li>
                 <li>
-                    <a onclick="button1_click();" href="{{ url('/student') }}">QuizTree</a>
+                    <a onclick="button1_click();">QuizTree</a>
                 </li>
 
                 <li>
@@ -225,7 +226,7 @@
     <ul class="nospace group">
         <li>
             <i>Quiz Tree</i>
-            <a class="mt-yellow" onclick="button1_click();" href="{{ url('/student') }}">
+            <a class="mt-yellow" onclick="button1_click();" >
 
                 <i class="fa fa-5x fa-tree"></i>
 
@@ -233,7 +234,7 @@
         </li>
         <li>
             <i>MY Class</i>
-            <a class="mt-purple" onclick="button1_click();" href="{{ url('/student') }}">
+            <a class="mt-purple" onclick="button1_click();"  >
                 <i class="fa fa-5x fa-child"></i>
 
             </a>

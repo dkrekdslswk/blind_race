@@ -8,6 +8,8 @@
             src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
             integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
             crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
     <title>충분충분</title>
     <meta charset="utf-8">
     <meta
@@ -85,7 +87,7 @@
 
                     }
                     else{
-                        alert("로그인실패");
+                        swal("로그인 실패.", " ", "warning");
                     }
 
                 },
@@ -114,6 +116,8 @@
                 }
             });
         }
+
+
     </script>
 
 </head>
