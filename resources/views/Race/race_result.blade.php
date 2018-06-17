@@ -36,24 +36,23 @@
                     //var r_result = JSON.parse(data);
                     r_result = result['students'];
                     for(var i=0;  i <r_result.length; i++){
-                        var append_info ='<tr><td><img src="/img/character/char'+r_result[i].characterId+'.png" width="100px">';
-                            append_info +='<a class="user-link title">'+r_result[i].nick+'</a>';
-                            append_info +='<span class="user-subhead subtitle">'+r_result[i].rightCount*100+"point"+'</span></td>';
+
+
+                        var append_info = '<tr><td class="table_rank_td" style="background: none; box-shadow:none;">';
+                            append_info += ' <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div></td>';
+                            append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
+                            append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
+                            append_info += '<span class="user-subhead subtitle">'+r_result[i].rightCount*100+"point"+'</span></td>';
+
 
 
                         if(r_result[i].retestState == false){
-                            append_info +='<td><span><img src="/img/race_student/success.png" style="width: 100px"></span></td></tr>';
+                            append_info +='<td class="stu_img_frame" ><span><img class="stu_img" src="/img/race_ending/success.png"></span></td></tr>';
                             $('#pass_table').append(append_info);
                         }else{
-                            append_info +='<td><span><img src="/img/race_student/fail.png" style="width: 100px"></span></td></tr>';
+                            append_info +='<td class="stu_img_frame_fail"><span><img class="stu_img" src="/img/race_ending/fail.png"></span></td></tr>';
                             $('#fail_table').append(append_info);
                         }
-
-
-                        // changehtml+='<h3>' + r_result[i].user_num + " 번 학생" + r_result[i].point + "개 맞춤" + '</h3><br>';
-                        $('#'+i+'_nick').text(r_result[i].nick);
-                        $('#'+i+'_point').text(r_result[i].rightCount*100+"point");
-                        $('#'+i+'_character').attr("src", "/img/character/char"+r_result[i].characterId+".png");
                     }
                 },
                 error: function(request, status, error) {
@@ -64,62 +63,18 @@
         }
     </script>
 
-</head>
-<body>
-
-<div> @include('Navigation.main_nav')</div>
-
-
-<div id="race_result" >
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-
-
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-    <hr>
-
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="main-box no-header clearfix">
-                <div class="main-box-body clearfix">
-                    <div class="table-responsive">
-                        <table class="table user-list" id="pass_table">
-                            <thead>
-                            <tr>
-                                <th><span><h2>합격!</h2></span></th>
-                                <th><h2>참 잘했어요</h2></th>
-                            </tr>
-                            </thead>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="main-box no-header clearfix">
-                <div class="main-box-body clearfix">
-                    <div class="table-responsive">
-                        <table class="table user-list" id="fail_table">
-                            <thead>
-                            <tr>
-                                <th><span><h2>불합격!</h2></span></th>
-                                <th><h2>노력하세요</h2></th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
     <style>
+        html{
+            width: 100%;
+            height:100%;
+        }
         body{
-            background:#eee;
+            width:100%;
+            height:100%;
+            background-image: url("/img/race_ending/result_bg.png");
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
         }
         .main-box.no-header {
             padding-top: 20px;
@@ -160,9 +115,16 @@
         }
         .user-list tbody td>img {
             position: relative;
-            max-width: 50px;
+            width: 60px;
+            height:60px;
             float: left;
             margin-right: 15px;
+        }
+        #pass_table tbody td>img{
+            border:2px solid #f9cb46;
+        }
+        #fail_table tbody td>img{
+            border:2px solid #a384c4;
         }
 
         .table thead tr th {
@@ -180,9 +142,126 @@
             font-size: 0.875em;
             vertical-align: middle;
             border-top: 1px solid #e7ebee;
-            padding: 12px 8px;
+        }
+        #result_title{
+            width: 50%;
+            height: 70%;
+            position: absolute;
+            top: -5%;
+            left: 25%;
+            z-index: 1;
+        }
+        #content_bg{
+            width: 90%;
+            height: 85%;
+            background-color: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            position: absolute;
+            top: 10%;
+            left: 5%;
+        }
+        #success_title{
+            top: 32%;
+            left: 15%;
+        }
+        #pass_table{
+            width: 32%;
+            position: absolute;
+            top: 43%;
+            left: 15%;
+            z-index: 1;
+            background: none;
+        }
+        #pass_table td, #fail_table td{
+            background: #FFFFFF;
+            padding:0px;
+            box-shadow:0 0 0 0 rgba(0, 0, 0, 0.2), 0 3px 0 rgba(0, 0, 0, 0.19)
+        }
+        #fail_table{
+            width: 32%;
+            position: absolute;
+            top: 43%;
+            right: 15%;
+            z-index: 1;
+            background: none;
+        }
+        #fail_title{
+            top: 32%;
+            right: 15%;
+        }
+        .part_title{
+            width: 33%;
+            height: 10%;
+            position: absolute;
+            z-index: 2;
+        }
+        .table_rank_td{
+            width:50px;
+            height:50px;
+            text-align:center;
+            border:none;
+            background:none;
+        }
+        .stu_img{
+            width:50px; float:right;
+        }
+        .stu_img_frame{
+            border-right: 5px solid #27abe2 !important;
+        }
+        .stu_img_frame_fail{
+            border-right: 5px solid #f35f72 !important;
+        }
+        .rank_content_s{
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div> @include('Navigation.main_nav')</div>
+
+<img id="result_title" src="/img/race_ending/finish_title.png" alt="">
+
+<img id="success_title" class="part_title" src="/img/race_ending/success_title.png" alt="">
+<img id="fail_title" class="part_title" src="/img/race_ending/fail_title.png" alt="">
+<div id="race_result" >
+
+                        <table class="table user-list" id="pass_table">
+                            <tr>
+                                <td class="table_rank_td" style="background: none; box-shadow:none;">
+                                    <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div>
+                                </td>
+                                <td>
+                                    <img src="/img/character/char2.png">
+                                    <a class="user-link title">'+r_result[i].n</a>
+                                    <span class="user-subhead subtitle">100point</span>
+                                </td>
+
+                          <td class="stu_img_frame" ><span><img class="stu_img" src="/img/race_ending/success.png"></span></td>
+                            </tr>
+                        </table>
+
+                        <table class="table user-list" id="fail_table">
+                            <tr>
+                                <td class="table_rank_td" style="background: none; box-shadow:none;">
+                                    <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div>
+                                </td>
+                                <td>
+                                    <img src="/img/character/char2.png">
+                                    <a class="user-link title">'+r_result[i].n</a>
+                                    <span class="user-subhead subtitle">100point</span>
+                                </td>
+
+                          <td class="stu_img_frame_fail" ><span><img class="stu_img" src="/img/race_ending/fail.png"></span></td>
+                            </tr>
+                        </table>
+
+
+
+
+<div id="content_bg">
 
 </div>
 
