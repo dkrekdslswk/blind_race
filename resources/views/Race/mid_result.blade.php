@@ -181,25 +181,47 @@
 
 
                 <div class='grafico bar-chart'>
-                    <div id="obj_opinion" style="display: none;">
+                    <div id="obj_opinion" style="display:none;">
                         <div class="choice_status" style="background: #9e7ac2;">
                             <div  class="choice_two_tone" style="background: #8361ba;">A</div>
                             <div class="B_class" id="B1">1</div>
+
+                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                <span id="A_count" style="color:black; font-weight: bold;">0</span>
+                            </div>
+
                         </div>
 
                         <div class="choice_status" style="background: #f36174;">
                             <div  class="choice_two_tone" style="background: #e24d66;">B</div>
                             <div  class="B_class" id="B2">2</div>
+
+                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                <span id="B_count" style="color:black; font-weight: bold;">0</span>
+                            </div>
+
                         </div>
 
                         <div class="choice_status" style="background: #42ce91;">
                             <div class="choice_two_tone" style="background: #55dea8;">C</div>
                             <div class="B_class" id="B3">3</div>
+
+                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                <span id="C_count" style="color:black; font-weight: bold;">0</span>
+                            </div>
                         </div>
 
                         <div class="choice_status" style="background: #fcb029;">
                             <div class="choice_two_tone" style="background: #f9cd36;">D</div>
                             <div class="B_class" id="B4">4</div>
+
+                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                <span id="D_count" style="color:black; font-weight: bold;">0</span>
+                            </div>
                         </div>
                     </div>
                     <div id="sub_opinion" style="display: none;">
@@ -391,15 +413,7 @@
         color: #fff;
         font-size: 80%;
     }
-    .grafico span {
-        display: block;
-        position: absolute;
-        bottom: 3rem;
-        left: 2rem;
-        height: 0;
-        border-top: 2px solid;
-        transform-origin: left center;
-    }
+
     .grafico span > span {
         left: 100%; bottom: 0;
     }

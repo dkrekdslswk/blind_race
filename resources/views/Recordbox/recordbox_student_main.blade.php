@@ -273,7 +273,6 @@
         }
 
         function getGroups_and_loadChart(userId,groupId) {
-
             $.ajax({
                 type: 'POST',
 
