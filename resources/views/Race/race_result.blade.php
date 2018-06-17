@@ -13,7 +13,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         var r_result="";
-
+        var success_rank = 0 ;
+        var fail_rank = 0;
         window.onload = function() {
 
             var changehtml ="" ;
@@ -39,7 +40,15 @@
 
 
                         var append_info = '<tr><td class="table_rank_td" style="background: none; box-shadow:none;">';
-                            append_info += ' <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div></td>';
+                        append_info += '<div class="rank_content_s" style="width:30px; height:30px; background-color:white;">';
+                        if(r_result[i].retestState == false){
+                            success_rank++;
+                            append_info += success_rank;
+                        }else{
+                            fail_rank++;
+                            append_info += fail_rank;
+                        }
+                            append_info += '</div></td>';
                             append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
                             append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
                             append_info += '<span class="user-subhead subtitle">'+r_result[i].rightCount*100+"point"+'</span></td>';
@@ -172,6 +181,7 @@
             left: 15%;
             z-index: 1;
             background: none;
+            border-spacing:0px 5px;
         }
         #pass_table td, #fail_table td{
             background: #FFFFFF;
@@ -185,6 +195,7 @@
             right: 15%;
             z-index: 1;
             background: none;
+            border-spacing:0px 5px;
         }
         #fail_title{
             top: 32%;
@@ -228,46 +239,18 @@
 <img id="fail_title" class="part_title" src="/img/race_ending/fail_title.png" alt="">
 <div id="race_result" >
 
-                        <table class="table user-list" id="pass_table">
-                            <tr>
-                                <td class="table_rank_td" style="background: none; box-shadow:none;">
-                                    <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div>
-                                </td>
-                                <td>
-                                    <img src="/img/character/char2.png">
-                                    <a class="user-link title">'+r_result[i].n</a>
-                                    <span class="user-subhead subtitle">100point</span>
-                                </td>
+    <table class="table user-list" id="pass_table">
+    </table>
 
-                          <td class="stu_img_frame" ><span><img class="stu_img" src="/img/race_ending/success.png"></span></td>
-                            </tr>
-                        </table>
+    <table class="table user-list" id="fail_table">
+    </table>
 
-                        <table class="table user-list" id="fail_table">
-                            <tr>
-                                <td class="table_rank_td" style="background: none; box-shadow:none;">
-                                    <div class="rank_content_s" style="width:30px; height:30px; background-color:white;">1</div>
-                                </td>
-                                <td>
-                                    <img src="/img/character/char2.png">
-                                    <a class="user-link title">'+r_result[i].n</a>
-                                    <span class="user-subhead subtitle">100point</span>
-                                </td>
+    <div id="content_bg"></div>
 
-                          <td class="stu_img_frame_fail" ><span><img class="stu_img" src="/img/race_ending/fail.png"></span></td>
-                            </tr>
-                        </table>
+    <audio autoplay><source src="/bgm/race_result.mp3"></audio>
 
 
-
-
-<div id="content_bg">
-
+    <a href="/"><button class="btn btn-primary" style="margin-left:50%;">돌아가기</button></a>
 </div>
-
-<audio autoplay><source src="/bgm/race_result.mp3"></audio>
-
-
-<a href="/"><button class="btn btn-primary" style="margin-left:50%;">돌아가기</button></a>
 </body>
 </html>
