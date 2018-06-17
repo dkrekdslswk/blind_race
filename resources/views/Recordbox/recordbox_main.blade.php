@@ -150,7 +150,7 @@
 
         /***********************************날짜 구하기**************************************************************************************************/
 
-        //teacher에 세션값을 받아서 넣어주기
+            //teacher에 세션값을 받아서 넣어주기
         var group_id = 0;
         var teacher = 1; //의미 없는값
         var chartData = "";
@@ -185,7 +185,7 @@
                     //가장 상단에 위치한 클래스
                     var firstGroup = $('.groups:first-child');
 
-                    //레코드박스네비바 첫부분에 상단 클래스 이름 넣기
+                    //레코드���스네비바 첫부분에 상단 클래스 이름 넣기
                     $('#nav_group_name').text(firstGroup.attr('name'));
 
                     //그룹아이디값을 상단 클래스 아이디값으로 변경
@@ -323,7 +323,7 @@
                 getRetestData(userId,raceId);
             });
 
-            //학생 상세정보에서 학생 클릭시 오답들 로드
+            //학생 상세정보에서 학생 클릭시 오��들 로드
             $(document).on('click','.toggle_stdList',function () {
                 raceId =$(this).attr('name');
                 userId = $(this).attr('id');
@@ -700,7 +700,7 @@
                     */
                     var resData = data.races;
 
-                    //전체 점수와 평균 점수들 로드하기
+                    //전체 점수와 ���균 점수들 로드하기
                     //0은 전체 성적표
                     makingModalPage(raceId,resData,0);
 
@@ -1208,17 +1208,15 @@
                                         }
                     */
 
-                    var raceData = data['races'];
-                    var ChartData = makingStudentChartData(data['races']);
+                    var ChartData = makingStudentChartData(data);
 
                     makingStudentChart(ChartData);
 
                     $('#studentGradeList').empty();
 
-                    for( var i = 0 ; i < raceData.length ; i++ ) {
+                    for( var i = 0 ; i < data.races.length ; i++ ) {
 
-                        raceData = JSON.parse(data['races'][i]);
-                        console.log(raceData);
+                        raceData = JSON.parse(data.races[i]);
 
                         $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
 
@@ -1414,29 +1412,30 @@
             var AllChartData = [];
             var categoryCount = 0;
             var gradeByOne = 0;
+            var makingStudentData;
 
-            var makingStudentData = JSON.parse(data[0]);
+            var parseData = JSON.parse(JSON.stringify(data['races']));
 
-            if(makingStudentData['grammarCount'] =! 0){ ++categoryCount;}
-            if(makingStudentData['vocabularyCount'] =! 0){ ++categoryCount;}
-            if(makingStudentData['wordCount'] =! 0){ ++categoryCount;}
-            gradeByOne = 100 / categoryCount;
+            //변수 접근은 .
+            //배열 접근은 ['']
+            for(var i = 0 ; i < parseData.length ; i++){
+                makingStudentData = JSON.parse(parseData[i]);
+                console.log(makingStudentData);
 
-            for(var i = 0 ; i < data.length ; i++){
-                makingStudentData = JSON.parse(data[i]);
-
-                //총점 구하기
-                var total_grade =((100 / makingStudentData['allCount']) * makingStudentData['allRightCount']).toPrecision(3);
+                gradeByOne = Math.floor(100 / makingStudentData.allCount);
+                console.log(gradeByOne);
 
                 //문법 총점 구하기
-                var grammar_grade = Math.floor((gradeByOne / makingStudentData['grammarCount']) * makingStudentData['grammarRightCount']);
+                var grammar_grade = gradeByOne * makingStudentData.grammarRightCount;
 
                 //어휘 총점 구하기
-                var vocabulary_grade = Math.floor((gradeByOne / makingStudentData['vocabularyCount']) * makingStudentData['vocabularyRightCount']);
+                var vocabulary_grade = gradeByOne * makingStudentData.vocabularyRightCount;
 
                 //단어 총점 구하기
-                var word_grade = Math.floor((gradeByOne / makingStudentData['wordCount']) * makingStudentData['vocabularyRightCount']);
+                var word_grade = gradeByOne * makingStudentData.wordRightCount;
 
+                //총점 구하기
+                var total_grade = grammar_grade + vocabulary_grade + word_grade;
 
                 //차트 데이터 배열 만들기
                 total_data_Points.push({ x      : new Date(makingStudentData['date']),
@@ -1940,7 +1939,7 @@
                             );
                         if(instanceData['QnAs'][i]['answer_at'] == ""){
                             $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                                    .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
+                                .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
 
                         }else{
                             $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
@@ -2041,28 +2040,28 @@
     <div class="changePages">
 
         <div class="recordbox_navbar">
-        {{--레코드 네비바 불러오기--}}
-        @include('Recordbox.record_recordnav')
+            {{--레코드 네비바 불러오기--}}
+            @include('Recordbox.record_recordnav')
         </div>
 
         <div class="record_chart">
-        {{--레코드 차트페이지 불러오기--}}
-        @include('Recordbox.record_chart')
+            {{--레코드 차트페이지 불러오기--}}
+            @include('Recordbox.record_chart')
         </div>
 
         <div class="record_history">
-        {{--레코드 최근기록페이지 불러오기--}}
-        @include('Recordbox.record_history')
+            {{--레코드 최근기록페이지 불러오기--}}
+            @include('Recordbox.record_history')
         </div>
 
         <div class="record_student">
-        {{--레코드 학생페이지 불러오기--}}
-        @include('Recordbox.record_studentslist')
+            {{--레코드 학생페이지 불러오기--}}
+            @include('Recordbox.record_studentslist')
         </div>
 
         <div class="record_feedback">
-        {{--레코드 피드백페이지 불러오기--}}
-        @include('Recordbox.record_feedback')
+            {{--레코드 피드백페이지 불러오기--}}
+            @include('Recordbox.record_feedback')
         </div>
 
     </div>
