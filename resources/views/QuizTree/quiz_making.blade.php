@@ -114,7 +114,7 @@
                 "<tbody>" +
                 "<tr>" +
                     "<td style='background-color: #d9edf7'>문제</td>" +
-                    "<td colspan='6'><textarea id='question" + idNum + "' style='width: 100%; border: 0'>" +
+                    "<td colspan='6'><textarea id='question" + idNum + "' placeholder='여기에 문제를 적어주세요'style='width: 100%; border: 0'>" +
                     addArr.question +
                     "</textarea></td>" +
                 "</tr>" +
@@ -235,18 +235,18 @@
             "<tr>" +
             "<td rowspan='2' style='background-color: #d9edf7'>정답</td>" +
             "<td colspan='3' style='background-color: #EAEAEA'>" +
-            "<input id='right" + idNum + "' type='text' placeholder='정답을 적어주세요' style='width: 100%; background-color: #EAEAEA; border: 0' value='" +
+            "<input id='right" + idNum + "' type='text' placeholder='여기에 정답을 적어주세요' style='width: 100%; background-color: #EAEAEA; border: 0' value='" +
             addArr.right+ "'></td>" +
             "<td colspan='3'>" +
-            "<input id='example1" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
+            "<input id='example1" + idNum + "' type='text' placeholder='보기1' style='width: 100%; border: 0' value='" +
             addArr.example1 +"'></td>" +
             "</tr>" +
             "<tr>" +
             "<td colspan='3'>" +
-            "<input id='example2" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
+            "<input id='example2" + idNum + "' type='text' placeholder='보기2' style='width: 100%; border: 0' value='" +
             addArr.example2 +"'></td>" +
             "<td colspan='3'>" +
-            "<input id='example3" + idNum + "' type='text' style='width: 100%; border: 0' value='" +
+            "<input id='example3" + idNum + "' type='text' placeholder='보기3' style='width: 100%; border: 0' value='" +
             addArr.example3 +"'></td>" +
             "</tr>"
         );
@@ -546,6 +546,9 @@
                     alert("저장 완료");
                     window.location.href = "{{url('quiz_list')}}";
                 }
+                else {
+                    alert("빈 항목을 모두 채워주세요");
+                }
             },
             error: function (data) {
                 alert("error");
@@ -577,6 +580,7 @@
 
     // 목록으로 버튼 클릭 시 : quiz_list로 돌아가기
     function backToList() {
+        //모달창으로 확인하기
         window.location.href = "{{url('quiz_list')}}";
     }
 
@@ -633,7 +637,7 @@
     </div>
 
     <div class="two_button">
-        <button type="button" class="btn btn-primary" onclick="backToList()">목록으로</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#backToList">종료</button>
         <button type="button" class="btn btn-primary" id="save">저장</button>
         <button type="button" class="btn btn-primary" id="add">추가</button>
     </div>
@@ -677,3 +681,21 @@
     </div>
 </div>
 
+<!-- Modal : back to List -->
+<div class="modal fade" id="backToList">
+    <div class="modal-dialog">
+        <input type="hidden" name="folderName" id="folderName" value="">
+        <div class="modal-content">
+            <div class="modal-header">
+
+            </div>
+            <div class="modal-body" style="text-align: center">
+                퀴즈가 저장되지 않았습니다. 종료하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" onclick="backToList()">종료</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
