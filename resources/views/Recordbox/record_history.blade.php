@@ -23,6 +23,17 @@
         display: block;
         float: left;
         width: 30%;
+        text-align: center;
+        height: 70%;
+    }
+    .historyContainer .raceListDetail .raceListDetailScroll {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        border: 1px solid #e5e6e8;
+    }
+    .raceListDetail table thead tr th ,.raceListDetail table tbody {
+        text-align: center;
     }
 
 </style>
@@ -71,35 +82,37 @@
 
             {{--과제 목록 보기--}}
             <div class="raceListDetail">
-                <table class="table table-hover table-bordered table-striped" >
-                    <thead>
-                    <tr>
-                        <th id="historyListNumber">
-                            번호
-                        </th>
-                        <th id="historyListRaceName" colspan="2">
-                            퀴즈제목
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            학생
-                        </th>
-                        <th>
-                            재시험
-                        </th>
-                        <th>
-                            오답노트
-                        </th>
-                    </tr>
-                    </thead>
+                <div class="raceListDetailScroll">
+                    <table class="table table-hover table-bordered table-striped" >
+                        <thead>
+                        <tr>
+                            <th id="historyListNumber">
+                                번호
+                            </th>
+                            <th id="historyListRaceName" colspan="2">
+                                퀴즈제목
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                학생
+                            </th>
+                            <th>
+                                재시험
+                            </th>
+                            <th>
+                                오답노트
+                            </th>
+                        </tr>
+                        </thead>
 
-                    {{--getStudent()로 학생들 불러오기--}}
-                    <tbody id="history_homework">
+                        {{--getStudent()로 학생들 불러오기--}}
+                        <tbody id="history_homework">
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

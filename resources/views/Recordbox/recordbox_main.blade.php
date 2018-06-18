@@ -1988,6 +1988,30 @@
 
         }
 
+        function insertQuestion(){
+
+            var reqData = {questionImg : };
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/insertQuestion')}}",
+                //processData: false,
+                //contentType: false,
+                data:reqData,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) {
+
+
+                },
+                error: function (data) {
+                    alert("loadFeedback / 피드백 받아오기 에러");
+                }
+
+            });
+        }
+
+
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
             switch (id){
