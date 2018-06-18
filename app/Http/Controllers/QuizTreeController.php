@@ -10,9 +10,6 @@ use App\Http\Controllers\UserController;
 
 class QuizTreeController extends Controller
 {
-    // 공유 레이스 번호
-    const OPEN_STATE = 0;
-    const OPEN_NOT_STATE = 1;
 
     /****
      * 폴더목록과 선택된 폴더의 리스트 목록을 반납

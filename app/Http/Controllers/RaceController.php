@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use \Illuminate\Http\Request;
 use \Illuminate\Http\Response;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\QuizTreeController;
-use App\Http\Controllers\RecordBoxController;
 
 class RaceController extends Controller{
 
@@ -81,7 +79,7 @@ class RaceController extends Controller{
                         'f.teacherNumber' => $userData['userId']
                      ])
                     ->orWhere([
-                        'l.openState' => QuizTreeController::OPEN_STATE
+                        'l.openState' => self::OPEN_STATE
                     ]);
             })
             ->groupBy('l.number')
@@ -200,7 +198,7 @@ class RaceController extends Controller{
                     ->where([
                         're.raceNo' => $userData['raceId'],
                         're.userNo' => $userData['userId'],
-                        're.retest' => RecordBoxController::RETEST_NOT_STATE
+                        're.retest' => self::RETEST_NOT_STATE
                     ])
                     ->leftJoin('records as re', function ($join) {
                         $join->on('re.quizNo', '=', 'lq.quizNumber');
@@ -794,7 +792,7 @@ class RaceController extends Controller{
                 )
                 ->where([
                     're.raceNo' => $userData['raceId'],
-                    're.retest' => RecordBoxController::RETEST_NOT_STATE
+                    're.retest' => self::RETEST_NOT_STATE
                 ])
                 ->join('sessionDatas as s', 's.userNumber', '=', 're.userNo')
                 ->orderBy('rightCount', 's.userNumber')
@@ -803,7 +801,7 @@ class RaceController extends Controller{
 
             // 미제출 문제 처리하기
             foreach ($students as $student) {
-                $this->omission($student->userId, $userData['raceId'], RecordBoxController::RETEST_NOT_STATE);
+                $this->omission($student->userId, $userData['raceId'], self::RETEST_NOT_STATE);
             }
 
             // 재시험 여부 확인하기
@@ -1220,7 +1218,7 @@ class RaceController extends Controller{
                     ->where([
                         're.raceNo' => $userData['raceId'],
                         're.userNo' => $userData['userId'],
-                        're.retest' => RecordBoxController::RETEST_STATE
+                        're.retest' => self::RETEST_STATE
                     ])
                     ->groupBy(['re.userNo', 're.raceNo', 're.retest'])
                     ->first();
@@ -1232,7 +1230,7 @@ class RaceController extends Controller{
                 // 합격
                 if ($raceData->passingMark <= $score) {
                     // 미제출 문제 처리하기
-                    $this->omission($userData['userId'], $userData['raceId'], RecordBoxController::RETEST_STATE);
+                    $this->omission($userData['userId'], $userData['raceId'], self::RETEST_STATE);
 
                     // 통과 표시하기
                     DB::table('raceUsers')
