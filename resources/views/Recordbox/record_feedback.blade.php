@@ -60,19 +60,6 @@
     }
 </style>
 
-<script>
-
-    function loadFile(){
-        var reader = new FileReader();
-        reader.onload = function(){
-            var output = document.getElementById('output');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    };
-
-</script>
-
     <div class="feedback_page" style="margin: 10px;">
         <table class="table table-bordered table-list" style="margin: 0;">
             <thead>

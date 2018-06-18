@@ -1981,18 +1981,19 @@
 
         function insertQuestion(){
 
-            var reqData = document.getElementsByName('feedbackImg')[0].files[0];
+            var formData = new FormData();
+            var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
+
+            formData.append('questionImg', imgfiles);
 
             $.ajax({
                 type: 'POST',
                 url: "{{url('/recordBoxController/insertQuestion')}}",
-                //processData: false,
-                //contentType: false,
-                data:reqData,
-                dataType: 'json',
+                processData: false,
+                contentType: false,
+                data:formData,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
-
 
                 },
                 error: function (data) {
@@ -2236,19 +2237,34 @@
                             파일 첨부
                         </label>
 
-                        <form type="file">
-                            <input type="file" name="feedbackImg" accept="image/*" onchange="loadFile()" id="ex_file">
-
-                            <img id="output" style="max-width: 300px;max-height: 300px;"/>
-
-                            {{--사진 불러오는 스크립트--}}
-                            <script type="text/javascript">
-                                $(document).on('click', '#modal_feedback_cancel', function (e) {
-                                    $('#output').attr("src","");
-                                    $('#teachersFeedback').val("");
-                                });
-                            </script>
+                        <form id="myform" name="myform" method="post" enctype="multipart/form-data">
+                            <input type="file" name="feedbackImg" onchange="loadFile()" id="ex_file">
                         </form>
+
+                        <img id="output" style="max-width: 300px;max-height: 300px;"/>
+
+                        {{--사진 불러오는 스크립트--}}
+                        <script type="text/javascript">
+
+                            function loadFile(){
+                                var reader = new FileReader();
+
+                                var ex_file = document.getElementById('ex_file');
+
+                                reader.onload = function(){
+                                    var output = document.getElementById('output');
+                                    output.src = reader.result;
+                                };
+                                reader.readAsDataURL(event.target.files[0]);
+
+                            };
+
+
+                            $(document).on('click', '#modal_feedback_cancel', function (e) {
+                                $('#output').attr("src","");
+                                $('#teachersFeedback').val("");
+                            });
+                        </script>
                     </div>
 
                     {{--텍스트 창--}}
