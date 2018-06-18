@@ -364,6 +364,7 @@
 
             $(document).on('click','.modal-footer .btn.btn-primary',function () {
                 changeCheck($('.request_date').attr('id'));
+                insertQuestion();
             });
 
 
@@ -1132,6 +1133,7 @@
                                 break;
                         }
 
+                        stdHomework[i]['wrongState'] = "clear";
 
                         switch (stdHomework[i]['wrongState']){
                             case "not" :
@@ -1145,7 +1147,7 @@
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
 
                                 break;
                         }
@@ -1990,7 +1992,9 @@
 
         function insertQuestion(){
 
-            var reqData = {questionImg : };
+            var reqData = document.getElementsByName('feedbackImg')[0].files[0];
+
+            console.log(reqData);
 
             $.ajax({
                 type: 'POST',
@@ -2010,7 +2014,6 @@
 
             });
         }
-
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
@@ -2245,17 +2248,20 @@
                         <label for="ex_file">
                             파일 첨부
                         </label>
-                        <input type="file" accept="image/*" onchange="loadFile()" id="ex_file">
 
-                        <img id="output" style="max-width: 300px;max-height: 300px;"/>
+                        <form type="file">
+                            <input type="file" name="feedbackImg" accept="image/*" onchange="loadFile()" id="ex_file">
 
-                        {{--사진 불러오는 스크립트--}}
-                        <script type="text/javascript">
-                            $(document).on('click', '#modal_feedback_cancel', function (e) {
-                                $('#output').attr("src","");
-                                $('#teachersFeedback').val("");
-                            });
-                        </script>
+                            <img id="output" style="max-width: 300px;max-height: 300px;"/>
+
+                            {{--사진 불러오는 스크립트--}}
+                            <script type="text/javascript">
+                                $(document).on('click', '#modal_feedback_cancel', function (e) {
+                                    $('#output').attr("src","");
+                                    $('#teachersFeedback').val("");
+                                });
+                            </script>
+                        </form>
                     </div>
 
                     {{--텍스트 창--}}
