@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-
     /****
      * 차트정보 가져오기
      *
@@ -40,18 +39,6 @@ class RecordBoxController extends Controller{
             'startDate' => $request->has('startDate') ? $request->input('startDate') : $startDate,
             'endDate'   => $request->has('endDate') ? $request->input('endDate') : $endDate
         );
-
-//        // 예외처리
-//        $errors = array();
-//        if(preg_match(self::GROUP_ID_FORMAT, $postData['groupId'])){
-//            array_push($errors, 'RecordBoxController : groupId wrong');
-//        }
-//        if(preg_match(self::DATE_FORMAT, $postData['startDate'])){
-//            array_push($errors, 'RecordBoxController : startDate wrong');
-//        }
-//        if(preg_match(self::DATE_FORMAT, $postData['endDate'])){
-//            array_push($errors, 'RecordBoxController : endDate wrong');
-//        }
 
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
@@ -1015,13 +1002,30 @@ class RecordBoxController extends Controller{
                         ->first();
 
                     if ($groupCheck && ($groupCheck->check == 1)) {
+                        $fileNumber = null;
+                        if ($request->hasFile('questionImg')) {
+                            $file = $request->file('questionImg');
+                            $fileName=date("Y_m_d_His").$file->getClientOriginalName();
+                            $url=Storage::url('imgFile/'.$fileName);
+                            $file->storeAs('imgFile',$fileName);
+
+                            $fileNumber = DB::table('files')
+                                ->insertGetId([
+                                    'userNumber' => $userData['userId'],
+                                    'name' => $fileName,
+                                    'url' => $url,
+                                    'type' => $file->getMimeType()
+                                ], 'number');
+                        }
+
                         DB::table('QnAs')
                             ->insert([
                                 'userNumber' => $userData['userId'],
                                 'teacherNumber' => $postData['teacherId'],
                                 'groupNumber' => $postData['groupId'],
                                 'title' => $postData['title'],
-                                'question' => $postData['question']
+                                'question' => $postData['question'],
+                                'fileNumber' => $fileNumber
                             ]);
 
                         // 반납값 정리
@@ -1446,6 +1450,30 @@ class RecordBoxController extends Controller{
         }
 
         return $records;
+    }
+
+    // 제약조건
+    public function store(Request $request){
+        $this->validate($request,[
+            'questionImg' => 'image,max:4096'
+        ]);
+
+//        // 예외처리
+//        $errors = array();
+//        if(preg_match(self::GROUP_ID_FORMAT, $postData['groupId'])){
+//            array_push($errors, 'RecordBoxController : groupId wrong');
+//        }
+//        if(preg_match(self::DATE_FORMAT, $postData['startDate'])){
+//            array_push($errors, 'RecordBoxController : startDate wrong');
+//        }
+//        if(preg_match(self::DATE_FORMAT, $postData['endDate'])){
+//            array_push($errors, 'RecordBoxController : endDate wrong');
+//        }
+    }
+    public function messages(){
+        return [
+            'questionImg.required' => 'A questionImg is required'
+        ];
     }
 }
 

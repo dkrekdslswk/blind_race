@@ -13,7 +13,7 @@ class DeleteAll extends Migration
      */
     public function up()
     {
-        // use 18.06.04
+        // update 18.06.04
         Schema::dropIfExists('QnAs');
 
         // use 18.04.24
@@ -96,6 +96,9 @@ class DeleteAll extends Migration
         Schema::dropIfExists('classifications');
         // delete 18.04.24
         Schema::dropIfExists('user_division_keyword');
+
+        // update 18.06.18
+        Schema::dropIfExists('files');
     }
 
     /**
