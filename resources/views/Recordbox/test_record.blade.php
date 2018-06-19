@@ -364,6 +364,7 @@
 
             $(document).on('click','.modal-footer .btn.btn-primary',function () {
                 changeCheck($('.request_date').attr('id'));
+                insertQuestion();
             });
 
 
@@ -698,11 +699,9 @@
                                               }
                                         }
                     */
-                    var resData = data.races;
-
                     //전체 점수와 ���균 점수들 로드하기
                     //0은 전체 성적표
-                    makingModalPage(raceId,resData,0);
+                    makingModalPage(raceId,data,0);
 
                 },
                 error: function (data) {
@@ -1132,6 +1131,7 @@
                                 break;
                         }
 
+                        stdHomework[i]['wrongState'] = "clear";
 
                         switch (stdHomework[i]['wrongState']){
                             case "not" :
@@ -1145,7 +1145,7 @@
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
 
                                 break;
                         }
@@ -1208,17 +1208,15 @@
                                         }
                     */
 
-                    var raceData = data['races'];
                     var ChartData = makingStudentChartData(data);
 
                     makingStudentChart(ChartData);
 
                     $('#studentGradeList').empty();
 
-                    for( var i = 0 ; i < raceData.length ; i++ ) {
+                    for( var i = 0 ; i < data.races.length ; i++ ) {
 
-                        raceData = JSON.parse(data['races'][i]);
-                        console.log(raceData);
+                        raceData = JSON.parse(data.races[i]);
 
                         $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
 
@@ -1414,15 +1412,18 @@
             var AllChartData = [];
             var categoryCount = 0;
             var gradeByOne = 0;
+            var makingStudentData;
 
-            var makingStudentData = JSON.parse(data.races[0]);
-            gradeByOne = Math.floor(100 / makingStudentData.allCount);
+            var parseData = JSON.parse(JSON.stringify(allData['races'][0]));
 
             //변수 접근은 .
             //배열 접근은 ['']
+            for(var i = 0 ; i < parseData.length ; i++){
+                makingStudentData = JSON.parse(parseData[i]);
+                console.log(makingStudentData);
 
-            for(var i = 0 ; i < data.races.length ; i++){
-                makingStudentData = JSON.parse(data.racse[i]);
+                gradeByOne = Math.floor(100 / makingStudentData.allCount);
+                console.log(gradeByOne);
 
                 //문법 총점 구하기
                 var grammar_grade = gradeByOne * makingStudentData.grammarRightCount;
@@ -1431,11 +1432,10 @@
                 var vocabulary_grade = gradeByOne * makingStudentData.vocabularyRightCount;
 
                 //단어 총점 구하기
-                var word_grade =gradeByOne * makingStudentData.wordRightCount;
+                var word_grade = gradeByOne * makingStudentData.wordRightCount;
 
                 //총점 구하기
                 var total_grade = grammar_grade + vocabulary_grade + word_grade;
-
 
                 //차트 데이터 배열 만들기
                 total_data_Points.push({ x      : new Date(makingStudentData['date']),
@@ -1988,6 +1988,31 @@
 
         }
 
+        function insertQuestion(){
+
+            var reqData = document.getElementsByName('feedbackImg')[0].files[0];
+
+            console.log(reqData);
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/insertQuestion')}}",
+                //processData: false,
+                //contentType: false,
+                data:reqData,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) {
+
+
+                },
+                error: function (data) {
+                    alert("loadFeedback / 피드백 받아오기 에러");
+                }
+
+            });
+        }
+
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
         function recordControl(id){
             switch (id){
@@ -2221,17 +2246,20 @@
                         <label for="ex_file">
                             파일 첨부
                         </label>
-                        <input type="file" accept="image/*" onchange="loadFile()" id="ex_file">
 
-                        <img id="output" style="max-width: 300px;max-height: 300px;"/>
+                        <form type="file">
+                            <input type="file" name="feedbackImg" accept="image/*" onchange="loadFile()" id="ex_file">
 
-                        {{--사진 불러오는 스크립트--}}
-                        <script type="text/javascript">
-                            $(document).on('click', '#modal_feedback_cancel', function (e) {
-                                $('#output').attr("src","");
-                                $('#teachersFeedback').val("");
-                            });
-                        </script>
+                            <img id="output" style="max-width: 300px;max-height: 300px;"/>
+
+                            {{--사진 불러오는 스크립트--}}
+                            <script type="text/javascript">
+                                $(document).on('click', '#modal_feedback_cancel', function (e) {
+                                    $('#output').attr("src","");
+                                    $('#teachersFeedback').val("");
+                                });
+                            </script>
+                        </form>
                     </div>
 
                     {{--텍스트 창--}}

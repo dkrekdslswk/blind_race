@@ -364,6 +364,7 @@
 
             $(document).on('click','.modal-footer .btn.btn-primary',function () {
                 changeCheck($('.request_date').attr('id'));
+                insertQuestion();
             });
 
 
@@ -632,7 +633,8 @@
                             data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
 
                             $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                                .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")));
+                                .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료"))
+                                .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
                         }else{
                             $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
                                 .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료"))
@@ -698,11 +700,9 @@
                                               }
                                         }
                     */
-                    var resData = data.races;
-
                     //전체 점수와 ���균 점수들 로드하기
                     //0은 전체 성적표
-                    makingModalPage(raceId,resData,0);
+                    makingModalPage(raceId,data,0);
 
                 },
                 error: function (data) {
@@ -759,12 +759,8 @@
                                         }
                     */
 
-                    console.log('학생 성적표 받아올때 (getStudents)',data);
-
-                    var resData = data.races;
-
                     //1은 학생개인 성적표
-                    makingModalPage(raceId,resData,1);
+                    makingModalPage(raceId,data,1);
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
 
                 },
@@ -1046,9 +1042,7 @@
                     };
                     */
 
-                    var resData = data;
-
-                    makingModalPage(raceId,resData,2);
+                    makingModalPage(raceId,data,2);
 
                 },
                 error: function (data) {
@@ -1104,54 +1098,54 @@
                     $('#historyListRaceName').empty();
                     $('#history_homework').empty();
 
-                    for (var i = 0 ; i < stdHomework.length ; i++ ) {
-                        $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
-                    }
-
                     for (var i = 0; i < stdHomework.length ; i ++) {
 
-                        $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
-                        $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
+                        if(stdHomework[i]['wrongState'] == "not" && stdHomework[i]['retestState'] == "not"){
 
-                        $('#history_homework_tr' + i).append($('<td>').text(stdHomework[i]['userName']));
+                        }else{
 
-                        switch (stdHomework[i]['retestState']){
-                            case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+                            $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
 
-                                break;
-                            case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                            $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
+                            $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
 
-                                break;
-                            case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
-                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
+                            $('#history_homework_tr' + i).append($('<td>').text(stdHomework[i]['userName']));
 
-                                break;
+                            switch (stdHomework[i]['retestState']){
+                                case "not" :
+                                    $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+
+                                    break;
+                                case "order" :
+                                    $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+
+                                    break;
+                                case "clear" :
+                                    $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
+                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                            .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
+
+                                    break;
+                            }
+
+                            switch (stdHomework[i]['wrongState']){
+                                case "not" :
+                                    $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+
+                                    break;
+                                case "order" :
+                                    $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
+
+                                    break;
+                                case "clear" :
+                                    $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
+                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                            .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
+
+                                    break;
+                            }
                         }
-
-
-                        switch (stdHomework[i]['wrongState']){
-                            case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
-
-                                break;
-                            case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
-
-                                break;
-                            case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
-                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출")));
-
-                                break;
-                        }
-
                     }
-
 
                 },
                 error: function (data) {
@@ -1674,9 +1668,7 @@
                 data: reqData,
                 success: function (data) {
 
-                    var resData = data['races'];
-
-                    makingModalPage(raceId,resData,1);
+                    makingModalPage(raceId,data,1);
                     $('.modal-content.studentGrade .modal-title').text("재시험 점수");
 
                 },
@@ -1728,8 +1720,8 @@
                     var totalRight = 0;
 
                     //data -> 레이스에 관한 모든 데이터(리턴값 그대로)
+                    StudentData = JSON.parse(allData['races'][0]);
                     StudentScore = makingStudentChartData(allData);
-                    StudentData = JSON.parse(allData[0]);
 
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
                     $('#modal_date').text(StudentData['year'] + "년 " + StudentData['month'] + "월 " + StudentData['day'] + "일");
@@ -1737,10 +1729,9 @@
                     $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
 
 
-                    for(var i = 0 ; i < allData.length ; i++){
+                    for(var i = 0 ; i < allData['races'].length ; i++){
 
-                        StudentData = JSON.parse(allData[i]);
-                        console.log('stdData',StudentData);
+                        StudentData = JSON.parse(allData['races'][i]);
 
                         $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
 
@@ -1761,11 +1752,11 @@
                     }
 
                     //modal-footer 총 점수들 표시
-                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData.length)+
-                        " / 어휘: "+parseInt(totalVoca / allData.length)+
-                        " / 문법: "+parseInt(totalGrammer / allData.length)+
-                        " / 독해: "+parseInt(totalWord / allData.length)+
-                        " / 갯수: "+parseInt(totalRight / allData.length));
+                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData['races'].length)+
+                        " / 어휘: "+parseInt(totalVoca / allData['races'].length)+
+                        " / 문법: "+parseInt(totalGrammer / allData['races'].length)+
+                        " / 독해: "+parseInt(totalWord / allData['races'].length)+
+                        " / 갯수: "+parseInt(totalRight / allData['races'].length));
 
 
                     //오답들
@@ -1788,14 +1779,14 @@
 
                     //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
                     StudentScore = makingStudentChartData(allData);
-                    StudentData = JSON.parse(allData[0]);
+                    StudentData = JSON.parse(allData['races'][0]);
 
                     $('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
                     $('#modal_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
 
-                    for(var i = 0 ; i < allData.length ; i++){
+                    for(var i = 0 ; i < allData['races'].length ; i++){
 
-                        StudentData = JSON.parse(allData[i]);
+                        StudentData = JSON.parse(allData['races'][i]);
 
                         $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
 
@@ -1981,11 +1972,35 @@
                     .attr('id',qnaId);
                 $('.request_contents').text(instanceData['QnAs'][i]['question']);
                 $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
-                $('.modal-footer').append($('<button data-dismiss="modal" >').attr('class','btn btn-primary').text('확인'));
+                $('.modal-footer').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
                 $('.modal-footer').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
 
             }
 
+        }
+
+        function insertQuestion(){
+
+            var formData = new FormData();
+            var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
+
+            formData.append('questionImg', imgfiles);
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/recordBoxController/insertQuestion')}}",
+                processData: false,
+                contentType: false,
+                data:formData,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) {
+
+                },
+                error: function (data) {
+                    alert("loadFeedback / 피드백 등록하기 에러");
+                }
+
+            });
         }
 
         //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
@@ -2221,12 +2236,30 @@
                         <label for="ex_file">
                             파일 첨부
                         </label>
-                        <input type="file" accept="image/*" onchange="loadFile()" id="ex_file">
+
+                        <form id="myform" name="myform" method="post" enctype="multipart/form-data">
+                            <input type="file" name="feedbackImg" onchange="loadFile()" id="ex_file">
+                        </form>
 
                         <img id="output" style="max-width: 300px;max-height: 300px;"/>
 
                         {{--사진 불러오는 스크립트--}}
                         <script type="text/javascript">
+
+                            function loadFile(){
+                                var reader = new FileReader();
+
+                                var ex_file = document.getElementById('ex_file');
+
+                                reader.onload = function(){
+                                    var output = document.getElementById('output');
+                                    output.src = reader.result;
+                                };
+                                reader.readAsDataURL(event.target.files[0]);
+
+                            };
+
+
                             $(document).on('click', '#modal_feedback_cancel', function (e) {
                                 $('#output').attr("src","");
                                 $('#teachersFeedback').val("");

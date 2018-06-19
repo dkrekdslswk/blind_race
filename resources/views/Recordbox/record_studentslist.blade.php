@@ -78,9 +78,9 @@
     }
     .student_grade table tr{
         height: 50px;
+        text-align: center;
     }
-    .studentGradeList{
-    }
+
 
 </style>
 
@@ -126,34 +126,34 @@
                 <table class="table table-hover table-bordered" >
                     <thead>
                     <tr>
-                        <th width="50px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 50px;">
                             번호
                         </th>
-                        <th width="140px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 140px;">
                             날짜
                         </th>
-                        <th style="text-align: center;">
+                        <th style="text-align: center;min-width: 200px;">
                             문제 이름
                         </th>
-                        <th width="80px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 80px;">
                             총 점수
                         </th>
-                        <th width="60px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 80px;">
                             어휘
                         </th>
-                        <th width="60px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 80px;">
                             독해
                         </th>
-                        <th width="60px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 80px;">
                             단어
                         </th>
-                        <th width="80px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 80px;">
                             재시험
                         </th>
-                        <th width="100px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 100px;">
                             오답노트
                         </th>
-                        <th width="80px" style=" text-align: center;">
+                        <th style=" text-align: center;min-width: 100px;">
                             성적표
                         </th>
                     </tr>

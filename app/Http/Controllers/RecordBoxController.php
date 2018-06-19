@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
 
 class RecordBoxController extends Controller{
-    const RETEST_NOT_STATE  = 0;
-    const RETEST_STATE      = 1;
 
     /****
      * 차트정보 가져오기
@@ -38,14 +36,26 @@ class RecordBoxController extends Controller{
         $startDate = date('Y-m-d', $time - 7 * 24 * 60 * 60);
 
         $postData = array(
-            'groupId'   => $request->input('groupId'),
+            'groupId'   => $request->has('groupId') ? $request->input('groupId') : false,
             'startDate' => $request->has('startDate') ? $request->input('startDate') : $startDate,
             'endDate'   => $request->has('endDate') ? $request->input('endDate') : $endDate
         );
 
+//        // 예외처리
+//        $errors = array();
+//        if(preg_match(self::GROUP_ID_FORMAT, $postData['groupId'])){
+//            array_push($errors, 'RecordBoxController : groupId wrong');
+//        }
+//        if(preg_match(self::DATE_FORMAT, $postData['startDate'])){
+//            array_push($errors, 'RecordBoxController : startDate wrong');
+//        }
+//        if(preg_match(self::DATE_FORMAT, $postData['endDate'])){
+//            array_push($errors, 'RecordBoxController : endDate wrong');
+//        }
+
         // 유저정보가져오기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
-        if ($userData['check']){
+        if ($userData['check'] /*&& (count($errors) == 0)*/){
 
             // 그룹권한 확인
             $where = array();
@@ -86,7 +96,6 @@ class RecordBoxController extends Controller{
                         );
                     }
                     break;
-//                case 'student':
                 default:
                     $returnValue = array(
                         'check' => false
@@ -95,6 +104,7 @@ class RecordBoxController extends Controller{
             }
         } else {
             $returnValue = array(
+//                'errors' => $errors,
                 'check' => false
             );
         }

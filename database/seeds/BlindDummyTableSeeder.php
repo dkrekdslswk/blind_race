@@ -286,5 +286,9 @@ class BlindDummyTableSeeder extends Seeder
                 }
             }
         }
+
+        $QnAs = array(
+
+        );
     }
 }

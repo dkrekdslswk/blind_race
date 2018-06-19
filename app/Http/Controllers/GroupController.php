@@ -36,9 +36,19 @@ class GroupController extends Controller{
             switch ($userData['classification']) {
             case 'root':
             case 'teacher':
+                $where = array(
+                    'g.teacherNumber' => $userData['userId']
+                );
+                $check = true;
+                break;
+            case 'student':
+                $where = array(
+                    'gs.userNumber' => $userData['userId']
+                );
                 $check = true;
                 break;
             default:
+                $where = false;
                 $check = false;
                 break;
             }
@@ -52,9 +62,7 @@ class GroupController extends Controller{
                         DB::raw('count(CASE WHEN ru.retestState = "order" THEN 1 END) as retestStateCount'),
                         DB::raw('count(CASE WHEN ru.wrongState = "order" THEN 1 END) as wrongStateCount')
                     )
-                    ->where([
-                        'g.teacherNumber' => $userData['userId']
-                    ])
+                    ->where($where)
                     ->leftJoin('races as r', 'r.groupNumber', '=', 'g.number')
                     ->leftJoin('groupStudents as gs', 'gs.groupNumber', '=', 'g.number')
                     ->leftJoin('raceUsers as ru', function ($join){
