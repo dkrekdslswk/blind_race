@@ -422,9 +422,8 @@
                                 quiz_member++;
                                 $('#member_count').text(quiz_member);
 
-                                append_info= '<tr id="'+sessionId+'" class="header"><tdstyle="width:42%"><i class="fas fa-user-circle"></i>이름</td>';
-                                append_info+='<th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>';
-                                append_info+='<th style="width:15%"><i class="fas fa-user"></i>1명</th></tr>';
+                                append_info= '<tr id="'+sessionId+'" class="header"><td style="width:60%"><i class="fas fa-user-circle"></i>'+result['user_name']+'</td>';
+                                append_info+='<td style="width:40%"><i class="fas fa-user"></i>푸는중..</td></tr>';
 
                                 $('#playing_student').append(append_info);
 
@@ -518,7 +517,7 @@
                 console.log('입장플레이어수 ', quiz_member);
             });
 
-            socket.on('pop_quiz_status',function(roomPin){
+            socket.on('pop_quiz_status',function(sessionId){
                 submit_count++;
                 $('#submit_count').text(submit_count);
             });
@@ -713,9 +712,8 @@
     <div id="playing_student" style="width:33%; height:40%;   overflow:auto; position:absolute; top:40%;">
         <table>
             <tr class="header">
-                <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
-                <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
-                <th style="width:15%"><i class="fas fa-user"></i>1명</th>
+                <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
+                <th style="width:40%"><i class="fas fa-user"></i>1명</th>
             </tr>
 
         </table>
@@ -725,9 +723,8 @@
     <div id="finish_student" style="position:absolute; width:33%; height:40%;   overflow:auto;  top:40%; right:0;">
         <table>
             <tr class="header">
-                <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
-                <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
-                <th style="width:15%"><i class="fas fa-user"></i>1명</th>
+                <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
+                <th style="width:40%"><i class="fas fa-user"></i>1명</th>
             </tr>
         </table>
     </div>
