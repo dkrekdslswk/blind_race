@@ -14,9 +14,11 @@
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-
-    <script type="text/javascript"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
         body{
             background: #9370db; !important;
@@ -72,17 +74,247 @@
             margin-left: 2%;
             margin-right: 2%;
         }
-        #room_Pin{
-            background-color:white;
-            width: 35%;
-            height: 100px;
-            font-size:70px;
-            margin:auto;
+        #room_Pin {
+            width: 467px;
+            height: 200px;
+            z-index: 0;
+            font-size: 40px;
+            color: white;
+            position: absolute;
+            top: 5%;
+            left: 35%;
+            display: table-cell;
+            line-height: 280px;
+            background-image: url("/img/race_waiting/pin_case.png");
+            background-position: center;
+            background-size: cover;
         }
 
         #messages { list-style-type: none; }
         #messages li { padding: 5px 10px; }
 
+    </style>
+    <style>
+        p ,div ,th ,tr  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        .centerbutton{
+            width: 100% ;
+            height: 100% ;
+            background-size: contain;
+            background-image: url("https://i.imgur.com/NYAOWGv.png");
+            border: 0px;
+        }
+        table {
+            font-family: arial, sans-serif;
+            width: 100%;
+            border-spacing: 0px 6px !important;
+        }
+        .fade:not(.show) {
+            opacity: 10;
+        }
+
+        .container {
+
+            padding-right: 0px;
+            padding-left: 0px;
+
+        }
+        .col-lg-5{
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .col-lg-1 {
+
+
+            background-image: url("https://i.imgur.com/NYAOWGv.png");
+            background-size: auto;
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+        .row {
+
+            margin-right: -100px;
+
+        }
+        .pen {
+            margin-left: 20px;
+            margin-top: 10px;
+            font-size: 20px;
+            color : #203a8e; !important;
+        }
+        th {
+            background-color: #DFDFDF ; !important;
+        }
+
+        .in {
+            display: inline-block;
+        }
+        .ma {
+            margin-left: 80%;
+            margin-top: 10px;
+        }
+        .jumbotrons{
+            padding-right: 0px;
+            padding-left: 0px;
+            height: 280px; !important;
+            width: 105%; !important;
+            background-image: url("https://i.imgur.com/f22XeGk.png");
+
+            background-size: contain;
+
+        }
+        .btn-primary-outline {
+            background-color: transparent;
+            border-color: #ccc;
+        }
+        .btn-round-lg{
+            border-radius: 20.5px;
+
+        }
+
+        button {
+            display: inline-block;
+        }
+
+
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+
+        tr:nth-child(even) {
+            background-color: #e6eaed;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .input[type=text] {
+            width: 130px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-image: url("https://i.imgur.com/LCkVIxO.png");
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .input[type=text]:focus {
+            width: 100%;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0,0,0);
+            /* Fallback color */
+            background-color: rgba(0,0,0,0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0;
+            }
+            to {
+                top: 0;
+                opacity: 1;
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0;
+            }
+            to {
+                top: 0;
+                opacity: 1;
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:focus,
+        .close:hover {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+        .modal-backdrop {
+            position: relative !important;
+        }
+        .light {
+            margin-left: 840px;
+        }
+        .inline {
+            display: inline-block;
+        }
     </style>
     <script>
         var quiz_member = 0;
@@ -101,6 +333,7 @@
 
         var start_check = false;
         var answer_count = 0;
+        var timer_count;
         window.onload = function() {
 
 
@@ -171,6 +404,7 @@
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data:"roomPin="+roomPin+"&sessionId="+sessionId,
                     success: function (result) {
+                        var append_info;
 
                         if(result['check'] == true) {
                             if(start_check){
@@ -187,6 +421,13 @@
                                 socket.emit('android_join_check', true, sessionId, "popQuiz");
                                 quiz_member++;
                                 $('#member_count').text(quiz_member);
+
+                                append_info= '<tr id="'+sessionId+'" class="header"><tdstyle="width:42%"><i class="fas fa-user-circle"></i>이름</td>';
+                                append_info+='<th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>';
+                                append_info+='<th style="width:15%"><i class="fas fa-user"></i>1명</th></tr>';
+
+                                $('#playing_student').append(append_info);
+
 
                                 console.log(start_check);
                                 console.log(result);
@@ -219,11 +460,12 @@
             start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
-                seconds = 0, minutes = 0, hours = 0,
+                realtime=0,seconds = 0, minutes = 0, hours = 0,
                 t;
 
             function add() {
                 seconds++;
+                realtime++;
                 if (seconds >= 60) {
                     seconds = 0;
                     minutes++;
@@ -234,6 +476,8 @@
                 }
 
                 h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+                socket.emit('pop_timer',roomPin,realtime);
 
                 timer();
             }
@@ -298,6 +542,7 @@
 
                         if( result['characters'] != 'false'){
                             socket.emit('enable_character',roomPin,result['characters']);
+                            $('#'+user_num).remove();
                         }
                     },
                     error: function(request, status, error) {
@@ -312,14 +557,16 @@
 </head>
 <body>
 
-<div id="wait_room_nav" class="inline-class">
-    <img  class="inline-class" src="/img/race_student/exam.png" width="100" height="100">
-    <span>PopQuiz</span>
-    <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-    <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
-    <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
-    <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
-</div>
+{{--<div id="wait_room_nav" class="inline-class">--}}
+    {{--<img  class="inline-class" src="/img/race_student/exam.png" width="100" height="100">--}}
+    {{--<span>PopQuiz</span>--}}
+    {{--<span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>--}}
+    {{--<span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>--}}
+    {{--<span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>--}}
+    {{--<span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>--}}
+{{--</div>--}}
+
+@include('Navigation.race_nav');
 
 <div id="wait_room">
     <div class="student">
@@ -345,9 +592,6 @@
         </table>
     </div>
 
-    <div id="guide_footer" style="position:absolute; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/Info.png" style="width:50px; height:50px;" alt="">학생들이 다 들어오면 시험시작을 클릭해주세요
-    </div>
 </div>
 
 <div>
@@ -457,13 +701,39 @@
             100% {top: -240px;}
             /*height = 40. digits = 6. hence -240 to move it completely to the top*/
         }
-
+        p ,div ,th ,tr  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
     </style>
     <div class="container">
         <h1><time>00:00:00</time></h1>
         <div><span id="submit_count"></span> </div>
     </div>
 </div>
+    <div id="playing_student" style="width:33%; height:40%;   overflow:auto; position:absolute; top:40%;">
+        <table>
+            <tr class="header">
+                <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
+                <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
+                <th style="width:15%"><i class="fas fa-user"></i>1명</th>
+            </tr>
 
+        </table>
+
+    </div>
+
+    <div id="finish_student" style="position:absolute; width:33%; height:40%;   overflow:auto;  top:40%; right:0;">
+        <table>
+            <tr class="header">
+                <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
+                <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
+                <th style="width:15%"><i class="fas fa-user"></i>1명</th>
+            </tr>
+        </table>
+    </div>
+
+<div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
+    <img src="/img/Info.png" style="width:30px; height:30px;" alt="">학생들이 다 들어오면 '시험시작' 버튼을 눌러주세요
+</div>
 </body>
 </html>
