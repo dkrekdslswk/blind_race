@@ -243,6 +243,7 @@ class RaceController extends Controller{
                 }
 
                 $returnValue = array(
+                    'userName' => $userData['userName'],
                     'sessionId' => $postData['sessionId'],
                     'characters' => array(),
                     'quizs' => $quizs,
@@ -311,6 +312,7 @@ class RaceController extends Controller{
 
                 // 반납값 정리
                 $returnValue = array(
+                    'userName' => $userData['userName'],
                     'sessionId' => $postData['sessionId'],
                     'characters' => $characters,
                     'check' => $sessionCheck
