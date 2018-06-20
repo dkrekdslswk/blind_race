@@ -24,6 +24,7 @@
 
 <div >
     <div class="jumbotrons">
+
         <!-- Button trigger modal -->
 
 
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+    <div style="width : 100% ; height: 20px ; background-color: #9fcdff"></div>
 
 </div>
 
@@ -140,7 +142,7 @@
                 <th style="width:26%"><i class="fas fa-user-circle"></i>  이름</th>
                 <th style="width:25%"><i class="fas fa-clipboard-list"></i> 학번</th>
                 <th style="width:35%;"><i class="fas fa-info"></i> 비밀번호</th>
-                <th style="width:25%;"><i class="fas fa-trash-alt"></i>삭제</th>
+                <th style="width:25%;"></th>
             </tr>
         </table>
 
@@ -235,10 +237,9 @@
     .jumbotrons{
         padding-right: 0px;
         padding-left: 0px;
-        height: 280px; !important;
-        width: 105%; !important;
-        background-image: url("https://i.imgur.com/f22XeGk.png");
-
+        height: 260px; !important;
+        width: 100%; !important;
+        background-color: #9E7AC2 ;
         background-size: contain;
 
     }

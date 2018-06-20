@@ -150,7 +150,7 @@
                         <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="{{ url('mygroup') }}">MyGroup</a>
+                        <a href="{{ url('mygroup') }}">My Class</a>
                     </li>
                     <li>
                         <a href="{{ url('race_list') }}">Race</a>
