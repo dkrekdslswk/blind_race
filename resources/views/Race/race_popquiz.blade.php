@@ -561,7 +561,7 @@
         };
 
         function pop_end(){
-            $(location).attr('href', "/race_result?roomPin="+roomPin);
+            $(location).attr('href', "/race_result?roomPin="+roomPin+"&pop");
         }
 
         function btn_click(){
