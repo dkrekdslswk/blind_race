@@ -77,7 +77,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div >
-                        <textarea id="cmemo" cols="70" rows="10"></textarea>
+                        <textarea id="cmemo" cols="60" rows="10"></textarea>
                         <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
                         {{--<button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>--}}
                         <button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
@@ -214,7 +214,7 @@
     }
     .row {
 
-        margin-right: -100px;
+
 
     }
     .pen {

@@ -127,7 +127,7 @@
         class="bgded fixed"
         {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
         style="background-color: #9fcdff">
-<div class="row5" style="width: 100%; height: 60px">
+<div class="row5" style="width: 100%; height: 50px">
     <nav  style="margin: 0;width: 100%;" >
         <div class="">
             <div class="navbar-header">
@@ -290,13 +290,13 @@
     <div class="lrspace">
         <div id="copyright" class="clear">
 
-            <p class="fl_left">Copyright &copy; 2018 - WDJ 17조 -
+            <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
                 <a href="#">캡스톤 디자인</a>
             </p>
             <p class="fl_right">Template By
                 <a
                         target="_blank"
-                        href="http://www.os-templates.com/"
+
                         title="Free Website Templates">WDJ7조</a>
             </p>
 

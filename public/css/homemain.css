@@ -224,7 +224,7 @@ td{border-width:0 1px;}
 
 /* Colours
 --------------------------------------------------------------------------------------------------------------- */
-body{color:#888888; background-color:#161616;}
+body{color:white; background-color:#161616;}
 a{color:#00CEFA;}
 hr, .borderedbox{border-color:#D7D7D7;}
 label span{color:#FF0000; background-color:inherit;}
