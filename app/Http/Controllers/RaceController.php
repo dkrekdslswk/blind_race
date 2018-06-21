@@ -106,22 +106,23 @@ class RaceController extends Controller{
                 // 랜덤 값 지정
                 $roomPin = rand(100000, 999999);
 
+                // 교사 세션에 데이터 저장
+                DB::table('sessionDatas')
+                    ->where('number', '=', $request->session()->get('sessionId'))
+                    ->update([
+                        'raceNumber'        => $raceId,
+                        'PIN'               => $roomPin,
+                        'nick'              => '',
+                        'characterNumber'   => null
+                    ]);
+
                 // 같은 방번호를 가진 사람이 있는가?
                 $roomCheck = DB::table('sessionDatas')
                     ->select('PIN')
                     ->where(['PIN' => $roomPin])
+                    ->where('number', '<>', $request->session()->get('sessionId'))
                     ->first();
             }while($roomCheck);
-
-            // 교사 세션에 데이터 저장
-            DB::table('sessionDatas')
-                ->where('number', '=', $request->session()->get('sessionId'))
-                ->update([
-                    'raceNumber'        => $raceId,
-                    'PIN'               => $roomPin,
-                    'nick'              => '',
-                    'characterNumber'   => null
-                ]);
 
             // 반납할 값 정리
             $returnValue = array(
