@@ -768,7 +768,7 @@ class RecordBoxController extends Controller{
                             'wrongs' => $wrongData,
                             'wrongCount' => count($wrongData),
                             'userCount' => $raceQuizs[$i]->userCount,
-                            'wrong' => $wrongText ? $wrongText->quizNumber : false
+                            'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
                         ));
                     }
                 }
