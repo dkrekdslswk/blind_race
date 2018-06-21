@@ -17,9 +17,8 @@
         var fail_rank = 0;
         window.onload = function() {
 
-            var changehtml ="" ;
-
             var roomPin = "<?php if(isset($_GET['roomPin'])) echo $_GET['roomPin']; ?>" ;
+            var pop_check = "<?php if(isset($_GET['pop'])) echo 1; else echo 0; ?>"
 
             var socket = io(':8890');
 
@@ -51,7 +50,12 @@
                             append_info += '</div></td>';
                             append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
                             append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
-                            append_info += '<span class="user-subhead subtitle">'+r_result[i].rightCount*100+"point"+'</span></td>';
+                            append_info += '<span class="user-subhead subtitle">';
+                                    if(pop_check == 0)
+                                        append_info += r_result[i].rightCount*100+"point";
+                                    else if(pop_check == 1)
+                                        append_info += r_result[i].score+"점";
+                            append_info +='</span></td>';
 
 
 

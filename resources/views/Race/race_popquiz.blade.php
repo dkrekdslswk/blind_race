@@ -20,9 +20,19 @@
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
-        body{
-            background: #9370db; !important;
+        html{
+            width: 100%;
+            height: 100%;
         }
+        body{
+            background-image: url("/img/race_waiting/wait_bg.png");
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+        }
+
         #wait_room_nav{
             box-shadow:  60px 60px 100px -90px #000000, 60px 0px 100px -70px #000000;
             /*background-color: rgba(255,255,255,.84);*/
@@ -62,12 +72,7 @@
             text-align: center;
         }
 
-        .counting span {
-            padding: 10px 20px 10px 20px;
-            background-color: white;
-            position:absolute;
-            left: 10%;
-        }
+
 
         .waitingTable {
             margin-top: 20px;
@@ -110,6 +115,20 @@
             width: 100%;
             border-spacing: 0px 6px !important;
         }
+
+        .shadow {
+            box-shadow: -60px 0px 100px -90px #000000, 70px 60px 100px -90px #000000;
+        }
+
+        #waiting_area {
+            width: 90%;
+            height: 50%;
+            margin-left: 5%;
+            border-radius: 30px;
+            background-color: #ebfaff;
+            padding:100px;
+        }
+
         .fade:not(.show) {
             opacity: 10;
         }
@@ -501,7 +520,7 @@
             $('#group_name').html(groupName);
             $('#group_student_count').html(groupStudentCount);
 
-            $('#room_Pin').html("PIN:"+roomPin);
+            $('#room_Pin_text').html("PIN:"+roomPin);
             socket.emit('join', roomPin);
 
             socket.on('android_join',function(roomPin,sessionId){
@@ -561,12 +580,15 @@
         };
 
         function pop_end(){
-            $(location).attr('href', "/race_result?roomPin="+roomPin);
+            $(location).attr('href', "/race_result?roomPin="+roomPin+"&pop");
         }
 
         function btn_click(){
 
             $('#start_btn').hide();
+            $('#room_Pin_text').hide();
+            $('#pop_timer').css("display","inline-block");
+            $('#pop_timer').show();
             start_check = true;
 
             var h1 = document.getElementsByTagName('h1')[0],
@@ -689,6 +711,12 @@
         <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시험시작</button>
         <button onclick="pop_end();" class="btn btn-lg btn-danger">시험 종료 </button>
         <div id="room_Pin" class="counting">
+            <span id="room_Pin_text"></span>
+
+            <div id="pop_timer" class="container" style="display:none; width: 200px;">
+                <h1><time>00:00:00</time></h1>
+            </div>
+
         </div>
 
         <div id="counting_student">
@@ -699,12 +727,9 @@
 
 </div>
 
-<div>
-    <div class="container">
-        <h1><time>00:00:00</time></h1>
-    </div>
-</div>
-    <div style="width:33%; height:40%;   overflow:auto; position:absolute; top:40%;">
+
+<div id="waiting_area" class="shadow">
+    <div style="width:33%; height:40%;   overflow:auto; position:absolute; top:40%; left:15%;">
         <table id="playing_student">
             <tr class="header">
                 <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
@@ -715,7 +740,7 @@
 
     </div>
 
-    <div  style="position:absolute; width:33%; height:40%;   overflow:auto;  top:40%; right:0;">
+    <div  style="position:absolute; width:33%; height:40%;   overflow:auto;  top:40%; right:15%;">
         <table id="finish_student">
             <tr class="header">
                 <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
@@ -723,6 +748,8 @@
             </tr>
         </table>
     </div>
+
+</div>
 
 <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
     <img src="/img/Info.png" style="width:30px; height:30px;" alt="">학생들이 다 들어오면 '시험시작' 버튼을 눌러주세요
