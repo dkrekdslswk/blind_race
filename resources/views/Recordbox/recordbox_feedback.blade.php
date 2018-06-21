@@ -195,11 +195,7 @@
 
                     //전체 페이지 출력
                     AllPageLoad(group_id);
-
-                    $('.record_chart').show();
-                    $('.record_history').hide();
-                    $('.record_student').hide();
-                    $('.record_feedback').hide();
+                    loadFeedback(group_id);
 
                 },
                 error: function (data) {
@@ -208,22 +204,6 @@
             });
 
         };
-
-        //전체 페이지 로드
-        function AllPageLoad(groupid){
-
-            //차트 불러오기
-            getChartData_and_loadChart(groupid,defaultStartDate,defaultEndDate);
-
-            //가장 상단에 있는 클래스 ID값으로  최근 기록 불러오기
-            getHistory(groupid);
-
-            //가장 상단에 있는 클래스 ID값으로 학생명단 만들기
-            getStudents(groupid);
-
-            //피드백 페이지 불러오기
-
-        }
 
         $(document).ready(function () {
 
@@ -1888,9 +1868,9 @@
             }
         }
 
-        function loadFeedback(){
+        function loadFeedback(groupId){
 
-            var reqData = {"groupId" : 1};
+            var reqData = {"groupId" : groupId};
 
             $.ajax({
                 type: 'POST',
@@ -1914,7 +1894,6 @@
                               check : false or true
                               }
                     */
-
                     var instanceData = { QnAs : {
                             0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
                                 question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
@@ -1952,7 +1931,6 @@
 
             });
         }
-        loadFeedback();
 
 
         function loadFeedbackModal(qnaId){
@@ -2010,42 +1988,6 @@
             });
         }
 
-        //레코드 네비바 클릭 할 때 마다 보여줄 페이지를 보여주기 및 숨기기
-        function recordControl(id){
-            switch (id){
-                case "chart" :
-                    $('.record_chart').show();
-                    $('.record_history').hide();
-                    $('.record_student').hide();
-                    $('.record_feedback').hide();
-                    break;
-                case "history" :
-                    $('.record_history').show();
-                    $('.record_chart').hide();
-                    $('.record_student').hide();
-                    $('.record_feedback').hide();
-                    break;
-                case "students" :
-                    $('.record_student').show();
-                    $('.record_chart').hide();
-                    $('.record_history').hide();
-                    $('.record_feedback').hide();
-                    break;
-                case "homework" :
-                    $('.record_homework').show();
-                    $('.record_chart').hide();
-                    $('.record_history').hide();
-                    $('.record_feedback').hide();
-                    break;
-                case "feedback" :
-                    $('.record_feedback').show();
-                    $('.record_chart').hide();
-                    $('.record_student').hide();
-                    $('.record_history').hide();
-                    break;
-            }
-        }
-
     </script>
 
 </head>
@@ -2066,21 +2008,6 @@
             @include('Recordbox.record_recordnav')
         </div>
 
-        <div class="record_chart">
-            {{--레코드 차트페이지 불러오기--}}
-            @include('Recordbox.record_chart')
-        </div>
-
-        <div class="record_history">
-            {{--레코드 최근기록페이지 불러오기--}}
-            @include('Recordbox.record_history')
-        </div>
-
-        <div class="record_student">
-            {{--레코드 학생페이지 불러오기--}}
-            @include('Recordbox.record_studentslist')
-        </div>
-
         <div class="record_feedback">
             {{--레코드 피드백페이지 불러오기--}}
             @include('Recordbox.record_feedback')
@@ -2090,100 +2017,6 @@
 </div>
 
 <div class="modal_page">
-    {{--Modal : Race Record--}}
-    <div class="modal fade" id="modal_RaceGradeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="width: 1000px
-        ;" >
-
-            {{--PAGE SPLIT 1. 모달 학생점수 페이지--}}
-            <div class="modal-content studentGrade">
-
-                <div class="modal-header">
-                    <h3 class="modal-title" id="ModalLabel" >학생 점수</h3>
-
-                    {{--INSERT DATA 1. 날짜--}}
-                    <div id="modal_date"> </div>
-
-                    {{--INSERT DATA 2. 레이스이름과 교수님 성함--}}
-                    <div id="modal_raceName_teacher"></div>
-
-                </div>
-
-                <div class="modal-body">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th id="modal_total_students">
-
-                            </th>
-                            <th>
-                                평균점수
-                            </th>
-                            <th>
-                                어휘
-                            </th>
-                            <th>
-                                문법
-                            </th>
-                            <th>
-                                독해
-                            </th>
-                            <th>
-                                갯수
-                            </th>
-                        </tr>
-                        </thead>
-
-                        {{--INSERT DATA 3. 학생들 성적 테이블--}}
-                        <tbody id="modal_gradeList">
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="modal-footer">
-
-                    {{--PAGE SPLIT 2. 모달 전체 평균 점수들--}}
-                    {{--INSERT DATA 4. 전체 평균 점수들--}}
-                    <div id="modal_total_grades"> </div>
-                </div>
-            </div>
-
-            {{--PAGE SPLIT 3. 모달 상세보기 페이지--}}
-            <div class="modal-content detail">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="ModalLabel">상세 보기</h3>
-                </div>
-
-                <div class="modal-body">
-
-                    {{--PAGE SPLIT 6. 모달 레이스 전체 오답노트 리스트--}}
-                    <div id="toggle_only_wrong_answers" class="modal_wrong">
-
-                        <div class="wrong_left">
-
-                        </div>
-                        <div class="wrong_right">
-
-                        </div>
-
-                        <div>
-                            <table class="table table-hover">
-                                <tbody id="modal_allWrongAnswerList">
-
-                                </tbody>
-
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     {{--Modal : select group--}}
     <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
