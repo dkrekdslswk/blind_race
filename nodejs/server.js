@@ -77,9 +77,9 @@ io.on('connection', function (socket){
     });
 
     //쪽지시험이 끝났음을 알리는 함수
-    socket.on('pop_quiz_status',function(roomPin){
+    socket.on('pop_quiz_status',function(roomPin,sessionId){
         console.log('쪽지시험 끝남 ++');
-        io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
+        io.sockets.in(roomPin).emit('pop_quiz_status',sessionId);
     });
 
     //대기방에서 퇴장한 유저의 캐릭터를 다시 활성화 시키는 함수

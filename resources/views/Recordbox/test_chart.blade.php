@@ -88,47 +88,47 @@
 
 </head>
 
-    <div class="recordbox-chartContainer">
+<div class="recordbox-chartContainer">
 
-        <div class="chartAttribute">
+    <div class="chartAttribute">
 
-            <div class="attributeContainer">
+        <div class="attributeContainer">
 
-                <div class="recordbox-radio">
-                    <h4>보기</h4>
+            <div class="recordbox-radio">
+                <h4>보기</h4>
 
-                    <div class="recordbox-radioButtons">
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">일주일</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='2' >한달</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='3' >3개월</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='4' >6개월</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='5' >12개월</label>
-                    </div>
-                </div>
-
-                <div class="chooseDate" >
-                    <h4>기간</h4>
-
-                    <input type="date" name="chooseday" id="startDate"></input>
-
-                    <input type="date" name="chooseday" id="endDate"></input>
-
-                    <button class="btn btn-default" onclick="orderChart()">
-                        조회
-                    </button>
+                <div class="recordbox-radioButtons">
+                    <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">일주일</label>
+                    <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='2' >한달</label>
+                    <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='3' >3개월</label>
+                    <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='4' >6개월</label>
+                    <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='5' >12개월</label>
                 </div>
             </div>
-        </div>
 
+            <div class="chooseDate" >
+                <h4>기간</h4>
 
-        <div class="chartArea">
-            <div class="chartWrapper">
-                <div class="chartAreaWrapper">
-                    <div class="canvaschart" id="chartContainer"></div>
-                </div>
+                <input type="date" name="chooseday" id="startDate"></input>
+
+                <input type="date" name="chooseday" id="endDate"></input>
+
+                <button class="btn btn-default" onclick="orderChart()">
+                    조회
+                </button>
             </div>
         </div>
-
     </div>
+
+
+    <div class="chartArea">
+        <div class="chartWrapper">
+            <div class="chartAreaWrapper">
+                <div class="canvaschart" id="chartContainer"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

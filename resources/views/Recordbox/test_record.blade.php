@@ -1,3 +1,9 @@
+<?php
+
+    echo $response;
+
+?>
+
 <html>
 <head>
 
@@ -31,7 +37,7 @@
             padding: 0;
             position: relative;
             float: left;
-            width: 88%;
+            width: 85%;
         }
         .insertMargin {
             margin-left: 12%;
@@ -108,6 +114,7 @@
             width: 440px;
             min-height: 70px;
             margin-top: 10px;
+            margin-bottom: 15px;
             border:1px solid #e5e6e8;
         }
 
@@ -193,10 +200,6 @@
 
                     //전체 페이지 출력
                     AllPageLoad(group_id);
-
-
-
-
 
                     $('.record_chart').show();
                     $('.record_history').hide();
@@ -633,7 +636,8 @@
                             data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
 
                             $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                                .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")));
+                                .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료"))
+                                .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
                         }else{
                             $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
                                 .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료"))
@@ -758,12 +762,8 @@
                                         }
                     */
 
-                    console.log('학생 성적표 받아올때 (getStudents)',data);
-
-                    var resData = data.races;
-
                     //1은 학생개인 성적표
-                    makingModalPage(raceId,resData,1);
+                    makingModalPage(raceId,data,1);
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
 
                 },
@@ -1045,9 +1045,7 @@
                     };
                     */
 
-                    var resData = data;
-
-                    makingModalPage(raceId,resData,2);
+                    makingModalPage(raceId,data,2);
 
                 },
                 error: function (data) {
@@ -1103,55 +1101,63 @@
                     $('#historyListRaceName').empty();
                     $('#history_homework').empty();
 
-                    for (var i = 0 ; i < stdHomework.length ; i++ ) {
-                        $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
-                    }
-
                     for (var i = 0; i < stdHomework.length ; i ++) {
 
-                        $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
-                        $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
+                        if(stdHomework[i]['wrongState'] == "not" && stdHomework[i]['retestState'] == "not"){
+                            $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
 
-                        $('#history_homework_tr' + i).append($('<td>').text(stdHomework[i]['userName']));
+                            $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
+                            $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
 
-                        switch (stdHomework[i]['retestState']){
-                            case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+                            $('#history_homework_tr' + i).append($('<td>').attr('colspan',3).text("해당 학생 없음"));
 
-                                break;
-                            case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                        }else{
 
-                                break;
-                            case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
-                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
+                            $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
 
-                                break;
+                            $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
+                            $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
+
+                            $('#history_homework_tr' + i).append($('<td>').text(stdHomework[i]['userName']));
+
+                            switch (stdHomework[i]['retestState']){
+                                case "not" :
+                                    $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+
+                                    break;
+                                case "order" :
+                                    $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+
+                                    break;
+                                case "clear" :
+                                    $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
+                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                            .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
+
+                                    break;
+                            }
+
+                            //임의로 값 설정
+                            stdHomework[i]['wrongState'] = "clear";
+
+                            switch (stdHomework[i]['wrongState']){
+                                case "not" :
+                                    $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+
+                                    break;
+                                case "order" :
+                                    $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
+
+                                    break;
+                                case "clear" :
+                                    $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
+                                        .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
+                                            .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
+
+                                    break;
+                            }
                         }
-
-                        stdHomework[i]['wrongState'] = "clear";
-
-                        switch (stdHomework[i]['wrongState']){
-                            case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
-
-                                break;
-                            case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
-
-                                break;
-                            case "clear" :
-                                $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
-                                    .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
-
-                                break;
-                        }
-
                     }
-
 
                 },
                 error: function (data) {
@@ -1209,8 +1215,8 @@
                     */
 
                     var ChartData = makingStudentChartData(data);
-
                     makingStudentChart(ChartData);
+                    var raceData;
 
                     $('#studentGradeList').empty();
 
@@ -1245,6 +1251,8 @@
                                 break;
                         }
 
+                        //임의로 값 설정
+                        raceData['wrongState'] = "clear";
 
                         switch (raceData['wrongState']){
                             case "not" :
@@ -1258,7 +1266,7 @@
                             case "clear" :
                                 $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceData['raceId']).attr('name',userId).text("제출")));
+                                        .attr('id',raceData['raceId']).attr('name',userId).text("제출완료")));
 
                                 break;
                         }
@@ -1414,16 +1422,14 @@
             var gradeByOne = 0;
             var makingStudentData;
 
-            var parseData = JSON.parse(JSON.stringify(allData['races'][0]));
+            var parseData = JSON.parse(JSON.stringify(data['races']));
 
             //변수 접근은 .
             //배열 접근은 ['']
             for(var i = 0 ; i < parseData.length ; i++){
                 makingStudentData = JSON.parse(parseData[i]);
-                console.log(makingStudentData);
 
                 gradeByOne = Math.floor(100 / makingStudentData.allCount);
-                console.log(gradeByOne);
 
                 //문법 총점 구하기
                 var grammar_grade = gradeByOne * makingStudentData.grammarRightCount;
@@ -1674,9 +1680,7 @@
                 data: reqData,
                 success: function (data) {
 
-                    var resData = data['races'];
-
-                    makingModalPage(raceId,resData,1);
+                    makingModalPage(raceId,data,1);
                     $('.modal-content.studentGrade .modal-title').text("재시험 점수");
 
                 },
@@ -1728,8 +1732,8 @@
                     var totalRight = 0;
 
                     //data -> 레이스에 관한 모든 데이터(리턴값 그대로)
+                    StudentData = JSON.parse(allData['races'][0]);
                     StudentScore = makingStudentChartData(allData);
-                    StudentData = JSON.parse(allData[0]);
 
                     $('.modal-content.studentGrade .modal-title').text("학생 점수");
                     $('#modal_date').text(StudentData['year'] + "년 " + StudentData['month'] + "월 " + StudentData['day'] + "일");
@@ -1737,10 +1741,9 @@
                     $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
 
 
-                    for(var i = 0 ; i < allData.length ; i++){
+                    for(var i = 0 ; i < allData['races'].length ; i++){
 
-                        StudentData = JSON.parse(allData[i]);
-                        console.log('stdData',StudentData);
+                        StudentData = JSON.parse(allData['races'][i]);
 
                         $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
 
@@ -1761,11 +1764,11 @@
                     }
 
                     //modal-footer 총 점수들 표시
-                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData.length)+
-                        " / 어휘: "+parseInt(totalVoca / allData.length)+
-                        " / 문법: "+parseInt(totalGrammer / allData.length)+
-                        " / 독해: "+parseInt(totalWord / allData.length)+
-                        " / 갯수: "+parseInt(totalRight / allData.length));
+                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData['races'].length)+
+                        " / 어휘: "+parseInt(totalVoca / allData['races'].length)+
+                        " / 문법: "+parseInt(totalGrammer / allData['races'].length)+
+                        " / 독해: "+parseInt(totalWord / allData['races'].length)+
+                        " / 갯수: "+parseInt(totalRight / allData['races'].length));
 
 
                     //오답들
@@ -1788,14 +1791,14 @@
 
                     //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
                     StudentScore = makingStudentChartData(allData);
-                    StudentData = JSON.parse(allData[0]);
+                    StudentData = JSON.parse(allData['races'][0]);
 
                     $('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
                     $('#modal_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
 
-                    for(var i = 0 ; i < allData.length ; i++){
+                    for(var i = 0 ; i < allData['races'].length ; i++){
 
-                        StudentData = JSON.parse(allData[i]);
+                        StudentData = JSON.parse(allData['races'][i]);
 
                         $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
 
@@ -1981,7 +1984,7 @@
                     .attr('id',qnaId);
                 $('.request_contents').text(instanceData['QnAs'][i]['question']);
                 $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
-                $('.modal-footer').append($('<button data-dismiss="modal" >').attr('class','btn btn-primary').text('확인'));
+                $('.modal-footer').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
                 $('.modal-footer').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
 
             }
@@ -1990,24 +1993,23 @@
 
         function insertQuestion(){
 
-            var reqData = document.getElementsByName('feedbackImg')[0].files[0];
+            var formData = new FormData();
+            var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
 
-            console.log(reqData);
+            formData.append('questionImg', imgfiles);
 
             $.ajax({
                 type: 'POST',
                 url: "{{url('/recordBoxController/insertQuestion')}}",
-                //processData: false,
-                //contentType: false,
-                data:reqData,
-                dataType: 'json',
+                processData: false,
+                contentType: false,
+                data:formData,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
 
-
                 },
                 error: function (data) {
-                    alert("loadFeedback / 피드백 받아오기 에러");
+                    alert("loadFeedback / 피드백 등록하기 에러");
                 }
 
             });
@@ -2247,19 +2249,34 @@
                             파일 첨부
                         </label>
 
-                        <form type="file">
-                            <input type="file" name="feedbackImg" accept="image/*" onchange="loadFile()" id="ex_file">
-
-                            <img id="output" style="max-width: 300px;max-height: 300px;"/>
-
-                            {{--사진 불러오는 스크립트--}}
-                            <script type="text/javascript">
-                                $(document).on('click', '#modal_feedback_cancel', function (e) {
-                                    $('#output').attr("src","");
-                                    $('#teachersFeedback').val("");
-                                });
-                            </script>
+                        <form id="myform" name="myform" method="post" enctype="multipart/form-data">
+                            <input type="file" name="feedbackImg" onchange="loadFile()" id="ex_file">
                         </form>
+
+                        <img id="output" style="max-width: 300px;max-height: 300px;"/>
+
+                        {{--사진 불러오는 스크립트--}}
+                        <script type="text/javascript">
+
+                            function loadFile(){
+                                var reader = new FileReader();
+
+                                var ex_file = document.getElementById('ex_file');
+
+                                reader.onload = function(){
+                                    var output = document.getElementById('output');
+                                    output.src = reader.result;
+                                };
+                                reader.readAsDataURL(event.target.files[0]);
+
+                            };
+
+
+                            $(document).on('click', '#modal_feedback_cancel', function (e) {
+                                $('#output').attr("src","");
+                                $('#teachersFeedback').val("");
+                            });
+                        </script>
                     </div>
 
                     {{--텍스트 창--}}

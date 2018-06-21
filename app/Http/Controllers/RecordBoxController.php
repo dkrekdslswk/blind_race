@@ -618,8 +618,7 @@ class RecordBoxController extends Controller{
                     're.retest' => $postData['retestState']
                 );
                 $typeGroupBy = array('re.raceNo', 're.userNo', 're.quizNo', 're.retest');
-            }
-            else if ($postData['userId']){
+            } else if ($postData['userId']){
                 $typeWhere = array(
                     're.userNo' => $postData['userId'],
                     're.raceNo' => $postData['raceId'],
@@ -634,169 +633,153 @@ class RecordBoxController extends Controller{
                 $typeGroupBy = array('re.raceNo', 're.quizNo', 're.retest');
             }
 
-            switch ($userData['classification']){
-                case 'student':
-                case 'sleepStudent':
-                    // 반납값 정리1
-                    if ($postData['userId'] == $userData['userId']){
-                        $returnValue = array(
-                            'check' => false
-                        );
-                        break;
+            // 문제 리스트 뽑아오기
+            $raceQuizs = DB::table('records as re')
+                ->select(
+                    'qb.number as quizId',
+                    'qb.question as question',
+                    'qb.hint as hint',
+                    'qb.rightAnswer as rightAnswer',
+                    'qb.example1 as example1',
+                    'qb.example2 as example2',
+                    'qb.example3 as example3',
+                    'qb.type as type',
+                    DB::raw('count(distinct re.userNo) as userCount'),
+                    DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
+                )
+                ->where($typeWhere)
+                ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                ->groupBy($typeGroupBy)
+                ->orderBy('re.quizNo')
+                ->get();
+
+            // 문제 확인
+            $wrongs = array();
+            for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
+                // 오답노트 불러오기용 변수
+                $wrongText = false;
+
+                // 오답 확인 정답자 수가 총 유저 수보다 작을 경우
+                if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
+                    // 타입 구분용
+                    $type = explode(' ', $raceQuizs[$i]->type);
+
+                    // 객관식 처리
+                    if ($type[1] == 'obj') {
+                        $quizData = DB::table('records as re')
+                            ->select(
+                                DB::raw('count(CASE WHEN re.answer = qb.rightAnswer THEN 1 END) as rightAnswerCount'),
+                                DB::raw('count(CASE WHEN re.answer = qb.example1 THEN 1 END) as example1Count'),
+                                DB::raw('count(CASE WHEN re.answer = qb.example2 THEN 1 END) as example2Count'),
+                                DB::raw('count(CASE WHEN re.answer = qb.example3 THEN 1 END) as example3Count')
+                            )
+                            ->where($typeWhere)
+                            ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                            ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                            ->groupBy($typeGroupBy)
+                            ->first();
+
+                        // 학생 조회일 경우 오답노트도 출력
+                        if ($postData['userId']){
+                            $wrongText = DB::table('records as re')
+                                ->select(
+                                    're.wrongAnswerNote as wrongAnswerNote'
+                                )
+                                ->where([
+                                    're.quizNo' => $raceQuizs[$i]->quizId
+                                ])
+                                ->where($typeWhere)
+                                ->first();
+                        }
+
+                        array_push($wrongs, array(
+                            'number' => $i + 1,
+                            'id' => $raceQuizs[$i]->quizId,
+                            'type' => $type[1],
+                            'question' => $raceQuizs[$i]->question,
+                            'hint' => $raceQuizs[$i]->hint,
+                            'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                            'rightAnswerCount' => $quizData->rightAnswerCount,
+                            'example1' => $raceQuizs[$i]->example1,
+                            'example1Count' => $quizData->example1Count,
+                            'example2' => $raceQuizs[$i]->example2,
+                            'example2Count' => $quizData->example2Count,
+                            'example3' => $raceQuizs[$i]->example3,
+                            'example3Count' => $quizData->example3Count,
+                            'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
+                            'userCount' => $raceQuizs[$i]->userCount,
+                            'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
+                        ));
                     }
-                case 'teacher':
-                case 'root':
-                    // 문제 리스트 뽑아오기
-                    $raceQuizs = DB::table('records as re')
-                        ->select(
-                            'qb.number as quizId',
-                            'qb.question as question',
-                            'qb.hint as hint',
-                            'qb.rightAnswer as rightAnswer',
-                            'qb.example1 as example1',
-                            'qb.example2 as example2',
-                            'qb.example3 as example3',
-                            'qb.type as type',
-                            DB::raw('count(distinct re.userNo) as userCount'),
-                            DB::raw('count(CASE WHEN re.answerCheck = "O" THEN 1 END) as rightAnswerCount')
-                        )
-                        ->where($typeWhere)
-                        ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                        ->groupBy($typeGroupBy)
-                        ->orderBy('re.quizNo')
-                        ->get();
+                    // 주관식 처리
+                    else if ($type[1] == 'sub') {
+                        $quizData = DB::table('records as re')
+                            ->select(
+                                're.answer as answer',
+                                'u.number as userId',
+                                'u.name as userName'
+                            )
+                            ->where($typeWhere)
+                            ->where(['qb.number' => $raceQuizs[$i]->quizId])
+                            ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
+                            ->join('users as u', 'u.number', '=', 're.userNo')
+                            ->get();
 
-                    // 문제 확인
-                    $wrongs = array();
-                    for ($i = 0 ; $i < count($raceQuizs) ; $i++) {
-                        // 오답노트 불러오기용 변수
-                        $wrongText = false;
-
-                        // 타입 구분용
-                        $type = explode(' ', $raceQuizs[$i]->type);
-
-                        // 오답 확인
-                        if ($raceQuizs[$i]->userCount > $raceQuizs[$i]->rightAnswerCount) {
-                            if ($type[1] == 'obj') {
-                                // 객관식 처리
-                                $quizData = DB::table('records as re')
-                                    ->select(
-                                        DB::raw('count(CASE WHEN re.answer = qb.rightAnswer THEN 1 END) as rightAnswerCount'),
-                                        DB::raw('count(CASE WHEN re.answer = qb.example1 THEN 1 END) as example1Count'),
-                                        DB::raw('count(CASE WHEN re.answer = qb.example2 THEN 1 END) as example2Count'),
-                                        DB::raw('count(CASE WHEN re.answer = qb.example3 THEN 1 END) as example3Count')
-                                    )
-                                    ->where($typeWhere)
-                                    ->where(['qb.number' => $raceQuizs[$i]->quizId])
-                                    ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                                    ->groupBy($typeGroupBy)
-                                    ->first();
-
-                                // 학생 조회일 경우 오답노트도 출력
-                                if ($postData['userId']){
-                                    $wrongText = DB::table('records as re')
-                                        ->select(
-                                            're.wrongAnswerNote as wrongAnswerNote'
-                                        )
-                                        ->where([
-                                            're.quizNo' => $raceQuizs[$i]->quizId
-                                        ])
-                                        ->where($typeWhere)
-                                        ->first();
-                                }
-
-                                array_push($wrongs, array(
-                                    'number' => $i + 1,
-                                    'id' => $raceQuizs[$i]->quizId,
-                                    'type' => $type[1],
-                                    'question' => $raceQuizs[$i]->question,
-                                    'hint' => $raceQuizs[$i]->hint,
-                                    'rightAnswer' => $raceQuizs[$i]->rightAnswer,
-                                    'rightAnswerCount' => $quizData->rightAnswerCount,
-                                    'example1' => $raceQuizs[$i]->example1,
-                                    'example1Count' => $quizData->example1Count,
-                                    'example2' => $raceQuizs[$i]->example2,
-                                    'example2Count' => $quizData->example2Count,
-                                    'example3' => $raceQuizs[$i]->example3,
-                                    'example3Count' => $quizData->example3Count,
-                                    'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
-                                    'userCount' => $raceQuizs[$i]->userCount,
-                                    'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
-                                ));
-                            } else if ($type[1] == 'sub') {
-                                // 주관식 처리
-                                $quizData = DB::table('records as re')
-                                    ->select(
-                                        're.answer as answer',
-                                        'u.number as userId',
-                                        'u.name as userName'
-                                    )
-                                    ->where($typeWhere)
-                                    ->where(['qb.number' => $raceQuizs[$i]->quizId])
-                                    ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                                    ->join('users as u', 'u.number', '=', 're.userNo')
-                                    ->get();
-
-                                $wrongData = array();
-                                $rights = explode(',', $raceQuizs[$i]->rightAnswer);
-                                foreach ($quizData as $quiz) {
-                                    foreach ($rights as $right){
-                                        if ($quiz->answer == $right){
-                                            array_push($wrongData, array(
-                                                'userId' => $quiz->userId,
-                                                'userName' => $quiz->userName,
-                                                'answer' => $quiz->answer
-                                            ));
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                // 학생 조회일 경우 오답노트도 출력
-                                if ($postData['userId']){
-                                    $wrongText = DB::table('records as re')
-                                        ->select(
-                                            're.wrongAnswerNote as wrongAnswerNote'
-                                        )
-                                        ->where([
-                                            're.quizNo' => $raceQuizs[$i]->quizId
-                                        ])
-                                        ->where($typeWhere)
-                                        ->first();
-                                }
-
-                                if (count($wrongData) > 0) {
-                                    array_push($wrongs, array(
-                                        'number' => $i + 1,
-                                        'id' => $raceQuizs[$i]->quizId,
-                                        'type' => $type[1],
-                                        'question' => $raceQuizs[$i]->question,
-                                        'hint' => $raceQuizs[$i]->hint,
-                                        'rightAnswer' => $raceQuizs[$i]->rightAnswer,
-                                        'rightAnswerCount' => $raceQuizs[$i]->userCount - count($wrongData),
-                                        'wrongs' => $wrongData,
-                                        'wrongCount' => count($wrongData),
-                                        'userCount' => $raceQuizs[$i]->userCount,
-                                        'wrong' => $wrongText ? $wrongText->quizNumber : false
-                                    ));
+                        $wrongData = array();
+                        $rights = explode(',', $raceQuizs[$i]->rightAnswer);
+                        foreach ($quizData as $quiz) {
+                            $rightCheck = true;
+                            foreach ($rights as $right){
+                                if ($quiz->answer == $right) {
+                                    $rightCheck = false;
+                                    break;
                                 }
                             }
+                            if ($rightCheck) {
+                                array_push($wrongData, array(
+                                    'userId' => $quiz->userId,
+                                    'userName' => $quiz->userName,
+                                    'answer' => $quiz->answer
+                                ));
+                            }
                         }
-                    }
 
-                    // 반납값 정리2
-                    $returnValue = array(
-                        'raceId' => $postData['raceId'],
-                        'wrongs' => $wrongs,
-                        'check' => true
-                    );
-                    break;
-                default:
-                    $returnValue = array(
-                        'check' => false
-                    );
-                    break;
+                        // 학생 조회일 경우 오답노트도 출력
+                        if ($postData['userId']){
+                            $wrongText = DB::table('records as re')
+                                ->select(
+                                    're.wrongAnswerNote as wrongAnswerNote'
+                                )
+                                ->where([
+                                    're.quizNo' => $raceQuizs[$i]->quizId
+                                ])
+                                ->where($typeWhere)
+                                ->first();
+                        }
+
+                        array_push($wrongs, array(
+                            'number' => $i + 1,
+                            'id' => $raceQuizs[$i]->quizId,
+                            'type' => $type[1],
+                            'question' => $raceQuizs[$i]->question,
+                            'hint' => $raceQuizs[$i]->hint,
+                            'rightAnswer' => $raceQuizs[$i]->rightAnswer,
+                            'rightAnswerCount' => $raceQuizs[$i]->userCount - count($wrongData),
+                            'wrongs' => $wrongData,
+                            'wrongCount' => count($wrongData),
+                            'userCount' => $raceQuizs[$i]->userCount,
+                            'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
+                        ));
+                    }
+                }
             }
+
+            // 반납값 정리2
+            $returnValue = array(
+                'raceId' => $postData['raceId'],
+                'wrongs' => $wrongs,
+                'check' => true
+            );
         } else {
             $returnValue = array(
                 'check' => false
