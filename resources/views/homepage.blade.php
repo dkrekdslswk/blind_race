@@ -127,8 +127,8 @@
         class="bgded fixed"
         {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
         style="background-color: #9fcdff">
-<div class="">
-    <nav class="navbar navbar-default" style="margin: 0;width: 100%;  background-image: url("https://i.imgur.com/kwsWub8.png")">
+<div class="row5" style="width: 100%; height: 60px">
+    <nav  style="margin: 0;width: 100%;" >
         <div class="">
             <div class="navbar-header">
                 <button
@@ -166,10 +166,10 @@
 
                         <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
                     </li>
-                    <li>
+                    {{--<li>--}}
 
-                        <button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>
-                    </li>
+                        {{--<button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>--}}
+                    {{--</li>--}}
 
                 </ul>
 
@@ -207,7 +207,7 @@
 
 <div class="flexslider">
 
-            <a href="/"><img style="width: 100%" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
+            <a href="/"><img style="width: 100% ; height: 358px" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
             <div class="flex-caption">
 
             </div>
@@ -283,7 +283,9 @@
 </div>
 
 
+<div  style="width: 100% ; height: 30px; background-color: white">
 
+</div>
 <div class="row5">
     <div class="lrspace">
         <div id="copyright" class="clear">
@@ -419,7 +421,7 @@
 <style>
     img {
         width: 1700px;
-        height: auto;
+        height: 358px;
         margin: 0;
         padding: 0;
         border: none;
@@ -456,11 +458,14 @@
         width: 100%;
     }
     .navbar.navbar-default .nav-collapse {
-        background-color: #f8f8f8;
+        background-image: url("https://i.imgur.com/7nT1LDd.png"); !important;
         margin: 0;
     }
+    ..navbar-default {
+        background-image: url("https://i.imgur.com/7nT1LDd.png"); !important;
+    }
     .navbar.navbar-inverse .nav-collapse {
-        background-color: #222;
+        background-color: black;
     }
     .navbar .nav-collapse .navbar-form {
         border-width: 0;

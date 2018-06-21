@@ -40,7 +40,7 @@
         width: 100%;
     }
     .navbar.navbar-default .nav-collapse {
-        background-color: #f8f8f8;
+        background-color: black;
         margin: 0;
     }
     .navbar.navbar-inverse .nav-collapse {
@@ -74,11 +74,25 @@
         .nav-collapse > li {
             float: none;
         }
+
     }
+    element.style {
+        width: 100%;
+        height: 60px;
+        border-color: transparent;
+    }
+    .row5, .row5 a {
+        color: white;
+        background-image: url(https://i.imgur.com/7nT1LDd.png);
+        background-size: auto;
+    }
+    .row5, .row5 a {
+    }
+
 </style>
 <body>
-<div class="">
-    <nav class="navbar navbar-default" style="margin: 0;width: 100%;">
+<div class="" style="background-color: black">
+    <nav class="navbar  row5" style="margin: 0;width: 100%;">
         <div class="">
             <div class="navbar-header">
                 <button
@@ -91,7 +105,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="{{ asset('img/logo.png') }}" style="width:125px; height:50px; "/>
+                <img src="https://i.imgur.com/dmXfbDm.png" style="width:125px; height:50px; "/>
             </div>
 
             <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
@@ -100,7 +114,7 @@
                         <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="{{ url('mygroup') }}">My Class</a>
+                        <a href="{{ url('mygroup') }}">MyGroup</a>
                     </li>
                     <li>
                         <a href="{{ url('race_list') }}">Race</a>
@@ -113,7 +127,7 @@
                     </li>
 
                     <li>
-                       
+
                     </li>
                 </ul>
 

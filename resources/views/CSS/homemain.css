@@ -245,7 +245,7 @@ label span{color:#FF0000; background-color:inherit;}
 .row3{color:#888888; background-color:#FFFFFF; border-color:#F4F4F4;}
 .row4{color:#888888; background-color:#2D2D2D;}
 .row4 .overlay{color:inherit; background-color:rgba(45,45,45,.8);/* #2D2D2D */}
-.row5, .row5 a{color:#888888; background-color:#FFFFFF;}
+.row5, .row5 a{color:#888888; background-color:#FFFFFF; background-size: auto;}
 
 
 /* Header */
