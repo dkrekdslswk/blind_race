@@ -496,6 +496,9 @@
             float: none;
         }
     }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 </style>
 
 </body>

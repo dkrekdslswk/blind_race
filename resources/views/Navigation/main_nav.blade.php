@@ -86,6 +86,9 @@
         background-image: url(https://i.imgur.com/7nT1LDd.png);
         background-size: auto;
     }
+    ::-webkit-scrollbar {
+        display: none;
+    }
     .row5, .row5 a {
     }
 
