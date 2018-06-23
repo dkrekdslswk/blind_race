@@ -1,15 +1,110 @@
-<html>
-<head>
-    <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-</head>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script>
 
+    function loginCheck(){
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/userController/loginCheck')}}",
+            dataType: 'json',
+            async:false,
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function (result) {
+                if(result['check'] == true) {
+
+                    switch(result['classification'])
+                    {
+                        case 'student' :
+                            $('#home_race').attr("href", "/race_student");
+                            break;
+                        case 'teacher' :
+                            $('#home_race').attr("href", "/race_list");
+                            break;
+                    }
+                    $('.Login_form').hide();
+                    $('#Login_button').text("Log-Out");
+                    $('#Login_button').attr("onclick","tryLogout()");
+                }
+                else{
+                    $('#home_race').attr("href", "#");
+                }
+
+            },
+            error: function(request, status, error) {
+
+            }
+        });
+        //ajax끝
+    }
+    function tryLogin(){
+        var p_id = $('#web_ID').val();
+        var p_pw = $('#web_PW').val();
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/userController/webLogin')}}",
+            dataType: 'json',
+            async:false,
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data:"p_ID="+p_id+"&p_PW="+p_pw,
+            success: function (result) {
+                if(result['check'] == true) {
+
+                    switch(result['classification'])
+                    {
+                        case 'student' :
+                            $('#home_race').attr("href", "/race_student");
+                            break;
+                        case 'teacher' :
+                            $('#home_race').attr("href", "/race_list");
+                            break;
+                    }
+
+                    $('#Login_button').text("Log-Out");
+                    $('#Login_button').attr("onclick","tryLogout()");
+                    $('.Login_form').hide();
+                    window.location.reload();
+
+                }
+                else{
+                    swal("로그인 실패.", " ", "warning");
+                }
+
+            },
+            error: function(request, status, error) {
+
+            }
+        });
+        //ajax끝
+    }
+
+    function tryLogout(){
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/userController/webLogout')}}",
+            dataType: 'json',
+            async:false,
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function (result) {
+                $('#Login_button').text("Log-in");
+                $('#Login_button').attr("onclick","tryLogin()");
+
+                $('.Login_form').text();
+                $('.Login_form').show();
+
+                alert("로그아웃되었습니다.");
+            },
+            error: function(request, status, error) {
+                alert("로그아웃 실패 ");
+            }
+        });
+    }
+</script>
 <style>
     .navbar-brand {
         position: relative;
@@ -91,53 +186,89 @@
     }
     .row5, .row5 a {
     }
+    #mainNav{
+        width: 100%;
+        border-radius: 0 !important;
+        height: 53px; !important;
+    }
+    .Login_form{
+        background: transparent;
+        display: inline-block;
+        border: none;
+        border-bottom: 2px solid white;
+        width: 140px;
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+    .Login_form::-webkit-input-placeholder { color: white; }
+    #Login_button{
+        display: inline-block;
+        background-color: transparent;
+        border: 2px solid white;
+        width: 80px;
+        border-radius: 20px;
+        margin-top: 10px;
+
+    }
+    /* input box color */
+    /*input:-webkit-autofill */
+    /*{ }*/
+    /*    input:-webkit-autofill, input:-webkit-autofill:hover, */
+    /*    input:-webkit-autofill:focus, input:-webkit-autofill:active*/
+    /*    { transition: background-color 5000s ease-in-out 0s; }*/
 
 </style>
-<body>
-<div class="" style="background-color: black">
-    <nav class="navbar  row5" style="margin: 0;width: 100%;">
-        <div class="">
-            <div class="navbar-header">
-                <button
-                        type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img src="https://i.imgur.com/dmXfbDm.png" style="width:125px; height:50px; "/>
-            </div>
+<div onload="loginCheck();" id="mainNav_frame" class="" style="background-color: black">
+    <nav id="mainNav" class="navbar  row5" style="margin: 0;width: 100%;">
+        <div class="navbar-header">
 
-            <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('mygroup') }}">MyGroup</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('race_list') }}">Race</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('recordbox') }}">RecordBox</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('quiz_list') }}">QuizTree</a>
-                    </li>
+            <img id="home_logo" src="https://i.imgur.com/dmXfbDm.png" style="width:125px; height:50px; top:0; "/>
 
-                    <li>
-
-                    </li>
-                </ul>
-
-            </div>
         </div>
+
+
+        <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="{{ url('mygroup') }}">MyGroup</a>
+                </li>
+                <li>
+                    <a href="{{ url('race_list') }}">Race</a>
+                </li>
+                <li>
+                    <a href="{{ url('recordbox') }}">RecordBox</a>
+                </li>
+                <li>
+                    <a href="{{ url('quiz_list') }}">QuizTree</a>
+                </li>
+
+                <li>
+                    <input class="Login_form" type="text" name=""
+                           id="web_ID"
+                           type="text"
+                           placeholder="ID"
+                           name="p_ID"
+                           required="required"
+
+                    />
+                    <input class="Login_form" type="text" name=""
+                           id="web_PW"
+                           type="password"
+                           placeholder="Password"
+                           name="p_PW"
+                           required="required"
+
+                    />
+
+                    <button id="Login_button" type="button" onclick="tryLogin()">Login</button>
+
+                </li>
+            </ul>
+
+        </div>
+
     </nav>
 </div>
-</body>
-
-</html>

@@ -245,7 +245,15 @@ label span{color:#FF0000; background-color:inherit;}
 .row3{color:#888888; background-color:#FFFFFF; border-color:#F4F4F4;}
 .row4{color:#888888; background-color:#2D2D2D;}
 .row4 .overlay{color:inherit; background-color:rgba(45,45,45,.8);/* #2D2D2D */}
-.row5, .row5 a{color:white; background-image: url("https://i.imgur.com/7nT1LDd.png") ; background-size: auto; }
+.row5, .row5 a{color:white; background-image: url("https://i.imgur.com/7nT1LDd.png") ; background-size: auto;
+    position: absolute;
+    width: 100%;
+    height: 7%;
+    bottom: 0;
+}
+#home_logo{
+    color:white; background-image: url("https://i.imgur.com/7nT1LDd.png") ; background-size: auto;
+}
 
 
 /* Header */
@@ -317,88 +325,79 @@ table a, #comments a{background-color:inherit;}
 /* Smartphone + Tablet
 --------------------------------------------------------------------------------------------------------------- */
 @media screen and (min-width:180px) and (max-width:750px) {
-	.imgl, .imgr{display:inline-block; float:none; margin:0 0 10px 0;}
-	.fl_left, .fl_right{display:block; float:none;}
-	.one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter{display:block; float:none; width:auto; margin:0 0 30px 0; padding:0;}
+    .imgl, .imgr{display:inline-block; float:none; margin:0 0 10px 0;}
+    .fl_left, .fl_right{display:block; float:none;}
+    .one_half, .one_third, .two_third, .one_quarter, .two_quarter, .three_quarter{display:block; float:none; width:auto; margin:0 0 30px 0; padding:0;}
 
-	.inline *{display:block; margin:0 0 10px 0;}
-	.inline * .btn{display:inline-block;}
-	.inline :last-child{margin:0}
+    .inline *{display:block; margin:0 0 10px 0;}
+    .inline * .btn{display:inline-block;}
+    .inline :last-child{margin:0}
 
-	#latest .article .wrap{width:100%; text-align:left;}
-	#latest .article .wrap::after{display:none;}
+    #latest .article .wrap{width:100%; text-align:left;}
+    #latest .article .wrap::after{display:none;}
 
-	#header{padding:40px 0; text-align:center;}
-	#header #mainav{margin-top:20px;}
-	.container{padding-bottom:20px;}
-	#footer{padding-bottom:20px;}
+    #header{padding:40px 0; text-align:center;}
+    #header #mainav{margin-top:20px;}
+    .container{padding-bottom:20px;}
+    #footer{padding-bottom:20px;}
 }
 
 @media screen and (min-width:180px) and (max-width:900px) {
-	.wrapper{max-width:95%;}
+    .wrapper{max-width:95%;}
 
-	#header{}
+    #header{}
 
-	#pageintro{}
-	#pageintro li{height:auto;}
-	#pageintro li a{padding:30px 15px;}
-	#pageintro li i{font-size:36px;}
-	#pageintro li em{display:none;}
+    #pageintro{}
+    #pageintro li{height:auto;}
+    #pageintro li a{padding:30px 15px;}
+    #pageintro li i{font-size:36px;}
+    #pageintro li em{display:none;}
 
-	#mainav{}
-	#mainav ul{display:none;}
-	#mainav form{display:block;}
+    #mainav{}
+    #mainav ul{display:none;}
+    #mainav form{display:block;}
 
-	#breadcrumb{}
+    #breadcrumb{}
 
-	.container{}
-	#comments input[type="reset"]{margin-top:10px;}
-	.pagination li{display:inline-block; margin:0 5px 5px 0;}
+    .container{}
+    #comments input[type="reset"]{margin-top:10px;}
+    .pagination li{display:inline-block; margin:0 5px 5px 0;}
 
-	#latest{}
+    #latest{}
 
-	#cta{}
+    #cta{}
 
-	#footer{}
+    #footer{}
 
-	#copyright{}
-	#copyright p:first-of-type{margin-bottom:10px;}
+    #copyright{}
+    #copyright p:first-of-type{margin-bottom:10px;}
 }
 
 @media screen and (min-width:900px) and (max-width:1049px) {
-	.wrapper{max-width:98%;}
+    .wrapper{max-width:98%;}
 }
 
 
 /* Max Wrapper Width - Laptop, Desktop etc.
 --------------------------------------------------------------------------------------------------------------- */
 @media screen and (min-width:1050px) {
-	.wrapper{max-width:1038px;}
+    .wrapper{max-width:1038px;}
 }
 
 
 /* Other
 --------------------------------------------------------------------------------------------------------------- */
 @media screen and (max-width:650px) {
-	.scrollable{display:block; width:100%; margin:0 0 30px 0; padding:0 0 15px 0; overflow:auto; overflow-x:scroll;}
-	.scrollable table{margin:0; padding:0; white-space:nowrap;}
+    .scrollable{display:block; width:100%; margin:0 0 30px 0; padding:0 0 15px 0; overflow:auto; overflow-x:scroll;}
+    .scrollable table{margin:0; padding:0; white-space:nowrap;}
 
-	#pageintro li a{padding:20px 10px;}
-	#pageintro li i{font-size:26px;}
+    #pageintro li a{padding:20px 10px;}
+    #pageintro li i{font-size:26px;}
 }
 
 body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
 /* Set a style for all buttons */
 
 
@@ -409,16 +408,16 @@ button {
     border: none;
     cursor: pointer;
     width: auto;
-	opacity: 0.9;
-	display: inline-block;
+    opacity: 0.9;
+    display: inline-block;
 }
 
 .button2 {
-	background-color: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     border-color: transparent;
     border: none;
-	 color: gray;
+    color: gray;
 
 }
 
@@ -434,12 +433,12 @@ button:hover {
 }
 
 .mainbtn {
-	background-color: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     border-color: transparent;
     border: none;
     color: white;
-     margin-top: 11px;
+    margin-top: 11px;
 
 }
 
@@ -510,23 +509,23 @@ span.psw {
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
+    from {-webkit-transform: scale(0)}
     to {-webkit-transform: scale(1)}
 }
-    
+
 @keyframes animatezoom {
-    from {transform: scale(0)} 
+    from {transform: scale(0)}
     to {transform: scale(1)}
 }
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {
-       display: block;
-       float: none;
+        display: block;
+        float: none;
     }
     .cancelbtn {
-       width: 100%;
+        width: 100%;
     }
 }
 

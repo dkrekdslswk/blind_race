@@ -172,9 +172,9 @@
     <script>
     </script>
 
-    {{--<div id="buttons" style="position:absolute; top:8%; right: 3%;">--}}
-        {{--<a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>--}}
-    {{--</div>--}}
+    <div id="buttons" style="position:absolute; top:8%; right: 3%;">
+        <a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>
+    </div>
 
     <div id="play_frame">
 
@@ -220,7 +220,7 @@
                 <div class="column" style="background-image:url('/img/race_play/answer_b.png'); ">
                     <p class="answer_font" id="answer2">2번</p>
                 </div>
-                <div class="column" style="background-image:url('/img/race_play/answer_c.png'); "">
+                <div class="column" style="background-image:url('/img/race_play/answer_c.png'); ">
                     <p class="answer_font" id="answer3">3번</p>
                 </div>
                 <div class="column" style="background-image:url('/img/race_play/answer_d.png'); ">
