@@ -8,40 +8,40 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <script>
 
-    function loginCheck(){
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/userController/loginCheck')}}",
-            dataType: 'json',
-            async:false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            success: function (result) {
-                if(result['check'] == true) {
+    // function loginCheck(){
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{url('/userController/loginCheck')}}",
+    //         dataType: 'json',
+    //         async:false,
+    //         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+    //         success: function (result) {
+    //             if(result['check'] == true) {
 
-                    switch(result['classification'])
-                    {
-                        case 'student' :
-                            $('#home_race').attr("href", "/race_student");
-                            break;
-                        case 'teacher' :
-                            $('#home_race').attr("href", "/race_list");
-                            break;
-                    }
-                    $('.Login_form').hide();
-                    $('#Login_button').text("Log-Out");
-                    $('#Login_button').attr("onclick","tryLogout()");
-                }
-                else{
-                    $('#home_race').attr("href", "#");
-                }
+    //                 switch(result['classification'])
+    //                 {
+    //                     case 'student' :
+    //                         $('#home_race').attr("href", "/race_student");
+    //                         break;
+    //                     case 'teacher' :
+    //                         $('#home_race').attr("href", "/race_list");
+    //                         break;
+    //                 }
+    //                 $('.Login_form').hide();
+    //                 $('#Login_button').text("Log-Out");
+    //                 $('#Login_button').attr("onclick","tryLogout()");
+    //             }
+    //             else{
+    //                 $('#home_race').attr("href", "#");
+    //             }
 
-            },
-            error: function(request, status, error) {
+    //         },
+    //         error: function(request, status, error) {
 
-            }
-        });
-        //ajax끝
-    }
+    //         }
+    //     });
+    //     //ajax끝
+    // }
     function tryLogin(){
         var p_id = $('#web_ID').val();
         var p_pw = $('#web_PW').val();
@@ -98,6 +98,7 @@
                 $('.Login_form').show();
 
                 alert("로그아웃되었습니다.");
+                location.href="/";
             },
             error: function(request, status, error) {
                 alert("로그아웃 실패 ");
@@ -207,7 +208,6 @@
         border: 2px solid white;
         width: 80px;
         border-radius: 20px;
-        margin-top: 10px;
 
     }
     /* input box color */
@@ -218,7 +218,7 @@
     /*    { transition: background-color 5000s ease-in-out 0s; }*/
 
 </style>
-<div onload="loginCheck();" id="mainNav_frame" class="" style="background-color: black">
+<div id="mainNav_frame" class="" style="background-color: black">
     <nav id="mainNav" class="navbar  row5" style="margin: 0;width: 100%;">
         <div class="navbar-header">
 
@@ -245,27 +245,31 @@
                     <a href="{{ url('quiz_list') }}">QuizTree</a>
                 </li>
 
-                <li>
-                    <input class="Login_form" type="text" name=""
-                           id="web_ID"
-                           type="text"
-                           placeholder="ID"
-                           name="p_ID"
-                           required="required"
+                <li style="margin-top:10px;">
+                    @if(session()->get('login_check'))
+                        <span>@php echo session()->get('user_name')."님"; @endphp</span>
+                        <button id="Login_button" type="button" onclick="tryLogout()">Logout</button>
+                    @else
+                        <input class="Login_form" type="text" name=""
+                               id="web_ID"
+                               type="text"
+                               placeholder="ID"
+                               name="p_ID"
+                               required="required"
 
-                    />
-                    <input class="Login_form" type="text" name=""
-                           id="web_PW"
-                           type="password"
-                           placeholder="Password"
-                           name="p_PW"
-                           required="required"
+                        />
+                        <input class="Login_form" type="text" name=""
+                               id="web_PW"
+                               type="password"
+                               placeholder="Password"
+                               name="p_PW"
+                               required="required"
 
-                    />
-
-                    <button id="Login_button" type="button" onclick="tryLogin()">Login</button>
-
+                        />
+                        <button id="Login_button" type="button" onclick="tryLogin()">Login</button>
+                    @endif
                 </li>
+
             </ul>
 
         </div>
