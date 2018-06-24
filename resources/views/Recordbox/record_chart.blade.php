@@ -105,6 +105,7 @@
         /***********************************본격적인 함수들**************************************************************************************************/
 
         var reqGroupId = "{{$groupId}}";
+        var reqWhere = "{{$where}}";
         var chartData = "";
 
         $(document).ready(function () {
@@ -112,6 +113,22 @@
             //차트 출력하기
             getChartData_and_loadChart(reqGroupId,defaultStartDate,defaultEndDate);
 
+            // 라디오버튼 선택 확인 (문제유형)
+            $(document).on('click','#checkbox',function(){
+
+                $('input:checkbox[name="gradeCase"]').each(function() {
+
+                    //checked 처리된 항목의 값
+                    if(this.checked) {
+                        $('#'+this.value).show();
+                    }
+                    //check가 아닐때
+                    else{
+                        $('#'+this.value).hide();
+                    }
+                });
+
+            });
 
             //날짜 타입 라디오 버튼 누를때 마다 차트에 반영
             $(document).on('click','.radio_changeDateToChart',function () {
@@ -189,32 +206,6 @@
                 data: requestData,
                 success: function (data) {
 
-                    /*
-                    * data = { group : {id : 1 , name : "3WDJ"} ,
-                               races : { 0 : {  year:2018
-                                                month:5
-                                                day:11
-
-                                                raceId:2
-                                                listName:"테스트용 리스트1"
-                                                userCount:5
-
-                                                quizCount:6
-                                                rightAnswerCount:4
-
-                                                grammarCount:2
-                                                grammarRightAnswerCount:1.4
-
-                                                vocabularyCount:2
-                                                vocabularyRightAnswerCount:1.2
-
-                                                wordCount:2
-                                                wordRightAnswerCount:1.4
-                                              }
-                                        }
-                    */
-
-
                     var ChartData = makingChartData(data);
                     makingChart(ChartData);
 
@@ -230,52 +221,6 @@
         function makingChartData(raceData) {
 
             var raceData = raceData['races'];
-
-            /*raceData = {
-                            0: {
-                                year: 2018,
-                                month: 5,
-                                day: 9,
-
-                                raceId: 2,
-                                listName: "테스트용 리스트1",
-                                userCount: 5,
-
-                                quizCount: 6,
-                                rightAnswerCount: 4.2,
-
-                                grammarCount: 2,
-                                grammarRightAnswerCount: 1.6,
-
-                                vocabularyCount: 2,
-                                vocabularyRightAnswerCount: 1.6,
-
-                                wordCount: 2,
-                                wordRightAnswerCount: 1,
-                            },
-
-                            1: {
-                                year: 2018,
-                                month: 5,
-                                day: 9,
-
-                                raceId: 2,
-                                listName: "테스트용 리스트1",
-                                userCount: 5,
-
-                                quizCount: 6,
-                                rightAnswerCount: 4.2,
-
-                                grammarCount: 2,
-                                grammarRightAnswerCount: 1.6,
-
-                                vocabularyCount: 2,
-                                vocabularyRightAnswerCount: 1.6,
-
-                                wordCount: 2,
-                                wordRightAnswerCount: 1,
-                            }
-                        };*/
 
             var total_data_Points = [];
             var grammer_data_Points = [];
@@ -464,5 +409,3 @@
         </div>
 
     </div>
-
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

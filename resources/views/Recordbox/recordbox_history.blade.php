@@ -9,6 +9,7 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <!-- Bootstrap CSS CDN -->
     <style>
@@ -42,9 +43,8 @@
             margin-bottom: 50px;
         }
         .insertMargin {
-            margin-left: 15%;
+            margin-left: 17%;
         }
-
         /*modal-page*/
         .modal-dialog {
             width: 1000px;
@@ -52,7 +52,6 @@
         .modal-content.studentGrade ,.modal-content.detail {
             margin-bottom: 5px;
             padding: 10px 20px 0 20px;
-
         }
         .modal-header {
             text-align: center;
@@ -66,7 +65,6 @@
         .modal-footer #modal_total_grades{
             float: right;
         }
-
         .modal_wrong {
             width: 100%;
             clear: both;
@@ -81,7 +79,6 @@
         .noBoardLine {
             border: 0;
         }
-
         .table_wrongList thead tr {
             vertical-align: top;
         }
@@ -97,7 +94,6 @@
         .table_wrongList thead tr > th:last-child div{
             margin-bottom: 10px;
         }
-
         .table_wrongList tbody ul{
             list-style-type: circle;
             padding: 0 0 0 25px;
@@ -119,24 +115,254 @@
             margin-bottom: 15px;
             border:1px solid #e5e6e8;
         }
-
         .btnHomeworkCheck {
             color: black;
             text-align: center;
             border: solid 2px grey;
             border-radius: 12px;
         }
-
         #modal_allWrongAnswerList tr , #details_record tr , #wrongQuestions tr{
             border-bottom: 1px solid #e5e6e8;
         }
         #modal_allWrongAnswerList tr td , #details_record tr td , #wrongQuestions tr td {
             border-left: 1px solid #e5e6e8;
         }
-
     </style>
 
 
+    <script>
+
+        //스크롤하면 fixed로 변경하기
+        $(window).scroll(function (event) {
+
+            if($(window).scrollTop() == 0){
+
+                //사이드바
+                $('.recordbox_navbar').removeClass('nav-up');
+                $('.recordbox_navbar').removeClass('nav-up');
+
+                //레코드네비 바
+                $('.recordbox_navbar').removeClass('nav-up');
+                $('.recordbox_sidebar').removeClass('sidenav-up');
+                $('.changePages').removeClass('insertMargin');
+
+            }else {
+
+                //사이드바
+                $('.recordbox_navbar').addClass('nav-up');
+
+                //레코드네비 바
+                $('.recordbox_navbar').addClass('nav-up');
+                $('.recordbox_sidebar').addClass('sidenav-up');
+                $('.changePages').addClass('insertMargin');
+            }
+        });
+
+
+        //모달 페이지 관리
+        //모달 페이지 내용값 초기화 및 타입별 모달페이지 제작
+        function makingModalPage(raceId,allData,type){
+
+            //모달 페이지 내용값 초기화
+            $('.modal-content.studentGrade .modal-header #modal_date').empty();
+            $('.modal-content.studentGrade .modal-header #modal_raceName_teacher').empty();
+            $('.modal-content.studentGrade .modal-body #modal_gradeList').empty();
+            $('.modal-content.studentGrade .modal-footer #modal_total_grades').empty();
+
+            $('.modal-content.detail .modal-body #modal_studentList').empty();
+            $('.modal-content.detail .modal-body #modal_studentWrongAnswers').empty();
+            $('.modal-content.detail .modal-body #modal_allWrongAnswerList').empty();
+
+            var StudentData = new Array();
+            var StudentScore = new Array();
+            var wrongsData = new Array();
+
+            var MODALID_gradeList_tr = "modal_grade_";
+            var MODALID_studentList_tr = "modal_student_";
+            var MODALID_wrongList_tr = "modal_wrong_";
+
+            switch (type){
+
+                //레이스 성적표 만들기
+                case 0 :
+
+                    $('.modal-content.studentGrade').show();                          //학생 성적표 표시하기
+                    $('.modal-content.studentGrade #modal_total_grades').show();      //학생 성적표 표시하기
+                    $('.modal-content.detail .modal_checkbox').show();                //체크박스 표시하기
+                    $('.modal-content.detail #toggle_only_students').show();          //학생별 오답체트 표시하기
+                    $('#wrongPercent').show();                                        //오답률 표시
+                    $('.modal #modal_total_students').empty();
+                    $('.modal-content.detail .modal-title').text('오답 문제');
+
+                    var totalGrade = 0;
+                    var totalVoca = 0;
+                    var totalGrammer = 0;
+                    var totalWord = 0;
+                    var totalRight = 0;
+
+                    //data -> 레이스에 관한 모든 데이터(리턴값 그대로)
+                    StudentData = JSON.parse(allData['races'][0]);
+                    StudentScore = makingStudentChartData(allData);
+
+                    $('.modal-content.studentGrade .modal-title').text("학생 점수");
+                    $('#modal_date').text(StudentData['year'] + "년 " + StudentData['month'] + "월 " + StudentData['day'] + "일");
+                    $('#modal_raceName_teacher').text(StudentData['listName'] + "  /  " + StudentData['teacherName']);
+                    $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
+
+
+                    for(var i = 0 ; i < allData['races'].length ; i++){
+
+                        StudentData = JSON.parse(allData['races'][i]);
+
+                        $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
+
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').append($('<a href="#">').text(StudentData['userName']))
+                            .attr('id',StudentData['userId']).attr('name',StudentData['raceId']).attr('class','toggle_stdList'));
+
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData['allRightCount']+"/"+StudentData['allCount']));
+
+                        totalGrade += StudentScore['total_data'][1][i]['y'];
+                        totalVoca += StudentScore['voca_data'][1][i]['y'];
+                        totalGrammer += StudentScore['grammer_data'][1][i]['y'];
+                        totalWord += StudentScore['word_data'][1][i]['y'];
+                        totalRight += StudentData['allRightCount'];
+                    }
+
+                    //modal-footer 총 점수들 표시
+                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData['races'].length)+
+                        " / 어휘: "+parseInt(totalVoca / allData['races'].length)+
+                        " / 문법: "+parseInt(totalGrammer / allData['races'].length)+
+                        " / 독해: "+parseInt(totalWord / allData['races'].length)+
+                        " / 갯수: "+parseInt(totalRight / allData['races'].length));
+
+
+                    //오답들
+                    getRaceWrongAnswer(raceId);
+
+                    break;
+
+                /*******************************************************************************************************/
+                //학생개인 성적표 만들기
+                case 1 :
+
+                    $('.modal-content.studentGrade').show();                        //학생 성적표 표시
+                    $('.modal-content.studentGrade #modal_total_grades').hide();    //학생 성적표 빼기
+                    $('.modal-content.detail .modal_checkbox').hide();              //체크박스 빼기
+                    $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
+                    $('#wrongPercent').hide();                                      //오답률 빼기
+                    $('.modal #modal_total_students').empty();
+                    $('.modal #modal_total_students').text("전체 학생");
+                    $('.modal-content.detail .modal-title').text('오답 문제');
+
+                    //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
+                    StudentScore = makingStudentChartData(allData);
+                    StudentData = JSON.parse(allData['races'][0]);
+
+                    $('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+                    $('#modal_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
+
+                    for(var i = 0 ; i < allData['races'].length ; i++){
+
+                        StudentData = JSON.parse(allData['races'][i]);
+
+                        $('.modal #modal_gradeList').append($('<tr>').attr('id', MODALID_gradeList_tr + i));
+
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData['userName']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['total_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['voca_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['grammer_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentScore['word_data'][1][i]['y']));
+                        $('#' + MODALID_gradeList_tr + i).append($('<td>').text(StudentData['allRightCount']+"/"+StudentData['allCount']));
+
+                    }
+
+                    //오답들
+                    getStudentWrongAnswer(StudentData['userId'],raceId);
+
+                    break;
+
+                /*******************************************************************************************************/
+
+                case 2 :
+                    //오답노트 페이지 만들기
+                    $('.modal-content.studentGrade').hide();                        //학생 성적표 표시
+                    $('.modal-content.detail .modal_checkbox').hide();              //체크박스 빼기
+                    $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
+                    $('#wrongPercent').hide();                                      //오답률 빼기
+                    $('.modal_list_wrong').hide();                                      //오답내용 빼기
+
+                    $('.modal-content.detail .modal-title').text('오답 노트');
+
+                    wrongsData = allData['wrongs'];
+                    var leftOrRight = "";
+
+                    $('.wrong_left').empty();
+                    $('.wrong_right').empty();
+
+                    if (wrongsData.length == 0) {
+                        $('.modal_wrong').text("오답 내용이 없습니다.");
+                        $('.wrong_left').addClass("noBoardLine");
+                        $('.wrong_right').addClass("noBoardLine");
+
+                    } else {
+
+                        for (var i = 0; i < wrongsData.length; i++) {
+
+                            if (wrongsData[i]['wrong'] == null) {
+                                wrongsData[i]['wrong'] = wrongsData[i]['number']+"번은 이러이러저러저러하다.";
+                            }
+
+                            if(i < 5){
+                                leftOrRight = "wrong_left";
+                                $('.wrong_left').removeClass("noBoardLine");
+                                $('.wrong_right').addClass("noBoardLine");
+                            }else{
+                                leftOrRight = "wrong_right";
+                                $('.wrong_right').removeClass("noBoardLine");
+                            }
+
+                            $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
+                                .append($('<thead>')
+                                    .append($('<tr>')
+                                        .append($('<th>')
+                                            .append($('<div>').text(wrongsData[i]['number'])))
+                                        .append($('<th>')
+                                            .append($('<div>')
+                                                .append($('<b>').text(wrongsData[i]['question']))))))
+                                .append($('<tbody>')
+                                    .append($('<tr>')
+                                        .append($('<td colspan="2">')
+                                            .append($('<div>').attr('class', 'wrongExamples')
+                                                .append($('<ul>')
+                                                    .append($('<li>').text(wrongsData[i]['rightAnswer'] + " (" + wrongsData[i]['rightAnswerCount'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example1'] + " (" + wrongsData[i]['example1Count'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example2'] + " (" + wrongsData[i]['example2Count'] + "명)"))
+                                                    .append($('<li>').text(wrongsData[i]['example3'] + " (" + wrongsData[i]['example3Count'] + "명)")
+                                                    )
+                                                )
+                                            )
+                                            .append($('<div>').attr('class','wrongWriting').text(wrongsData[i]['wrong']))
+                                        )
+                                    )
+                                )
+                            );
+
+                            for (var j = 1; j < 4; j++) {
+                                if (wrongsData[i]['example' + j + 'Count'] == 1) {
+                                    $('.example_' + i + '_' + j).css('color', 'blue');
+                                }
+                            }
+                        }
+
+                    }
+            }
+        }
+
+    </script>
 </head>
 <body>
 
@@ -258,7 +484,119 @@
             </div>
         </div>
     </div>
+
+
+    {{--Modal : select group--}}
+    <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" >
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="ModalLabel">피드백</h4>
+                    <br>
+                    <div class="request_date" style=";float: right;">
+                        질문 날짜 : 2018-04-17
+                    </div>
+                    <br>
+                    <div class="response_date" style="float: right;">
+                        대답한 날짜 : 2018-04-17
+                    </div>
+                    <br>
+                </div>
+
+                <div class="modal-body" style="margin: 0; padding:0;">
+
+                    <div class="request_contents" style="padding: 5px 10px 5px 10px;min-height: 150px;width: 100%;border-bottom: 1px solid #e5e6e8;">
+                        오늘 푼 스쿠스쿠 퀴즈 3번 문제 답이<br>
+                        왜 1번인지 이해가 안갑니다.<br>
+                        4번이 해석에 더 맞지 않을까요? <br>
+                    </div>
+
+                    <style>
+                        .images label {
+                            display: inline-block;
+                            padding: .5em .75em;
+                            color: #999;
+                            font-size: inherit;
+                            line-height: normal;
+                            vertical-align: middle;
+                            background-color: #fdfdfd;
+                            cursor: pointer;
+                            border: 1px solid #ebebeb;
+                            border-bottom-color: #e2e2e2;
+                            border-radius: .25em;
+                        }
+
+                        .images input[type="file"] {
+                            /* 파일 필드 숨기기 */ position: absolute;
+                            width: 1px;
+                            height: 1px;
+                            padding: 0;
+                            margin: -1px;
+                            overflow: hidden;
+                            clip:rect(0,0,0,0);
+                            border: 0;
+                        }
+                    </style>
+
+                    {{--사진 불러오기--}}
+                    <div class="images" style="margin: 10px;">
+
+                        <label for="ex_file">
+                            파일 첨부
+                        </label>
+
+                        <form id="myform" name="myform" method="post" enctype="multipart/form-data">
+                            <input type="file" name="feedbackImg" onchange="loadFile()" id="ex_file">
+                        </form>
+
+                        <img id="output" style="max-width: 300px;max-height: 300px;"/>
+
+                        {{--사진 불러오는 스크립트--}}
+                        <script type="text/javascript">
+
+                            function loadFile(){
+                                var reader = new FileReader();
+
+                                var ex_file = document.getElementById('ex_file');
+
+                                reader.onload = function(){
+                                    var output = document.getElementById('output');
+                                    output.src = reader.result;
+                                };
+                                reader.readAsDataURL(event.target.files[0]);
+
+                            };
+
+
+                            $(document).on('click', '#modal_feedback_cancel', function (e) {
+                                $('#output').attr("src","");
+                                $('#teachersFeedback').val("");
+                            });
+                        </script>
+                    </div>
+
+                    {{--텍스트 창--}}
+                    <div class="answer" style="padding: 5px 5px 5px 5px">
+                        <input type="text" id="teachersFeedback" name="contents" style="width: 100%;height:120px;"></input>
+                    </div>
+
+                    <div class="modal-footer feedback">
+                    </div>
+
+                    <script>
+                        function changeCheck(qnaId){
+                            alert('정상 등록하였습니다.');
+                            $('#btnQnA_'+qnaId).attr('class','btn btn-primary').text('확인');
+                        }
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 </body>
