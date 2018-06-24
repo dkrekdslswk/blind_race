@@ -143,12 +143,12 @@
     <div style="width: 19%; height: 100%; display: inline-block "><center>Feedback</center></div>
 </div>
 
-<div style="width: 100%; height: 40%; font-size:0;line-height:0 ">
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/mygroup') }}"><img src="https://i.imgur.com/33elQUd.png"> </div>
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('race_list') }}"><img src="https://i.imgur.com/mbuwQ0O.png"></div>
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/recordbox') }}"><img src="https://i.imgur.com/ExqGuJx.png"></div>
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('quiz_list') }}"><img src="https://i.imgur.com/PPBQX37.png"></div>
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('recordbox') }}"><img  src="https://i.imgur.com/TU94pvS.png"></div>
+<div style="width: 100%; height: 34%; font-size:0;line-height:0 ">
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/mygroup') }}"><img class="menu_img" src="https://i.imgur.com/33elQUd.png"> </div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('race_list') }}"><img class="menu_img" src="https://i.imgur.com/mbuwQ0O.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/recordbox') }}"><img class="menu_img" src="https://i.imgur.com/ExqGuJx.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('quiz_list') }}"><img class="menu_img" src="https://i.imgur.com/PPBQX37.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('recordbox') }}"><img class="menu_img" src="https://i.imgur.com/TU94pvS.png"></div>
 </div>
 
 <div  style="width: 100% ; height: 10%; background-color: white">
@@ -159,6 +159,12 @@
     </div>
 </div>
 <style>
+    .menu_img{
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+
+    }
     div {
         margin: 0;
     }

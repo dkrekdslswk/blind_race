@@ -172,9 +172,9 @@
     <script>
     </script>
 
-    <div id="buttons" style="position:absolute; top:8%; right: 3%;">
-        <a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>
-    </div>
+    {{--<div id="buttons" style="position:absolute; top:8%; right: 3%;">--}}
+        {{--<a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>--}}
+    {{--</div>--}}
 
     <div id="play_frame">
 
