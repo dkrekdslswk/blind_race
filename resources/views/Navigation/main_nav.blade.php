@@ -8,40 +8,39 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <script>
 
-    // function loginCheck(){
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: "{{url('/userController/loginCheck')}}",
-    //         dataType: 'json',
-    //         async:false,
-    //         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-    //         success: function (result) {
-    //             if(result['check'] == true) {
 
-    //                 switch(result['classification'])
-    //                 {
-    //                     case 'student' :
-    //                         $('#home_race').attr("href", "/race_student");
-    //                         break;
-    //                     case 'teacher' :
-    //                         $('#home_race').attr("href", "/race_list");
-    //                         break;
-    //                 }
-    //                 $('.Login_form').hide();
-    //                 $('#Login_button').text("Log-Out");
-    //                 $('#Login_button').attr("onclick","tryLogout()");
-    //             }
-    //             else{
-    //                 $('#home_race').attr("href", "#");
-    //             }
+    $(document).ready(function () {
 
-    //         },
-    //         error: function(request, status, error) {
+        //페이지 이동시 그룹아이디 조회하여 URL뒷자리에 붙이기
+        $(document).on('click','.main_navbar_li',function () {
 
-    //         }
-    //     });
-    //     //ajax끝
-    // }
+            var reqPage = this.id;
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url('/groupController/groupsGet')}}",
+                //processData: false,
+                //contentType: false,
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: null,
+                success: function (data) {
+
+                    var groupId = data['groups'][0].groupId;
+
+                    switch (reqPage){
+                        case "recordbox":
+
+                            window.location.href = "{{url('recordbox/chart')}}/" + groupId;
+                            break;
+                    }
+                },
+                error: function (data) {
+                    alert("로그인부터 해주시기 바랍니다.");
+                }
+            });
+        });
+    });
     function tryLogin(){
         var p_id = $('#web_ID').val();
         var p_pw = $('#web_PW').val();
@@ -228,7 +227,7 @@
 
 
         <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right main_navbar">
                 <li>
                     <a href="/">Home</a>
                 </li>
@@ -239,10 +238,11 @@
                     <a href="{{ url('race_list') }}">Race</a>
                 </li>
                 <li>
-                    <a href="{{ url('recordbox') }}">RecordBox</a>
+                    <a href="#" id="recordbox" class="main_navbar_li">RecordBox</a>
                 </li>
                 <li>
-                    <a href="{{ url('quiz_list') }}">QuizTree</a>
+
+                    <a href="{{ url('quiz_list') }}" >QuizTree</a>
                 </li>
 
                 <li style="margin-top:10px;">

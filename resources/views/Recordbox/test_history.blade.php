@@ -1,3 +1,5 @@
+
+
 <style>
     .record_history {
         z-index: 1;
@@ -24,7 +26,7 @@
         float: left;
         width: 30%;
         text-align: center;
-        height: 70%;
+        height: 40%;
     }
     .historyContainer .raceListDetail .raceListDetailScroll {
         width: 100%;
@@ -48,7 +50,11 @@
                     <th>번호</th>
                     <th>퀴즈 제목</th>
                     <th>날짜</th>
-                    <th>성적표</th>
+                    <th>총점</th>
+                    <th>어휘</th>
+                    <th>문법</th>
+                    <th>독해</th>
+                    <th>문항수</th>
                     <th>과제 확인하기</th>
                 </tr>
                 </thead>
