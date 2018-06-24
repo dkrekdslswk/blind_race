@@ -74,7 +74,9 @@
             margin-bottom: 20px;
         }
         .subWrong {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .subWrong h4 {
         }
         .noBoardLine {
             border: 0;
@@ -111,6 +113,7 @@
         }
         .table_wrongList tbody ul > li:first-child{
             list-style-type: disc;
+            font-size: 19px;
             color: red;
             margin-bottom: 3px;
         }
@@ -209,10 +212,8 @@
 
 
 
-
-
                     $('.record_chart').show();
-                    $('.record_history').hide();
+                    $('.record_history').show();
                     $('.record_student').hide();
                     $('.record_feedback').hide();
 
@@ -765,7 +766,6 @@
 
                                                 wordCount:2,
                                                 wordRightCount:1.4,
-4y4y\
                                                 retestState:"not",
                                                 wrongState:"not"
                                               }
@@ -864,8 +864,27 @@
                             //임의로 값 설정
                             //wrongsData[i]['type'] = "sub";
 
+
                             switch(wrongsData[i]['type']){
                                 case "obj" :
+
+                                    /***************************************************************************/
+                                    wrongsData[0]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
+                                    wrongsData[0]['rightAnswer'] = "とはいえ";
+                                    wrongsData[0]['example1'] = "たりとも";
+                                    wrongsData[0]['example2'] = "ばかりも";
+                                    wrongsData[0]['example3'] = "だけさえ";
+                                    wrongsData[2]['question'] = "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。";
+                                    wrongsData[2]['rightAnswer'] = "とあって";
+                                    wrongsData[2]['example1'] = "からして";
+                                    wrongsData[2]['example2'] = "にあって";
+                                    wrongsData[2]['example3'] = "にしては";
+                                    wrongsData[4]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
+                                    wrongsData[4]['rightAnswer'] = "かたわら";
+                                    wrongsData[4]['example1'] = "かたがた";
+                                    wrongsData[4]['example2'] = "こととて";
+                                    wrongsData[4]['example3'] = "うちに";
+                                    /***************************************************************************/
 
                                     $('.' + leftOrRight).append($('<div>').attr('class','objWrong')
                                         .append($('<table>').attr('class', 'table_wrongList')
@@ -903,7 +922,17 @@
 
                                     break;
                                 case "sub" :
-
+                                    /***************************************************************************/
+                                    wrongsData[1]['question'] = "周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。";
+                                    wrongsData[1]['rightAnswer'] = "ところで";
+                                    wrongsData[1]['hint'] = "とこ@で";
+                                    wrongsData[3]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
+                                    wrongsData[3]['rightAnswer'] = "たりとも";
+                                    wrongsData[3]['hint'] = "@@とも";
+                                    wrongsData[5]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
+                                    wrongsData[5]['rightAnswer'] = "かたわら";
+                                    wrongsData[5]['hint'] = "か@@@";
+                                    /***************************************************************************/
                                     $('.' + leftOrRight).append($('<div>').attr('class','subWrong')
                                         .append($('<table>').attr('class', 'table_wrongList')
                                             .append($('<thead>')
@@ -924,7 +953,9 @@
                                                 .append($('<tr>')
                                                     .append($('<td colspan="2">')
                                                         .append($('<div>').attr('class','wrongExamples')
-                                                            .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)")
+                                                            .append($('<h4>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)")
+                                                            )
+                                                            .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
                                                             )
                                                         )
                                                     )

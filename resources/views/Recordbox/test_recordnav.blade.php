@@ -38,7 +38,6 @@
             <a class="navbar-brand" id="nav_group_name">클래스 이름</a>
         </div>
         <ul class="nav navbar-nav nav-toggle" id="race_nav">
-            <li><a id="chart" href="#" onclick="recordControl(this.id)">통계</a></li>
             <li><a id="history" href="#" onclick="recordControl(this.id)">최근 기록</a></li>
             <li><a id="students" href="#" onclick="recordControl(this.id)">학생 관리</a></li>
             <li><a id="feedback" href="#" onclick="recordControl(this.id)">피드백</a></li>

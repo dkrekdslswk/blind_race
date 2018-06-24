@@ -2083,7 +2083,7 @@
 
         <div class="record_student">
             {{--레코드 학생페이지 불러오기--}}
-            @include('Recordbox.record_studentslist')
+            @include('Recordbox.record_students')
         </div>
 
         <div class="record_feedback">
