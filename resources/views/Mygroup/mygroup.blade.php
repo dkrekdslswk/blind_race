@@ -65,8 +65,10 @@
 
         <i>  <p style="margin-left : 15px ; font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
         <i>  <p style="margin-left : 15px ; font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
-        <button type="button" style="margin-left: 15px ; color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
-        <img style="position: absolute; top: 0% ; right: 0% " src="https://i.imgur.com/J8qUt6P.png">;
+        <button type="button" style="margin-left: 15px ; color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">
+            <img src="/img/exel.png" style="display:inline-block; width:50px; height:50px;" alt="">
+            + 학생추가</button>
+        <img style="position: absolute; top: 0% ; right: 0% " src="https://i.imgur.com/J8qUt6P.png">
         <!-- Button trigger modal -->
 
 
