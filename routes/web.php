@@ -124,7 +124,22 @@ Route::get('/student', function(){
     return view('homepage_studnet');
 });
 
+/* 4-3. student: student_homepage */
+Route::get('/recordbox/{where}/{groupId?}/{page?}', function($where,$groupId = null,$page = null){
 
+    switch ($where){
+        case "chart":
+        case "history":
+        case "students":
+        case "feedback":
+            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'page' => $page]);
+            break;
+
+        default:
+            return view('sorry');
+            break;
+    }
+});
 
 
 

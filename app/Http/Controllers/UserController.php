@@ -119,7 +119,8 @@ class UserController extends Controller{
             if ($sessionId) {
                 // 세션 아이디 저장
                 $request->session()->put('sessionId', $sessionId);
-
+                $request->session()->put('login_check',true);
+                $request->session()->put('user_name',$userData['name']);
                 // 반납값 설정
                 $returnValue = array(
                     'check' => true,
@@ -206,10 +207,10 @@ class UserController extends Controller{
 
     /****
      * 모바일 로그아웃
-     * 
+     *
      * @param Request $request->input()
      *      'sessionId' 세션 아이디
-     * 
+     *
      * @return array(
      *      'check' 로그아웃 성공 여부
      *  )
@@ -236,7 +237,7 @@ class UserController extends Controller{
      *
      * @param Request $request->input()
      *      별도의 값을 요구하지 않고 session()에서 정보만 조회함.
-     * 
+     *
      * @return array(
      *      'check' 로그아웃 성공 여부
      *  )
@@ -272,7 +273,7 @@ class UserController extends Controller{
     /****
      * @param $userId // 유저 아이디
      * @param $password // 유저 페스워드
-     * 
+     *
      * @return array(
      *      'userId' 유저 아이디
      *      'classification' 유저 권한
@@ -315,7 +316,7 @@ class UserController extends Controller{
      * 세션 정보 및 유저정보 읽어오기
      *
      * @param $sessionId // 세션 아이디
-     * 
+     *
      * @return array(
      *      'userId' 유저 아이디
      *      'userName' 유저 이름
@@ -417,7 +418,7 @@ class UserController extends Controller{
 
     /****
      * 오래된 세션 정리
-     * 
+     *
      * 일정 기간이 초과된 세션 정리
      */
     private static function oldSessionDelete(){

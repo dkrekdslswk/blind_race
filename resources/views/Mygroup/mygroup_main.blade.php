@@ -139,7 +139,7 @@
     var groupIds = 0;
 
     function getAnothergroup(inputGroupIds) {
-
+        //현재 소속학생
         groupIds = inputGroupIds;
         $.ajax({
             type: 'POST',
@@ -208,7 +208,7 @@
     }
 
     function Delete(deleteId) {
-
+            //삭제
 
         var userId = $('#delete'+deleteId).text();
         $.ajax({
@@ -232,7 +232,8 @@
     }
 
 
-    //그룹ID
+    //그룹ID 호출
+    //학생 추가
     function add_student(st_made_number){
         searching_Student(groupIds);
 
@@ -290,11 +291,14 @@
 
                 Myclass = GroupData['groups'];
                 groupIds = Myclass[0].groupId;
+//                alert(groupIds);
                 console.log(groupIds)
+
 
 
                 var class_list = '';
 
+                ///아진짜
                 for (var i = 0; i < Myclass.length; i++) {
 
                     buttonGroupID = Myclass[i].groupId;
@@ -308,6 +312,7 @@
                 }
 
                 $('#Myclass').html(class_list);
+
             },
             error: function (data) {
                 alert("클래스찾기 에러");
@@ -395,7 +400,7 @@
         }
 
     }
-
+        //소속학생
     function getValue() {
         var groupId = 1;
 
@@ -408,15 +413,16 @@
             async:false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId=" + groupId,
+            data: "groupId=" + groupIds,
             success: function (data) {
                 GroupData = data;
-//                     alert(JSON.stringify(GroupData['group']['id']));
+//                    alert(JSON.stringify(GroupData['group']['id']));
 
                 teacher = GroupData['teacher']['name'];
                 group = GroupData['group']['name'];
                 groupIds = GroupData['group']['id'];
                 student = GroupData['students'];
+
 
                 $('#teacher').html(teacher);
                 $('#group').html(group);
@@ -441,18 +447,20 @@
                 }
 
                 $('#student').html(student_list);
+//                alert(groupIds);
 
 
             },
             error: function (data) {
                 alert("로그인 후 사용 가능");
-                window.location.href = "{{url('/')}}";
+
             }
         });
     }
 
     function searching_Student(groupIds2){
-        // 검색하기
+        //미소속학생
+
         $.ajax({
             type: 'POST',
             url: "{{url('/groupController/selectUser')}}",
@@ -463,7 +471,7 @@
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: "search=&groupId="+ groupIds2,
             success: function (data) {
-//                   alert(groupIds2)
+//                alert(groupIds2)
                 GroupData = data;
 
                 search_studentJSON = GroupData['users'];
@@ -489,8 +497,62 @@
                 alert("검색에러");
             }
         });
-    }
 
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/groupDataGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            async:false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: "groupId=" + groupIds,
+            success: function (data) {
+                GroupData = data;
+//                    alert(JSON.stringify(GroupData['group']['id']));
+
+                teacher = GroupData['teacher']['name'];
+                group = GroupData['group']['name'];
+                groupIds = GroupData['group']['id'];
+                student = GroupData['students'];
+
+
+                $('#teacher').html(teacher);
+                $('#group').html(group);
+                $('#groupIds').val(groupIds);
+                var student_list = '';
+
+                for (var i = 0; i < student.length; i++) {
+
+                    student_list += '<tr><td>'
+                        +'<i class="fas fa-user"> </i>'
+                        + student[i].name
+                        + '</td><td id="delete' + i + '">'
+                        + student[i].id
+                        + '</td><td>' +
+                        ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
+                        '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
+                        ' 비밀번호 변경\n' +
+                        ' </button>' +
+                        '</td><td>' +
+                        '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +
+                        '</td></tr>'
+                }
+
+                $('#student').html(student_list);
+//                alert(groupIds);
+
+
+            },
+            error: function (data) {
+                alert("로그인 후 사용 가능");
+
+            }
+        });
+    }
+    //엑셀 추가
     function enterTabTable(obj,obj2) {
         var i, k, ftag, str="";
         var text = document.getElementById(obj).value;

@@ -24,6 +24,7 @@
 
 <div >
     <div class="jumbotrons">
+
         <!-- Button trigger modal -->
 
 
@@ -65,7 +66,7 @@
         <i>  <p style="margin-left : 15px ; font-size: 40px; color:white;" id ="teacher">김민수 선생님</p>  </i>
         <i>  <p style="margin-left : 15px ; font-size: 80px ; color:white; " id ="group" class="in" >A반 </p>  </i>
         <button type="button" style="margin-left: 15px ; color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">+ 학생추가</button>
-
+        <img style="position: absolute; top: 0% ; right: 0% " src="https://i.imgur.com/J8qUt6P.png">;
         <!-- Button trigger modal -->
 
 
@@ -76,7 +77,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div >
-                        <textarea id="cmemo" cols="70" rows="10"></textarea>
+                        <textarea id="cmemo" cols="60" rows="10"></textarea>
                         <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
                         {{--<button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>--}}
                         <button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+    <div style="width : 100% ; height: 20px ; background-color: #9fcdff"></div>
 
 </div>
 
@@ -140,7 +142,7 @@
                 <th style="width:26%"><i class="fas fa-user-circle"></i>  이름</th>
                 <th style="width:25%"><i class="fas fa-clipboard-list"></i> 학번</th>
                 <th style="width:35%;"><i class="fas fa-info"></i> 비밀번호</th>
-                <th style="width:25%;"><i class="fas fa-trash-alt"></i>삭제</th>
+                <th style="width:25%;"></th>
             </tr>
         </table>
 
@@ -212,7 +214,7 @@
     }
     .row {
 
-        margin-right: -100px;
+
 
     }
     .pen {
@@ -235,10 +237,9 @@
     .jumbotrons{
         padding-right: 0px;
         padding-left: 0px;
-        height: 280px; !important;
-        width: 105%; !important;
-        background-image: url("https://i.imgur.com/f22XeGk.png");
-
+        height: 260px; !important;
+        width: 100%; !important;
+        background-color: #9E7AC2 ;
         background-size: contain;
 
     }

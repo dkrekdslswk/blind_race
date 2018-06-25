@@ -9,6 +9,7 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <!-- Bootstrap CSS CDN -->
     <style>
@@ -31,10 +32,10 @@
             padding: 0;
             position: relative;
             float: left;
-            width: 88%;
+            width: 85%;
         }
         .insertMargin {
-            margin-left: 12%;
+            margin-left: 15%;
         }
 
         /*modal-page*/
@@ -108,6 +109,7 @@
             width: 440px;
             min-height: 70px;
             margin-top: 10px;
+            margin-bottom: 15px;
             border:1px solid #e5e6e8;
         }
 
@@ -193,10 +195,6 @@
 
                     //전체 페이지 출력
                     AllPageLoad(group_id);
-
-
-
-
 
                     $('.record_chart').show();
                     $('.record_history').hide();
@@ -506,7 +504,6 @@
 
         //그룹에 속한 학생들 가져오기
         //최근기록 -> 성적표(토글)페이지
-        //학생관리 ->
         function getStudents(groupId){
 
             var reqData ={"groupId" : groupId};
@@ -1101,6 +1098,12 @@
                     for (var i = 0; i < stdHomework.length ; i ++) {
 
                         if(stdHomework[i]['wrongState'] == "not" && stdHomework[i]['retestState'] == "not"){
+                            $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
+
+                            $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
+                            $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
+
+                            $('#history_homework_tr' + i).append($('<td>').attr('colspan',3).text("해당 학생 없음"));
 
                         }else{
 
@@ -1127,6 +1130,9 @@
 
                                     break;
                             }
+
+                            //임의로 값 설정
+                            stdHomework[i]['wrongState'] = "clear";
 
                             switch (stdHomework[i]['wrongState']){
                                 case "not" :
@@ -1203,8 +1209,8 @@
                     */
 
                     var ChartData = makingStudentChartData(data);
-
                     makingStudentChart(ChartData);
+                    var raceData;
 
                     $('#studentGradeList').empty();
 
@@ -1239,6 +1245,8 @@
                                 break;
                         }
 
+                        //임의로 값 설정
+                        raceData['wrongState'] = "clear";
 
                         switch (raceData['wrongState']){
                             case "not" :
@@ -1252,7 +1260,7 @@
                             case "clear" :
                                 $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceData['raceId']).attr('name',userId).text("제출")));
+                                        .attr('id',raceData['raceId']).attr('name',userId).text("제출완료")));
 
                                 break;
                         }
@@ -1414,10 +1422,8 @@
             //배열 접근은 ['']
             for(var i = 0 ; i < parseData.length ; i++){
                 makingStudentData = JSON.parse(parseData[i]);
-                console.log(makingStudentData);
 
                 gradeByOne = Math.floor(100 / makingStudentData.allCount);
-                console.log(gradeByOne);
 
                 //문법 총점 구하기
                 var grammar_grade = gradeByOne * makingStudentData.grammarRightCount;
@@ -2071,7 +2077,7 @@
 
         <div class="record_student">
             {{--레코드 학생페이지 불러오기--}}
-            @include('Recordbox.record_studentslist')
+            @include('Recordbox.record_students')
         </div>
 
         <div class="record_feedback">
@@ -2081,6 +2087,8 @@
 
     </div>
 </div>
+
+
 
 <div class="modal_page">
     {{--Modal : Race Record--}}

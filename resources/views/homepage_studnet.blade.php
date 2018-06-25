@@ -129,8 +129,8 @@
         {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
         style="background-color: #9fcdff">
 <div class="">
-    <nav class="navbar navbar-default" style="margin: 0;width: 100%;  background-image: url("https://i.imgur.com/kwsWub8.png")">
-    <div class="">
+    <div class="row5" style="width: 100%; height: 60px">
+        <nav  style="margin: 0;width: 100%;" >
         <div class="navbar-header">
             <button
                     type="button"

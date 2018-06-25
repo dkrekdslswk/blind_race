@@ -65,6 +65,10 @@ io.on('connection', function (socket){
         console.log('유저참가', '핀번호:'+pin+'등록번호:'+session_id+'닉네임'+nickname+'캐릭터번호:'+character_num);
         io.sockets.in(pin).emit('user_in',pin,nickname,session_id,character_num);
     });
+    //쪽지시험 타이머
+    socket.on('pop_timer',function (roomPin,realTime) {
+        io.sockets.in(roomPin).emit('pop_timer',realTime);
+    })
 
     //쪽지시험 시작을 동시에 할 수 있게 해주는 함수
     socket.on('pop_quiz_start',function(roomPin,quizData,listName,sessionId,quizCount){
@@ -73,9 +77,9 @@ io.on('connection', function (socket){
     });
 
     //쪽지시험이 끝났음을 알리는 함수
-    socket.on('pop_quiz_status',function(roomPin){
+    socket.on('pop_quiz_status',function(roomPin,sessionId){
         console.log('쪽지시험 끝남 ++');
-        io.sockets.in(roomPin).emit('pop_quiz_status',roomPin);
+        io.sockets.in(roomPin).emit('pop_quiz_status',sessionId);
     });
 
     //대기방에서 퇴장한 유저의 캐릭터를 다시 활성화 시키는 함수
@@ -146,7 +150,7 @@ io.on('connection', function (socket){
     });
 
 
-//퀴즈 답받는 소켓 함수
+    //퀴즈 답받는 소켓 함수
     socket.on('answer', function(roomPin , answer_num , student_num , nickname , quizId){
 
         io.sockets.in(roomPin).emit('answer-sum',answer_num,student_num ,quizId);
