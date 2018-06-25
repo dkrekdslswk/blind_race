@@ -40,7 +40,7 @@
 </style>
 <div id="wait_room_nav" class="inline-class shadow">
 
-    <img id="nav_img" class="inline-class" src="/img/race_student/exam.png" style="width:100px; height:100px; z-index:2;">
+    <img id="nav_img" class="inline-class" src="/img/blind_race.png" style="width:100px; height:100px; z-index:2;">
 
     <span  class="nav_info" id="group_name" style="position: absolute; width:15%; left:10%; top:4%; font-size:20px;"> groovyroom </span>
     <img src="/img/race_waiting/small_tob.png" style="position: absolute;  left: 24%; top: 6%; z-index: 3; " alt="">
