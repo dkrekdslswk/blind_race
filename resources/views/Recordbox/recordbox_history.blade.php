@@ -32,7 +32,7 @@
             padding: 0;
             position: relative;
             float: left;
-            width: 85%;
+            width: 84%;
         }
         .changePages {
             z-index: 1;
@@ -41,9 +41,6 @@
             text-align: center;
             clear: both;
             margin-bottom: 50px;
-        }
-        .insertMargin {
-            margin-left: 17%;
         }
         /*modal-page*/
         .modal-dialog {
@@ -73,8 +70,17 @@
             float: left;
             position: relative;
             width: 50%;
+            border: 1px solid #e5e6e8;
+        }
+        .objWrong {
             padding: 10px;
             border: 1px solid #e5e6e8;
+        }
+        .subWrong {
+            padding: 10px;
+            border-top: 1px solid #e5e6e8;
+            border-right: 1px solid #e5e6e8;
+            border-bottom: 1px solid #e5e6e8;
         }
         .noBoardLine {
             border: 0;
@@ -92,7 +98,7 @@
             margin-top: 3px;
         }
         .table_wrongList thead tr > th:last-child div{
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .table_wrongList tbody ul{
             list-style-type: circle;
@@ -107,6 +113,7 @@
         }
         .table_wrongList tbody .wrongExamples{
             margin-left: 20px;
+            margin-bottom: 7px;
         }
         .table_wrongList tbody .wrongWriting {
             width: 440px;
@@ -139,22 +146,21 @@
 
                 //사이드바
                 $('.recordbox_navbar').removeClass('nav-up');
-                $('.recordbox_navbar').removeClass('nav-up');
+                $('.fake_sidebar').removeClass('addToFake');
 
                 //레코드네비 바
                 $('.recordbox_navbar').removeClass('nav-up');
                 $('.recordbox_sidebar').removeClass('sidenav-up');
-                $('.changePages').removeClass('insertMargin');
 
             }else {
 
                 //사이드바
                 $('.recordbox_navbar').addClass('nav-up');
+                $('.fake_sidebar').addClass('addToFake');
 
                 //레코드네비 바
                 $('.recordbox_navbar').addClass('nav-up');
                 $('.recordbox_sidebar').addClass('sidenav-up');
-                $('.changePages').addClass('insertMargin');
             }
         });
 
@@ -419,7 +425,7 @@
 
                             </th>
                             <th>
-                                평균점수
+                                총 점수
                             </th>
                             <th>
                                 어휘
@@ -567,7 +573,6 @@
                                 reader.readAsDataURL(event.target.files[0]);
 
                             };
-
 
                             $(document).on('click', '#modal_feedback_cancel', function (e) {
                                 $('#output').attr("src","");

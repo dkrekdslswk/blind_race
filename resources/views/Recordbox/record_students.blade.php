@@ -7,8 +7,6 @@
     }
     .studentContainer {
         width: 100%;
-        height: auto;
-        text-align: center;
     }
     .studentChart {
         width: 100%;
@@ -181,6 +179,8 @@
                     }
                 }
 
+                getStudentGrade(student[0]['id']);
+
             },
             error: function (data) {
                 alert("그룹에 속한 학생 에러");
@@ -343,6 +343,8 @@
                 var ChartData = makingStudentChartData(data);
                 makingStudentChart(ChartData);
                 var raceData;
+
+
 
                 $('#studentGradeList').empty();
 
@@ -585,6 +587,8 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: reqData,
             success: function (data) {
+
+                console.log(data);
 
                 makingModalPage(raceId,data,1);
                 $('.modal-content.studentGrade .modal-title').text("재시험 점수");
