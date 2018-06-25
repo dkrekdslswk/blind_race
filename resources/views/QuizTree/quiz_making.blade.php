@@ -80,7 +80,7 @@
     });
 
 
-    // 메인 -> 문제 테이블 추가 : empty, update, call(미구현)
+    // 메인 -> 문제 테이블 추가 : empty, update, call
     function quizAdd(addArr) {
 
         // id 값 부여 + 배열에 저장
@@ -548,10 +548,11 @@
                 }
                 else {
                     alert("빈 항목을 모두 채워주세요");
+                    //alert(JSON.stringify(data));
                 }
             },
             error: function (data) {
-                alert("error");
+                alert("빈 항목을 모두 채워주세요");
             }
         });
 
@@ -632,7 +633,7 @@
         </div>
 
     <!--문제 박스 : div-->
-    <div class="quizBox">
+    <div class="quizBox" style="overflow-y: scroll">
 
     </div>
 

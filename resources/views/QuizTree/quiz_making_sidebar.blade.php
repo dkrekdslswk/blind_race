@@ -9,7 +9,6 @@
             font-family: "Lato", sans-serif;
         }
 
-        /* Fixed sidenav, full height */
         .sidenav {
             height: 100%;
             width: 25%;
@@ -18,8 +17,6 @@
             left: 0;
             background-color: white;
         }
-
-        /* Style the sidenav links and the dropdown button */
 
         .sidenav a{
             text-decoration: none;
@@ -46,7 +43,6 @@
             text-align: left;
         }
 
-        /* On mouse-over */
         .sidenav a:hover, .dropdown-btn:hover {
             color: black;
         }
@@ -75,10 +71,14 @@
             padding: 1px 1px 1px 1px;
         }
 
-        /* Some media queries for responsiveness */
         @media screen and (max-height: 450px) {
             .sidenav {padding-top: 15px;}
             .sidenav a {font-size: 18px;}
+        }
+        
+        .searchButton {
+            background-image: url("https://i.imgur.com/AkTyb7Z.png");
+            margin-left: 5%;
         }
     </style>
 </head>
@@ -210,7 +210,7 @@
             <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 6em">
             &nbsp;~&nbsp;
             <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 6em">
-            <button id="btn" type="button" class="btn btn-info" style="margin-left: 5%">검색</button>
+            <button id="btn" type="button" class="searchButton">검색</button>
         </div>
 
         <input type="hidden" name="bookId" id="bookId" value="">
