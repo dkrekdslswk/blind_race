@@ -198,7 +198,7 @@
 
     <script>
 
-
+    /////클래스 생성 ////////
         function createGroup() {
             var groupNameValue = document.getElementById("groupNameValue").value;
             $.ajax({

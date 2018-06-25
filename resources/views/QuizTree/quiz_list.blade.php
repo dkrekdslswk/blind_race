@@ -133,6 +133,23 @@
             border-radius: 50%;
         }
 
+        .folderButton {
+            background-image: url("https://i.imgur.com/tYpfp1i.png");
+            border:1px solid transparent !important;
+            padding: 8px;
+            margin-top: -1px;
+            width: 100%;
+            font-family: arial, sans-serif;
+            border-collapse: collapse; !important;
+            background-size: cover;
+            border-spacing: 0px 0px !important;
+        }
+        
+        .titleImg {
+            margin-top: 100px;
+            background-image: url("https://i.imgur.com/iLi1gol.png");
+            background-size: 100%;
+        }
     </style>
 </head>
 
@@ -253,12 +270,14 @@
 
             if(folderListData['folders'][i]['folderId'] == 0) {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='fa fa-users'></span>" + " " + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' class='folderButton' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" +
+                    "<p style='font-size: 15px; color: white;'><span class='fa fa-users'></span>" + " " + folderListData['folders'][i]['folderName'] + "</p></a></li>"
                 );
             }
             else {
                 $("#folderList").append(
-                    "<li><a href='#' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" + folderListData['folders'][i]['folderName'] + "</a></li>"
+                    "<li><a href='#' class='folderButton'onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" +
+                    "<p style='font-size: 15px; color: white'>" + folderListData['folders'][i]['folderName'] + "</p></a></li>"
                 );
 
             }
@@ -676,8 +695,9 @@
         @include('QuizTree.quiz_list_sidebar')
     </aside>
     </div>
+    
 
-    <div class="btn-process" style="margin-top:50px;"></div>
+    <div class="titleImg" style="margin-top:100px;"></div>
 
     <!--Quiz List Table-->
     <div id="wrapper">

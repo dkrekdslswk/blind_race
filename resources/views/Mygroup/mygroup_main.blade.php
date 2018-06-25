@@ -139,7 +139,7 @@
     var groupIds = 0;
 
     function getAnothergroup(inputGroupIds) {
-
+        //현재 소속학생
         groupIds = inputGroupIds;
         $.ajax({
             type: 'POST',
@@ -208,7 +208,7 @@
     }
 
     function Delete(deleteId) {
-
+            //삭제
 
         var userId = $('#delete'+deleteId).text();
         $.ajax({
@@ -232,7 +232,8 @@
     }
 
 
-    //그룹ID
+    //그룹ID 호출
+    //학생 추가
     function add_student(st_made_number){
         searching_Student(groupIds);
 
@@ -399,7 +400,7 @@
         }
 
     }
-
+        //소속학생
     function getValue() {
         var groupId = 1;
 
@@ -412,7 +413,7 @@
             async:false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId=" + groupId,
+            data: "groupId=" + groupIds,
             success: function (data) {
                 GroupData = data;
 //                    alert(JSON.stringify(GroupData['group']['id']));
@@ -458,7 +459,7 @@
     }
 
     function searching_Student(groupIds2){
-        // 검색하기
+        //미소속학생
 
         $.ajax({
             type: 'POST',
@@ -507,7 +508,7 @@
             async:false,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //data: {_token: CSRF_TOKEN, 'post':params},
-            data: "groupId=" + groupId,
+            data: "groupId=" + groupIds,
             success: function (data) {
                 GroupData = data;
 //                    alert(JSON.stringify(GroupData['group']['id']));
@@ -551,7 +552,7 @@
             }
         });
     }
-
+    //엑셀 추가
     function enterTabTable(obj,obj2) {
         var i, k, ftag, str="";
         var text = document.getElementById(obj).value;

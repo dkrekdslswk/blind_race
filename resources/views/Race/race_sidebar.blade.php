@@ -11,7 +11,8 @@
         position: fixed;
         width: 220px;
         height: 100%;
-        background-color: #f8f8f8;
+        background-image: url("https://i.imgur.com/HSrLDSe.png");
+        background-size: 100%;
         border-right: 1px solid #e7e7e7;
     }
     .side-menu .navbar {
@@ -334,28 +335,11 @@
 </script>
 
 <div class="navbar-header">
-    <div class="brand-wrapper">
-        <div class="brand-name-wrapper" >
-
-        </div>
+    <div style="width: 220px ; height: 70px; margin-top: 35px">
+        <h2><p style="margin-left: 25px; color : #203a8e; !important;">Race List</h2>
     </div>
 
-    <!-- Search -->
-    <a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
-        <span class="glyphicon glyphicon-search"></span>
-    </a>
 
-    <!-- Search body -->
-    <div id="search" class="panel-collapse collapse">
-        <div class="panel-body">
-            <form class="navbar-form" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default "><span class="glyphicon glyphicon-ok"></span></button>
-            </form>
-        </div>
-    </div>
 </div>
 
 <!-- 폴더 리스트 -->
