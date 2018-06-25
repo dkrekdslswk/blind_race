@@ -654,20 +654,22 @@ class RecordBoxController extends Controller{
                     // 객관식 처리
                     if ($type[1] == 'obj') {
                         $studentAnswerData = DB::table('records as re')
+                            ->select(
+                                're.answer as answer'
+                            )
                             ->where($typeWhere)
                             ->where(['re.quizNo' => $raceQuizs[$i]->quizId])
-                            ->pluck('re.answer')
-                            ->toArray();
+                            ->get();
 
                         $example1Count = 0;
                         $example2Count = 0;
                         $example3Count = 0;
-                        foreach ($studentAnswerData as $answer){
-                            if ($answer == $raceQuizs[$i]->example1){
+                        foreach ($studentAnswerData as $studentAnswer){
+                            if ($studentAnswer->answer == $raceQuizs[$i]->example1){
                                 $example1Count++;
-                            } else if ($answer == $raceQuizs[$i]->example2){
+                            } else if ($studentAnswer->answer == $raceQuizs[$i]->example2){
                                 $example2Count++;
-                            } else if ($answer == $raceQuizs[$i]->example3){
+                            } else if ($studentAnswer->answer == $raceQuizs[$i]->example3){
                                 $example3Count++;
                             }
                         }
