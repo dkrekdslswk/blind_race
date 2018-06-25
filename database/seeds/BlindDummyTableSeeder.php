@@ -228,16 +228,19 @@ class BlindDummyTableSeeder extends Seeder
 
                 $retestState = 0;
                 for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
+                    $answerCheck = mt_rand($quizCount + $number) < $day / 2 ? 'X' : 'O';
+                    $answer = $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
+
                     DB::table('records')->insert([
                         'raceNo' => $raceId,
                         'userNo' => $users[$number][0],
                         'listNo' => $listId,
                         'quizNo' => $quizList[$quizCount - 1],
-                        'answerCheck' => $answerCheck = (string)(($check = (mt_rand(0, $quizCount + $number)) < ($day / 2)) ? 'X' : 'O'),
-                        'answer' => $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][mt_rand(0, 2)]
+                        'answerCheck' => $answerCheck,
+                        'answer' => $answer
                     ]);
 
-                    if ($check) {
+                    if ($answerCheck == 'X') {
                         $retestState++;
                     }
                 }
@@ -249,17 +252,19 @@ class BlindDummyTableSeeder extends Seeder
                         $insert = array();
 
                         for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
+                            $answerCheck = mt_rand($quizCount + $number) < $day / 4 ? 'X' : 'O';
+                            $answer = $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
                             array_push($insert, array(
                                 'raceNo' => $raceId,
                                 'userNo' => $users[$number][0],
                                 'listNo' => $listId,
                                 'quizNo' => $quizList[$quizCount - 1],
-                                'answerCheck' => $answerCheck = (string)(($check = (mt_rand(0, 3) == 0)) ? 'X' : 'O'),
-                                'answer' => $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][mt_rand(0, 2)],
+                                'answerCheck' => $answerCheck,
+                                'answer' => $answer,
                                 'retest' => 1
                             ));
 
-                            if ($check) {
+                            if ($answerCheck == 'X') {
                                 $retestState++;
                             }
                         }
