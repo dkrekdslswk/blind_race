@@ -233,7 +233,7 @@ class BlindDummyTableSeeder extends Seeder
                         'userNo' => $users[$number][0],
                         'listNo' => $listId,
                         'quizNo' => $quizList[$quizCount - 1],
-                        'answerCheck' => $answerCheck = (string)(($check = (mt_rand(0, $quizCount + $number)) > ($day / 2)) ? 'X' : 'O'),
+                        'answerCheck' => $answerCheck = (string)(($check = (mt_rand(0, $quizCount + $number)) < ($day / 2)) ? 'X' : 'O'),
                         'answer' => $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][mt_rand(0, 2)]
                     ]);
 
