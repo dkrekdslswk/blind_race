@@ -211,9 +211,10 @@
                 data: "groupName=" + groupNameValue,
                 success: function (data) {
                     if (data['check'])
-                        alert('그룹생성이 완료되었습니다.');
+                        swal('그룹생성이 완료되었습니다.');
 
-                    window.location.href = "{{url('mygroup')}}";
+                    setTimeout(function(){ window.location.href = "{{url('mygroup')}}"; }, 1200);
+
                 },
                 error: function (data) {
                     alert("클래스 이름을 입력해 주세요");
