@@ -8,39 +8,34 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <script>
 
+    function moveToAnotherPage(where){
+        var reqPage = where;
 
-    $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/groupController/groupsGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: null,
+            success: function (data) {
 
-        //페이지 이동시 그룹아이디 조회하여 URL뒷자리에 붙이기
-        $(document).on('click','.main_navbar_li',function () {
+                var groupId = data['groups'][0].groupId;
 
-            var reqPage = this.id;
+                switch (reqPage){
+                    case "recordbox":
 
-            $.ajax({
-                type: 'POST',
-                url: "{{url('/groupController/groupsGet')}}",
-                //processData: false,
-                //contentType: false,
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: null,
-                success: function (data) {
-
-                    var groupId = data['groups'][0].groupId;
-
-                    switch (reqPage){
-                        case "recordbox":
-
-                            window.location.href = "{{url('recordbox/chart')}}/" + groupId;
-                            break;
-                    }
-                },
-                error: function (data) {
-                    alert("로그인부터 해주시기 바랍니다.");
+                        window.location.href = "{{url('recordbox/chart')}}/" + groupId;
+                        break;
                 }
-            });
+            },
+            error: function (data) {
+                alert("로그인부터 해주시기 바랍니다.");
+            }
         });
-    });
+    }
+
     function tryLogin(){
         var p_id = $('#web_ID').val();
         var p_pw = $('#web_PW').val();
@@ -238,7 +233,7 @@
                     <a href="{{ url('race_list') }}">Race</a>
                 </li>
                 <li>
-                    <a href="#" id="recordbox" class="main_navbar_li">RecordBox</a>
+                    <a href="#" id="recordbox" onclick="moveToAnotherPage(this.id)" class="main_navbar_li">RecordBox</a>
                 </li>
                 <li>
 
