@@ -51,11 +51,13 @@
                 <label for="createCl">
                     <b>클래스 생성</b>
                 </label>
+                <!--  데모용 나중에 수정필요  -->
                 <input id="groupNameValue" type="text"
                        placeholder="클래스 이름 입력"
                        name="groupName"
                        required="required"
                        style="margin-left: 50px"
+                       value="2WDJ반"
                 >
                 <button class="btn btn-primary-outline btn-round-lg" onclick="createGroup()" style ="color : black; margin-left: 85px">클래스 생성</button>
 

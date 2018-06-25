@@ -293,7 +293,7 @@
                         }
                     },
                     error: function(request, status, error) {
-                        alert("Student Out Error");
+                        // alert("Student Out Error");
                     }
                 });
 
