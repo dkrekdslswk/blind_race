@@ -138,7 +138,7 @@
         }
 
         .folderButton {
-            background-image: url("https://i.imgur.com/LUW1L49.png");
+            background-image: url("https://i.imgur.com/s2jkDT1.png");
             background-size: 100%;
             border:1px solid transparent !important;
             padding: 8px;
@@ -151,8 +151,8 @@
         }
         
         .titleImg {
-            margin-top: 100px;
-            background-image: url("https://i.imgur.com/iLi1gol.png");
+
+            background-image: url("https://i.imgur.com/3BaJJlL.png");
             background-size: 100%;
         }
     </style>
@@ -698,9 +698,9 @@
         @include('QuizTree.quiz_list_sidebar')
     </aside>
     </div>
-    
 
-    <div class="titleImg" style="margin-top:100px;"></div>
+
+    <div class="titleImg"></div>
 
     <!--Quiz List Table-->
     <div id="wrapper">
