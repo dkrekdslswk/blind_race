@@ -59,6 +59,155 @@
         line-height: 34px;
     }
 </style>
+<script>
+
+    $(document).ready(function () {
+
+        $(document).on('click','.feedbackList',function () {
+            loadFeedbackModal($(this).attr('id'));
+
+        });
+
+        $(document).on('click','.modal-footer .btn.btn-primary',function () {
+            changeCheck($('.request_date').attr('id'));
+            insertQuestion();
+        });
+
+
+        //과제 확인하기
+        $(document).on('click','.btnHomeworkCheck',function () {
+            checkHomework($(this).attr('id'));
+
+        });
+
+    });
+
+    function loadFeedback(){
+
+        var reqData = {"groupId" : 1};
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/selectQnAs')}}",
+            //processData: false,
+            //contentType: false,
+            data:reqData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) {
+
+                /*
+                Data  = { QnAs : {
+                                'QnAId' : 1,
+                                'userName' : 김똘똘,
+                                'teacherName' : 이교수,
+                                'title' : 스쿠스쿠레이스 3번문제 질문입니다.
+                                'question_at' : 제 생각에는 3번이 정답인데 왜 틀린건가요
+                                'answer_at' : 그건 이러이러저러저러 하단다.
+                                 },
+                          check : false or true
+                          }
+                */
+
+                var instanceData = { QnAs : {
+                        0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
+                            question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
+                        }
+                    }
+                };
+
+                $('#modal_feedbackList').empty();
+
+                for(var i = 0 ; i < 1;i++){
+
+                    $('#modal_feedbackList')
+                        .append($('<tr>').attr('id','qna_'+instanceData['QnAs'][i]['QnAId'])
+                            .append($('<td>').text(instanceData['QnAs'][i]['date']))
+                            .append($('<td>')
+                                .append($('<a href="#" data-toggle="modal" data-target="#Modal2">')
+                                    .attr('class','feedbackList').attr('id',instanceData['QnAs'][i]['QnAId']).text(instanceData['QnAs'][i]['title'])
+                                )
+                            )
+                        );
+                    if(instanceData['QnAs'][i]['answer_at'] == ""){
+                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
+                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
+
+                    }else{
+                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
+                            .append($('<button">').attr('class','btn btn-primary').text("확인")));
+                    }
+                }
+
+            },
+            error: function (data) {
+                alert("loadFeedback / 피드백 받아오기 에러");
+            }
+
+        });
+    }
+    loadFeedback();
+
+
+    function loadFeedbackModal(qnaId){
+
+        var reqData = {"QnAId" : qnaId};
+
+        var instanceData = { QnAs : {
+                0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
+                    question: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer:"그건 이러이러저러저러 하단다",
+                    question_at: "2018-05-28",answer_at : "2018-05-29"
+                }
+            }
+        };
+
+        $('.request_date').empty();
+        $('.response_date').empty();
+        $('.request_contents').empty();
+        $('#teachersFeedback').empty();
+        $('.modal-footer feedback').empty();
+
+        for(var i = 0 ; i < 1;i++){
+
+            $('.request_date').text("질문날짜 : "+instanceData['QnAs'][i]['question_at'] +" / 응답날짜 : "+instanceData['QnAs'][i]['answer_at'])
+                .attr('id',qnaId);
+            $('.request_contents').text(instanceData['QnAs'][i]['question']);
+            $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
+
+            $('.modal-footer feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
+            $('.modal-footer feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
+
+        }
+
+    }
+
+    function insertQuestion(){
+
+        var formData = new FormData();
+        var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
+
+        formData.append('questionImg', imgfiles);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/insertQuestion')}}",
+            processData: false,
+            contentType: false,
+            data:formData,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) {
+
+            },
+            error: function (data) {
+                alert("loadFeedback / 피드백 등록하기 에러");
+            }
+
+        });
+    }
+
+
+</script>
+
 
     <div class="feedback_page" style="margin: 10px;">
         <table class="table table-bordered table-list" style="margin: 0;">

@@ -11,7 +11,8 @@
         position: fixed;
         width: 220px;
         height: 100%;
-        background-color: #f8f8f8;
+        background-image: url("https://i.imgur.com/HSrLDSe.png");
+        background-size: 100%;
         border-right: 1px solid #e7e7e7;
     }
     .side-menu .navbar {
@@ -222,16 +223,7 @@
             -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
         }
-        /* Uncomment for scrollable menu -> see top comment */
-        /*.absolute-wrapper{
-              width:285px;
-              -moz-animation: slideout 300ms forwards;
-              -o-animation: slideout 300ms forwards;
-              -webkit-animation: slideout 300ms forwards;
-              animation: slideout 300ms forwards;
-              -webkit-transform-style: preserve-3d;
-              transform-style: preserve-3d;
-          }*/
+
         @-moz-keyframes bodyslidein {
             0% {
                 left: 0;
@@ -327,6 +319,15 @@
             margin: 0;
         }
     }
+
+    .makeclass {
+        width: 73%;
+        height: 70px;
+        background-image: url(https://i.imgur.com/8QcmVFs.png);
+
+        margin-top: -20px;
+    }
+
 </style>
 
 <script>
@@ -334,40 +335,33 @@
 </script>
 
 <div class="navbar-header">
+
+    <!-- 폴더 만들기 -->
     <div class="brand-wrapper">
         <div class="brand-name-wrapper" >
-        </div>
-    </div>
-
-    <!-- Search -->
-    <a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
-        <span class="glyphicon glyphicon-search"></span>
-    </a>
-
-    <!-- Search body -->
-    <div id="search" class="panel-collapse collapse">
-        <div class="panel-body">
-            <form class="navbar-form" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default "><span class="glyphicon glyphicon-ok"></span></button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Create Folder -->
-    <div class="brand-wrapper">
-        <div class="brand-name-wrapper" >
-            <button type="button" class="btn btn-info btn-lg" style="margin-top: 3px; width: 100%" data-toggle="modal" data-target="#createFolder">폴더 만들기</button>
+            <button type="button" class="makeclass" style="margin-top: -0px; width: 100%" data-toggle="modal" data-target="#createFolder">
+                <p style="margin-top: 9px; font-size: 23px">폴더</p>
+            </button>
         </div>
     </div>
 </div>
 
 <!-- 폴더 리스트 -->
 <div class="side-menu-container">
+
+    <div style="width: 220px ; height: 70px; margin-top: 100px">
+
+        <h2><p style="margin-left: 25px; color : #203a8e; !important;">Quiz Tree</h2>
+
+    </div>
+
     <ul class="nav navbar-nav" id="folderList" >
         <!--<li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> 공유폴더</a></li>
         <li><a href="#"><span class="glyphicon glyphicon-folder-close"></span> Active Link</a></li>-->
     </ul>
+
+    <div style="background-image: url('https://i.imgur.com/HSrLDSe.png')">
+
+    </div>
+
 </div>

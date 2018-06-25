@@ -504,7 +504,6 @@
 
         //그룹에 속한 학생들 가져오기
         //최근기록 -> 성적표(토글)페이지
-        //학생관리 ->
         function getStudents(groupId){
 
             var reqData ={"groupId" : groupId};

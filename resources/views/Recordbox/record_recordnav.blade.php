@@ -38,20 +38,18 @@
         border-bottom: 8px solid #0E76A8;
         pointer-events: none;
     }
-
 </style>
 <script>
 
     var reqGroupId = "{{$groupId}}";
-    var Here = "{{$where}}";
+    var reqWhere = "{{$where}}";
 
     //record_recordnav.blade.php 로드시 실행될 기능들
     $(document).ready(function () {
 
         //디자인 추가하기
         //해당 페이지 메뉴 클릭 금지 + 해당 페이지 메뉴 밑에 바 추가하기 ( addClass -> targetMenu )
-        $('.recordbox #'+Here).addClass('targetMenu');
-
+        $('.recordbox #'+reqWhere).addClass('targetMenu');
 
         //메뉴 클릭시 ULR로 페이지 이동
         $(document).on('click','.recordnav_once',function () {
@@ -60,16 +58,13 @@
             window.location.href = "{{url('recordbox')}}/" + $(this).attr('id') + "/" + reqGroupId;
         });
     });
-
 </script>
 
 
 <nav class="recordbox navbar navbar-default">
     <div class="container-fluid" >
         <div class="navbar-header">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         </div>
         <ul class="nav navbar-nav nav-toggle ">
             <li>
@@ -87,4 +82,3 @@
         </ul>
     </div>
 </nav>
-
