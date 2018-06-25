@@ -190,6 +190,7 @@
         width: 100%;
         border-radius: 0 !important;
         height: 53px; !important;
+        z-index:50;
     }
     .Login_form{
         background: transparent;
