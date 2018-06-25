@@ -694,14 +694,14 @@ class RecordBoxController extends Controller{
                             'question' => $raceQuizs[$i]->question,
                             'hint' => $raceQuizs[$i]->hint,
                             'rightAnswer' => $raceQuizs[$i]->rightAnswer,
-                            'rightAnswerCount' => $raceQuizs->rightAnswerCount,
+                            'rightAnswerCount' => $raceQuizs[$i]->rightAnswerCount,
                             'example1' => $raceQuizs[$i]->example1,
                             'example1Count' => $example1Count,
                             'example2' => $raceQuizs[$i]->example2,
                             'example2Count' => $example2Count,
                             'example3' => $raceQuizs[$i]->example3,
                             'example3Count' => $example3Count,
-                            'wrongCount' => $raceQuizs[$i]->userCount - $raceQuizs->rightAnswerCount,
+                            'wrongCount' => $raceQuizs[$i]->userCount - $raceQuizs[$i]->rightAnswerCount,
                             'userCount' => $raceQuizs[$i]->userCount,
                             'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
                         ));
