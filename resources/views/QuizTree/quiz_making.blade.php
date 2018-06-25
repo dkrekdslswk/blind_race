@@ -619,7 +619,7 @@
             <div style="float: left">
                 <!--1. 퀴즈를 새로 생성할 경우-->
                 @if(count($response['quizs']) == 0)
-                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="">
+                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="최종 발표 시연 퀴즈">
 
                 <!--2. 퀴즈를 수정할 경우-->
                 @elseif(count($response['quizs']) > 0)

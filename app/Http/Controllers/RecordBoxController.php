@@ -653,18 +653,26 @@ class RecordBoxController extends Controller{
 
                     // 객관식 처리
                     if ($type[1] == 'obj') {
-                        $quizData = DB::table('records as re')
+                        $studentAnswerData = DB::table('records as re')
                             ->select(
-                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.rightAnswer THEN re.userNo END) as rightAnswerCount'),
-                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example1 THEN re.userNo END) as example1Count'),
-                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example2 THEN re.userNo END) as example2Count'),
-                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example3 THEN re.userNo END) as example3Count')
+                                're.answer as answer'
                             )
                             ->where($typeWhere)
-                            ->where(['qb.number' => $raceQuizs[$i]->quizId])
-                            ->join('quizBanks as qb', 'qb.number', '=', 're.quizNo')
-                            ->groupBy($typeGroupBy)
-                            ->first();
+                            ->where(['re.quizNo' => $raceQuizs[$i]->quizId])
+                            ->get();
+
+                        $example1Count = 0;
+                        $example2Count = 0;
+                        $example3Count = 0;
+                        foreach ($studentAnswerData as $studentAnswer){
+                            if ($studentAnswer->answer == $raceQuizs[$i]->example1){
+                                $example1Count++;
+                            } else if ($studentAnswer->answer == $raceQuizs[$i]->example2){
+                                $example2Count++;
+                            } else if ($studentAnswer->answer == $raceQuizs[$i]->example3){
+                                $example3Count++;
+                            }
+                        }
 
                         // 학생 조회일 경우 오답노트도 출력
                         if ($postData['userId']){
@@ -686,14 +694,14 @@ class RecordBoxController extends Controller{
                             'question' => $raceQuizs[$i]->question,
                             'hint' => $raceQuizs[$i]->hint,
                             'rightAnswer' => $raceQuizs[$i]->rightAnswer,
-                            'rightAnswerCount' => $quizData->rightAnswerCount,
+                            'rightAnswerCount' => $raceQuizs[$i]->rightAnswerCount,
                             'example1' => $raceQuizs[$i]->example1,
-                            'example1Count' => $quizData->example1Count,
+                            'example1Count' => $example1Count,
                             'example2' => $raceQuizs[$i]->example2,
-                            'example2Count' => $quizData->example2Count,
+                            'example2Count' => $example2Count,
                             'example3' => $raceQuizs[$i]->example3,
-                            'example3Count' => $quizData->example3Count,
-                            'wrongCount' => $raceQuizs[$i]->userCount - $quizData->rightAnswerCount,
+                            'example3Count' => $example3Count,
+                            'wrongCount' => $raceQuizs[$i]->userCount - $raceQuizs[$i]->rightAnswerCount,
                             'userCount' => $raceQuizs[$i]->userCount,
                             'wrong' => $wrongText ? $wrongText->wrongAnswerNote : false
                         ));

@@ -228,8 +228,8 @@ class BlindDummyTableSeeder extends Seeder
 
                 $retestState = 0;
                 for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
-                    $answerCheck = mt_rand($quizCount + $number) < $day / 2 ? 'X' : 'O';
-                    $answer = $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
+                    $answerCheck = (mt_rand(0, $quizCount + $number) < $day / 2) ? 'X' : 'O';
+                    $answer = ($answerCheck == 'O') ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
 
                     DB::table('records')->insert([
                         'raceNo' => $raceId,
@@ -252,8 +252,8 @@ class BlindDummyTableSeeder extends Seeder
                         $insert = array();
 
                         for ($quizCount = 1; $quizCount <= 6; $quizCount++) {
-                            $answerCheck = mt_rand($quizCount + $number) < $day / 4 ? 'X' : 'O';
-                            $answer = $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
+                            $answerCheck = (mt_rand(0, $quizCount + $number) < $day / 4) ? 'X' : 'O';
+                            $answer = ($answerCheck == 'O') ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][($number + $quizCount + $day) % 3];
                             array_push($insert, array(
                                 'raceNo' => $raceId,
                                 'userNo' => $users[$number][0],

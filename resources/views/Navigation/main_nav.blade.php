@@ -6,6 +6,7 @@
 <link
         rel="stylesheet"
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
     function moveToAnotherPage(where){

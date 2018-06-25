@@ -510,8 +510,9 @@
             students :JSON.stringify(studentlist)
         };
 //            alert(JSON.stringify(studentlist))
-        alert("학생을 등록하였습니다.");
-        window.location.href = "{{url('mygroup')}}";
+        swal("학생등록완료", "학생이 해당 클래스에 추가 되었습니다.", "success");
+        setTimeout(function(){ window.location.href = "{{url('mygroup')}}"; },3000);
+
         jQuery.ajaxSettings.traditional = true;
 
 

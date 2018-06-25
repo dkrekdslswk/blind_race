@@ -293,7 +293,7 @@
                         }
                     },
                     error: function(request, status, error) {
-                        alert("Student Out Error");
+                        // alert("Student Out Error");
                     }
                 });
 
@@ -453,7 +453,7 @@
                     $("#content").hide();
                     document.getElementById('answer_c').innerText = "0";
                     $('#play_bgm').remove();
-                    $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
+
                     $("body").css('background-image', 'url("/img/race_play/mid_bg.png")', 'important');
                     // ranking_process(ranking_j);
                     $.ajax({
@@ -540,7 +540,6 @@
 
                     // clearTimeout(Mid_result_Timer);
 
-                    $('#mid_result_bgm').remove();
                     socket.emit('count', 'time on', roomPin);
 
                     $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
