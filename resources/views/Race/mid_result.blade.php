@@ -15,7 +15,10 @@
 <style type="text/css">
 
     body{
-        background-color:whitesmoke;
+        background-image:url("/img/race_play/play_bg.png");
+        min-height: 100%;
+        background-position: center;
+        background-size: cover;
     }
 
     #curve_chart {
@@ -39,10 +42,6 @@
     }
 
     /* button div */
-    #buttons {
-        padding-top: 50px;
-        text-align: center;
-    }
 
     /* start da css for da buttons */
     .btn {
@@ -66,12 +65,6 @@
         color:white;
         background-color:deepskyblue;
     }
-    .rank_hr{
-
-    }
-    #student_rank td{
-        border-right:5px solid deepskyblue;
-    }
     .big_font_70{
         font-size:70px;
         color:white;
@@ -82,26 +75,51 @@
         padding-top: 10px;
         text-align:center;
     }
+    #buttons{
+        background-image: url("/img/race_play/next_btn.png");
+        width: 220px;
+        height: 75px;
+        background-position: center;
+        background-size: cover;
+        position: absolute;
+        top: 15%;
+        right: 2%;
+    }
 </style>
 
-    <div class="block" style="display:inline-block; margin-left:15%; width:70%; height:20%; ">
-        <h2 class='titular' style="line-height:30px; color:white;">정답</h2>
+    <div class="" style="display: inline-block;
+    margin-left: 5%;
+    width: 90%;
+    height: 20%;
+    top: 0;
+    position: absolute;
+    background: #033981;
+    border-radius: 0px 0px 50px 50px; ">
 
-
-        <div style=" display:inline-block; margin-left:3%; margin-right:3%;">
-            <sup><span class="big_font_70" id="quiz_number">1</span></sup>
-            <span   class="big_font_70" > / </span>
-            <span id="mid_all_quiz" class="big_font_70">30</span>
-        </div>
-
-
-            <div class="" style="border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
-                <div style="width:15%; height:100%; display:inline-block; border-radius:8px; background-color:red; font-size:30px; color:white;">正答</div>
+            <div class="" style="margin-top:2%; margin-left:4%; border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
+                <div style="width:13%; height:100%; display:inline-block; border-radius:8px; background-color: #df4467; font-size:30px; color:white;">正答</div>
                 <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
             </div>
 
+        <div style=" width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 10px solid #53cdff;
+    display: inline-block;
+    margin-left: 3%;
+    margin-right: 3%;
+    vertical-align: top;
+    margin-top: 1%;
+    background: white;
+        text-align: center;
+    line-height: 100px;
+    ">
+            <sup><span class="" id="quiz_number">1</span></sup>
+            <span   class="" > / </span>
+            <span id="mid_all_quiz" class="">30</span>
+        </div>
 
-        <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-left:1%;" >
+        <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-top:1%; margin-left:1%;" >
             <div id="mid_circle" class="c100 p50 green">
                 <span id="mid_percent"></span>
                 <div class="slice">
@@ -112,126 +130,168 @@
         </div>
     </div>
 
-<div id="mid_content" >
+<div id="mid_content" style="" >
 
-    <div id="buttons" style="position:absolute; top:8%; right: 3%;">
-        <a id="Mid_skip_btn" class="btn btn-lg nextbutton orange" href="#" role="button">Next</a>
+    <div id="buttons">
+        <a id="Mid_skip_btn" href="#" role="button"></a>
     </div>
 
+    <div style="width: 27%;
+    height: 8%;
+    background-color: #ffbd6e;
+    position: absolute;
+    top: 25%;
+    left: 17%;
+    z-index: 5;
+    border-radius: 50px;
+    text-align: center;
+    line-height: 60px;
+    color: white;
+    font-size: 20px;"
+    > 문제풀이 </div>
+
+    <div style="width: 27%;
+    height: 8%;
+    background-color: #ff6e76;
+    position: absolute;
+    top: 25%;
+    right: 13%;
+    z-index: 5;
+    border-radius: 50px;
+    text-align: center;
+    line-height: 60px;
+    color: white;
+    font-size: 20px;"> 중간합산결과</div>
 
 
+    <div style="width: 90%;
+    height: 68%;
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    z-index: 2;
+    background: white;
+    border-radius: 50px;">
 
-    <div class="block" style="display: inline-block; width:45%; height:70%; position:absolute; right:8%;">
-        <h2 class='titular'>중간 합산 결과</h2>
-        <table id="student_rank" style="width:100%; border-collapse: separate; border-spacing:0px 10px;">
-            <tr>
-                <th></th>
-                <th></th>
-                <th class="rank_th">Nick-Name</th>
-                <th class="rank_th">Score</th>
-                <th class="rank_th">Answer</th>
-            </tr>
+        <div style="display: inline-block; width:45%; height:90%; position:absolute; right:2%;
+        margin-top:3%;
+        background-image:url('/img/race_play/rank_bg.png');
+         background-position: center;
+        background-size: cover;
+        ">
+            <table id="student_rank" style="width:90%; border-collapse: separate; border-spacing:0px 10px; margin-top:5%; margin-left:5%;">
 
-            <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center; border:none;">
-                    <div style="width:30px; height:30px; background-color:white;">1</div>
-                </td>
+                <tr class="rank_hr">
+                    <td  style="width:50px; height:50px; text-align:center; border:none;">
+                        <div style="width:30px; height:30px; background-color:white;">1</div>
+                    </td>
 
-                <td style="width:50px; height: 50px; background-color:skyblue; ">
-                    <img src="/img/character/char1.png" style="width:50px; height: 50px;"  alt="">
-                </td>
-                <td style="width:350px; background-color:white;">LONDON SPITFIRE</td>
-                <td  style="width:150px; text-align:center; background-color:white;">100 Point</td>
-                <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
-            </tr>
+                    <td style="width:50px; height: 50px; background-color:skyblue; ">
+                        <img src="/img/character/char1.png" style="width:50px; height: 50px;"  alt="">
+                    </td>
+                    <td style="width:250px; background-color:white;">LONDON SPITFIRE</td>
+                    <td  style="width:150px; text-align:left; background-color:white;">100 Point</td>
+                    <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
+                </tr>
 
-            <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center; border:none;">
-                    <div style="width:30px; height:30px; background-color:white;">2</div>
-                </td>
+                <tr class="rank_hr">
+                    <td  style="width:50px; height:50px; text-align:center; border:none;">
+                        <div style="width:30px; height:30px; background-color:white;">2</div>
+                    </td>
 
-                <td style="width:50px; height: 50px; background-color:yellow;">
-                    <img src="/img/character/char2.png" style="width:50px; height: 50px;"  alt="">
-                </td>
-                <td style="width:350px; background-color:white;">LONDON SPITFIRE</td>
-                <td  style="width:150px; text-align:center; background-color:white;">100 Point</td>
-                <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
-            </tr>
+                    <td style="width:50px; height: 50px; background-color:yellow;">
+                        <img src="/img/character/char2.png" style="width:50px; height: 50px;"  alt="">
+                    </td>
+                    <td style="width:250px; background-color:white;">LONDON SPITFIRE</td>
+                    <td  style="width:150px; text-align:left; background-color:white;">100 Point</td>
+                    <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
+                </tr>
 
-            <tr class="rank_hr">
-                <td  style="width:50px; height:50px; text-align:center; border:none;">
-                    <div style="width:30px; height:30px; background-color:white;">3</div>
-                </td>
+                <tr class="rank_hr">
+                    <td  style="width:50px; height:50px; text-align:center; border:none;">
+                        <div style="width:30px; height:30px; background-color:white;">3</div>
+                    </td>
 
-                <td style="width:50px; height: 50px; background-color:#e75480;">
-                    <img src="/img/character/char3.png" style="width:50px; height: 50px;"  alt="">
-                </td>
-                <td style="width:350px; background-color:white;">LONDON SPITFIRE</td>
-                <td  style="width:150px; text-align:center; background-color:white;">100 Point</td>
-                <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
-            </tr>
-        </table>
-    </div>
+                    <td style="width:50px; height: 50px; background-color:#e75480;">
+                        <img src="/img/character/char3.png" style="width:50px; height: 50px;"  alt="">
+                    </td>
+                    <td style="width:250px; background-color:white;">LONDON SPITFIRE</td>
+                    <td  style="width:150px; text-align:left; background-color:white;">100 Point</td>
+                    <td style=" background-color:white;"><img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td>
+                </tr>
+            </table>
+        </div>
 
-            <div id="mid_q" class="bar-chart-block block" style="width:40%; height:70%; margin-left:4%; display:inline-block;">
-                <h2 class='titular'>문제 풀이</h2>
-                <div style="margin-left:10%; width:80%; height:30%; min-height:200px; border-radius:10px; background:white;">
-                    <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
+                <div id="mid_q" style="    width: 40%;
+    height: 90%;
+    margin-top: 3%;
+    margin-left: 4%;
+    display: inline-block;">
+                    <div style="margin-left:10%; width:100%; height:30%; min-height:200px; border-radius:10px; background:white;
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);"
+                    >
+                        <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
+                    </div>
+
+
+                    <div class='grafico bar-chart'>
+                        <div id="obj_opinion" style="display:none;">
+                            <div class="choice_status" style="background-image: url('/img/race_play/result_a.png')">
+                                <div  class="choice_two_tone"></div>
+                                <div class="B_class" id="B1">1</div>
+
+                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                    <span id="A_count" style="color:black; font-weight: bold;">0</span>
+                                </div>
+
+                            </div>
+
+                            <div class="choice_status" style="background-image: url('/img/race_play/result_b.png')">
+                                <div  class="choice_two_tone"></div>
+                                <div  class="B_class" id="B2">2</div>
+
+                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                    <span id="B_count" style="color:black; font-weight: bold;">0</span>
+                                </div>
+
+                            </div>
+
+                            <div class="choice_status" style="background-image: url('/img/race_play/result_c.png')">
+                                <div class="choice_two_tone"></div>
+                                <div class="B_class" id="B3">3</div>
+
+                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                    <span id="C_count" style="color:black; font-weight: bold;">0</span>
+                                </div>
+                            </div>
+
+                            <div class="choice_status" style="background-image: url('/img/race_play/result_d.png')">
+                                <div class="choice_two_tone"></div>
+                                <div class="B_class" id="B4">4</div>
+
+                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                                    <span id="D_count" style="color:black; font-weight: bold;">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sub_opinion" style="">
+                            <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
+                            <div id="opinion_box" style="margin-left: 10%;
+    width: 100%;
+    height: 30%;
+    min-height: 200px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
+                                </div>
+                            </div>
+                        </div>
                 </div>
-
-
-                <div class='grafico bar-chart'>
-                    <div id="obj_opinion" style="display:none;">
-                        <div class="choice_status" style="background: #9e7ac2;">
-                            <div  class="choice_two_tone" style="background: #8361ba;">A</div>
-                            <div class="B_class" id="B1">1</div>
-
-                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                <span id="A_count" style="color:black; font-weight: bold;">0</span>
-                            </div>
-
-                        </div>
-
-                        <div class="choice_status" style="background: #f36174;">
-                            <div  class="choice_two_tone" style="background: #e24d66;">B</div>
-                            <div  class="B_class" id="B2">2</div>
-
-                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                <span id="B_count" style="color:black; font-weight: bold;">0</span>
-                            </div>
-
-                        </div>
-
-                        <div class="choice_status" style="background: #42ce91;">
-                            <div class="choice_two_tone" style="background: #55dea8;">C</div>
-                            <div class="B_class" id="B3">3</div>
-
-                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                <span id="C_count" style="color:black; font-weight: bold;">0</span>
-                            </div>
-                        </div>
-
-                        <div class="choice_status" style="background: #fcb029;">
-                            <div class="choice_two_tone" style="background: #f9cd36;">D</div>
-                            <div class="B_class" id="B4">4</div>
-
-                            <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                <span id="D_count" style="color:black; font-weight: bold;">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="sub_opinion" style="display: none;">
-                        <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
-                        <div id="opinion_box" style="margin-left:10%; width:80%; height:30%; min-height:200px; border-radius:10px; background:white;">
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
+    </div>
 </div>
 <style>
 
@@ -239,14 +299,16 @@
     Css orignal https://codepen.io/jlalovi/details/bIyAr
     ************************/
     .choice_status{
-        width:80%;
+        width:100%;
         height:20%;
         margin-top:3%;
         margin-left:10%;
         border-radius:10px;
+        background-position: center;
+        background-size: cover;
     }
     .choice_two_tone{
-        width:15%;
+        width:26%;
         height:100%;
         font-size:30px;
         border-radius: 10px 0px 0px 10px;
@@ -255,7 +317,8 @@
     .B_class{
         display:inline-block;
         font-size:30px;
-        width:70%;
+        width:62%;
+        vertical-align: top;
     }
 
     @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,700);
@@ -295,6 +358,10 @@
         text-align: center;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+        background: #033981;
+        border-radius: 50px;
+        margin-left: 22%;
+        width: 80%;"
     }
     .horizontal-list {
         margin: 0;
@@ -306,7 +373,6 @@
     }
     .block {
         margin: 25px 25px 0 0;
-        background: #394264;
         border-radius: 10px;
         width: 300px;
         height:450px;
@@ -564,7 +630,6 @@
     BAR-CHART
     **************************/
     .grafico.bar-chart {
-        background: #3468AF;
         padding: 0 1rem 2rem 1rem;
         width: 100%;
         height: 50%;
@@ -908,80 +973,4 @@
     }
 </style>
 
-<script>
-
-    // function sliceSize(dataNum, dataTotal) {
-    //     return (dataNum / dataTotal) * 360;
-    // }
-    // function addSlice(sliceSize, pieElement, offset, sliceID, color) {
-    //     $(pieElement).append(
-    //         "<div class='slice " + sliceID + "'><span></span></div>"
-    //     );
-    //     var offset = offset - 1;
-    //     var sizeRotation = -179 + sliceSize;
-    //     $("." + sliceID).css({
-    //         "transform": "rotate(" + offset + "deg) translate3d(0,0,0)"
-    //     });
-    //     $("." + sliceID + " span").css({
-    //         "transform": "rotate(" + sizeRotation + "deg) translate3d(0,0,0)",
-    //         "background-color": color
-    //     });
-    // }
-    // function iterateSlices(
-    //     sliceSize,
-    //     pieElement,
-    //     offset,
-    //     dataCount,
-    //     sliceCount,
-    //     color
-    // ) {
-    //     var sliceID = "s" + dataCount + "-" + sliceCount;
-    //     var maxSize = 179;
-    //     if (sliceSize <= maxSize) {
-    //         addSlice(sliceSize, pieElement, offset, sliceID, color);
-    //     } else {
-    //         addSlice(maxSize, pieElement, offset, sliceID, color);
-    //         iterateSlices(
-    //             sliceSize - maxSize,
-    //             pieElement,
-    //             offset + maxSize,
-    //             dataCount,
-    //             sliceCount + 1,
-    //             color
-    //         );
-    //     }
-    // }
-    // function createPie(dataElement, pieElement) {
-    //     var listData = [];
-    //     $(dataElement + " span").each(function () {
-    //         listData.push(Number($(this).html()));
-    //     });
-    //     var listTotal = 0;
-    //     for (var i = 0; i < listData.length; i++) {
-    //         listTotal += listData[i];
-    //     }
-    //     var offset = 0;
-    //     var color = [
-    //         "green",
-    //         "red",
-    //         "orange",
-    //         "tomato",
-    //         "crimson",
-    //         "purple",
-    //         "turquoise",
-    //         "forestgreen",
-    //         "navy",
-    //         "gray"
-    //     ];
-    //     for (var i = 0; i < listData.length; i++) {
-    //         var size = sliceSize(listData[i], listTotal);
-    //         iterateSlices(size, pieElement, offset, i, 0, color[i]);
-    //         $(dataElement + " li:nth-child(" + (
-    //             i + 1
-    //         ) + ")").css("border-color", color[i]);
-    //         offset += size;
-    //     }
-    // }
-    // createPie(".pieID.legend", ".pieID.pie");
-    // </script>
 
