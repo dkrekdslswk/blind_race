@@ -220,7 +220,7 @@
                 <div class="column" style="background-image:url('/img/race_play/answer_b.png'); ">
                     <p class="answer_font" id="answer2">2번</p>
                 </div>
-                <div class="column" style="background-image:url('/img/race_play/answer_c.png'); "">
+                <div class="column" style="background-image:url('/img/race_play/answer_c.png'); ">
                     <p class="answer_font" id="answer3">3번</p>
                 </div>
                 <div class="column" style="background-image:url('/img/race_play/answer_d.png'); ">

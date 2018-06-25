@@ -3,13 +3,14 @@
 <html>
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script
             defer="defer"
             src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"
             integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="sweetalert2.all.min.js"></script>
+
     <title>충분충분</title>
     <meta charset="utf-8">
     <meta
@@ -81,7 +82,6 @@
                                 break;
                         }
 
-                        document.getElementById('id01').style.display='none';
                         $('#login_button').text("Log-Out");
                         $('#login_button').attr("onclick","tryLogout()");
 
@@ -125,308 +125,56 @@
         id="top"
         onload="loginCheck()";
         class="bgded fixed"
-        {{--style="background-image:url('https://i.imgur.com/BMhEarm.jpg');">--}}
-        style="background-color: #9fcdff">
-<div class="row5" style="width: 100%; height: 50px">
-    <nav  style="margin: 0;width: 100%;" >
-        <div class="">
-            <div class="navbar-header">
-                <button
-                        type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img src="{{ asset('https://i.imgur.com/dmXfbDm.png') }}" style="width:125px; height:50px; "/>
-            </div>
+>
 
-            <div class=" collapse navbar-collapse" id="navbar-collapse-2" style="position:absolute; right:0;">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('mygroup') }}">My Class</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('race_list') }}">Race</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('recordbox') }}">RecordBox</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('quiz_list') }}">QuizTree</a>
-                    </li>
 
-                    <li>
+@include('Navigation.main_nav')
 
-                        <button id="login_button"  onclick="document.getElementById('id01').style.display='block'" class="mainbtn">Log-in</button>
-                    </li>
-                    {{--<li>--}}
 
-                        {{--<button onclick="document.getElementById('id02').style.display='block'" class="mainbtn">Sign up</button>--}}
-                    {{--</li>--}}
-
-                </ul>
-
-            </div>
-        </div>
-    </nav>
+<div style="width: 100%; height: 45%">
+    <a href="/"><img style="width: 100% ; height: 100%" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
 </div>
 
-
-
-<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
-<script type="text/javascript" charset="utf-8">
-    var $ = jQuery.noConflict();
-    $(window).load(function() {
-        $('.flexslider').flexslider({
-            animation: "fade"
-        });
-
-        $(function() {
-            $('.show_menu').click(function(){
-                $('.menu').fadeIn();
-                $('.show_menu').fadeOut();
-                $('.hide_menu').fadeIn();
-            });
-            $('.hide_menu').click(function(){
-                $('.menu').fadeOut();
-                $('.show_menu').fadeIn();
-                $('.hide_menu').fadeOut();
-            });
-        });
-    });
-</script>
-</head>
-<body>
-
-<div class="flexslider">
-
-            <a href="/"><img style="width: 100% ; height: 358px" src="https://i.imgur.com/selEFaM.png" alt="" title=""/></a>
-            <div class="flex-caption">
-
-            </div>
-
-    </ul>
-</div>
-</div>
-</div>
+<div style="width: 100%; height: 5%; background-color: #9fcdff; color: white; font-size: 21px; line-height: 2;">
+    <div style="width: 19%; height: 100%; display: inline-block; si"><center>My class</center></div>
+    <div style="width: 20%; height: 100%; display: inline-block "><center>Race</center></div>
+    <div style="width: 20%; height: 100%; display: inline-block "><center>Recordbox</center></div>
+    <div style="width: 20%; height: 100%; display: inline-block "><center>Quiz Tree</center></div>
+    <div style="width: 19%; height: 100%; display: inline-block "><center>Feedback</center></div>
 </div>
 
-
-<div id="pageintro" >
-
-
-    <ul class="nospace group">
-
-        <li>
-            <i>MY Class</i>
-            <a class="mt-purple" href="/mygroup">
-                <i class="fa fa-5x fa-child"></i>
-
-            </a>
-        </li>
-
-        <li>
-            {{--<a class="mt-green" href="{{ url('race_list') }}">--}}
-            <i >Race</i>
-            <a class='mt-green' id="home_race">
-                <i class="fa fa-5x fa-gamepad"></i>
-
-            </a>
-        </li>
-        <li>
-            <i>Record Box</i>
-            <a class="mt-red" href="/recordbox">
-                <i class="fa fa-5x fa-box-open"></i>
-
-            </a>
-        </li>
-        <li>
-            <i>Quiz Tree</i>
-            <a class="mt-yellow" href="{{ url('quiz_list') }}">
-                <i class="fa fa-5x fa-tree"></i>
-
-            </a>
-        </li>
-
-
-        <li>
-            <i>Feedback</i>
-            <a class="mt-orange" href="/raid">
-                <i class="fa fa-5x fa-comments"></i>
-
-            </a>
-        </li>
-
-
-
-    </ul>
-
-
-    </ul>
-
+<div style="width: 100%; height: 34%; font-size:0;line-height:0 ">
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/mygroup') }}"><img class="menu_img" src="https://i.imgur.com/33elQUd.png"> </div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('race_list') }}"><img class="menu_img" src="https://i.imgur.com/mbuwQ0O.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('/recordbox') }}"><img class="menu_img" src="https://i.imgur.com/ExqGuJx.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('quiz_list') }}"><img class="menu_img" src="https://i.imgur.com/PPBQX37.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('recordbox') }}"><img class="menu_img" src="https://i.imgur.com/TU94pvS.png"></div>
 </div>
 
-
-
-
-
+<div  style="width: 100% ; height: 10%; background-color: white">
 
 </div>
-</div>
-</div>
-
-
-<div  style="width: 100% ; height: 30px; background-color: white">
-
-</div>
-<div class="row5">
-    <div class="lrspace">
-        <div id="copyright" class="clear">
-
-            <p class="fl_left">Copyright &copy; 2018 - WDJ 7조 -
-                <a href="#">캡스톤 디자인</a>
-            </p>
-            <p class="fl_right">Template By
-                <a
-                        target="_blank"
-
-                        title="Free Website Templates">WDJ7조</a>
-            </p>
-
-        </div>
+<div class="row5" >
+    <div id="copyright" class="clear">
     </div>
 </div>
-
-<a id="backtotop" href="#top">
-    <i class="fa fa-chevron-up"></i>
-</a>
-
-
-
-<div id="id01" class="modal">
-    <div class="modal-content">
-        <div class="imgcontainer">
-
-            <span
-                    onclick="document.getElementById('id01').style.display='none'"
-                    class="close"
-                    title="Close Modal">&times;</span>
-            <!-- <img src="https://i.imgur.com/pDvUuvf.png" alt="Avatar2" class="avatar" width ="200px"> -->
-        </div>
-
-        <div class="container">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <label for="p_ID">
-                <b>학 번</b>
-            </label>
-            <input
-                    id="web_ID"
-                    type="text"
-                    placeholder="학번을  입력"
-                    name="p_ID"
-                    required="required"
-                    value="123456789">
-
-            <label for="p_PW">
-                <b>Password</b>
-            </label>
-            <input
-                    id="web_PW"
-                    type="password"
-                    placeholder="Enter Password"
-                    name="p_PW"
-                    required="required"
-                    value="sub"
-            >
-
-            <button type="button" style ="color : black" onclick="tryLogin()">Login</button>
-
-
-
-        </div>
-
-    </div>
-</div>
-
-<div id="id02" class="modal">
-    <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-
-
-
-    <form class="modal-content" action="{{url('userController/webLogin')}}"  method="Post" enctype="multipart/form-data">
-        <div class="container">
-            <h1>Sign Up</h1>
-
-            <hr>
-            <label for="text"><b>Student ID</b></label>
-            <input type="text" placeholder="Student ID" name="ID" required>
-
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-
-            <label for="psw-repeat"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-
-
-
-
-
-            <div class="clearfix">
-                <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
-                <button type="submit" class="signupbtn">Sign Up</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-
-<!-- JAVASCRIPTS -->
-
-<script src="{{url('js/jquery.min.js')}}"></script>
-<script src="{{url('js/mi.js')}}"></script>
-<script src="{{url('js/jquery.backtotop.js')}}"></script>
-<script src="{{url('js/jquery.mobilemenu.js')}}"></script>
-
-
-<script>
-
-    //    alert(JSON.stringify( $returnvalue));
-    // alert('<?php //echo $returnvalue; ?>');
-    var modal = document.getElementById('id01');
-
-
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    var modal = document.getElementById('id02');
-
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-</script>
 <style>
-    img {
-        width: 1700px;
-        height: 358px;
+    .menu_img{
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+
+    }
+    div {
         margin: 0;
-        padding: 0;
-        border: none;
-        line-height: normal;
-        vertical-align: middle;
+    }
+    html{
+        width: 100%;
+        height:100%;
+    }
+    body{
+        width: 100%;
+        height: 100%;
     }
 
     .navbar-brand {
@@ -461,7 +209,7 @@
         background-image: url("https://i.imgur.com/7nT1LDd.png"); !important;
         margin: 0;
     }
-    ..navbar-default {
+    .navbar-default {
         background-image: url("https://i.imgur.com/7nT1LDd.png"); !important;
     }
     .navbar.navbar-inverse .nav-collapse {

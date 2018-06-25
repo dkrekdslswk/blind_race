@@ -185,10 +185,11 @@
         var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "명"; ?>';
+        var socket = io(':8890');
 
         window.onload = function() {
 
-            var socket = io(':8890');
+
 
             $('#race_name').html(listName);
             $('#race_count').html(quizCount);
@@ -299,14 +300,14 @@
             });
         };
 
-        // function quiz_skip(){
-        //     var socket = io(':8890'); //14
-        //
-        //     if( quiz_numbar == quiz_JSON.length )
-        //         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
-        //     else
-        //         socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
-        // }
+        function quiz_skip(){
+            // var socket = io(':8890'); //14
+
+            if( quiz_numbar == quiz_JSON.length )
+                socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar-1].makeType);
+            else
+                socket.emit('count_off',quiz_numbar , roomPin , quiz_JSON[quiz_numbar].makeType);
+        }
 
         //정답뒤섞기
         function shuffle(a) {
