@@ -97,7 +97,8 @@
     border-radius: 0px 0px 50px 50px; ">
 
             <div class="" style="margin-top:2%; margin-left:4%; border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
-                <div style="width:13%; height:100%; display:inline-block; border-radius:8px; background-color: #df4467; font-size:30px; color:white;">正答</div>
+                <div style="width:13%; height:100%; display:inline-block; border-radius:8px; background-color: #df4467; font-size:30px; color:white; text-align: center;
+    line-height: 100px;">정답</div>
                 <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
             </div>
 
@@ -132,9 +133,10 @@
 
 <div id="mid_content" style="" >
 
-    <div id="buttons">
-        <a id="Mid_skip_btn" href="#" role="button"></a>
-    </div>
+    <a id="Mid_skip_btn" href="#" role="button">
+        <div id="buttons">
+        </div>
+    </a>
 
     <div style="width: 27%;
     height: 8%;
