@@ -235,6 +235,7 @@ class BlindDummyTableSeeder extends Seeder
                         'quizNo' => $quizList[$quizCount - 1],
                         'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number) != 0) ? 'X' : 'O'),
                         'answer' => $answerCheck == '0' ? $quizs[$quizCount]['rightAnswer'] : $quizs[$quizCount]['example'][mt_rand(0, 2)]
+                        'answer' => $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][mt_rand(0, 2)]
                     ]);
 
                     if ($check) {
@@ -255,7 +256,7 @@ class BlindDummyTableSeeder extends Seeder
                                 'listNo' => $listId,
                                 'quizNo' => $quizList[$quizCount - 1],
                                 'answerCheck' => $answerCheck = (string)(($check = mt_rand(0, $number) == 0) ? 'X' : 'O'),
-                                'answer' => $answerCheck == '0' ? $quizs[$quizCount]['rightAnswer'] : $quizs[$quizCount]['example'][mt_rand(0, 2)],
+                                'answer' => $answerCheck == '0' ? $quizs[$quizCount - 1]['rightAnswer'] : $quizs[$quizCount - 1]['example'][mt_rand(0, 2)],
                                 'retest' => 1
                             ));
 
