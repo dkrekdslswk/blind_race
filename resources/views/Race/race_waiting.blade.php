@@ -362,7 +362,7 @@
         }
 
         function btn_click(){
-            if(quiz_member != 0 ){
+            if(quiz_member == 0 ){
                 alert("참여한 인원이 없습니다.");
             }else {
 
