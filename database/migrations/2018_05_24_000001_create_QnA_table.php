@@ -30,6 +30,9 @@ class CreateQnATable extends Migration
             $table->text('question');
             $table->text('answer')->nullable();
 
+            $table->unsignedInteger('fileNumber');
+            $table->foreign('fileNumber')->references('number')->on('files');
+
             $table->timestamp('question_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('answer_at')->nullable();
         });
