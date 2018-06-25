@@ -655,10 +655,10 @@ class RecordBoxController extends Controller{
                     if ($type[1] == 'obj') {
                         $quizData = DB::table('records as re')
                             ->select(
-                                DB::raw('count(CASE WHEN re.answer = qb.rightAnswer THEN 1 END) as rightAnswerCount'),
-                                DB::raw('count(CASE WHEN re.answer = qb.example1 THEN 1 END) as example1Count'),
-                                DB::raw('count(CASE WHEN re.answer = qb.example2 THEN 1 END) as example2Count'),
-                                DB::raw('count(CASE WHEN re.answer = qb.example3 THEN 1 END) as example3Count')
+                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.rightAnswer THEN re.userNo END) as rightAnswerCount'),
+                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example1 THEN re.userNo END) as example1Count'),
+                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example2 THEN re.userNo END) as example2Count'),
+                                DB::raw('count(DISTINCT CASE WHEN re.answer = qb.example3 THEN re.userNo END) as example3Count')
                             )
                             ->where($typeWhere)
                             ->where(['qb.number' => $raceQuizs[$i]->quizId])
