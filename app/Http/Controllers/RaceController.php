@@ -34,8 +34,7 @@ class RaceController extends Controller{
      *          'quizs' => $this->quizGet(리스트 아이디);
      *      )
      */
-    public function createRace(Request $request)
-    {
+    public function createRace(Request $request){
         $postData = array(
             'groupId'       => $request->input('groupId'),
             'raceType'      => $request->input('raceType'),
@@ -147,13 +146,15 @@ class RaceController extends Controller{
 
         // 값을 반납
         // return $returnValue;
-        if ($returnValue['check'] == false){
-            return view('homepage')->with('response', $returnValue);
-        } else if ($postData['raceType'] == 'race') {
-            return view('Race/race_waiting')->with('response', $returnValue);
-        } else if ($postData['raceType'] == 'popQuiz') {
-            return view('Race/race_popquiz')->with('response', $returnValue);
+        $view = 'homepage';
+        if ($returnValue['check']){
+            if ($postData['raceType'] == 'race') {
+                $view = 'Race/race_waiting';
+            } else if ($postData['raceType'] == 'popQuiz') {
+                $view = 'Race/race_popquiz';
+            }
         }
+        return view($view)->with('response', $returnValue);
     }
 
     /****
@@ -759,8 +760,7 @@ class RaceController extends Controller{
      *      'check' 결과 조회 성공 여부
      *  )
      */
-    public function raceEnd(Request $request)
-    {
+    public function raceEnd(Request $request){
         // 선생정보 가져오기기
         $userData = UserController::sessionDataGet($request->session()->get('sessionId'));
 
@@ -1411,8 +1411,7 @@ class RaceController extends Controller{
      * @param $raceId // 레이스 아이디
      * @param $type // 레이스 유형
      */
-    private function omission($userId, $raceId, $type)
-    {
+    private function omission($userId, $raceId, $type){
         $raceData = DB::table('races')
             ->select(
                 'listNumber as listId'
