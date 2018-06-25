@@ -11,6 +11,10 @@
 
     <style type="text/css">
 
+        p ,div ,th ,tr,button  {
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
         .panel-table .panel-body{
             padding:0;
         }
@@ -134,7 +138,8 @@
         }
 
         .folderButton {
-            background-image: url("https://i.imgur.com/tYpfp1i.png");
+            background-image: url("https://i.imgur.com/LUW1L49.png");
+            background-size: 100%;
             border:1px solid transparent !important;
             padding: 8px;
             margin-top: -1px;
@@ -270,14 +275,12 @@
 
             if(folderListData['folders'][i]['folderId'] == 0) {
                 $("#folderList").append(
-                    "<li><a href='#' class='folderButton' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" +
-                    "<p style='font-size: 15px; color: white;'><span class='fa fa-users'></span>" + " " + folderListData['folders'][i]['folderName'] + "</p></a></li>"
+                    "<li><a href='#' class='folderButton' onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'><span class='fa fa-users'></span>" + " " + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
             }
             else {
                 $("#folderList").append(
-                    "<li><a href='#' class='folderButton'onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" +
-                    "<p style='font-size: 15px; color: white'>" + folderListData['folders'][i]['folderName'] + "</p></a></li>"
+                    "<li><a href='#' class='folderButton'onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
 
             }
