@@ -190,8 +190,13 @@
         <div class="select">
             <select id="bookSelect" class="form-control">
                 <option>교재 선택</option>
-                <option value="1">test</option>
-                <option value="2">급소공략</option>
+                @for($i = count($response['bookList']) - 1; $i >= 0; $i--)
+
+                    <option value="{{$response['bookList'][$i]['bookId']}}">{{$response['bookList'][$i]['bookName']}}</option>
+
+                @endfor
+                <!--<option value="1">test</option>
+                <option value="2">급소공략</option>-->
             </select>
         </div>
 
