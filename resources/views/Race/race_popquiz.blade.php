@@ -664,7 +664,7 @@
                 all_member_count = quiz_member - submit_count;
 
                 $('#playing_member_count').text("수험중:"+all_member_count+"명");
-
+                $('#member_count').text(all_member_count);
                 $('#submit_count').text(submit_count);
 
                 var userName= $('#'+sessionId+"Name").text();
