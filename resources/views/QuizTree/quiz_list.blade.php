@@ -8,61 +8,23 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
     <style type="text/css">
 
-        p ,div ,th ,tr,button  {
-            font-family: 'Nanum Gothic', sans-serif;
+        p, div, th, tr, button  {
+            font-family: 'a뉴고딕M';
         }
 
-        .panel-table .panel-body{
-            padding:0;
+        .btn-primary-outline {
+            background-color: transparent;
+            border-color: #ccc;
         }
 
-        .panel-table .panel-body .table-bordered{
-            border-style: none;
-            margin:0;
-        }
-
-        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
-            text-align:center;
-            width: 150px;
-        }
-
-        .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
-        .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
-            border-right: 0px;
-        }
-
-        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
-        .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
-            border-left: 0px;
-        }
-
-        .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
-            border-bottom: 0px;
-        }
-
-        .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
-            border-top: 0px;
-        }
-
-        .panel-table .panel-footer .pagination{
-            margin:0;
-        }
-
-        .panel-table .panel-footer .col{
-            line-height: 34px;
-            height: 34px;
-        }
-
-        .panel-table .panel-heading .col h3{
-            line-height: 30px;
-            height: 30px;
-        }
-
-        .panel-table .panel-body .table-bordered > tbody > tr > td{
-            line-height: 34px;
+        .btn-round-lg{
+            border-radius: 20.5px;
         }
 
         .table tr{
@@ -71,10 +33,10 @@
 
         #wrapper {
             margin: 0 0 0 220px;
-            padding: 0;
-            position: relative;
-            min-height: 705px;
-            min-width: 1000px;
+            /*padding: 0;*/
+            /*position: relative;*/
+            /*min-height: 705px;*/
+            /*min-width: 1000px;*/
         }
 
         /* 토글 버튼용 */
@@ -150,10 +112,24 @@
             border-spacing: 0px 0px !important;
         }
         
-        .titleImg {
-
+        #titleImg {
             background-image: url("https://i.imgur.com/3BaJJlL.png");
             background-size: 100%;
+            background-repeat: no-repeat;
+            height: 9.5vw;
+        }
+
+        #theadFont {
+            font-family: 'a뉴고딕M';
+            font-size: 22px;
+            text-align: center;
+        }
+
+        #tbodyFont {
+            font-family: 'a뉴고딕M';
+            font-size: 20px;
+            text-align: center;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -235,7 +211,7 @@
 
     }
 
-    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌 (공유폴더 O)
+    // AJAX 통신 성공시 호출되는 메서드 : 폴더, 리스트 정보를 보여줌 (공유폴더)
     function listValueS() {
 
         // 퀴즈 값이 쌓이지 않게 초기화
@@ -245,17 +221,17 @@
 
             $("#list").append(
                 "<tr>" +
-                "<td style='text-align: center'>" +
+                "<td id='tbodyFont'>" +
                 "<label class='switch'>" +
                 "<input type='checkbox' id='shareToggle' data-toggle='toggle' checked disabled>" +
                 "<span class='slider round'></span>" +
                 "</label>" +
                 "</td>" +
-                "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate']+ "</td>" +
-                "<td style='text-align: center'>" +
+                "<td id='tbodyFont' class='hidden-xs'>" + quizlistData['lists'][i]['createdDate']+ "</td>" +
+                "<td id='tbodyFont'>" +
                 "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
-                "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
-                "<td align='center'>" +
+                "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                "<td id='tbodyFont'>" +
                 "<button class='btn btn-default' onclick='shareFolderMsg()'>수정・삭제 불가능</button>" +
                 "</td>" +
                 "</tr>"
@@ -270,6 +246,7 @@
         $("#folderList").empty();
         $("#list").empty();
 
+
         // <----- 폴더 리스트 ----->
         for(var i = folderListData['folders'].length - 1; i >= 0; i--) {
 
@@ -282,7 +259,6 @@
                 $("#folderList").append(
                     "<li><a href='#' class='folderButton'onclick='getFolderListValue(" + folderListData['folders'][i]['folderId'] + ")'>" + folderListData['folders'][i]['folderName'] + "</a></li>"
                 );
-
             }
         }
 
@@ -312,15 +288,15 @@
             if(quizlistData['lists'][i]['races'].length == 0) {
                 $("#list").append(
                     "<tr>" +
-                    "<td style='text-align: center'>" +
+                    "<td id='tbodyFont'>" +
                     toggle +
                     "</td>" +
-                    "<td class='hidden-xs' style='text-align: center'>" + quizlistData['lists'][i]['createdDate'] + "</td>" +
-                    "<td style='text-align: center'>" +
+                    "<td id='tbodyFont' class='hidden-xs'>" + quizlistData['lists'][i]['createdDate'] + "</td>" +
+                    "<td id='tbodyFont'>" +
                     "<a href='#showModal" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
-                    "<td style='text-align: center'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
-                    "<td align='center'>" +
-                    "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><em class='fa fa-trash'></em></a>" +
+                    "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
+                    "<td id='tbodyFont'>" +
+                    "<a class='btn btn-danger' data-toggle='modal' data-target='#deleteModal" + quizlistData['lists'][i]['listId'] + "'><i class='fa fa-trash' aria-hidden='true'></i></a>" +
                     "</td>" +
                     "</tr>"
                 );
@@ -363,8 +339,8 @@
                     "</td>" +
                     "</tr>"
                 );
-            }
 
+            }
 
             // 토글 버튼 : 공개 여부
             /* ★★★토글 테스트★★★ */
@@ -395,7 +371,7 @@
                         data: params,
                         success: function (data) {
                             //alert(JSON.stringify(data));
-                            alert("공개 ON");
+                            swal("공개 ON");
                         },
                         error: function (data) {
                             alert("error");
@@ -685,79 +661,59 @@
 
 </script>
 
-
 <body onload="getFolderValue()">
 
 <nav>
     @include('Navigation.main_nav')
 </nav>
 
-<div class="row">
+<div>
+    <!-- 사이드 바 -->
     <div class="side-menu">
         <aside class="navbar navbar-default" role="navigation">
-        @include('QuizTree.quiz_list_sidebar')
-    </aside>
+            @include('QuizTree.quiz_list_sidebar')
+        </aside>
     </div>
 
-
-    <div class="titleImg"></div>
-
-    <!--Quiz List Table-->
+    <!-- 본문 -->
     <div id="wrapper">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default panel-table">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col col-xs-6" id="showFolderName">
-                            <!-- FolerName 공간 -->
-                        </div>
-                        <!-- Create quiz -->
-                        <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <input type="hidden" name="folderId" id="folderId" value="">
-                            <div class="col col-xs-6 text-right" id="quizButton">
-                                <!-- Quiz Button 공간 -->
-                                <button type="submit" class="btn btn-sm btn-primary btn-create" onclick="createList()">퀴즈 만들기</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped table-bordered table-list">
-                        <thead>
-                        <tr>
-                            <th style="width: 10%">공개여부</th>
-                            <th class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
-                            <th style="text-align: center; width: 50%;">퀴즈명</th>
-                            <th style="text-align: center; width: 10%;">문항수</th>
-                            <th style="width: 10%; text-align: center"><em class="fa fa-cog"></em></th>
-                        </tr>
-                        </thead>
-                        <tbody id="list">
-                        <!-- list 공간 -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col col-xs-4">Page 1 of 5
-                        </div>
-                        <div class="col col-xs-8">
-                            <ul class="pagination hidden-xs pull-right">
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                            </ul>
-                            <ul class="pagination visible-xs pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        <!-- 노랑 타이틀 -->
+        <div id="titleImg">
+
+            <!-- 현재 폴더 이름 -->
+            <div style="padding-top: 1%">
+                <p style="margin-left: 15px; font-size: 50px; color: white">무슨 폴더</p>
             </div>
+
+            <!-- Create quiz -->
+            <form action="{{url('quizTreeController/createList')}}" method="Post" enctype="multipart/form-data">
+                {{csrf_field()}}
+                <input type="hidden" name="folderId" id="folderId" value="">
+                <div id="quizButton" style="margin-left: 15px">
+                    <!-- Quiz Button 공간 -->
+                    <button type="submit" style="color: white;" class="btn btn-primary-outline btn-round-lg btn-lg" onclick="createList()">퀴즈 만들기</button>
+                </div>
+            </form>
+        </div>
+
+        <div style="width : 100% ; height: 20px ; background-color: #9fcdff"></div>
+
+        <!-- 퀴즈 리스트 -->
+        <div class="">
+            <table class="table">
+                <thead style="height: 60px">
+                <tr>
+                    <th id="theadFont" style="text-align: center; width: 10%;">공개여부</th>
+                    <th id="theadFont" class="hidden-xs" style="text-align: center; width: 20%">등록일</th>
+                    <th id="theadFont" style="text-align: center; width: 50%">퀴즈명</th>
+                    <th id="theadFont" style="text-align: center; width: 10%">문항수</th>
+                    <th id="theadFont" style="width: 10%; text-align: center"><em class="fa fa-cog"></em></th>
+                </tr>
+                </thead>
+                <tbody id="list">
+                <!-- list 공간 -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

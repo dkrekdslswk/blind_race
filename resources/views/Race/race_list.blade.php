@@ -143,7 +143,7 @@
     }
 
     .folderButton {
-        background-image: url("https://i.imgur.com/4xHiyg1.png");
+        background-image: url("https://i.imgur.com/N0vZHmc.png");
         background-size: 100%;
         border:1px solid transparent !important;
         padding: 8px;
