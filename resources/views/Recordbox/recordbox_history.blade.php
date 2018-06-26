@@ -1,5 +1,6 @@
 <html>
 <head>
+    <title>Record Box</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="generator" content="Bootply" />
@@ -13,8 +14,8 @@
 
     <!-- Bootstrap CSS CDN -->
     <style>
-        body {
-            font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        .PAGE_RECORDBOX {
+            font-family: "a뉴고딕M";
             background-color: #f7f8fa;
             font-size: 13px;
             color: #5f5f5f;
@@ -70,6 +71,7 @@
         .wrong_left ,.wrong_right{
             position: relative;
             width: 50%;
+            float: left;
             border: 1px solid #e5e6e8;
         }
         .objWrong {
@@ -78,10 +80,10 @@
         }
         .subWrong {
             padding: 10px;
-            border-top: 1px solid #e5e6e8;
-            border-right: 1px solid
-            #e5e6e8;
-            border-bottom: 1px solid #e5e6e8;
+            border: 1px solid #e5e6e8;
+        }
+        .wrong_right .objWrong ,.wrong_right .subWrong {
+            border-left: 0;
         }
         .noBoardLine {
             border: 0;
@@ -154,6 +156,9 @@
                 $('.fakeRecordnav').removeClass('addFakeToRecordNav');
                 $('.navbar-brand').show();
 
+                //학생 과제 확인 바
+                $('.raceListDetail').removeClass('raceListDetail-up');
+
             }else {
 
                 //사이드바
@@ -164,6 +169,10 @@
                 $('.recordbox_navbar').addClass('nav-up');
                 $('.fakeRecordnav').addClass('addFakeToRecordNav');
                 $('.navbar-brand').hide();
+
+                //학생 과제 확인 바
+                $('.raceListDetail').addClass('raceListDetail-up');
+
             }
         });
 
@@ -407,7 +416,7 @@
 
     </script>
 </head>
-<body>
+<div class="PAGE_RECORDBOX">
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
@@ -638,5 +647,5 @@
 
 
 
-</body>
+</div>
 </html>

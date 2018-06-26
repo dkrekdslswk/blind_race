@@ -49,21 +49,20 @@
 
     }
     #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
-        padding: 10px 0 10px 10px;
+        padding: 15px 0 10px 15px;
         color: #2a6496;
         text-transform: none;
-        font-weight: bold;
         position: relative;
         display: block;
-        font-size: 17px;
-        margin-left: 15px;
+        font-size: 15px;
+        height: 50px;
+
     }
     .class-myclass{
         height: 200px;
         padding: 30px 0 0 25px;
         font-size: 30px;
         color: #203a8e;
-        font-weight: bold;
     }
     .class_list {
         background-image: url("/img/race_recordbox/sidebarIcon.png");

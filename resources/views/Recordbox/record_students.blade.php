@@ -5,6 +5,22 @@
         display: block;
         clear: both;
     }
+    .studentsPage_main{
+        width: 100%;
+        padding: 10px 0 10px 20px;
+        background-color: #f9f9f9;
+        height: 50px;
+        position: relative;
+        display: block;
+        font-size: 19px;
+        text-align: left;
+        font-weight: bold;
+        margin-left: 30px;
+    }
+    .studentsPage_main h4{
+        color: #203a8e;
+        font-weight: bold;
+    }
     .studentContainer {
         width: 100%;
     }
@@ -29,15 +45,19 @@
         width: 100%;
         overflow-y: scroll;
     }
-    .stdAllList .studentList {
+    .studentList {
+        background-color: white;
         width: 100%;
     }
-    .stdAllList .studentList thead tr th ,.stdAllList .studentList thead tr td{
-        width: 50px;
-
+    .studentList thead tr:first-child{
+        background-color: #DFDFDF;
     }
-
-
+    .studentList thead tr th ,.studentList thead tr td{
+        width: 50px;
+    }
+    #std_grade_list_table .studentList tbody tr:nth-child(2n){
+        background-color: #e6eaed;
+    }
     .chartArea_student{
         float: left;
         position: relative;
@@ -100,7 +120,7 @@
             var reqUserId = $(this).attr('id');
 
             $('#student_list tr').css('background-color','white');
-            $('#student_list_'+reqUserId).css('background-color','#e5e6e8');
+            $('#student_list_'+reqUserId).css('background-color','#d9edf7');
 
             getStudentGrade(this.id);
 
@@ -184,8 +204,7 @@
                             .attr('class','stdList'));
                     }
                 }
-
-                $('#student_list_' + student[0]['id']).css('background-color','#e5e6e8');
+                $('#student_list_' + student[0]['id']).css('background-color','#d9edf7');
                 getStudentGrade(student[0]['id']);
 
             },
@@ -675,6 +694,11 @@
 
 <div class="studentContainer">
 
+    <div class="studentsPage_main">
+        <h4>
+            학생 관리
+        </h4>
+    </div>
     <div class="studentChart">
         <div class="stdAllList_scroll">
             <div class="stdAllList">
@@ -711,19 +735,19 @@
     <div class="student_grade">
 
         <div id="std_grade_list_table" >
-            <table class="table table-hover table-bordered" >
+            <table class="table table-hover table-bordered studentList" >
                 <thead>
                 <tr>
                     <th style=" text-align: center;min-width: 50px;">
                         번호
                     </th>
-                    <th style=" text-align: center;min-width: 140px;">
+                    <th style=" text-align: center;">
                         날짜
                     </th>
-                    <th style="text-align: center;min-width: 200px;">
+                    <th style="text-align: center;">
                         문제 이름
                     </th>
-                    <th style=" text-align: center;min-width: 80px;">
+                    <th style=" text-align: center;width: 100px;">
                         총 점수
                     </th>
                     <th style=" text-align: center;min-width: 80px;">
@@ -735,13 +759,13 @@
                     <th style=" text-align: center;min-width: 80px;">
                         단어
                     </th>
-                    <th style=" text-align: center;min-width: 80px;">
+                    <th style=" text-align: center;width: 100px;">
                         재시험
                     </th>
-                    <th style=" text-align: center;min-width: 100px;">
+                    <th style=" text-align: center;width: 100px;">
                         오답노트
                     </th>
-                    <th style=" text-align: center;min-width: 100px;">
+                    <th style=" text-align: center;width: 100px;">
                         성적표
                     </th>
                 </tr>

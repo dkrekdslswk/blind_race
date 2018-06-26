@@ -262,7 +262,7 @@
 
             //차트 데이터 합치기
             AllChartData = { "total_data" : ["총 점수" , total_data_Points] ,
-                "voca_data" : ["어학 점수", vocabulary_Points] ,
+                "voca_data" : ["어휘 점수", vocabulary_Points] ,
                 "grammer_data" : ["독해 점수" , grammer_data_Points] ,
                 "word_data" : ["단어 점수" , word_data_Points]
             };
@@ -320,7 +320,7 @@
                         type: "line",
                         showInLegend: true,
 
-                        // name: "어학 점수",
+                        // name: "어휘 점수",
                         name: data['voca_data'][0],
 
                         lineDashType: "dash",
