@@ -3,9 +3,10 @@
         margin: 0;
         padding: 0;
         position: relative;
-        width: 15%;
+        width: 16%;
         height:100%;
         float: left;
+        background-color: #F2F2F2;
         border: 1px solid #e5e6e8;
     }
     .sidenav-up {
@@ -13,35 +14,55 @@
         padding: 0;
         top: 0;
         left: 0;
-        width: 15%;
+        width: 16%;
         position: fixed;
-        z-index: 2;
+        background-color: #F2F2F2;
+        z-index: 100;
     }
+    .fake_sidebar{
+    }
+    .addToFake{
+        margin: 0;
+        padding: 0;
+        position: relative;
+        width: 16%;
+        height:100%;
+        float: left;
+    }
+
     .page-small {
         display: none !important;
     }
     .page-small {
         width: 100% !important;
     }
-    .m-t-lg {
-        margin-top: 30px !important;
-    }
     .main-left-menu {
         list-style-type: none;
         margin: 0;
         padding: 0;
     }
+    #side-menu2 {
+        
+    }
     #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
-        padding: 8px 10px 8px 20px;
-        color: #5f5f5f;
+        padding: 10px 0 10px 10px;
+        color: #2a6496;
         text-transform: none;
-        font-weight: normal;
+        font-weight: bold;
         position: relative;
         display: block;
-        font-size: 14px;
+        font-size: 17px;
+        margin-left: 15px;
     }
-    .class_list a:hover{
-        background-color:#d9edf7;
+    .class-myclass{
+        height: 160px;
+        padding: 30px 0 0 25px;
+        font-size: 30px;
+    }
+    .class_list {
+        background-image: url("/img/race_recordbox/sidebarIcon.png");
+        background-size: 100% 100%;
+        width: 100%;
     }
     .checking-class_list{
         background-color:#d9edf7;
@@ -103,10 +124,6 @@
 
                     //찾고자 하는 클래스가 없을 경우 -> nonCount + 1
                     if (GroupData[i]['groupId'] != reqGroupId){ nonCount++ }
-                    else{
-                        //있으면 색깔 넣어주기
-                        $('.class-toggle #'+reqGroupId).addClass('checking-class_list');
-                    }
                 }
 
                 //조회하려는 클래스가 없을 경우 -> (nonCount == GroupData.length)
@@ -121,7 +138,7 @@
                     //체인지페이지 부분 보이게 하기
                     $('.changePages').show();
                     //레코드박스 네비바 첫부분에 상단 클래스 이름 넣기
-                    $('.navbar .navbar-header').attr('class','navbar-brand').text($('.class-toggle #'+reqGroupId).attr('name'));
+                    $('#recordnavName').attr('class','navbar-brand').text($('.class-toggle #'+reqGroupId).attr('name'));
                 }
             },
             error: function (data) {
@@ -141,12 +158,12 @@
         </div>
 
         <div class="m-t-lg">
-            <ul class="main-left-menu" id="side-menu2">
 
-                {{--그룹 파트--}}
-                <li class="" id="side-menu3_li" style=" margin-top: 20px;margin-left: 10px;">
-                    나의 클래스
-                </li>
+            <div class="class-myclass" id="side-menu3_li">
+                    My Class
+        </div>
+
+            <ul class="main-left-menu" id="side-menu2">
 
                 {{--클래스 이름 리스트 들어갈 자리--}}
                 <li class="class-toggle">
@@ -155,4 +172,9 @@
             </ul>
         </div>
     </div>
+</div>
+
+
+<div class="fake_sidebar">
+
 </div>

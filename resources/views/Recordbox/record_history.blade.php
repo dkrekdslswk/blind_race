@@ -60,6 +60,39 @@
             checkHomework($(this).attr('id'));
 
         });
+
+        //학생 상세정보에서 성적표 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentGradeCard button',function () {
+            raceId = $(this).attr('id');
+            userId = $(this).attr('name');
+
+            loadStudentGradeCard(userId,raceId);
+        });
+
+        //학생 상세정보에서 재시험 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentRetestGradeCard button',function () {
+            raceId = $(this).attr('id');
+            userId = $(this).attr('name');
+
+            getRetestData(userId,raceId);
+        });
+
+        //학생 상세정보에서 오답노트 클릭시 성적표 로드
+        $(document).on('click','.modal_openStudentWrongGradeCard button',function () {
+            raceId = $(this).attr('id');
+            userId = $(this).attr('name');
+
+            getStudentWrongWriting(userId,raceId);
+        });
+
+        //학생 상세정보에서 학생 클릭시 오답노트 로드
+        $(document).on('click','.toggle_stdList',function () {
+            raceId =$(this).attr('name');
+            userId = $(this).attr('id');
+
+            getStudentWrongAnswer(userId,raceId);
+
+        });
     });
 
 
@@ -321,7 +354,7 @@
                                             .append($('<tr>')
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class','wrongExamples')
-                                                        .append($('<h4>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)")
+                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)")
                                                         )
                                                         .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
                                                         )
@@ -668,6 +701,164 @@
             }
             chart.render();
         }
+    }
+
+
+    //재시험 점수 가져오기
+    function getRetestData(userId,raceId){
+
+//        $postData = array(
+//            'userId'        => 1300000
+//            'raceId'        => 1
+//            'retestState'   => 1
+//        );
+        var reqData = {"userId" : userId, "raceId" : raceId, "retestState" : 1};
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/getStudents')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: reqData,
+            success: function (data) {
+
+                console.log(data);
+
+                makingModalPage(raceId,data,1);
+                $('.modal-content.studentGrade .modal-title').text("재시험 점수");
+
+            },
+            error: function (data) {
+                alert("학생별 최근 레이스 값 불러오기 에러");
+            }
+        });
+    }
+
+    //학생별 오답 가져오기
+    function getStudentWrongAnswer(userId,raceId) {
+
+        var reqData ={"userId" : userId , "raceId" : raceId};
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/getWrongs')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: reqData,
+            success: function (data) {
+                /*
+                 data = { wrongs: {
+                                0: { number: 1,
+                                    id: 1,
+                                    question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
+                                    hint:"3",
+
+                                    rightAnswer:1,
+                                    example1:"たりとも",
+                                    example2:"とはいえ",
+                                    example3:"だけさえ",
+
+                                    userCount:1,
+                                    rightAnswerCount:0,
+                                    wrongCount:1,
+                                    example1Count:0,
+                                    example2Count:0,
+                                    example3Count:1,
+                                    }
+                                }
+                        }
+                */
+                //오답리스트 로드할 위치(id값)를 변수에 담기
+                var WrongList = "modal_allWrongAnswerList";
+                var wrongsData = data['wrongs'];
+                var leftOrRight = "";
+
+                $('.wrong_left').empty();
+                $('.wrong_right').empty();
+
+                if(wrongsData.length == 0){
+                    $('.wrong_left').text("오답 내용이 없습니다.");
+                    $('.wrong_left').addClass("noBoardLine");
+                    $('.wrong_right').addClass("noBoardLine");
+
+                }else{
+
+                    for(var i = 0 ; i < wrongsData.length ; i++ ){
+
+                        if(i < 5){
+                            leftOrRight = "wrong_left";
+                            $('.wrong_left').removeClass("noBoardLine");
+                            $('.wrong_right').addClass("noBoardLine");
+                        }else{
+                            leftOrRight = "wrong_right";
+                            $('.wrong_right').removeClass("noBoardLine");
+                        }
+
+                        $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
+                            .append($('<thead>')
+                                .append($('<tr>')
+                                    .append($('<th>')
+                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                    .append($('<th>')
+                                        .append($('<div>')
+                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                            .append($('<tbody>')
+                                .append($('<tr>')
+                                    .append($('<td colspan="2">')
+                                        .append($('<div>').attr('class', 'wrongExamples')
+                                            .append($('<ul>')
+                                                .append($('<li>').text(wrongsData[i]['rightAnswer']))
+                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
+                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_2'))
+                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_3'))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
+
+                        for (var j = 1; j < 4; j++) {
+                            if (wrongsData[i]['example' + j + 'Count'] == 1) {
+                                $('.example_' + i + '_' + j).css('color', 'blue');
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (data) {
+                alert("해당 학생별 오답 문제 가져오기");
+            }
+        });
+
+    }
+
+    //오답 노트 작성 메서드
+    function getStudentWrongWriting(userId,raceId) {
+
+        var reqData = {'userId': userId, 'raceId': raceId};
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/getWrongs')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: reqData,
+            success: function (data) {
+
+                makingModalPage(raceId, data, 2);
+
+            },
+            error: function (data) {
+                alert("학생별 최근 레이스 값 불러오기 에러");
+            }
+        });
     }
 
 </script>

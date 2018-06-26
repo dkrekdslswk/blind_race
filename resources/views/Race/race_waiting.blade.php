@@ -293,7 +293,7 @@
                         }
                     },
                     error: function(request, status, error) {
-                        alert("Student Out Error");
+                        // alert("Student Out Error");
                     }
                 });
 
@@ -343,17 +343,17 @@
                 }
                 changehtml+='<img src="/img/character/char'+ranking_JSON[i].characterId+'.png" style="width:50px; height: 50px;"  alt="">'
                     + '</td>'
-                    + '<td style="width:350px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
-                    + '<td  style="width:150px; text-align:center; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
+                    + '<td style="width:250px; background-color:white;">'+ranking_JSON[i].nick+'</td>'
+                    + '<td  style="width:150px; text-align:left; background-color:white;">'+ranking_JSON[i].rightCount*100+' Point</td>'
                     + '<td style=" background-color:white;">';
 
 
                 switch(ranking_JSON[i].answerCheck){
                     case "O":
-                        changehtml+='<img src="/img/right_circle.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        changehtml+='<img src="/img/race_ending/success.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
                         break;
                     case "X" :
-                        changehtml+='<img src="/img/wrong.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
+                        changehtml+='<img src="/img/race_ending/fail.png" style="width:50px; height: 50px;"  alt=""></td></tr>';
                         break;
 
                 }
@@ -453,8 +453,6 @@
                     $("#content").hide();
                     document.getElementById('answer_c').innerText = "0";
                     $('#play_bgm').remove();
-                    $('<audio id="mid_result_bgm" autoplay><source src="/bgm/mid_result.mp3"></audio>').appendTo('body');
-                    $("body").css('background-image', 'url("/img/race_play/mid_bg.png")', 'important');
                     // ranking_process(ranking_j);
                     $.ajax({
                         type: 'POST',
@@ -540,7 +538,6 @@
 
                     // clearTimeout(Mid_result_Timer);
 
-                    $('#mid_result_bgm').remove();
                     socket.emit('count', 'time on', roomPin);
 
                     $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
@@ -614,7 +611,7 @@
                                 A[quiz_answer_list[2]].innerText = quiz_JSON[data].example2;
                                 A[quiz_answer_list[3]].innerText = quiz_JSON[data].example3;
 
-                                $('#B' + quiz_answer_list[0]).html(quiz_JSON[data].right + '<img src="/img/right_circle.png" style="display:inline-block; width:10%; height:100%;" >');
+                                $('#B' + quiz_answer_list[0]).html(quiz_JSON[data].right + '<img src="/img/race_play/crown.png" style="display:inline-block; width:10%; height:100%;" >');
                                 $('#B' + quiz_answer_list[1]).html(quiz_JSON[data].example1);
                                 $('#B' + quiz_answer_list[2]).html(quiz_JSON[data].example2);
                                 $('#B' + quiz_answer_list[3]).html(quiz_JSON[data].example3);

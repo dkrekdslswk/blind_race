@@ -1037,10 +1037,10 @@
 }
 .c100.green .bar,
 .c100.green .fill {
-  border-color: #4db53c !important;
+  border-color: #53ffdd !important;
 }
 .c100.green> span {
-  color: #4db53c;
+  color: black;
 }
 .c100.green.dark .bar,
 .c100.green.dark .fill {
