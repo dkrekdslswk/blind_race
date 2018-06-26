@@ -501,12 +501,6 @@
                 for (var i = 0; i < stdHomework.length ; i ++) {
 
                     if(stdHomework[i]['wrongState'] == "not" && stdHomework[i]['retestState'] == "not"){
-                        $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
-
-                        $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
-                        $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
-
-                        $('#history_homework_tr' + i).append($('<td>').attr('colspan',3).text("해당 학생 없음"));
 
                     }else{
 
