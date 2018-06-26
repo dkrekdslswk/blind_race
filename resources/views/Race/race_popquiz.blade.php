@@ -19,6 +19,7 @@
     <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
         html{
             width: 100%;
@@ -127,6 +128,12 @@
             border-radius: 30px;
             background-color: #ebfaff;
             padding:100px;
+        }
+
+        #pop_timer{
+            position:absolute;
+            top:30%;
+            left:45%;
         }
 
         .fade:not(.show) {
@@ -465,6 +472,8 @@
         var all_member_count;
         window.onload = function() {
 
+            $('#nav_img').attr('src','/img/race_student/exam.png');
+
 
             //정답뒤섞기
             function shuffle(a) {
@@ -586,7 +595,6 @@
         function btn_click(){
 
             $('#start_btn').hide();
-            $('#room_Pin_text').hide();
             $('#pop_timer').css("display","inline-block");
             $('#pop_timer').show();
             start_check = true;
@@ -664,9 +672,14 @@
 
                 var append_info= '<tr id="'+sessionId+'" class="header">';
                 append_info+='<td id="'+sessionId+"Name"+'" style="width:60%"><i class="fas fa-user-circle"></i>'+userName+'</td>';
-                append_info+='<td style="width:40%"><i class="fas fa-user"></i>푸는중..</td></tr>';
+                append_info+='<td style="width:40%"><i class="fas fa-user"></i>풀이완료</td></tr>';
 
                 $('#finish_student').append(append_info);
+
+                if(all_member_count == 0 ){
+                    swal('모든인원이 시험을 완료하였습니다.','success');
+                }
+
             });
 
             socket.on('leaveRoom', function(user_num) {
@@ -713,9 +726,7 @@
         <div id="room_Pin" class="counting">
             <span id="room_Pin_text"></span>
 
-            <div id="pop_timer" class="container" style="display:none; width: 200px;">
-                <h1><time>00:00:00</time></h1>
-            </div>
+
 
         </div>
 
@@ -723,6 +734,9 @@
             <span id="playing_member_count" ></span>
         </div>
 
+    </div>
+    <div id="pop_timer" class="container" style="display:none; width: 200px;">
+        <h1><time>00:00:00</time></h1>
     </div>
 
 </div>
