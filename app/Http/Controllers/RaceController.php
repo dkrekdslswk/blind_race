@@ -650,11 +650,12 @@ class RaceController extends Controller{
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
-                    DB::raw('MIN(r.quizNo) as lastQuizId'),
+                    DB::raw('COUNT(CASE WHEN r.quizNo = "'.$postData['quizId'].'" THEN 1 END) as lastQuizId'),
                     DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
                 )
                 ->where([
-                    'ru.raceNumber' => $raceData->raceId
+                    'ru.raceNumber' => $raceData->raceId,
+                    're.retest' => self::RETEST_NOT_STATE
                 ])
                 ->whereNotNull('s.nick')
                 ->leftJoin('records as r', function ($join){
@@ -672,7 +673,7 @@ class RaceController extends Controller{
             $wrongAnswer = 0;
             foreach($students as $student) {
                 // 미입력자 처리
-                if ((int)$student->lastQuizId != (int)$postData['quizId']) {
+                if ($student->lastQuizId == 0) {
                     DB::table('records')
                         ->insert([
                             'raceNo' => $raceData->raceId,

@@ -18,6 +18,8 @@ class GroupController extends Controller{
      *          0 => array(
      *                  'groupId' 그룹 아이디
      *                  'groupName' 그룹 이름
+     *                  'retestStateCount' 재시험 미제출 학생 수
+     *                  'wrongStateCount' 오답노트 미제출 학생 수
      *              )
      *          ),
      *          'check' 조회 성공 여부
@@ -768,6 +770,7 @@ class GroupController extends Controller{
         return $returnValue;
     }
 
+    /* 미구현
     // 교사 임명 root
     // 미구현
     public function teacherEmpowerment(Request $request){
@@ -806,6 +809,7 @@ class GroupController extends Controller{
 
         return $returnValue;
     }
+    */
 }
 
 ?>
