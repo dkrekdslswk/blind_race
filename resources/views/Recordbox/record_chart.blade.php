@@ -1,28 +1,28 @@
 
 <head>
     <style>
+        .recordbox-chartContainer h4{
+            color: #203a8e;
+            font-weight: bold;
+        }
         .chartAttribute {
-            margin-top: 10px;
-            height : 80px;
+            margin-top: 20px;
+            height : 150px;
             width: 100%;
+            text-align: left;
         }
         .attributeContainer {
-            margin: auto;
+            margin-left: 50px;
             width: 80%;
-            text-align: center;
         }
         .recordbox-radio{
             display: block;
-            height: 100%;
-            float:left;
-            margin:0;
-            vertical-align: middle;
+            margin-top: 20px;
         }
         .chooseDate {
             display: block;
-            height: 100%;
-            float:right;
-            vertical-align: middle;
+            margin-top: 20px;
+            margin-left: 20px;
         }
         .recordbox-radio h4,.chooseDate h4{
         }
@@ -49,10 +49,12 @@
             height: 400px;
             width: 100%;
             margin: 0;
-            padding: 0;
+            border-top: 6px solid #e5e6e8;
+            text-align: left;
+            padding: 20px 0 0 50px;
         }
         .chartWrapper {
-            margin-left: 5%;
+            margin-top: 30px;
             margin-right: 5%;
             width: 80%;
             height: 100%;
@@ -192,8 +194,6 @@
         //날짜를 가져와서 조회 및 차트 그리기
         function getChartData_and_loadChart(groupId,startDate,endDate){
 
-            $('#'+groupId).css('background-color','#d9edf7');
-
             var requestData = {"groupId" : groupId , "startDate" : startDate , "endDate" : endDate};
             /*var group_Id = {"groupId" : 1 , "startDate" : "2018-05-01" , "endDate" : "2018-05-08"};*/
 
@@ -261,7 +261,7 @@
             }
 
             //차트 데이터 합치기
-            AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
+            AllChartData = { "total_data" : ["총 점수" , total_data_Points] ,
                 "voca_data" : ["어학 점수", vocabulary_Points] ,
                 "grammer_data" : ["독해 점수" , grammer_data_Points] ,
                 "word_data" : ["단어 점수" , word_data_Points]
@@ -372,10 +372,9 @@
         <div class="chartAttribute">
 
             <div class="attributeContainer">
+                <h4>시간 정하기</h4>
 
                 <div class="recordbox-radio">
-                    <h4>보기</h4>
-
                     <div class="recordbox-radioButtons">
                         <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">일주일</label>
                         <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='2' >한달</label>
@@ -386,13 +385,11 @@
                 </div>
 
                 <div class="chooseDate" >
-                    <h4>기간</h4>
-
                     <input type="date" name="chooseday" id="startDate"></input>
 
                     <input type="date" name="chooseday" id="endDate"></input>
 
-                    <button class="btn btn-default" onclick="orderChart()">
+                    <button class="btn btn-primary" style="margin-left: 30px;" onclick="orderChart()">
                         조회
                     </button>
                 </div>
@@ -401,6 +398,7 @@
 
 
         <div class="chartArea">
+            <h4>결과</h4>
             <div class="chartWrapper">
                 <div class="chartAreaWrapper">
                     <div class="canvaschart" id="chartContainer"></div>

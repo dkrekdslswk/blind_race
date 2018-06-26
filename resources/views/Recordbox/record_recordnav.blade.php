@@ -2,7 +2,7 @@
     .recordbox_navbar {
         margin: 0;
         padding: 0;
-        height: 120px;
+        height: 150px;
         min-width: 700px;
         width: 100%;
         transition: top 0.2s ease-in-out;
@@ -16,12 +16,26 @@
         margin: 0;
         padding: 0;
         top: 0;
-        left: 16%;
-        height: 120px;
-        width: 88%;
+        left: 14%;
+        height: 60px;
+        width: 86%;
         position: fixed;
         z-index: 100;
-
+        background-color: #F36174;
+        background-image: none;
+    }
+    .fakeRecordnav{
+    }
+    .addFakeToRecordNav{
+        margin: 0;
+        padding: 0;
+        height: 50px;
+        min-width: 700px;
+        width: 100%;
+        transition: top 0.2s ease-in-out;
+        position: relative;
+        display: block;
+        z-index: 1;
     }
     .recordbox.navbar.navbar-default {
         background: #fff;
@@ -29,8 +43,8 @@
         margin: 0;
     }
     .container-fluid {
-        height: 150px;
         width: 100%;
+        height: 100%;
     }
     .targetMenu{
         padding: 15px 10px 9px 10px !important;
@@ -42,10 +56,11 @@
         position: relative;
         width: 100%;
         color: white;
-        font-size: 23px;
+        font-size: 30px;
         font-weight: bold;
-        margin-top: 10px;
-        margin-left: 15px;
+        margin-top: 30px;
+        margin-left: 30px;
+        padding: 0;
     }
     .navbar-body{
         display: block;
@@ -58,20 +73,24 @@
         font-size: 15px;
     }
     .recordnav{
-        margin-top: 15px;
-    }
-    .recordnav li a{
-        padding: 0 30px 0 30px;
-    }
-    .recordnav li a:hover,.recordnav li a:focus{
-        color: #2a6496;
-        background-color: transparent;
+        margin-top: 20px;
     }
     .recordnav li{
         border-right: 2px solid white;
     }
+    .recordnav li:first-child{
+        padding-left: 0;
+    }
     .recordnav li:last-child{
         border-right: 0;
+        padding-right: 0;
+    }
+    .recordnav li a{
+        padding: 0 45px 0 45px;
+    }
+    .recordnav li a:hover,.recordnav li a:focus{
+        color: #2a6496;
+        background-color: transparent;
     }
 
 </style>
@@ -97,7 +116,7 @@
 </script>
 
 
-<nav class="recordbox_navbar">
+<div class="recordbox_navbar">
     <div class="container-fluid" >
         <div class="navbar-brand" id="recordnavName">
 
@@ -119,4 +138,8 @@
             </ul>
         </div>
     </div>
-</nav>
+</div>
+
+<div class="fakeRecordnav">
+
+</div>

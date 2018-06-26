@@ -6,9 +6,7 @@
         clear: both;
     }
     .recordbox-history {
-        margin-top: 40px;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin: 0;
         padding: 0;
     }
     .historyContainer {
@@ -18,12 +16,39 @@
         display: block;
         float: left;
         width: 65%;
+        text-align: left;
+    }
+    .historyList_container{
+        padding: 10px 0 10px 20px;
+        background-color: #f9f9f9;
+        height: 50px;
+    }
+    .historyList-name{
+        font-size: 20px;
+        color: #203a8e;
+        position: relative;
+        float: left;
+    }
+    .historyList-sorting{
+        position: relative;
+        float: right;
+    }
+    .history{
+        margin: 0;
+    }
+    .history li{
+        padding: 10px 20px 10px 20px;
+    }
+    .historyList-history{
+        height: 850px;
+    }
+    .history-outline{
+        height: 80%;
     }
     .historyContainer .raceListDetail {
         display: block;
         float: left;
         width: 30%;
-        text-align: center;
         height: 70%;
     }
     .historyContainer .raceListDetail .raceListDetailScroll {
@@ -867,36 +892,57 @@
     <div class="historyContainer">
 
         <div class="historyList">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>퀴즈 제목</th>
-                    <th>날짜</th>
-                    <th>성적표</th>
-                    <th>과제 확인하기</th>
-                </tr>
-                </thead>
-                <tbody id="history_list">
-                </tbody>
-            </table>
-
-            <div class="panel-footer" style="height: 80px;">
-                <div class="row">
-                    <div class="col col-xs-4">Page 1 of 5
-                    </div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                        </ul>
-                        <ul class="pagination visible-xs pull-right">
-                            <li><a href="#">«</a></li>
-                            <li><a href="#">»</a></li>
-                        </ul>
+            <div class="historyList_container">
+                <div class="historyList-name">
+                    최근 기록
+                </div>
+                <div class="historyList-sorting">
+                    <ul class="nav navbar-nav history">
+                        <li>
+                            최신순
+                        </li>
+                        <li>
+                            날짜순
+                        </li>
+                        <li>
+                            과제상태
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="historyList-history">
+                <div class="history-outline">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>퀴즈 제목</th>
+                            <th>날짜</th>
+                            <th>성적표</th>
+                            <th>과제 확인하기</th>
+                        </tr>
+                        </thead>
+                        <tbody id="history_list">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer" style="height: 80px;">
+                    <div class="row">
+                        <div class="col col-xs-4">Page 1 of 5
+                        </div>
+                        <div class="col col-xs-8">
+                            <ul class="pagination hidden-xs pull-right">
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                            </ul>
+                            <ul class="pagination visible-xs pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

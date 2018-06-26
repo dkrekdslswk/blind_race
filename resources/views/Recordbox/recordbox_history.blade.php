@@ -32,7 +32,8 @@
             padding: 0;
             position: relative;
             float: left;
-            width: 84%;
+            width: 86%;
+            height: 95%;
         }
         .changePages {
             z-index: 1;
@@ -67,7 +68,6 @@
             clear: both;
         }
         .wrong_left ,.wrong_right{
-            float: left;
             position: relative;
             width: 50%;
             border: 1px solid #e5e6e8;
@@ -79,7 +79,8 @@
         .subWrong {
             padding: 10px;
             border-top: 1px solid #e5e6e8;
-            border-right: 1px solid #e5e6e8;
+            border-right: 1px solid
+            #e5e6e8;
             border-bottom: 1px solid #e5e6e8;
         }
         .noBoardLine {
@@ -145,22 +146,24 @@
             if($(window).scrollTop() == 0){
 
                 //사이드바
-                $('.recordbox_navbar').removeClass('nav-up');
+                $('.recordbox_sidebar').removeClass('sidenav-up');
                 $('.fake_sidebar').removeClass('addToFake');
 
                 //레코드네비 바
                 $('.recordbox_navbar').removeClass('nav-up');
-                $('.recordbox_sidebar').removeClass('sidenav-up');
+                $('.fakeRecordnav').removeClass('addFakeToRecordNav');
+                $('.navbar-brand').show();
 
             }else {
 
                 //사이드바
-                $('.recordbox_navbar').addClass('nav-up');
+                $('.recordbox_sidebar').addClass('sidenav-up');
                 $('.fake_sidebar').addClass('addToFake');
 
                 //레코드네비 바
                 $('.recordbox_navbar').addClass('nav-up');
-                $('.recordbox_sidebar').addClass('sidenav-up');
+                $('.fakeRecordnav').addClass('addFakeToRecordNav');
+                $('.navbar-brand').hide();
             }
         });
 
@@ -382,11 +385,8 @@
 
     <div class="record_mainPage">
 
-        <div class="recordbox_navbar">
             {{--레코드 네비바 불러오기--}}
             @include('Recordbox.record_recordnav')
-
-        </div>
 
         <div class="changePages">
             {{--레코드 flz 불러오기--}}

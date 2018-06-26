@@ -3,20 +3,24 @@
         margin: 0;
         padding: 0;
         position: relative;
-        width: 16%;
-        height:100%;
+        width: 14%;
+        height:95%;
         float: left;
-        background-color: #F2F2F2;
         border: 1px solid #e5e6e8;
+        background-image: url("https://i.imgur.com/HSrLDSe.png");
+        background-size: 100% 100%;
+
     }
     .sidenav-up {
         margin: 0;
         padding: 0;
         top: 0;
         left: 0;
-        width: 16%;
+        width: 14%;
+        height:100%;
         position: fixed;
         background-color: #F2F2F2;
+        background-size: 100% 100%;
         z-index: 100;
     }
     .fake_sidebar{
@@ -25,8 +29,8 @@
         margin: 0;
         padding: 0;
         position: relative;
-        width: 16%;
-        height:100%;
+        width: 14%;
+        height:95%;
         float: left;
     }
 
@@ -42,7 +46,7 @@
         padding: 0;
     }
     #side-menu2 {
-        
+
     }
     #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
         padding: 10px 0 10px 10px;
@@ -55,9 +59,11 @@
         margin-left: 15px;
     }
     .class-myclass{
-        height: 160px;
+        height: 200px;
         padding: 30px 0 0 25px;
         font-size: 30px;
+        color: #203a8e;
+        font-weight: bold;
     }
     .class_list {
         background-image: url("/img/race_recordbox/sidebarIcon.png");
@@ -174,7 +180,6 @@
     </div>
 </div>
 
-
-<div class="fake_sidebar">
+<div class="fake_sidebar" >
 
 </div>
