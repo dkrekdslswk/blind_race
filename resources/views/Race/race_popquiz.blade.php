@@ -663,7 +663,7 @@
 
                 all_member_count = quiz_member - submit_count;
 
-                $('#playing_member_count').text("수험중:"+all_member_count+"명");
+                $('#playing_member_count').text(":"+all_member_count+"명");
                 $('#member_count').text(all_member_count);
                 $('#submit_count').text(submit_count);
 
@@ -678,6 +678,7 @@
 
                 if(all_member_count == 0 ){
                     swal("시험완료!", "모든인원이 시험을 완료하였습니다", "success");
+                    $('#playing_member_count').text('시험완료');
                 }
 
             });
@@ -748,6 +749,22 @@
             <tr class="header">
                 <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
                 <th id="member_count" style="width:40%"><i class="fas fa-user"></i>0명</th>
+            </tr>
+            <tr class="header">
+                <td style="width:60%"><i class="fas fa-user-circle"></i>  김민호</td>
+                <td id="member_count" style="width:40%">푸는중...</td>
+            </tr>
+            <tr class="header">
+                <td style="width:60%"><i class="fas fa-user-circle"></i>  이정빈</td>
+                <td id="member_count" style="width:40%">푸는중...</td>
+            </tr>
+            <tr class="header">
+                <td style="width:60%"><i class="fas fa-user-circle"></i>  박태영</td>
+                <td id="member_count" style="width:40%">푸는중...</td>
+            </tr>
+            <tr class="header">
+                <td style="width:60%"><i class="fas fa-user-circle"></i>  박원조</td>
+                <td id="member_count" style="width:40%">푸는중...</td>
             </tr>
 
         </table>
