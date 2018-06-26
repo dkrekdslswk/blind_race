@@ -28,13 +28,6 @@
 
         }
 
-        #titleImg {
-            background-image: url("img/apple.png");
-            background-size: 100%;
-            background-repeat: no-repeat;
-            height: 10vw;
-        }
-
         #quizFont {
             font-size: 25px;
             color: white;
@@ -64,6 +57,11 @@
         .threebuttonDesignT {
             margin: 10px 20px 10px 0px;
             text-align: right;
+        }
+
+        .selectCall {
+            width: 80%;
+            padding-top: 1%;
         }
 
     </style>
@@ -622,7 +620,7 @@
     <div id="titleImg">
 
         <!-- Quiz Tree -->
-        <div style="padding-top: 20px">
+        <div style="padding-top: 10px">
             <p style="margin-left: 5%; font-size: 50px; color: white">Quiz Tree</p>
         </div>
 
@@ -630,16 +628,16 @@
             <div style="float: left">
                 <!--1. 퀴즈를 새로 생성할 경우-->
                 @if(count($response['quizs']) == 0)
-                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; height: 50px;border-radius: 12px; font-size: 20px" value="최종 발표 시연 퀴즈"></p>
+                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; height: 40px; border-radius: 12px; font-size: 20px" value="최종 발표 시연 퀴즈"></p>
 
                     <!--2. 퀴즈를 수정할 경우-->
                 @elseif(count($response['quizs']) > 0)
-                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; border-radius: 12px" value="{{$response['listName']}}"></p>
+                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; height: 40px; border-radius: 12px" value="{{$response['listName']}}"></p>
 
                 @endif
             </div>
             <div>&nbsp;
-                <button id="buttonDesign" class="btn btn-lg" style="color: white;" data-toggle="modal" data-target="#callQuizModal">+ 퀴즈 불러오기</button>
+                <button id="buttonDesign" class="btn" style="color: white;" data-toggle="modal" data-target="#callQuizModal">+ 퀴즈 불러오기</button>
             </div>
         </div>
     </div>
@@ -663,20 +661,20 @@
 <div class="modal fade" id="callQuizModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">퀴즈 불러오기</h5>
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title" id="ModalLabel" style="font-size: 20px">퀴즈 불러오기</h5>
             </div>
             <div class="modal-body">
                 {{--Dropdowns--}}
                 <div style="text-align: center">
-                    <div class="select" style="margin: 0 auto; width: 50%">
-                        <select id="folderSelect" class="form-control">
+                    <div class="selectCall" style="margin: 0 auto; width: 50%">
+                        <select id="folderSelect" class="form-control" style="height:40px; font-size: 20px">
                             <option>폴더명</option>
                             <!-- 폴더 리스트 -->
                         </select>
                     </div>
-                    <div class="select" style="margin: 0 auto; margin-top: 1%; width: 50%">
-                        <select id="quizSelect" class="form-control">
+                    <div class="selectCall" style="margin: 0 auto; margin-top: 1%; width: 50%">
+                        <select id="quizSelect" class="form-control" style="height:40px; font-size: 20px">
                             <option>퀴즈명</option>
                             <!-- 퀴즈 리스트 -->
                         </select>
@@ -684,7 +682,7 @@
                 </div>
 
                 <div id="quizShow" style="margin-top: 2%">
-                    <h4 align="center">▼미리보기▼</h4>
+                    <h4 align="center" style="font-size: 20px">▼미리보기▼</h4>
                     <!-- 퀴즈 미리보기-->
                 </div>
             </div>

@@ -336,8 +336,7 @@
         <div id ="titleImg">
 
             <!-- 현재 폴더 이름 -->
-            <div style="padding-top: 50px" id="folderTitle">
-                {{--<p style="margin-left: 15px; font-size: 50px; color: white">무슨 폴더</p>--}}
+            <div style="padding-top: 40px" id="folderTitle">
             </div>
 
         </div>
@@ -356,7 +355,7 @@
                 </tr>
                 </thead>
                 <tbody id="list">
-                    <!--list 공간-->
+                <!--list 공간-->
                 </tbody>
             </table>
         </div>

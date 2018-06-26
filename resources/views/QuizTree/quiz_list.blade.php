@@ -99,12 +99,12 @@
             background-size: cover;
             border-spacing: 0px 0px !important;
         }
-        
+
         #titleImg {
             background-image: url("https://i.imgur.com/3BaJJlL.png");
             background-size: 100%;
             background-repeat: no-repeat;
-            height: 9.5vw;
+            height: 10vw;
         }
 
         #theadFont {
@@ -241,7 +241,7 @@
                 "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                 "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                 "<td id='tbodyFont'>" +
-                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정・삭제 불가능</button>" +
+                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정?삭제 불가능</button>" +
                 "</td>" +
                 "</tr>"
             );
@@ -292,7 +292,7 @@
                 toggle += "</label>";
             }
 
-            // 1. 레이스로 활용되지 않은 문제만 수정・삭제 가능
+            // 1. 레이스로 활용되지 않은 문제만 수정?삭제 가능
             // showQuizDiv Modal 호출
             if(quizlistData['lists'][i]['races'].length == 0) {
                 $("#list").append(
@@ -344,7 +344,7 @@
                     "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                     "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                     "<td id='tbodyFont'>" +
-                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정・삭제 불가능</button>" +
+                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정?삭제 불가능</button>" +
                     "</td>" +
                     "</tr>"
                 );
@@ -430,7 +430,7 @@
         var raceSaveData = new Array();
 
         for(var i = 0; i < raceInfoData.length; i++) {
-            raceSaveData= "플레이 된 리스트는 수정・삭제할 수 없습니다.\n"
+            raceSaveData= "플레이 된 리스트는 수정?삭제할 수 없습니다.\n"
                 + "- 총 플레이 횟수: " + raceInfoData.length +"회\n"
                 + "<최근 플레이 기록>\n"
                 + "날짜: " + raceInfoData[i]['date'] + "\n"
@@ -607,21 +607,21 @@
                     // MODAL content
                     "<div class='modal-content'>" +
                     "<div class='modal-header' style='text-align: center'>" +
-                        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>" +
-                        "<h4 class='modal-title'>퀴즈명 : " + showListData['listName'] + "</h4>" +
+                    "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>" +
+                    "<h4 class='modal-title'>퀴즈명 : " + showListData['listName'] + "</h4>" +
                     "</div>" +
 
                     "<div class='modal-body'>" +
-                        // 퀴즈 미리보기 : 문제 내용
-                        "<div>" +
-                        str +
-                        "</div>" +
+                    // 퀴즈 미리보기 : 문제 내용
+                    "<div>" +
+                    str +
+                    "</div>" +
                     "</div>" +
 
                     "<div class='modal-footer'>" +
-                        // 퀴즈 수정하기
-                        "<button type='submit' class='btn btn-default' onclick='sendId(" + idNum + ")'><em class='fa fa-pencil'></em></button>" +
-                        "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
+                    // 퀴즈 수정하기
+                    "<button type='submit' class='btn btn-default' onclick='sendId(" + idNum + ")'><em class='fa fa-pencil'></em></button>" +
+                    "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -690,7 +690,7 @@
         <div id="titleImg">
 
             <!-- 현재 폴더 이름 -->
-            <div style="padding-top: 20px" id="folderTitle">
+            <div style="padding-top: 11px" id="folderTitle">
                 {{--<p style="margin-left: 5%; font-size: 50px; color: white">무슨 폴더</p>--}}
             </div>
 
@@ -720,7 +720,7 @@
                 </tr>
                 </thead>
                 <tbody id="list">
-                    <!-- list 공간 -->
+                <!-- list 공간 -->
                 </tbody>
             </table>
         </div>

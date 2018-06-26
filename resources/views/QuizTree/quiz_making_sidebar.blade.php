@@ -161,18 +161,18 @@
     <div id="sideImg">
 
         <div class="select">
-            <select id="bookSelect" class="form-control" style="height: 50px; border-radius: 12px; font-size: 20px">
+            <select id="bookSelect" class="form-control" style="height: 40px; border-radius: 12px; font-size: 20px">
                 <option>교재 선택</option>
                 @for($i = count($response['bookList']) - 1; $i >= 0; $i--)
                     <option value="{{$response['bookList'][$i]['bookId']}}">{{$response['bookList'][$i]['bookName']}}</option>
-                @endfor
+            @endfor
             <!--<option value="1">test</option>
             <option value="2">급소공략</option>-->
             </select>
         </div>
 
         <div class="select">
-            <select id="levelSelect" class="form-control" style="height: 50px; border-radius: 12px; font-size: 20px">
+            <select id="levelSelect" class="form-control" style="height: 40px; border-radius: 12px; font-size: 20px">
                 <option>난이도 선택</option>
                 <option value="1">N1</option>
                 <option value="2">N2</option>
@@ -183,9 +183,9 @@
         </div>
 
         <div class="form-inline" style="margin-left: 10%; padding-top: 5%">
-            <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 50px; border-radius: 12px; font-size: 15px">
+            <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
             &nbsp;~&nbsp;
-            <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 50px; border-radius: 12px; font-size: 15px">
+            <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
             <button id="btn" type="button" class="searchButton" style="width: 20%; color: white">검색</button>
         </div>
 
@@ -210,7 +210,7 @@
             <tbody id="example">
             {{--<tr>
                 <td><a href="#">1</a></td>
-                <td><a href="#">生活習慣病は40代を（　　）増え始める</a></td>
+                <td><a href="#">生活習慣病は40代を（　　）?え始める</a></td>
                 <td>50%</td>
             </tr>
 
