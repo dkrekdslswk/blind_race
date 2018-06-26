@@ -677,7 +677,7 @@
                 $('#finish_student').append(append_info);
 
                 if(all_member_count == 0 ){
-                    swal('모든인원이 시험을 완료하였습니다.','success');
+                    swal("시험완료!", "모든인원이 시험을 완료하였습니다", "success");
                 }
 
             });
