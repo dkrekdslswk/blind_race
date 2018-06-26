@@ -676,7 +676,7 @@
     @include('Navigation.main_nav')
 </nav>
 
-<div class="jumbotrons">
+<div>
     <!-- 사이드 바 -->
     <div class="side-menu">
         <aside class="navbar navbar-default" role="navigation">
@@ -700,7 +700,7 @@
                 <input type="hidden" name="folderId" id="folderId" value="">
                 <div id="quizButton" style="margin-left: 2%">
                     <!-- Quiz Button 공간 -->
-                    <button type="submit" id="buttonDesign" class="btn btn-lg" style="color: white"  onclick="createList()"> + 퀴즈 만들기</button>
+                    <button type="submit" id="buttonDesign" class="btn btn-lg" style="color: white"  onclick="createList()"> + 퀴즈 만들기 </button>
                 </div>
             </form>
         </div>
