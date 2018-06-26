@@ -241,7 +241,7 @@
                 "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                 "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                 "<td id='tbodyFont'>" +
-                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정?삭제 불가능</button>" +
+                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정 + 삭제 불가능</button>" +
                 "</td>" +
                 "</tr>"
             );
@@ -344,7 +344,7 @@
                     "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                     "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                     "<td id='tbodyFont'>" +
-                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정?삭제 불가능</button>" +
+                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정 + 삭제 불가능</button>" +
                     "</td>" +
                     "</tr>"
                 );
@@ -430,7 +430,7 @@
         var raceSaveData = new Array();
 
         for(var i = 0; i < raceInfoData.length; i++) {
-            raceSaveData= "플레이 된 리스트는 수정?삭제할 수 없습니다.\n"
+            raceSaveData= "플레이 된 리스트는 수정 + 삭제할 수 없습니다.\n"
                 + "- 총 플레이 횟수: " + raceInfoData.length +"회\n"
                 + "<최근 플레이 기록>\n"
                 + "날짜: " + raceInfoData[i]['date'] + "\n"
