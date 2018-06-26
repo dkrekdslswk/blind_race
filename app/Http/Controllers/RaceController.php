@@ -1318,7 +1318,7 @@ class RaceController extends Controller{
                 'lq.listNumber' => $listId
             ])
             ->join('listQuizs as lq', 'lq.quizNumber', '=', 'qb.number')
-            ->orderBy('qb.number', 'desc')
+            ->orderBy('qb.number')
             ->get();
 
         // 다음 문제가 있을 때
