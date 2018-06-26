@@ -650,16 +650,17 @@ class RaceController extends Controller{
                     's.number           as sessionId',
                     's.nick             as nick',
                     's.characterNumber  as characterId',
-                    DB::raw('MIN(r.quizNo) as lastQuizId'),
-                    DB::raw('COUNT(CASE WHEN r.answerCheck="O" THEN 1 END) as rightCount')
+                    DB::raw('COUNT(CASE WHEN re.quizNo = "'.$postData['quizId'].'" THEN 1 END) as lastQuizId'),
+                    DB::raw('COUNT(CASE WHEN re.answerCheck="O" THEN 1 END) as rightCount')
                 )
                 ->where([
-                    'ru.raceNumber' => $raceData->raceId
+                    'ru.raceNumber' => $raceData->raceId,
+                    're.retest' => self::RETEST_NOT_STATE
                 ])
                 ->whereNotNull('s.nick')
-                ->leftJoin('records as r', function ($join){
-                    $join->on('r.raceNo', '=', 'ru.raceNumber');
-                    $join->on('r.userNo', '=', 'ru.userNumber');
+                ->leftJoin('records as re', function ($join){
+                    $join->on('re.raceNo', '=', 'ru.raceNumber');
+                    $join->on('re.userNo', '=', 'ru.userNumber');
                 })
                 ->join('sessionDatas as s', 's.userNumber', '=', 'ru.userNumber')
                 ->orderBy('rightCount', 'userId')
@@ -672,7 +673,7 @@ class RaceController extends Controller{
             $wrongAnswer = 0;
             foreach($students as $student) {
                 // 미입력자 처리
-                if ((int)$student->lastQuizId != (int)$postData['quizId']) {
+                if ($student->lastQuizId == 0) {
                     DB::table('records')
                         ->insert([
                             'raceNo' => $raceData->raceId,

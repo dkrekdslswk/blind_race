@@ -254,7 +254,14 @@
     <audio autoplay><source src="/bgm/race_result.mp3"></audio>
 
 
-    <a href="/"><button class="btn btn-primary" style="position:absolute; top:30%; right:10%; z-index:3;">돌아가기</button></a>
+    <a href="/"><button class="btn btn-primary" style="position: absolute;
+    top: 25%;
+    right: 6%;
+    z-index: 3;
+    background: mediumpurple;
+    width: 10%;
+    height: 5%;
+    border-radius: 10px;">돌아가기</button></a>
 </div>
 </body>
 </html>
