@@ -750,23 +750,6 @@
                 <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
                 <th id="member_count" style="width:40%"><i class="fas fa-user"></i>0명</th>
             </tr>
-            <tr class="header">
-                <td style="width:60%"><i class="fas fa-user-circle"></i>  김민호</td>
-                <td id="member_count" style="width:40%">푸는중...</td>
-            </tr>
-            <tr class="header">
-                <td style="width:60%"><i class="fas fa-user-circle"></i>  이정빈</td>
-                <td id="member_count" style="width:40%">푸는중...</td>
-            </tr>
-            <tr class="header">
-                <td style="width:60%"><i class="fas fa-user-circle"></i>  박태영</td>
-                <td id="member_count" style="width:40%">푸는중...</td>
-            </tr>
-            <tr class="header">
-                <td style="width:60%"><i class="fas fa-user-circle"></i>  박원조</td>
-                <td id="member_count" style="width:40%">푸는중...</td>
-            </tr>
-
         </table>
 
     </div>
