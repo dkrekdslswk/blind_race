@@ -334,31 +334,65 @@
                                 $('.wrong_right').removeClass("noBoardLine");
                             }
 
-                            $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
-                                .append($('<thead>')
-                                    .append($('<tr>')
-                                        .append($('<th>')
-                                            .append($('<div>').text(wrongsData[i]['number'])))
-                                        .append($('<th>')
-                                            .append($('<div>')
-                                                .append($('<b>').text(wrongsData[i]['question']))))))
-                                .append($('<tbody>')
-                                    .append($('<tr>')
-                                        .append($('<td colspan="2">')
-                                            .append($('<div>').attr('class', 'wrongExamples')
-                                                .append($('<ul>')
-                                                    .append($('<li>').text(wrongsData[i]['rightAnswer'] + " (" + wrongsData[i]['rightAnswerCount'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example1'] + " (" + wrongsData[i]['example1Count'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example2'] + " (" + wrongsData[i]['example2Count'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example3'] + " (" + wrongsData[i]['example3Count'] + "명)")
+                            switch(wrongsData[i]['type']) {
+                                case "obj" :
+
+                                    $('.' + leftOrRight).append($('<div>').attr('class', 'objWrong')
+                                        .append($('<table>').attr('class', 'table_wrongList')
+                                            .append($('<thead>')
+                                                .append($('<tr>')
+                                                    .append($('<th>')
+                                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                                    .append($('<th>')
+                                                        .append($('<div>')
+                                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                                            .append($('<tbody>')
+                                                .append($('<tr>')
+                                                    .append($('<td colspan="2">')
+                                                        .append($('<div>').attr('class', 'wrongExamples')
+                                                            .append($('<ul>')
+                                                                .append($('<li>').text(wrongsData[i]['rightAnswer']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_1'))
+                                                            )
+                                                        )
                                                     )
                                                 )
                                             )
-                                            .append($('<div>').attr('class','wrongWriting').text(wrongsData[i]['wrong']))
                                         )
-                                    )
-                                )
-                            );
+                                    );
+
+                                    break;
+                                case "sub" :
+
+                                    $('.' + leftOrRight).append($('<div>').attr('class', 'subWrong')
+                                        .append($('<table>').attr('class', 'table_wrongList')
+                                            .append($('<thead>')
+                                                .append($('<tr>')
+                                                    .append($('<th>')
+                                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                                    .append($('<th>')
+                                                        .append($('<div>')
+                                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                                            .append($('<tbody>')
+                                                .append($('<tr>')
+                                                    .append($('<td colspan="2">')
+                                                        .append($('<div>').attr('class', 'wrongExamples')
+                                                            .append($('<div>').text("정답 : " + wrongsData[i]['rightAnswer'])
+                                                            )
+                                                            .append($('<div>').text("힌트 : " + wrongsData[i]['hint']).css('color', 'blue')
+                                                            )
+                                                            .append($('<div>').text("작성답 : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    );
+                                    break;
+                            }
 
                             for (var j = 1; j < 4; j++) {
                                 if (wrongsData[i]['example' + j + 'Count'] == 1) {

@@ -1,85 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:height="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <style>
-        body {
-            font-family: "Lato", sans-serif;
+        div {
+            font-family: 'a뉴고딕M';
         }
 
         .sidenav {
             height: 100%;
-            width: 25%;
+            width: 20%;
             position: absolute;
             z-index: 1;
             left: 0;
             background-color: white;
         }
 
-        .sidenav a{
-            text-decoration: none;
-            cursor: pointer;
-            color: #818181;
-        }
-
         .select {
-            width: 90%;
-            margin: 5%;
-        }
-
-        .sidenav drop-contents {
-            padding: 6px 8px 6px 8px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #818181;
-            display: inline;
-            border: block;
-            background: none;
-            width: 100%;
-            cursor: pointer;
-            outline: none;
-            text-align: left;
-        }
-
-        .sidenav a:hover, .dropdown-btn:hover {
-            color: black;
-        }
-
-        .dropdown-container a {
-            display: block;
+            width: 80%;
+            padding-top: 5%;
+            margin-left: 10%;
         }
 
         .sample_quiz {
-            margin-top: 25px;
-            margin-left: 20px;
             text-align: center;
-            border: 1px solid black;
             overflow-y: scroll;
-            width: 90%;
+            width: 100%;
             height: 70%;
-            background-color: #f8f8f8;
+            background-color: white;
         }
 
-        .table {
-            background-color: #F2F2F2;
-        }
-
-        #theadStyle {
-            font-size : 10px;
-            padding: 1px 1px 1px 1px;
-        }
-
-        @media screen and (max-height: 450px) {
-            .sidenav {padding-top: 15px;}
-            .sidenav a {font-size: 18px;}
-        }
-        
         .searchButton {
-            background-image: url("https://i.imgur.com/AkTyb7Z.png");
-            margin-left: 5%;
+            border: 2px solid white;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: transparent;
+            margin-left: 10%;
         }
+
+        #sideImg {
+            background-image: url("https://i.imgur.com/oDRk68B.png");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            height: 12vw;
+        }
+
+        #titleImg {
+            background-image: url("https://i.imgur.com/3BaJJlL.png");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            height: 9.5vw;
+        }
+
     </style>
 </head>
 
@@ -123,35 +97,35 @@
                     var $tr = $('<tr />').appendTo('#example');
                     $tr.attr({id : i+1});
                     $('<td />').text(i+1).appendTo($tr);
-                    $('<td />').text(quizData[i].question).appendTo($tr);
+                    $('<td style="font-family: Meiryo" />').text(quizData[i].question).appendTo($tr);
 
                     // tr에 onclick method 추가
                     $('#'+(i+1)).unbind('click').bind('click', function () {
 
                         /*alert(quizData[this.id-1].question +
-                            quizData[this.id-1].right +
-                            quizData[this.id-1].example1 +
-                            quizData[this.id-1].example2 +
-                            quizData[this.id-1].example3 +
-                            quizData[this.id-1].makeType +
-                            quizData[this.id-1].quizType
-                        )*/
+                         quizData[this.id-1].right +
+                         quizData[this.id-1].example1 +
+                         quizData[this.id-1].example2 +
+                         quizData[this.id-1].example3 +
+                         quizData[this.id-1].makeType +
+                         quizData[this.id-1].quizType
+                         )*/
 
                         quizAdd(quizData[this.id-1]);
                     });
                 }
             },
             error: function (data) {
-                alert("모든 항목에 입력이 필요합니다.");
+                swal("모든 항목에 입력이 필요합니다.");
             }
         });
     });
 
     /*<input type="hidden" name="bookId" value="">
-        <input type="hidden" name="level" value="">
-        <input type="hidden" name="pageStart" value="">
-        <input type="hidden" name="pageEnd" value="">
-        <input type="hidden" name="type" value="o">*/
+     <input type="hidden" name="level" value="">
+     <input type="hidden" name="pageStart" value="">
+     <input type="hidden" name="pageEnd" value="">
+     <input type="hidden" name="type" value="o">*/
 
     $(document).ready(function () {
         $('#bookSelect').change(function () {
@@ -184,24 +158,21 @@
 <body>
 
 <div class="sidenav">
-
-    <form id="form_data" enctype="multipart/form-data" class="form-horizontal">
+    <div id="sideImg">
 
         <div class="select">
-            <select id="bookSelect" class="form-control">
+            <select id="bookSelect" class="form-control" style="height: 50px; border-radius: 12px; font-size: 20px">
                 <option>교재 선택</option>
                 @for($i = count($response['bookList']) - 1; $i >= 0; $i--)
-
                     <option value="{{$response['bookList'][$i]['bookId']}}">{{$response['bookList'][$i]['bookName']}}</option>
-
                 @endfor
-                <!--<option value="1">test</option>
-                <option value="2">급소공략</option>-->
+            <!--<option value="1">test</option>
+            <option value="2">급소공략</option>-->
             </select>
         </div>
 
         <div class="select">
-            <select id="levelSelect" class="form-control">
+            <select id="levelSelect" class="form-control" style="height: 50px; border-radius: 12px; font-size: 20px">
                 <option>난이도 선택</option>
                 <option value="1">N1</option>
                 <option value="2">N2</option>
@@ -211,11 +182,11 @@
             </select>
         </div>
 
-        <div class="form-inline" style="margin: 5%">
-            <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 6em">
+        <div class="form-inline" style="margin-left: 10%; padding-top: 5%">
+            <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 50px; border-radius: 12px; font-size: 15px">
             &nbsp;~&nbsp;
-            <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 6em">
-            <button id="btn" type="button" class="searchButton">검색</button>
+            <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 50px; border-radius: 12px; font-size: 15px">
+            <button id="btn" type="button" class="searchButton" style="width: 20%; color: white">검색</button>
         </div>
 
         <input type="hidden" name="bookId" id="bookId" value="">
@@ -223,7 +194,8 @@
         <input type="hidden" name="pageStart" id="pageStart" value="">
         <input type="hidden" name="pageEnd" id="pageEnd" value="">
 
-    </form>
+    </div>
+
 
     <!--예문-->
     <div class="sample_quiz">
@@ -250,6 +222,7 @@
             </tbody>
         </table>
     </div>
+
 
 </div>
 </body>

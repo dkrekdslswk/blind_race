@@ -301,13 +301,7 @@
             border-radius: 0;
             background-color: #f3f3f3;
         }
-        /* Search */
-        #search .panel-body .navbar-form {
-            border-bottom: 0;
-        }
-        #search .panel-body .navbar-form .form-group {
-            margin: 0;
-        }
+
         .navbar-header {
             /* this is probably redundant */
             position: fixed;
