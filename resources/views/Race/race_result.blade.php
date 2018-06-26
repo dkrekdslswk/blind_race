@@ -52,9 +52,8 @@
                                     if(pop_check == 0)
                                         append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
                                     else if(pop_check == 1)
-                                        append_info += ' <td><img src="/img/character/student.png" >';
+                                        append_info += ' <td><img src="/img/character/student.jpg" >';
 
-                            append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
                             append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
                             append_info += '<span class="user-subhead subtitle">';
                                     if(pop_check == 0)
