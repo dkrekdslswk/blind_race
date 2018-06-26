@@ -89,7 +89,6 @@
         }
         .btn-round-lg{
             border-radius: 20.5px;
-
         }
     </style>
 

@@ -8,14 +8,18 @@
     .recordbox-history {
         margin: 0;
         padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
     }
     .historyContainer {
         width: 100%;
+        height: 100%;
     }
     .historyContainer .historyList {
         display: block;
         float: left;
-        width: 65%;
+        width: 60%;
         text-align: left;
     }
     .historyList_container{
@@ -24,10 +28,14 @@
         height: 50px;
     }
     .historyList-name{
-        font-size: 20px;
-        color: #203a8e;
+        font-size: 19px;
         position: relative;
         float: left;
+        margin-left: 30px;
+    }
+    .historyList-name h4{
+        font-weight: bold;
+        color: #203a8e;
     }
     .historyList-sorting{
         position: relative;
@@ -41,16 +49,30 @@
         padding: 5px 10px 5px 10px;
     }
     .historyList-history{
-        height: 850px;
+        height: 100%;
     }
     .history-outline{
-        height: 80%;
+        height: 100%;
+        background-color: #f9f9f9;
     }
-    .historyContainer .raceListDetail {
+    .historyList-table{
+        background-color: white;
+    }
+    .historyList-table thead tr ,.historyList-table tbody tr{
+        height: 20px;
+    }
+    .historyList-table thead tr:first-child{
+        background-color: #DFDFDF;
+    }
+    .historyList-table tbody tr:nth-child(2n),.raceListDetail table tbody tr:nth-child(2n) {
+        background-color: #e6eaed;
+    }
+    .raceListDetail {
         display: block;
-        float: left;
+        float: right;
         width: 30%;
-        height: 70%;
+        height: 82%;
+        background-color: #f9f9f9;
     }
     .historyContainer .raceListDetail .raceListDetailScroll {
         width: 100%;
@@ -58,8 +80,31 @@
         overflow-y: scroll;
         border: 1px solid #e5e6e8;
     }
+    .raceListDetail table{
+        background-color: white;
+    }
+    .raceListDetail table thead tr:last-child{
+        background-color: #DFDFDF;
+    }
     .raceListDetail table thead tr th ,.raceListDetail table tbody {
         text-align: center;
+    }
+    .raceListDetail-up{
+        margin: 0;
+        padding: 0;
+        top: 60px;
+        right: 0;
+        height: 91%;!important;
+        position: fixed;
+        z-index: 100;
+        width: 26%; !important;
+    }
+    .empty-striped{
+        float: left;
+        width: 10%;
+        height: 100%;
+        background-image: url("https://i.imgur.com/NYAOWGv.png");
+        background-size: 100% 100%;
     }
 
 </style>
@@ -164,12 +209,10 @@
                         data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
 
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료"))
-                            .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
+                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")))
                     }else{
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료"))
-                            .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
+                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료")))
                     }
 
 
@@ -252,8 +295,6 @@
                 var leftOrRight = "";
                 var allPage = Math.floor(wrongsData.length / 10);
 
-                console.log("wrongs",wrongsData);
-
                 $('.wrong_left').empty();
                 $('.wrong_right').empty();
                 $('.modal_pagenation').empty();
@@ -281,9 +322,9 @@
 
                         if(i < 5){
                             leftOrRight = "wrong_left";
+                            $('.wrong_left').removeClass("noBoardLine");
                             $('.wrong_right').addClass("noBoardLine");
-                        }
-                        else{
+                        }else{
                             leftOrRight = "wrong_right";
                             $('.wrong_right').removeClass("noBoardLine");
                         }
@@ -932,7 +973,9 @@
         <div class="historyList">
             <div class="historyList_container">
                 <div class="historyList-name">
+                    <h4>
                     최근 기록
+                    </h4>
                 </div>
                 <div class="historyList-sorting">
                     <ul class="nav navbar-nav history">
@@ -950,10 +993,13 @@
                         </li>
                     </ul>
                 </div>
+                <script>
+                    $('.historyList-sorting').hide();
+                </script>
             </div>
             <div class="historyList-history">
                 <div class="history-outline">
-                    <table class="table table-hover">
+                    <table class="table table-hover historyList-table">
                         <thead>
                         <tr>
                             <th>번호</th>
@@ -967,29 +1013,11 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer" style="height: 80px;">
-                    <div class="row">
-                        <div class="col col-xs-4">Page 1 of 5
-                        </div>
-                        <div class="col col-xs-8">
-                            <ul class="pagination hidden-xs pull-right">
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                            </ul>
-                            <ul class="pagination visible-xs pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div style="display: block;float: left;margin: 2%;">
+        <div class="empty-striped">
+
         </div>
 
         {{--과제 목록 보기--}}
