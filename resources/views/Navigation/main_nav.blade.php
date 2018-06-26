@@ -235,7 +235,7 @@
                     <a href="{{ url('race_list') }}">Race</a>
                 </li>
                 <li>
-                    <a href="#" id="recordbox" onclick="moveToAnotherPage(this.id)" class="main_navbar_li">RecordBox</a>
+                    <a href="{{url('/recordbox/chart/2') }}" id="recordbox" onclick="" class="main_navbar_li">RecordBox</a>
                 </li>
                 <li>
 

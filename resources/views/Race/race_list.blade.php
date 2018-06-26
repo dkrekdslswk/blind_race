@@ -9,6 +9,11 @@
 </head>
 
 <style type="text/css">
+
+    p, div, th, tr, td, button {
+        font-family: 'a뉴고딕M';
+    }
+
     #Race{
         background:#00008B;
         border: solid 1px #1976D2;
@@ -79,67 +84,12 @@
         color:white;
     }
 
-
-    .panel-table .panel-body{
-        padding:0;
-    }
-
-    .panel-table .panel-body .table-bordered{
-        border-style: none;
-        margin:0;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
-        text-align: center;
-        width: 100px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
-    .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
-        border-right: 0px;
-        width: 150px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
-    .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
-        border-left: 0px;
-    }
-
-    .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
-        border-bottom: 0px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
-        border-top: 0px;
-    }
-
-    .panel-table .panel-footer .pagination{
-        margin:0;
-    }
-
-    /*
-    used to vertically center elements, may need modification if you're not using default sizes.
-    */
-    .panel-table .panel-footer .col{
-        line-height: 34px;
-        height: 34px;
-    }
-
-    .panel-table .panel-heading .col h3{
-        line-height: 30px;
-        height: 30px;
-    }
-
-    .panel-table .panel-body .table-bordered > tbody > tr > td{
-        line-height: 34px;
-    }
-
     #wrapper {
         margin: 0 0 0 220px;
-        padding: 0;
-        position: relative;
-        min-height: 705px;
-        min-width: 1000px;
+        /*padding: 0;*/
+        /*position: relative;*/
+        /*min-height: 705px;*/
+        /*min-width: 1000px;*/
     }
 
     .folderButton {
@@ -153,6 +103,26 @@
         border-collapse: collapse; !important;
         background-size: cover;
         border-spacing: 0px 0px !important;
+    }
+
+    #titleImg {
+        background-image: url("https://i.imgur.com/86tmdh2.png");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        height: 9.5vw;
+    }
+
+    #theadFont {
+        font-family: 'a뉴고딕M';
+        font-size: 22px;
+        text-align: center;
+    }
+
+    #tbodyFont {
+        font-family: 'a뉴고딕M';
+        font-size: 20px;
+        text-align: center;
+        vertical-align: middle;
     }
 </style>
 
@@ -287,6 +257,16 @@
                 folderListData = data;
                 quizlistData = data;
 
+                $("#folderTitle").empty();
+
+                for(var i = 0; i < folderListData['folders'].length; i++) {
+                    if(folderListData['folders'][i]['folderId'] == folderListData['selectFolder']) {
+                        $("#folderTitle").append(
+                            "<p style='margin-left: 2%; font-size: 50px; color: white'>" + folderListData['folders'][i]['folderName'] + "</p>"
+                        );
+                    }
+                }
+
                 listValue();
             },
             error: function (data) {
@@ -322,10 +302,10 @@
         for(var i = 0; i < quizlistData['lists'].length; i++) {
             $("#list").append(
                 "<tr>" +
-                "<td class='hidden-xs' style='text-align: center'>"+ quizlistData['lists'][i]['listId'] + "</td>" +
-                "<td style='text-align: center'>"+ quizlistData['lists'][i]['listName'] + "</td>" +
-                "<td style='text-align: center'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
-                "<td align='center'>" +
+                "<td id='tbodyFont' class='hidden-xs'>"+ quizlistData['lists'][i]['listId'] + "</td>" +
+                "<td id='tbodyFont'>"+ quizlistData['lists'][i]['listName'] + "</td>" +
+                "<td id='tbodyFont'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
+                "<td id='tbodyFont'>" +
                 "<button type='submit' class='btn btn-primary' data-toggle='modal' data-target='#Modal' " +
                 "onclick='sendId("+ quizlistData['lists'][i]['listId'] +")'>시작하기</button>" +
                 "</td>" +
@@ -342,63 +322,43 @@
     @include('Navigation.main_nav')
 </nav>
 
-<div class="row">
+<div>
+    <!-- 사이드 바 -->
     <div class="side-menu">
         <aside class="navbar navbar-default" role="navigation">
             @include('Race.race_sidebar')
         </aside>
     </div>
 
-    <div class="btn-process" style="margin-top:50px;"></div>
-
-    <!--Quiz List Table-->
+    <!-- 본문 -->
     <div id="wrapper">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default panel-table">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col col-xs-6">
-                            <h3 class="panel-title">퀴즈 리스트</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped table-bordered table-list">
-                        <thead>
-                        <tr>
-                            <th class="hidden-xs">#</th>
-                            <th style="text-align: center">퀴즈명</th>
-                            <th style="text-align: center">문항수</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody id="list">
+        <!-- 에메랄드 타이틀 -->
+        <div id ="titleImg">
 
-                        {{--list 공간--}}
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col col-xs-4">Page 1 of 5
-                        </div>
-                        <div class="col col-xs-8">
-                            <ul class="pagination hidden-xs pull-right">
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                            </ul>
-                            <ul class="pagination visible-xs pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <!-- 현재 폴더 이름 -->
+            <div style="padding-top: 50px" id="folderTitle">
+                {{--<p style="margin-left: 15px; font-size: 50px; color: white">무슨 폴더</p>--}}
             </div>
+
+        </div>
+
+        <div style="width : 100% ; height: 20px ; background-color: gainsboro"></div>
+
+        <!-- 퀴즈 리스트 -->
+        <div class="">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th id="theadFont" class="hidden-xs">#</th>
+                    <th id="theadFont">퀴즈명</th>
+                    <th id="theadFont">문항수</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="list">
+                    <!--list 공간-->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

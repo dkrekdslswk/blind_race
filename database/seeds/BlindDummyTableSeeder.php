@@ -23,7 +23,6 @@ class BlindDummyTableSeeder extends Seeder
             [1401055, '1234', '김승목', 'student'],
             [1301036, '1234', '김민수', 'student']
         ];
-
         foreach ($users as $user) {
             DB::table('users')->insert([
                 'number' => array_get($user, 0),
@@ -62,6 +61,7 @@ class BlindDummyTableSeeder extends Seeder
                 'userNumber' => $users[$number][0],
             ]);
         }
+
         // 그룹 정보
         $groupId = DB::table('groups')->insertGetId([
             'name' => '3WDJ 정규 A반',
