@@ -93,7 +93,7 @@
     }
 
     .folderButton {
-        background-image: url("https://i.imgur.com/N0vZHmc.png");
+        background-image: url("https://i.imgur.com/Wf95GDk.png'");
         background-size: 100%;
         border:1px solid transparent !important;
         padding: 8px;
@@ -106,7 +106,7 @@
     }
 
     #titleImg {
-        background-image: url("https://i.imgur.com/86tmdh2.png");
+        background-image: url("https://i.imgur.com/G7fmmiJ.png");
         background-size: 100%;
         background-repeat: no-repeat;
         height: 9.5vw;
@@ -332,7 +332,7 @@
 
     <!-- 본문 -->
     <div id="wrapper">
-        <!-- 에메랄드 타이틀 -->
+        <!-- 하늘색 타이틀 -->
         <div id ="titleImg">
 
             <!-- 현재 폴더 이름 -->
@@ -341,7 +341,7 @@
 
         </div>
 
-        <div style="width : 100% ; height: 20px ; background-color: gainsboro"></div>
+        <div style="width : 100% ; height: 20px ; background-color: #f8efc0"></div>
 
         <!-- 퀴즈 리스트 -->
         <div class="">

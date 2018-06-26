@@ -1,4 +1,5 @@
 <style>
+
     :focus {
         outline: none;
     }
@@ -343,15 +344,13 @@
 <!-- 폴더 리스트 -->
 <div class="side-menu-container">
 
-    <div style="width: 220px ; height: 70px; margin-top: 100px">
+    <div style="width: 220px ; height: 150px; margin-top: 100px">
 
         <h2><p style="margin-left: 25px; color : #203a8e; !important;">Quiz Tree</h2>
 
     </div>
 
     <ul class="nav navbar-nav" id="folderList" >
-        <!--<li><a href="#"><span class="glyphicon glyphicon-folder-open"></span> 공유폴더</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-folder-close"></span> Active Link</a></li>-->
     </ul>
 
     <div style="background-image: url('https://i.imgur.com/HSrLDSe.png')">
