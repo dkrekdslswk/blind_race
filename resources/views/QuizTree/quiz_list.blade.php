@@ -12,7 +12,11 @@
 
     <style type="text/css">
 
-        p, div, th, tr, td, button {
+        p, div, th, tr, td, button, a {
+            font-family: 'a뉴고딕M';
+        }
+
+        ul {
             font-family: 'a뉴고딕M';
         }
 
