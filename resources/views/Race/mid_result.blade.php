@@ -15,7 +15,6 @@
 <style type="text/css">
 
     body{
-        background-image:url("/img/race_play/play_bg.png");
         min-height: 100%;
         background-position: center;
         background-size: cover;
@@ -87,7 +86,7 @@
     }
 </style>
 
-    <div class="" style="display: inline-block;
+<div class="" style="display: inline-block;
     margin-left: 5%;
     width: 90%;
     height: 20%;
@@ -96,13 +95,13 @@
     background: #033981;
     border-radius: 0px 0px 50px 50px; ">
 
-            <div class="" style="margin-top:2%; margin-left:4%; border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
-                <div style="width:13%; height:100%; display:inline-block; border-radius:8px; background-color: #df4467; font-size:30px; color:white; text-align: center;
+    <div class="" style="margin-top:2%; margin-left:4%; border-radius:10px;  background-color: white; display:inline-block; width:60%; height:60%; vertical-align: top; ">
+        <div style="width:13%; height:100%; display:inline-block; border-radius:8px; background-color: #df4467; font-size:30px; color:white; text-align: center;
     line-height: 100px;">정답</div>
-                <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
-            </div>
+        <span id="Mid_A_Right" style="font-size:30px;" >かたわら</span>
+    </div>
 
-        <div style=" width: 120px;
+    <div style=" width: 120px;
     height: 120px;
     border-radius: 50%;
     border: 10px solid #53cdff;
@@ -115,21 +114,21 @@
         text-align: center;
     line-height: 100px;
     ">
-            <sup><span class="" id="quiz_number">1</span></sup>
-            <span   class="" > / </span>
-            <span id="mid_all_quiz" class="">30</span>
-        </div>
+        <sup><span class="" id="quiz_number">1</span></sup>
+        <span   class="" > / </span>
+        <span id="mid_all_quiz" class="">30</span>
+    </div>
 
-        <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-top:1%; margin-left:1%;" >
-            <div id="mid_circle" class="c100 p50 green">
-                <span id="mid_percent"></span>
-                <div class="slice">
-                    <div class="bar"></div>
-                    <div class="fill"></div>
-                </div>
+    <div class="clearfix" style="display:inline-block; width:100px; height:100px; margin-top:1%; margin-left:1%;" >
+        <div id="mid_circle" class="c100 p50 green">
+            <span id="mid_percent"></span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
             </div>
         </div>
     </div>
+</div>
 
 <div id="mid_content" style="" >
 
@@ -224,75 +223,75 @@
             </table>
         </div>
 
-                <div id="mid_q" style="    width: 40%;
+        <div id="mid_q" style="    width: 40%;
     height: 90%;
     margin-top: 3%;
     margin-left: 4%;
     display: inline-block;">
-                    <div style="margin-left:10%; width:100%; height:30%; min-height:200px; border-radius:10px; background:white;
+            <div style="margin-left:10%; width:100%; height:30%; min-height:200px; border-radius:10px; background:white;
                         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);"
-                    >
-                        <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
+            >
+                <span  id="Mid_Q_Name" style="font-size:30px; color:black;font-weight:bold; "></span>
+            </div>
+
+
+            <div class='grafico bar-chart'>
+                <div id="obj_opinion" style="display:none;">
+                    <div class="choice_status" style="background-image: url('/img/race_play/result_a.png')">
+                        <div  class="choice_two_tone"></div>
+                        <div class="B_class" id="B1">1</div>
+
+                        <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                            <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                            <span id="A_count" style="color:black; font-weight: bold;">0</span>
+                        </div>
+
                     </div>
 
+                    <div class="choice_status" style="background-image: url('/img/race_play/result_b.png')">
+                        <div  class="choice_two_tone"></div>
+                        <div  class="B_class" id="B2">2</div>
 
-                    <div class='grafico bar-chart'>
-                        <div id="obj_opinion" style="display:none;">
-                            <div class="choice_status" style="background-image: url('/img/race_play/result_a.png')">
-                                <div  class="choice_two_tone"></div>
-                                <div class="B_class" id="B1">1</div>
-
-                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                    <span id="A_count" style="color:black; font-weight: bold;">0</span>
-                                </div>
-
-                            </div>
-
-                            <div class="choice_status" style="background-image: url('/img/race_play/result_b.png')">
-                                <div  class="choice_two_tone"></div>
-                                <div  class="B_class" id="B2">2</div>
-
-                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                    <span id="B_count" style="color:black; font-weight: bold;">0</span>
-                                </div>
-
-                            </div>
-
-                            <div class="choice_status" style="background-image: url('/img/race_play/result_c.png')">
-                                <div class="choice_two_tone"></div>
-                                <div class="B_class" id="B3">3</div>
-
-                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                    <span id="C_count" style="color:black; font-weight: bold;">0</span>
-                                </div>
-                            </div>
-
-                            <div class="choice_status" style="background-image: url('/img/race_play/result_d.png')">
-                                <div class="choice_two_tone"></div>
-                                <div class="B_class" id="B4">4</div>
-
-                                <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
-                                    <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
-                                    <span id="D_count" style="color:black; font-weight: bold;">0</span>
-                                </div>
-                            </div>
+                        <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                            <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                            <span id="B_count" style="color:black; font-weight: bold;">0</span>
                         </div>
-                        <div id="sub_opinion" style="">
-                            <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
-                            <div id="opinion_box" style="margin-left: 10%;
+
+                    </div>
+
+                    <div class="choice_status" style="background-image: url('/img/race_play/result_c.png')">
+                        <div class="choice_two_tone"></div>
+                        <div class="B_class" id="B3">3</div>
+
+                        <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                            <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                            <span id="C_count" style="color:black; font-weight: bold;">0</span>
+                        </div>
+                    </div>
+
+                    <div class="choice_status" style="background-image: url('/img/race_play/result_d.png')">
+                        <div class="choice_two_tone"></div>
+                        <div class="B_class" id="B4">4</div>
+
+                        <div class="B_class" style="display:inline-block;  width:10%; font-size:20px;">
+                            <img src="/img/race_play/person.png" style="width:20px; height:20px;" alt="">
+                            <span id="D_count" style="color:black; font-weight: bold;">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="sub_opinion" style="">
+                    <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
+                    <div id="opinion_box" style="margin-left: 10%;
     width: 100%;
     height: 30%;
     min-height: 200px;
     border-radius: 10px;
     background: white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
-                                </div>
-                            </div>
-                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
     </div>
 </div>
 <style>
