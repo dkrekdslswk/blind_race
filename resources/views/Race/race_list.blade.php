@@ -349,8 +349,8 @@
                 <thead>
                 <tr>
                     <th id="theadFont" class="hidden-xs">#</th>
-                    <th id="theadFont">퀴즈명</th>
-                    <th id="theadFont">문항수</th>
+                    <th id="theadFont">クイズ名前</th>
+                    <th id="theadFont">問題数</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -372,20 +372,20 @@
             <input type="hidden" name="listId" id="listId" value="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">그룹 선택</h5>
+                    <h5 class="modal-title" id="ModalLabel">Group Select</h5>
                 </div>
                 <div class="modal-body" style="text-align: center" >
                     <!--Dropdowns-->
                     <div class="select" style="margin: 0 auto; width: 50%">
                         <select id="groupSelect" class="form-control">
-                            <option>그룹명</option>
+                            <option>グループ名前</option>
                             <!-- 그룹 목록 넣을 공간 -->
                             {{--<option value="1">특강 A반</option>--}}
                             {{--<option value="2">특강 B반</option>--}}
                         </select>
                     </div>
                     <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em; margin-bottom: 1em;">
-                        <input id="cutLineScore" name="passingMark" type="text" placeholder="カットライン" class="form-control" style="width: 100%;">
+                        <input id="cutLineScore" name="passingMark" type="text" placeholder="カットライン点数" class="form-control" style="width: 100%;">
                     </div>
 
                     <div id="race_menu">
@@ -410,8 +410,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">선택하기</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">確認</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">戻る</button>
                 </div>
             </div>
         </form>
