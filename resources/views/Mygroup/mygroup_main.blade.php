@@ -177,7 +177,7 @@
                         + '</td><td>' +
                         ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
                         '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
-                        ' 비밀번호 변경\n' +
+                        ' パスワード変更\n' +
                         ' </button>' +
                         '</td><td>' +
                         '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +
@@ -220,9 +220,8 @@
             //data: {_token: CSRF_TOKEN, 'post':params},
             data: "groupId=" + groupIds+"&userId="+userId,
             success: function (data) {
-
-                alert("성공적으로 삭제했습니다.");
-                window.location.href = "{{url('mygroup')}}";
+                swal("", " ", "success");
+                setTimeout(function(){ window.location.href = "{{url('mygroup')}}"; },1500);
             },
             error: function (data) {
                 alert("삭제에러");
@@ -438,7 +437,7 @@
                         + '</td><td>' +
                         ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
                         '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
-                        ' 비밀번호 변경\n' +
+                        ' パスワード変更\n' +
                         ' </button>' +
                         '</td><td>' +
                         '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +
@@ -533,7 +532,7 @@
                         + '</td><td>' +
                         ' <button type="button" style="background-color: white" class="btn btn-primary-outline btn-round-lg btn-sm" data-toggle="modal" ' +
                         '   data-target="#studnetchange" onclick="setting(' + i + ');">\n' +
-                        ' 비밀번호 변경\n' +
+                        ' パスワード変更\n' +
                         ' </button>' +
                         '</td><td>' +
                         '<center><button class="btn btn-round-lg btn-sm " onclick="Delete(' + i + ')"><i class="far fa-trash-alt"></i></button></center>' +

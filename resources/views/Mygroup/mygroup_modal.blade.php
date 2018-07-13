@@ -49,17 +49,17 @@
 
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <label for="createCl">
-                    <b>클래스 생성</b>
+                    <b>クラス作り</b>
                 </label>
                 <!--  데모용 나중에 수정필요  -->
                 <input id="groupNameValue" type="text"
-                       placeholder="클래스 이름 입력"
+                       placeholder="クラスの名前"
                        name="groupName"
                        required="required"
                        style="margin-left: 50px"
-                       value="2WDJ반"
+
                 >
-                <button class="btn btn-primary-outline btn-round-lg" onclick="createGroup()" style ="color : black; margin-left: 85px">클래스 생성</button>
+                <button class="btn btn-primary-outline btn-round-lg" onclick="createGroup()" style ="color : black; margin-left: 85px">クラス作り</button>
 
             </div>
 
@@ -211,13 +211,13 @@
                 data: "groupName=" + groupNameValue,
                 success: function (data) {
                     if (data['check'])
-                        swal('그룹생성이 완료되었습니다.');
+                        swal('成功的にクラスが作られました。');
 
                     setTimeout(function(){ window.location.href = "{{url('mygroup')}}"; }, 1200);
 
                 },
                 error: function (data) {
-                    alert("클래스 이름을 입력해 주세요");
+                    alert("クラス名を入力してください");
                 }
             });
         }

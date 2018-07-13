@@ -205,7 +205,8 @@
                             margin-top: 8px;
                             color : #203a8e; !important;
                              font-family: 'Nanum Gothic', sans-serif;
-                 ">클래스 생성</p>
+                             font-size: 20px;
+                 ">クラス</p>
         </button>
 
         <div>

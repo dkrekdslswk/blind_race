@@ -46,8 +46,8 @@
 
                         {{--<input id="checkBox" type="checkbox">--}}
 
-                        <input type="text" placeholder="새로운 비밀번호 입력" id="psw" required>
-                        <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 120px" type="button" onclick="update('#')">변경하기</button>
+                        <input type="text" size="50px" placeholder="新しい暗証番号を入力してください" id="psw" required>
+                        <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 10px " type="button" onclick="update('#')">変更</button>
                     </div>
 
                 </div>
@@ -67,7 +67,7 @@
         <i><p style="margin-left : 15px ; font-size: 80px ; color:white; " id ="group" class="in" ></p></i>
         <button type="button" style="margin-left: 15px ; color:white;" class="btn btn-primary-outline btn-round-lg btn-lg " data-toggle="modal";  data-target="#exampleModal">
             <img src="/img/exel.png" style="display:inline-block; width:50px; height:50px;" alt="">
-            + 학생추가</button>
+            + 学生登録</button>
         <img style="position: absolute; top: 0% ; right: 0% " src="https://i.imgur.com/J8qUt6P.png">
         <!-- Button trigger modal -->
 
@@ -82,8 +82,8 @@
                         <textarea id="cmemo" cols="60" rows="10"></textarea>
                         <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
                         {{--<button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>--}}
-                        <button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">확인</button>
-                        <button style="border: 1px solid white; margin-left: 10px; margin-top: 10px" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="excel('cview')">저장</button>
+                        {{--<button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">確認</button>--}}
+                        <button style="border: 1px solid white; margin-left: 10px; margin-top: 10px" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="excel('cview')">確認</button>
                         <div id="cview"></div>
 
                     </div>
@@ -106,24 +106,24 @@
     <div class="col col-lg-5" style="padding-left: 15px;">
 
         <div>
-            <p class="in pen" style="margin-right: 60px">미소속 학생</p>
+            <p class="in pen" style="margin-right: 10px">所属していない学生</p>
             <input
                     class="margins"
                     type="text"
                     id="myInput"
                     onkeyup="myFunction()"
-                    placeholder="학생 검색"
+                    placeholder="学生検索"
                     title="Type in a name"
 
                     value="">
             <input type="button"
                    style="margin-left: 10px"
-                   class="btn btn-primary-outline btn-round-lg btn-sm in" id="selectBtn" value="추가하기">
+                   class="btn btn-primary-outline btn-round-lg btn-sm in" id="selectBtn" value="登録">
 
             <table>
                 <tr class="header">
-                    <th style="width:42%"><i class="fas fa-user-circle"></i>  이름</th>
-                    <th style="width:40%"><i class="fas fa-clipboard-list"></i> 학번</th>
+                    <th style="width:42%"><i class="fas fa-user-circle"></i>  名前</th>
+                    <th style="width:40%"><i class="fas fa-clipboard-list"></i> 学番</th>
                     <th style="width:15%"><i class="fas fa-user-plus"></i> <input type="checkbox" id="allCheck"/></th>
                 </tr>
             </table>
@@ -138,32 +138,32 @@
     </div>
     <div class="col col-lg-5">
 
-        <p class="pen">현재 학급 학생</p>
+        <p class="pen">現在のクラス生徒</p>
         <table>
             <tr class="header" style="border-top: 1px solid gray;">
-                <th style="width:26%"><i class="fas fa-user-circle"></i>  이름</th>
-                <th style="width:25%"><i class="fas fa-clipboard-list"></i> 학번</th>
-                <th style="width:35%;"><i class="fas fa-info"></i> 비밀번호</th>
+                <th style="width:26%"><i class="fas fa-user-circle"></i>  名前</th>
+                <th style="width:25%"><i class="fas fa-clipboard-list"></i> 学番</th>
+                <th style="width:35%;"><i class="fas fa-info"></i> パスワード</th>
                 <th style="width:25%;"></th>
             </tr>
         </table>
 
         <table id="student">
-            <tr>
-                <th>
-                    <input type="checkbox"/>클래스</th>
-                <th>이름</th>
-                <th>학번</th>
-                <th>레코드 박스</th>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/>B반
-                    <button>X</button>
-                </td>
-                <td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>
-                <td>1401036</td>
-                <td>확인</td>
-            </tr>
+            {{--<tr>--}}
+                {{--<th>--}}
+                    {{--<input type="checkbox"/>クラス</th>--}}
+                {{--<th>名前</th>--}}
+                {{--<th>学番</th>--}}
+                {{--<th>레코드 박스</th>--}}
+            {{--</tr>--}}
+            {{--<tr>--}}
+                {{--<td><input type="checkbox"/>B반--}}
+                    {{--<button>X</button>--}}
+                {{--</td>--}}
+                {{--<td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>--}}
+                {{--<td>1401036</td>--}}
+                {{--<td>확인</td>--}}
+            {{--</tr>--}}
 
         </table>
 
@@ -510,7 +510,7 @@
             students :JSON.stringify(studentlist)
         };
 //            alert(JSON.stringify(studentlist))
-        swal("학생등록완료", "학생이 해당 클래스에 추가 되었습니다.", "success");
+        swal("登録完了", "success");
         setTimeout(function(){ window.location.href = "{{url('mygroup')}}"; },1500);
 
         jQuery.ajaxSettings.traditional = true;
