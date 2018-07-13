@@ -307,7 +307,7 @@
                 "<td id='tbodyFont'>"+ quizlistData['lists'][i]['quizCount'] + "</td>" +
                 "<td id='tbodyFont'>" +
                 "<button type='submit' class='btn btn-primary' data-toggle='modal' data-target='#Modal' " +
-                "onclick='sendId("+ quizlistData['lists'][i]['listId'] +")'>시작하기</button>" +
+                "onclick='sendId("+ quizlistData['lists'][i]['listId'] +")'>Play</button>" +
                 "</td>" +
                 "</tr>");
 
