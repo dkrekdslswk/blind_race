@@ -8,14 +8,18 @@
     .recordbox-history {
         margin: 0;
         padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
     }
     .historyContainer {
         width: 100%;
+        height: 100%;
     }
     .historyContainer .historyList {
         display: block;
         float: left;
-        width: 65%;
+        width: 60%;
         text-align: left;
     }
     .historyList_container{
@@ -24,10 +28,14 @@
         height: 50px;
     }
     .historyList-name{
-        font-size: 20px;
-        color: #203a8e;
+        font-size: 19px;
         position: relative;
         float: left;
+        margin-left: 30px;
+    }
+    .historyList-name h4{
+        font-weight: bold;
+        color: #203a8e;
     }
     .historyList-sorting{
         position: relative;
@@ -35,21 +43,36 @@
     }
     .history{
         margin: 0;
+        padding: 0;
     }
     .history li{
-        padding: 10px 20px 10px 20px;
+        padding: 5px 10px 5px 10px;
     }
     .historyList-history{
-        height: 850px;
+        height: 100%;
     }
     .history-outline{
-        height: 80%;
+        height: 100%;
+        background-color: #f9f9f9;
     }
-    .historyContainer .raceListDetail {
+    .historyList-table{
+        background-color: white;
+    }
+    .historyList-table thead tr ,.historyList-table tbody tr{
+        height: 20px;
+    }
+    .historyList-table thead tr:first-child{
+        background-color: #DFDFDF;
+    }
+    .historyList-table tbody tr:nth-child(2n),.raceListDetail table tbody tr:nth-child(2n) {
+        background-color: #e6eaed;
+    }
+    .raceListDetail {
         display: block;
-        float: left;
+        float: right;
         width: 30%;
-        height: 70%;
+        height: 82%;
+        background-color: #f9f9f9;
     }
     .historyContainer .raceListDetail .raceListDetailScroll {
         width: 100%;
@@ -57,8 +80,31 @@
         overflow-y: scroll;
         border: 1px solid #e5e6e8;
     }
+    .raceListDetail table{
+        background-color: white;
+    }
+    .raceListDetail table thead tr:last-child{
+        background-color: #DFDFDF;
+    }
     .raceListDetail table thead tr th ,.raceListDetail table tbody {
         text-align: center;
+    }
+    .raceListDetail-up{
+        margin: 0;
+        padding: 0;
+        top: 60px;
+        right: 0;
+        height: 91%;!important;
+        position: fixed;
+        z-index: 100;
+        width: 26%; !important;
+    }
+    .empty-striped{
+        float: left;
+        width: 10%;
+        height: 100%;
+        background-image: url("https://i.imgur.com/NYAOWGv.png");
+        background-size: 100% 100%;
     }
 
 </style>
@@ -163,12 +209,10 @@
                         data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
 
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료"))
-                            .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
+                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")))
                     }else{
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료"))
-                            .append($('<button>').text("▶").attr('class','btnHomeworkCheck').attr('id',data['races'][i]['raceId'])));
+                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료")))
                     }
 
 
@@ -251,8 +295,6 @@
                 var leftOrRight = "";
                 var allPage = Math.floor(wrongsData.length / 10);
 
-                console.log("wrongs",wrongsData);
-
                 $('.wrong_left').empty();
                 $('.wrong_right').empty();
                 $('.modal_pagenation').empty();
@@ -280,9 +322,9 @@
 
                         if(i < 5){
                             leftOrRight = "wrong_left";
+                            $('.wrong_left').removeClass("noBoardLine");
                             $('.wrong_right').addClass("noBoardLine");
-                        }
-                        else{
+                        }else{
                             leftOrRight = "wrong_right";
                             $('.wrong_right').removeClass("noBoardLine");
                         }
@@ -295,21 +337,21 @@
                             case "obj" :
 
                                 /***************************************************************************/
-                                wrongsData[0]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
-                                wrongsData[0]['rightAnswer'] = "とはいえ";
-                                wrongsData[0]['example1'] = "たりとも";
-                                wrongsData[0]['example2'] = "ばかりも";
-                                wrongsData[0]['example3'] = "だけさえ";
-                                wrongsData[2]['question'] = "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。";
-                                wrongsData[2]['rightAnswer'] = "とあって";
-                                wrongsData[2]['example1'] = "からして";
-                                wrongsData[2]['example2'] = "にあって";
-                                wrongsData[2]['example3'] = "にしては";
-                                wrongsData[4]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
-                                wrongsData[4]['rightAnswer'] = "かたわら";
-                                wrongsData[4]['example1'] = "かたがた";
-                                wrongsData[4]['example2'] = "こととて";
-                                wrongsData[4]['example3'] = "うちに";
+                                // wrongsData[0]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
+                                // wrongsData[0]['rightAnswer'] = "とはいえ";
+                                // wrongsData[0]['example1'] = "たりとも";
+                                // wrongsData[0]['example2'] = "ばかりも";
+                                // wrongsData[0]['example3'] = "だけさえ";
+                                // wrongsData[2]['question'] = "この店は洋食と和食の両方が楽しめる（　　）、お得意さんが多い。";
+                                // wrongsData[2]['rightAnswer'] = "とあって";
+                                // wrongsData[2]['example1'] = "からして";
+                                // wrongsData[2]['example2'] = "にあって";
+                                // wrongsData[2]['example3'] = "にしては";
+                                // wrongsData[4]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
+                                // wrongsData[4]['rightAnswer'] = "かたわら";
+                                // wrongsData[4]['example1'] = "かたがた";
+                                // wrongsData[4]['example2'] = "こととて";
+                                // wrongsData[4]['example3'] = "うちに";
                                 /***************************************************************************/
 
                                 $('.' + leftOrRight).append($('<div>').attr('class','objWrong')
@@ -349,15 +391,15 @@
                                 break;
                             case "sub" :
                                 /***************************************************************************/
-                                wrongsData[1]['question'] = "周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。";
-                                wrongsData[1]['rightAnswer'] = "ところで";
-                                wrongsData[1]['hint'] = "とこ@で";
-                                wrongsData[3]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
-                                wrongsData[3]['rightAnswer'] = "たりとも";
-                                wrongsData[3]['hint'] = "@@とも";
-                                wrongsData[5]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
-                                wrongsData[5]['rightAnswer'] = "かたわら";
-                                wrongsData[5]['hint'] = "か@@@";
+                                // wrongsData[1]['question'] = "周辺の住民がいくら反対した（　　）、動きだした開発計画は止まらないだろう。";
+                                // wrongsData[1]['rightAnswer'] = "ところで";
+                                // wrongsData[1]['hint'] = "とこ@で";
+                                // wrongsData[3]['question'] = "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。";
+                                // wrongsData[3]['rightAnswer'] = "たりとも";
+                                // wrongsData[3]['hint'] = "@@とも";
+                                // wrongsData[5]['question'] = "姉は市役所に勤める（　　）、ボランティアで日本語を教えています。";
+                                // wrongsData[5]['rightAnswer'] = "かたわら";
+                                // wrongsData[5]['hint'] = "か@@@";
                                 /***************************************************************************/
                                 $('.' + leftOrRight).append($('<div>').attr('class','subWrong')
                                     .append($('<table>').attr('class', 'table_wrongList')
@@ -459,12 +501,6 @@
                 for (var i = 0; i < stdHomework.length ; i ++) {
 
                     if(stdHomework[i]['wrongState'] == "not" && stdHomework[i]['retestState'] == "not"){
-                        $('#history_homework').append($('<tr id="history_homework_tr' + i + '">'));
-
-                        $('#historyListNumber').text($('#history_id_'+raceId).attr('value'));
-                        $('#historyListRaceName').text($('#history_name_'+raceId).attr('value'));
-
-                        $('#history_homework_tr' + i).append($('<td>').attr('colspan',3).text("해당 학생 없음"));
 
                     }else{
 
@@ -493,7 +529,7 @@
                         }
 
                         //임의로 값 설정
-                        stdHomework[i]['wrongState'] = "clear";
+                        //stdHomework[i]['wrongState'] = "clear";
 
                         switch (stdHomework[i]['wrongState']){
                             case "not" :
@@ -823,36 +859,73 @@
                             $('.wrong_right').removeClass("noBoardLine");
                         }
 
-                        $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
-                            .append($('<thead>')
-                                .append($('<tr>')
-                                    .append($('<th>')
-                                        .append($('<div>').text(wrongsData[i]['number'])))
-                                    .append($('<th>')
-                                        .append($('<div>')
-                                            .append($('<b>').text(wrongsData[i]['question']))))))
-                            .append($('<tbody>')
-                                .append($('<tr>')
-                                    .append($('<td colspan="2">')
-                                        .append($('<div>').attr('class', 'wrongExamples')
-                                            .append($('<ul>')
-                                                .append($('<li>').text(wrongsData[i]['rightAnswer']))
-                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
-                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_2'))
-                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_3'))
+
+                        switch(wrongsData[i]['type']){
+                            case "obj" :
+
+                                $('.' + leftOrRight).append($('<div>').attr('class','objWrong')
+                                    .append($('<table>').attr('class', 'table_wrongList')
+                                        .append($('<thead>')
+                                            .append($('<tr>')
+                                                .append($('<th>')
+                                                    .append($('<div>').text(wrongsData[i]['number'])))
+                                                .append($('<th>')
+                                                    .append($('<div>')
+                                                        .append($('<b>').text(wrongsData[i]['question']))))))
+                                        .append($('<tbody>')
+                                            .append($('<tr>')
+                                                .append($('<td colspan="2">')
+                                                    .append($('<div>').attr('class','wrongExamples')
+                                                        .append($('<ul>')
+                                                            .append($('<li>').text(wrongsData[i]['rightAnswer']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_1'))
+                                                        )
+                                                    )
+                                                )
                                             )
                                         )
                                     )
-                                )
-                            )
-                        );
+                                );
 
-                        for (var j = 1; j < 4; j++) {
-                            if (wrongsData[i]['example' + j + 'Count'] == 1) {
-                                $('.example_' + i + '_' + j).css('color', 'blue');
+                                break;
+                            case "sub" :
+
+                                $('.' + leftOrRight).append($('<div>').attr('class','subWrong')
+                                    .append($('<table>').attr('class', 'table_wrongList')
+                                        .append($('<thead>')
+                                            .append($('<tr>')
+                                                .append($('<th>')
+                                                    .append($('<div>').text(wrongsData[i]['number'])))
+                                                .append($('<th>')
+                                                    .append($('<div>')
+                                                        .append($('<b>').text(wrongsData[i]['question']))))))
+                                        .append($('<tbody>')
+                                            .append($('<tr>')
+                                                .append($('<td colspan="2">')
+                                                    .append($('<div>').attr('class','wrongExamples')
+                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'])
+                                                        )
+                                                        .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
+                                                        )
+                                                        .append($('<div>').text("작성답 : "+wrongsData[i]['wrongs'][0]['answer']).css('color','black')
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                );
+                                break;
+                            }
+
+                            for (var j = 1; j < 4; j++) {
+                                if (wrongsData[i]['example' + j + 'Count'] == 1) {
+                                    $('.example_' + i + '_' + j).css('color', 'blue');
+                                }
                             }
                         }
-                    }
                 }
             },
             error: function (data) {
@@ -894,25 +967,33 @@
         <div class="historyList">
             <div class="historyList_container">
                 <div class="historyList-name">
+                    <h4>
                     최근 기록
+                    </h4>
                 </div>
                 <div class="historyList-sorting">
                     <ul class="nav navbar-nav history">
                         <li>
-                            최신순
+                            최근날짜▼
                         </li>
                         <li>
-                            날짜순
+                            높은 점수▼
                         </li>
                         <li>
-                            과제상태
+                            낮은 점수▼
+                        </li>
+                        <li>
+                            과제상태▼
                         </li>
                     </ul>
                 </div>
+                <script>
+                    $('.historyList-sorting').hide();
+                </script>
             </div>
             <div class="historyList-history">
                 <div class="history-outline">
-                    <table class="table table-hover">
+                    <table class="table table-hover historyList-table">
                         <thead>
                         <tr>
                             <th>번호</th>
@@ -926,29 +1007,11 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer" style="height: 80px;">
-                    <div class="row">
-                        <div class="col col-xs-4">Page 1 of 5
-                        </div>
-                        <div class="col col-xs-8">
-                            <ul class="pagination hidden-xs pull-right">
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                            </ul>
-                            <ul class="pagination visible-xs pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div style="display: block;float: left;margin: 2%;">
+        <div class="empty-striped">
+
         </div>
 
         {{--과제 목록 보기--}}

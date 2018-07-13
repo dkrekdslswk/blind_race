@@ -8,36 +8,62 @@
     <link href="js/bootstrap.min.js" rel="stylesheet">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    <link href="css/magic-check.css" rel="stylesheet">
 
     <style type="text/css">
 
+        p,  th, tr, td, button {
+            font-family: 'a뉴고딕M';
+            font-size: 20px;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
         .contents {
-            margin-left: 25%;
+            margin-left: 20%;
+            margin-top : -20px;
+
         }
 
-        .table tr{
-            background-color: white;
+        #quizFont {
+            font-size: 25px;
+            color: white;
         }
 
-        .two_button {
+        #buttonDesign {
+            border: 2px solid white;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: transparent;
+        }
+
+        #deletebuttonDesign {
+            border: 1px solid #E4E4E4;
+            padding: 10px;
+            border-radius: 16px;
+            background-color: transparent;
+        }
+
+        .threebuttonDesign {
+            border: 1px solid #E4E4E4;
+            padding: 10px;
+            border-radius: 16px;
+            background-color: transparent;
+        }
+
+        .threebuttonDesignT {
             margin: 10px 20px 10px 0px;
             text-align: right;
         }
 
-        .btn-lg {
-            font-size: 18px;
-            line-height: 1.33;
-            border-radius: 6px;
+        .selectCall {
+            width: 80%;
+            padding-top: 1%;
         }
 
-        .btn.outline {
-            background: none;
-            padding: 12px 22px;
-        }
-        .btn-primary.outline {
-            border: 2px solid #0099cc;
-            color: #0099cc;
-        }
     </style>
 </head>
 
@@ -92,28 +118,28 @@
             "<div class='quiz' style='margin: 20px'>" +
             "<table class='table table-bordered' id='tableNum"+ idNum +"'>" +
                 "<thead>" +
-                    "<td style='background-color: #d9edf7; width: 10%'>문항</td>" +
-                    "<td id='quizNum" + idNum + "' style='width: 10%'>" + idArray.length +"</td>" +
-                    "<td style='background-color: #d9edf7; width: 10%;'>출제유형</td>" +
-                    "<td style='width: 25%'>" +
+                    "<td style='background-color: #BEE4F4; width: 5%; height: 60px; color: #31639D; vertical-align: middle''>문항</td>" +
+                    "<td id='quizNum" + idNum + "' style='width: 5%; vertical-align: middle''>" + idArray.length +"</td>" +
+                    "<td style='background-color: #BEE4F4; width: 10%; color: #31639D; vertical-align: middle''>출제유형</td>" +
+                    "<td style='width: 25%; vertical-align: middle''>" +
                         "<form>" +
                         "<label class='radio-inline'><input type='radio' id='obj" + idNum + "' name='makeType" + idNum + "' value='obj'>객관식</label>" +
                         "<label class='radio-inline'><input type='radio' id='sub" + idNum + "' name='makeType" + idNum + "' value='sub'>주관식</label>" +
                         "</form>" +
                     "</td>" +
-                    "<td style='background-color: #d9edf7; width: 10%;'>문제유형</td>" +
-                    "<td style='width: 25%'>" +
+                    "<td style='background-color: #BEE4F4; width: 10%; color: #31639D; vertical-align: middle''>문제유형</td>" +
+                    "<td style='width: 25%; vertical-align: middle''>" +
                         "<form>" +
                         "<label class='radio-inline'><input type='radio' id='voc" + idNum + "' name='quizType" + idNum + "' value='vocabulary'>어휘</label>" +
                         "<label class='radio-inline'><input type='radio' id='wor" + idNum + "' name='quizType" + idNum + "' value='word'>단어</label>" +
                         "<label class='radio-inline'><input type='radio' id='gra" + idNum + "' name='quizType" + idNum + "' value='grammar'>문법</label>" +
                         "</form>" +
                     "</td>" +
-                    "<td style='width: 10%' id='deleteNum"+ idNum +"'><a href='#'>삭제</a></td>" +
+                    "<td style='width: 5%; vertical-align: middle'' id='deleteNum"+ idNum +"'><button id='deletebuttonDesign' class='btn' style='color: #31639D'>&nbsp;삭제&nbsp;</button></td>" +
                 "</thead>" +
                 "<tbody>" +
                 "<tr>" +
-                    "<td style='background-color: #d9edf7'>문제</td>" +
+                    "<td style='background-color: #BEE4F4; height: 100px; color: #31639D; vertical-align: middle''>문제</td>" +
                     "<td colspan='6'><textarea id='question" + idNum + "' placeholder='여기에 문제를 적어주세요'style='width: 100%; border: 0'>" +
                     addArr.question +
                     "</textarea></td>" +
@@ -233,9 +259,9 @@
 
         $('#addTr' + idNum).append(
             "<tr>" +
-            "<td rowspan='2' style='background-color: #d9edf7'>정답</td>" +
-            "<td colspan='3' style='background-color: #EAEAEA'>" +
-            "<input id='right" + idNum + "' type='text' placeholder='여기에 정답을 적어주세요' style='width: 100%; background-color: #EAEAEA; border: 0' value='" +
+            "<td rowspan='2' style='background-color: #BEE4F4; color: #31639D; vertical-align: middle''>정답</td>" +
+            "<td colspan='3' style='background-color: #FFECB8'>" +
+            "<input id='right" + idNum + "' type='text' placeholder='여기에 정답을 적어주세요' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
             addArr.right+ "'></td>" +
             "<td colspan='3'>" +
             "<input id='example1" + idNum + "' type='text' placeholder='보기1' style='width: 100%; border: 0' value='" +
@@ -260,9 +286,9 @@
 
         $('#addTr' + idNum).append(
             "<tr>" +
-            "<td rowspan='2' style='background-color: #d9edf7'>정답</td>" +
-            "<td colspan='3' style='background-color: #EAEAEA'>" +
-            "<input id='right" + idNum + "' type='text' placeholder='복수 정답일 경우 ,(콤마)로 표시해주세요' style='width: 100%; background-color: #EAEAEA; border: 0' value='" +
+            "<td rowspan='2' style='background-color: #BEE4F4; color: #31639D; vertical-align: middle'>정답</td>" +
+            "<td colspan='3' style='background-color: #FFECB8'>" +
+            "<input id='right" + idNum + "' type='text' placeholder='복수 정답일 경우 ,(콤마)로 표시해주세요' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
             addArr.right+ "'></td>" +
             "<td colspan='3'>" +
             "<input id='hint" + idNum + "' type='text' placeholder='여기에 힌트를 적어주세요' style='width: 100%; border: 0' value='" +
@@ -304,7 +330,7 @@
             }
         },
         error: function (data) {
-            alert("error");
+            swal("error");
         }
     });
 
@@ -337,7 +363,7 @@
                     }
                 },
                 error: function (data) {
-                    alert("error");
+                    swal("error");
                 }
             });
         });
@@ -431,7 +457,7 @@
 
                 },
                 error: function (data) {
-                    alert("error");
+                    swal("error");
                 }
             });
         })
@@ -469,7 +495,7 @@
                 }
             },
             error: function (data) {
-                alert("error");
+                swal("error");
             }
         });
     }
@@ -543,16 +569,16 @@
             data: params,
             success: function (data) {
                 if(data.check == true) {
-                    alert("저장 완료");
+                    swal("저장 완료");
                     window.location.href = "{{url('quiz_list')}}";
                 }
                 else {
-                    alert("빈 항목을 모두 채워주세요");
+                    swal("빈 항목을 모두 채워주세요");
                     //alert(JSON.stringify(data));
                 }
             },
             error: function (data) {
-                alert("빈 항목을 모두 채워주세요");
+                swal("빈 항목을 모두 채워주세요");
             }
         });
 
@@ -585,62 +611,48 @@
         window.location.href = "{{url('quiz_list')}}";
     }
 
-    // 출력 테스트
-    $(document).on('click', '#test', function (e) {
-        e.preventDefault();
-
-        var listId = "{{$response['listId']}}";
-
-        var quizs = new Array();
-
-        for (var i in idArray) {
-            quizs.push({
-                question: $('#question' + idArray[i]).val(),
-                right: $('#right' + idArray[i]).val(),
-                example1: $('#example1' + idArray[i]).val(),
-                example2: $('#example2' + idArray[i]).val(),
-                example3: $('#example3' + idArray[i]).val(),
-                makeType: makeTypeRadio[idArray[i]],
-                quizType: quizTypeRadio[idArray[i]],
-                hint: $('#hint' + idArray[i]).val()
-            });
-        }
-
-        alert(listId);
-        alert(JSON.stringify(quizs));
-    });
-
 </script>
 
-
+<!-- 본문 -->
 <div class="contents">
+
+    <!-- 노랑 타이틀 -->
+    <div id="titleImg">
+
+        <!-- Quiz Tree -->
+        <div style="padding-top: 10px">
+            <p style="margin-left: 5%; font-size: 50px; color: white">Quiz Tree</p>
+        </div>
 
         <div class="form-inline" style="margin-left: 5%">
             <div style="float: left">
                 <!--1. 퀴즈를 새로 생성할 경우-->
                 @if(count($response['quizs']) == 0)
-                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="최종 발표 시연 퀴즈">
+                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; height: 40px; border-radius: 12px; font-size: 20px" value="최종 발표 시연 퀴즈"></p>
 
-                <!--2. 퀴즈를 수정할 경우-->
+                    <!--2. 퀴즈를 수정할 경우-->
                 @elseif(count($response['quizs']) > 0)
-                    퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em" value="{{$response['listName']}}">
+                    <p id="quizFont">퀴즈 이름 : <input type="text" id="listName" class="form-control" style="width: 40em; height: 40px; border-radius: 12px" value="{{$response['listName']}}"></p>
 
                 @endif
             </div>
-            <div style="text-align: right; margin-right: 5%">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#callQuizModal">퀴즈 불러오기</button>
+            <div>&nbsp;
+                <button id="buttonDesign" class="btn" style="color: white;" data-toggle="modal" data-target="#callQuizModal">+ 퀴즈 불러오기</button>
             </div>
         </div>
+    </div>
+
+
 
     <!--문제 박스 : div-->
-    <div class="quizBox" style="overflow-y: scroll">
+    <div class="quizBox">
 
     </div>
 
-    <div class="two_button">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#backToList">종료</button>
-        <button type="button" class="btn btn-primary" id="save">저장</button>
-        <button type="button" class="btn btn-primary" id="add">추가</button>
+    <div class="threebuttonDesignT">
+        <button type="button" class="threebuttonDesign" data-toggle="modal" data-target="#backToList" style="color: #31639D">&nbsp;종료&nbsp;</button>
+        <button type="button" class="threebuttonDesign" id="save" style="color: #31639D">&nbsp;저장&nbsp;</button>
+        <button type="button" class="threebuttonDesign" id="add" style="color: #31639D">&nbsp;추가&nbsp;</button>
     </div>
 
 </div>
@@ -649,20 +661,20 @@
 <div class="modal fade" id="callQuizModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">퀴즈 불러오기</h5>
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title" id="ModalLabel" style="font-size: 20px">퀴즈 불러오기</h5>
             </div>
             <div class="modal-body">
                 {{--Dropdowns--}}
                 <div style="text-align: center">
-                    <div class="select" style="margin: 0 auto; width: 50%">
-                        <select id="folderSelect" class="form-control">
+                    <div class="selectCall" style="margin: 0 auto; width: 50%">
+                        <select id="folderSelect" class="form-control" style="height:40px; font-size: 20px">
                             <option>폴더명</option>
                             <!-- 폴더 리스트 -->
                         </select>
                     </div>
-                    <div class="select" style="margin: 0 auto; margin-top: 1%; width: 50%">
-                        <select id="quizSelect" class="form-control">
+                    <div class="selectCall" style="margin: 0 auto; margin-top: 1%; width: 50%">
+                        <select id="quizSelect" class="form-control" style="height:40px; font-size: 20px">
                             <option>퀴즈명</option>
                             <!-- 퀴즈 리스트 -->
                         </select>
@@ -670,7 +682,7 @@
                 </div>
 
                 <div id="quizShow" style="margin-top: 2%">
-                    <h4 align="center">▼미리보기▼</h4>
+                    <h4 align="center" style="font-size: 20px">▼미리보기▼</h4>
                     <!-- 퀴즈 미리보기-->
                 </div>
             </div>

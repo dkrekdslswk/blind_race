@@ -5,6 +5,32 @@
         display: block;
         clear: both;
     }
+    .feedbackPage_main{
+        width: 100%;
+        padding: 10px 0 10px 20px;
+        background-color: #f9f9f9;
+        height: 50px;
+        position: relative;
+        display: block;
+        font-size: 20px;
+        text-align: left;
+        margin-left: 30px;
+    }
+    .feedbackPage_main h4{
+        color: #203a8e;
+        font-weight: bold;
+    }
+
+    .feedback_page table{
+        background-color: white;
+    }
+    .feedback_page table thead tr:first-child{
+        text-align: center;
+        background-color: #D7D7D7;
+    }
+    .feedback_page table tbody tr:nth-child(2n){
+        background-color: #e6eaed;
+    }
     .panel-table .panel-body{
         padding:0;
     }
@@ -208,6 +234,11 @@
 
 </script>
 
+<div class="feedbackPage_main">
+    <h4>
+        피드백
+    </h4>
+</div>
 
     <div class="feedback_page" style="margin: 10px;">
         <table class="table table-bordered table-list" style="margin: 0;">
@@ -238,24 +269,5 @@
             </tr>
             </tbody>
         </table>
-        <div class="panel-footer" style="height: 80px;">
-            <div class="row">
-                <div class="col col-xs-4">Page 1 of 5
-                </div>
-                <div class="col col-xs-8">
-                    <ul class="pagination hidden-xs pull-right">
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                    </ul>
-                    <ul class="pagination visible-xs pull-right">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">»</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
 

@@ -335,7 +335,7 @@
 </script>
 
 <div class="navbar-header">
-    <div style="width: 220px ; height: 70px; margin-top: 35px">
+    <div style="width: 220px ; height: 150px; margin-top: 35px">
         <h2><p style="margin-left: 25px; color : #203a8e; !important;">Race List</h2>
     </div>
 

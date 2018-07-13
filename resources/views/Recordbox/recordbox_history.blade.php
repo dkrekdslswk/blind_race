@@ -1,5 +1,6 @@
 <html>
 <head>
+    <title>Record Box</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="generator" content="Bootply" />
@@ -13,8 +14,8 @@
 
     <!-- Bootstrap CSS CDN -->
     <style>
-        body {
-            font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        .PAGE_RECORDBOX {
+            font-family: "a뉴고딕M";
             background-color: #f7f8fa;
             font-size: 13px;
             color: #5f5f5f;
@@ -70,6 +71,7 @@
         .wrong_left ,.wrong_right{
             position: relative;
             width: 50%;
+            float: left;
             border: 1px solid #e5e6e8;
         }
         .objWrong {
@@ -78,10 +80,10 @@
         }
         .subWrong {
             padding: 10px;
-            border-top: 1px solid #e5e6e8;
-            border-right: 1px solid
-            #e5e6e8;
-            border-bottom: 1px solid #e5e6e8;
+            border: 1px solid #e5e6e8;
+        }
+        .wrong_right .objWrong ,.wrong_right .subWrong {
+            border-left: 0;
         }
         .noBoardLine {
             border: 0;
@@ -154,6 +156,9 @@
                 $('.fakeRecordnav').removeClass('addFakeToRecordNav');
                 $('.navbar-brand').show();
 
+                //학생 과제 확인 바
+                $('.raceListDetail').removeClass('raceListDetail-up');
+
             }else {
 
                 //사이드바
@@ -164,6 +169,10 @@
                 $('.recordbox_navbar').addClass('nav-up');
                 $('.fakeRecordnav').addClass('addFakeToRecordNav');
                 $('.navbar-brand').hide();
+
+                //학생 과제 확인 바
+                $('.raceListDetail').addClass('raceListDetail-up');
+
             }
         });
 
@@ -334,31 +343,65 @@
                                 $('.wrong_right').removeClass("noBoardLine");
                             }
 
-                            $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
-                                .append($('<thead>')
-                                    .append($('<tr>')
-                                        .append($('<th>')
-                                            .append($('<div>').text(wrongsData[i]['number'])))
-                                        .append($('<th>')
-                                            .append($('<div>')
-                                                .append($('<b>').text(wrongsData[i]['question']))))))
-                                .append($('<tbody>')
-                                    .append($('<tr>')
-                                        .append($('<td colspan="2">')
-                                            .append($('<div>').attr('class', 'wrongExamples')
-                                                .append($('<ul>')
-                                                    .append($('<li>').text(wrongsData[i]['rightAnswer'] + " (" + wrongsData[i]['rightAnswerCount'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example1'] + " (" + wrongsData[i]['example1Count'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example2'] + " (" + wrongsData[i]['example2Count'] + "명)"))
-                                                    .append($('<li>').text(wrongsData[i]['example3'] + " (" + wrongsData[i]['example3Count'] + "명)")
+                            switch(wrongsData[i]['type']) {
+                                case "obj" :
+
+                                    $('.' + leftOrRight).append($('<div>').attr('class', 'objWrong')
+                                        .append($('<table>').attr('class', 'table_wrongList')
+                                            .append($('<thead>')
+                                                .append($('<tr>')
+                                                    .append($('<th>')
+                                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                                    .append($('<th>')
+                                                        .append($('<div>')
+                                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                                            .append($('<tbody>')
+                                                .append($('<tr>')
+                                                    .append($('<td colspan="2">')
+                                                        .append($('<div>').attr('class', 'wrongExamples')
+                                                            .append($('<ul>')
+                                                                .append($('<li>').text(wrongsData[i]['rightAnswer']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_1'))
+                                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_1'))
+                                                            )
+                                                        )
                                                     )
                                                 )
                                             )
-                                            .append($('<div>').attr('class','wrongWriting').text(wrongsData[i]['wrong']))
                                         )
-                                    )
-                                )
-                            );
+                                    );
+
+                                    break;
+                                case "sub" :
+
+                                    $('.' + leftOrRight).append($('<div>').attr('class', 'subWrong')
+                                        .append($('<table>').attr('class', 'table_wrongList')
+                                            .append($('<thead>')
+                                                .append($('<tr>')
+                                                    .append($('<th>')
+                                                        .append($('<div>').text(wrongsData[i]['number'])))
+                                                    .append($('<th>')
+                                                        .append($('<div>')
+                                                            .append($('<b>').text(wrongsData[i]['question']))))))
+                                            .append($('<tbody>')
+                                                .append($('<tr>')
+                                                    .append($('<td colspan="2">')
+                                                        .append($('<div>').attr('class', 'wrongExamples')
+                                                            .append($('<div>').text("정답 : " + wrongsData[i]['rightAnswer'])
+                                                            )
+                                                            .append($('<div>').text("힌트 : " + wrongsData[i]['hint']).css('color', 'blue')
+                                                            )
+                                                            .append($('<div>').text("작성답 : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    );
+                                    break;
+                            }
 
                             for (var j = 1; j < 4; j++) {
                                 if (wrongsData[i]['example' + j + 'Count'] == 1) {
@@ -373,7 +416,7 @@
 
     </script>
 </head>
-<body>
+<div class="PAGE_RECORDBOX">
 
 {{--메인 네비바 불러오기--}}
 @include('Navigation.main_nav')
@@ -604,5 +647,5 @@
 
 
 
-</body>
+</div>
 </html>

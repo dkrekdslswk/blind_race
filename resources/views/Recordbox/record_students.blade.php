@@ -5,6 +5,22 @@
         display: block;
         clear: both;
     }
+    .studentsPage_main{
+        width: 100%;
+        padding: 10px 0 10px 20px;
+        background-color: #f9f9f9;
+        height: 50px;
+        position: relative;
+        display: block;
+        font-size: 19px;
+        text-align: left;
+        font-weight: bold;
+        margin-left: 30px;
+    }
+    .studentsPage_main h4{
+        color: #203a8e;
+        font-weight: bold;
+    }
     .studentContainer {
         width: 100%;
     }
@@ -29,15 +45,19 @@
         width: 100%;
         overflow-y: scroll;
     }
-    .stdAllList .studentList {
+    .studentList {
+        background-color: white;
         width: 100%;
     }
-    .stdAllList .studentList thead tr th ,.stdAllList .studentList thead tr td{
-        width: 50px;
-
+    .studentList thead tr:first-child{
+        background-color: #DFDFDF;
     }
-
-
+    .studentList thead tr th ,.studentList thead tr td{
+        width: 50px;
+    }
+    #std_grade_list_table .studentList tbody tr:nth-child(2n){
+        background-color: #e6eaed;
+    }
     .chartArea_student{
         float: left;
         position: relative;
@@ -96,6 +116,12 @@
 
         //학생 한명 클릭하면 개인성적 가져오기
         $(document).on('click','.stdList',function () {
+
+            var reqUserId = $(this).attr('id');
+
+            $('#student_list tr').css('background-color','white');
+            $('#student_list_'+reqUserId).css('background-color','#d9edf7');
+
             getStudentGrade(this.id);
 
         });
@@ -113,7 +139,8 @@
             userId = $(this).attr('name');
 
             getRetestData(userId,raceId);
-        });
+
+           });
 
         //학생 상세정보에서 학생 클릭시 오답노트 로드
         $(document).on('click','.toggle_stdList',function () {
@@ -135,7 +162,6 @@
 
 
     //그룹에 속한 학생들 가져오기
-    //최근기록 -> 성적표(토글)페이지
     function getStudents(groupId){
 
         var reqData ={"groupId" : groupId};
@@ -165,12 +191,12 @@
                 var student = data['students'];
 
                 for(var i = 0 ; i < student.length; i++){
-                    $('#student_list').append($('<tr id="student_list_'+i+'">'));
+                    $('#student_list').append($('<tr id="student_list_'+student[i]['id']+'">'));
 
                     for(var j = 0 ; j < 1 ; j++ ) {
 
-                        $('#student_list_' + i).append($('<td>').text(i+1));
-                        $('#student_list_' + i).append($('<td>')
+                        $('#student_list_' + student[i]['id']).append($('<td>').text(i+1));
+                        $('#student_list_' + student[i]['id']).append($('<td>')
                             .append($('<a href="#">')
                                 .text(student[i]['name']))
                             .attr('id',student[i]['id'])
@@ -178,7 +204,7 @@
                             .attr('class','stdList'));
                     }
                 }
-
+                $('#student_list_' + student[0]['id']).css('background-color','#d9edf7');
                 getStudentGrade(student[0]['id']);
 
             },
@@ -281,29 +307,67 @@
                             $('.wrong_right').removeClass("noBoardLine");
                         }
 
-                        $('.' + leftOrRight).append($('<table>').attr('class', 'table_wrongList')
-                            .append($('<thead>')
-                                .append($('<tr>')
-                                    .append($('<th>')
-                                        .append($('<div>').text(wrongsData[i]['number'])))
-                                    .append($('<th>')
-                                        .append($('<div>')
-                                            .append($('<b>').text(wrongsData[i]['question']))))))
-                            .append($('<tbody>')
-                                .append($('<tr>')
-                                    .append($('<td colspan="2">')
-                                        .append($('<div>').attr('class', 'wrongExamples')
-                                            .append($('<ul>')
-                                                .append($('<li>').text(wrongsData[i]['rightAnswer']))
-                                                .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
-                                                .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_2'))
-                                                .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_3'))
+                        console.log(wrongsData[i]['type']);
+
+                        switch(wrongsData[i]['type']) {
+                            case "obj" :
+
+                                $('.' + leftOrRight).append($('<div>').attr('class', 'objWrong')
+                                    .append($('<table>').attr('class', 'table_wrongList')
+                                        .append($('<thead>')
+                                            .append($('<tr>')
+                                                .append($('<th>')
+                                                    .append($('<div>').text(wrongsData[i]['number'])))
+                                                .append($('<th>')
+                                                    .append($('<div>')
+                                                        .append($('<b>').text(wrongsData[i]['question']))))))
+                                        .append($('<tbody>')
+                                            .append($('<tr>')
+                                                .append($('<td colspan="2">')
+                                                    .append($('<div>').attr('class', 'wrongExamples')
+                                                        .append($('<ul>')
+                                                            .append($('<li>').text(wrongsData[i]['rightAnswer']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example1']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example2']).attr('class', 'example_' + i + '_1'))
+                                                            .append($('<li>').text(wrongsData[i]['example3']).attr('class', 'example_' + i + '_1'))
+                                                        )
+                                                    )
+                                                )
                                             )
                                         )
                                     )
-                                )
-                            )
-                        );
+                                );
+
+                                break;
+                            case "sub" :
+
+                                $('.' + leftOrRight).append($('<div>').attr('class', 'subWrong')
+                                    .append($('<table>').attr('class', 'table_wrongList')
+                                        .append($('<thead>')
+                                            .append($('<tr>')
+                                                .append($('<th>')
+                                                    .append($('<div>').text(wrongsData[i]['number'])))
+                                                .append($('<th>')
+                                                    .append($('<div>')
+                                                        .append($('<b>').text(wrongsData[i]['question']))))))
+                                        .append($('<tbody>')
+                                            .append($('<tr>')
+                                                .append($('<td colspan="2">')
+                                                    .append($('<div>').attr('class', 'wrongExamples')
+                                                        .append($('<div>').text("정답 : " + wrongsData[i]['rightAnswer'])
+                                                        )
+                                                        .append($('<div>').text("힌트 : " + wrongsData[i]['hint']).css('color', 'blue')
+                                                        )
+                                                        .append($('<div>').text("작성답 : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                );
+                                break;
+                        }
 
                         for (var j = 1; j < 4; j++) {
                             if (wrongsData[i]['example' + j + 'Count'] == 1) {
@@ -630,6 +694,11 @@
 
 <div class="studentContainer">
 
+    <div class="studentsPage_main">
+        <h4>
+            학생 관리
+        </h4>
+    </div>
     <div class="studentChart">
         <div class="stdAllList_scroll">
             <div class="stdAllList">
@@ -666,19 +735,19 @@
     <div class="student_grade">
 
         <div id="std_grade_list_table" >
-            <table class="table table-hover table-bordered" >
+            <table class="table table-hover table-bordered studentList" >
                 <thead>
                 <tr>
                     <th style=" text-align: center;min-width: 50px;">
                         번호
                     </th>
-                    <th style=" text-align: center;min-width: 140px;">
+                    <th style=" text-align: center;">
                         날짜
                     </th>
-                    <th style="text-align: center;min-width: 200px;">
+                    <th style="text-align: center;">
                         문제 이름
                     </th>
-                    <th style=" text-align: center;min-width: 80px;">
+                    <th style=" text-align: center;width: 100px;">
                         총 점수
                     </th>
                     <th style=" text-align: center;min-width: 80px;">
@@ -690,13 +759,13 @@
                     <th style=" text-align: center;min-width: 80px;">
                         단어
                     </th>
-                    <th style=" text-align: center;min-width: 80px;">
+                    <th style=" text-align: center;width: 100px;">
                         재시험
                     </th>
-                    <th style=" text-align: center;min-width: 100px;">
+                    <th style=" text-align: center;width: 100px;">
                         오답노트
                     </th>
-                    <th style=" text-align: center;min-width: 100px;">
+                    <th style=" text-align: center;width: 100px;">
                         성적표
                     </th>
                 </tr>
