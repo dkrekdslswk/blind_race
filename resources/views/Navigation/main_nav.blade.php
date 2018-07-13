@@ -1,3 +1,4 @@
+<LINK REL="SHORTCUT ICON" HREF="./favicon.ico" />
 <script
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <link
@@ -232,7 +233,7 @@
                     <a href="{{ url('mygroup') }}">MyGroup</a>
                 </li>
                 <li>
-                    <a href="{{ url('race_list') }}">Race</a>
+                    <a href="{{ url('race_list') }}">Quiz_Race</a>
                 </li>
                 <li>
                     <a href="{{url('/recordbox/chart/2') }}" id="recordbox" onclick="" class="main_navbar_li">RecordBox</a>
@@ -244,7 +245,7 @@
 
                 <li style="margin-top:10px;">
                     @if(session()->get('login_check'))
-                        <span>@php echo session()->get('user_name')."님"; @endphp</span>
+                        <span>@php echo session()->get('user_name')."様"; @endphp</span>
                         <button id="Login_button" type="button" onclick="tryLogout()">Logout</button>
                     @else
                         <input class="Login_form" type="text" name=""

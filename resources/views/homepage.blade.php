@@ -11,7 +11,7 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <title>충분충분</title>
+    <title>十分十分 - 10minutes Everyday!</title>
     <meta charset="utf-8">
     <meta
             name="viewport"
