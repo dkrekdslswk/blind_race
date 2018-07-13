@@ -104,9 +104,9 @@
                     for(var i=0; i<r_result.length; i++ ){
                         if(r_result[i].sessionId == sessionId){
                             if(r_result[i].retestState == true)
-                              $('#q_table').html("FAIL ㅜㅜ  "+"점수");        
+                              $('#q_table').html("FAIL "+"点数");
                             else
-                              $('#q_table').html("PASS "+"점수");        
+                              $('#q_table').html("PASS "+"点数");
                         }
                     }
                         
@@ -130,7 +130,7 @@
 
             case "obj":
                 selected_answer = quiz_JSON[test_quiz_num].right;
-                $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
+                $('#quiz_guide').text('()の中に入る言葉として最も良いものを１つ選んでください。');
                 $('#answer1_span').text(quiz_JSON[test_quiz_num].right);
                 $('#answer1_radio').val(quiz_JSON[test_quiz_num].right);
 
@@ -148,7 +148,7 @@
                 break;
 
             case "sub":
-                $('#quiz_guide').text('괄호  안에 들어갈 답을 입력 해 주세요');
+                $('#quiz_guide').text('()の中に入る言葉を入力してください。');
                 $('#sub').show();
                 $('#obj').hide();
                 break;

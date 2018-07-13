@@ -533,7 +533,7 @@
         <button class="race_menu_button" id="Exam" >
             <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>
             <img  class="race_menu_img" src="/img/race_student/exam.png" alt=""><br>
-            <span class="race_menu_span">Exam</span>
+            <span class="race_menu_span">Pop_Quiz</span>
         </button>
     </div>
 
@@ -543,7 +543,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col col-xs-6">
-                            <h3 class="panel-title">퀴즈 리스트</h3>
+                            <h3 class="panel-title">クイズーリスト</h3>
                         </div>
                     </div>
                 </div>
@@ -552,10 +552,10 @@
                         <thead>
                         <tr>
                             <th class="hidden-xs">#</th>
-                            <th style="text-align: center">퀴즈명</th>
-                            <th style="text-align: center">문항수</th>
-                            <th style="text-align: center">합격점</th>
-                            <th style="text-align: center">이전점수</th>
+                            <th style="text-align: center">クイズー名前</th>
+                            <th style="text-align: center">問題数</th>
+                            <th style="text-align: center">合格点</th>
+                            <th style="text-align: center">以前点数</th>
                             <th style="text-align: center"></th>
                         </tr>
                         </thead>
@@ -567,7 +567,7 @@
                             {{--list 공간--}}
 
                             </tbody>
-                            <input id="raceId" type="text" name="raceId" value="dd"/>
+                            <input id="raceId" type="hidden" name="raceId"/>
                         </form>
 
                     </table>
@@ -600,7 +600,7 @@
     <div id="roomPin_page" style="position:absolute; top:60%; left:40%;  display:none;">
         <br>
         <span >PIN</span>
-        <input name="roomPin" id="roomPin" type="text"><button class="btn-primary" onclick="web_student_join();">확인</button>
+        <input name="roomPin" id="roomPin" type="text"><button class="btn-primary" onclick="web_student_join();">確認</button>
         <input name="sessionId" type="hidden" value="0">
     </div>
 
@@ -609,14 +609,14 @@
 
     <!-- 닉네임 입력 화면-->
     <div id="entranceInfo_nickname_page" style="display:none;">
-        <span style="font-size:35px;">닉네임:</span>
+        <span style="font-size:35px;">ニックネーム:</span>
         <input class="entrance_input" id="nickname" type="text"><br>
         <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
     </div>
 
     <footer style="position:fixed; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
         <img src="/img/Info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
-        <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">레이스의 모드를 선택해주세요 </span>
+        <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">モードを選んでください。</span>
     </footer>
 </div>
 
@@ -624,7 +624,7 @@
 <!-- 입장성공시 로딩화면 -->
 <div class="loading_page" style="display:none;">
     <div class="loader"></div>
-    <span id="loading_guide" style=" color:white; font-size:50px; position: absolute; left: 35%; top: 30%;  ">게임 시작 로딩중</span>
+    <span id="loading_guide" style=" color:white; font-size:50px; position: absolute; left: 35%; top: 30%;  ">Loading....</span>
 </div>
 
 

@@ -59,7 +59,7 @@
                                     if(pop_check == 0)
                                         append_info += r_result[i].rightCount*100+"point";
                                     else if(pop_check == 1)
-                                        append_info += r_result[i].score+"점";
+                                        append_info += r_result[i].score+"点";
                             append_info +='</span></td>';
 
 
@@ -266,7 +266,7 @@
     background: mediumpurple;
     width: 10%;
     height: 5%;
-    border-radius: 10px;">돌아가기</button></a>
+    border-radius: 10px;">戻る</button></a>
 </div>
 </body>
 </html>

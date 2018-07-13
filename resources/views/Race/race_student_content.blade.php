@@ -136,10 +136,10 @@
     <div id="wait_room_nav" class="inline-class">
         <img  class="inline-class" src="/img/blind_race.png" width="100" height="100">
         <span>Race</span>
-        <span  id="race_name"  style="position: absolute;  left:40%; top:2%;">레이스 제목 </span>
-        <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > 문제수 </span>
-        <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> groovyroom </span>
-        <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;">학생 총 수</span>
+        <span  id="race_name"  style="position: absolute;  left:40%; top:2%;"> </span>
+        <span  id="race_count" style="position: absolute;  right:20%; top:4%; font-size:20px;" > </span>
+        <span  id="group_name" style="position: absolute;  right:10%; top:4%; font-size:20px;"> </span>
+        <span id="group_student_count" style="font-size:20px; position: absolute;  right: 2%; top:4%;"></span>
     </div>
 
     <div id='content'>
@@ -178,7 +178,7 @@
             </div>
 
             <div  id="sub" style="display:none;">
-                <div style="text-align:center;">※주관식문제입니다 입력하여 풀어주세요</div>
+                <div style="text-align:center;">※書き問題です。入力してください。</div>
                 <input id="subanswer" type="text" style="  width:100%; height:150px; font-size:70px; color:black; border:2px solid silver;">
                 <button onclick="web_answer('sub');" class="btn-primary" style=" border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; width:100%; height:40%; border:none;">확인</button>
             </div>
@@ -186,7 +186,7 @@
 
         <div id="web_race_midresult" style="display:none;">
             <!-- 정답이나 오답 이미지  -->
-            <img id="answer_check_img" src="#" style="width:200px; height:200px;"></img>
+            <img id="answer_check_img" src="#" style="width:200px; height:200px;">
             <!-- 정답내용 -->
             <span id="answer_content" style="margin-left:100px; font-size:100px;" ></span>
             <br>

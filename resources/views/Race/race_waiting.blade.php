@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -14,7 +13,7 @@
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript"></script>
 
     <style>
@@ -34,7 +33,6 @@
         }
 
         #start_btn {
-
             background: #75459f;
             display: inline-block;
             position: absolute;
@@ -43,8 +41,8 @@
             height: 80px;
             text-align: left;
             top: 12%;
-            right: 15%;
-            border:none;
+            right: 11%;
+            border: none;
         }
 
         #waiting_area {
@@ -182,9 +180,9 @@
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         var listName = '<?php echo $response['list']['listName']; ?>';
-        var quizCount = '<?php echo $response['list']['quizCount']; echo "문제"; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "問題"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
-        var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "명"; ?>';
+        var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "人"; ?>';
         var socket = io(':8890');
 
         window.onload = function() {
@@ -363,7 +361,7 @@
 
         function btn_click(){
             if(quiz_member == 0 ){
-                alert("참여한 인원이 없습니다.");
+                swal("参加人員がないんです！");
             }else {
 
                 $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
@@ -683,7 +681,8 @@
     </div>
 
     <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
-        <img src="/img/Info.png" style="width:30px; height:30px;" alt="">학생들이 다 들어오면 시작하기를 눌러주세요
+        <img src="/img/Info.png" style="width:30px; height:30px;" alt="">
+        学生たちが全部参加すると、「Start」ボタンを押してください。
     </div>
 </div>
 

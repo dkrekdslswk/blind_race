@@ -385,12 +385,12 @@
                         </select>
                     </div>
                     <div class="form-inline" style="margin: 0 auto; width: 50%; margin-top: 1em; margin-bottom: 1em;">
-                        <input id="cutLineScore" name="passingMark" type="text" placeholder="커트라인" class="form-control" style="width: 100%;">
+                        <input id="cutLineScore" name="passingMark" type="text" placeholder="カットライン" class="form-control" style="width: 100%;">
                     </div>
 
                     <div id="race_menu">
                         <span style="text-align: center; display:block;"><b>Mode Select</b></span>
-                        <span style="text-align: center; display:block;">(사용할 모드를 클릭해주세요) </span>
+                        <span style="text-align: center; display:block;">(プレイするモードをクリックしてください。) </span>
 
                         <label class="race_menu_button" id="Race">
                             <img class="menu_time_img" src="/img/race_student/Realtime.png" alt=""><br>

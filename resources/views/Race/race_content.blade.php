@@ -165,43 +165,30 @@
         line-height: 70px;
     }
 </style>
-<script>
- 
-</script>
+
 <div id="client">
-    <script>
-    </script>
 
-    {{--<div id="buttons" style="position:absolute; top:8%; right: 3%;">--}}
-        {{--<a class="btn btn-lg nextbutton orange" href="#" onclick="quiz_skip()" role="button">Next</a>--}}
-    {{--</div>--}}
-
-    <div id="play_frame">
-
-    </div>
-
-
+    <!-- 白い背景 -->
+    <div id="play_frame"></div>
 
     <div class="main" style="">
         <div id='content'>
 
-            <center>
-
+                <!-- 問題の限定時間 -->
                     <span class="progress_timer" id="counter" style="z-index:8; color:#ff923a;"></span>
                     <img class="progress_timer" src="/img/race_play/timer.png" alt="">
-
                 <progress style="width:85%;  height:30px; margin-top:20px;"  value="0" max="30" id="progressBar"></progress>
-                <div id="questions" style="height:250px;">
+
+            <div id="questions" style="height:250px;">
 
 
-
+                    <!-- 問題内容 -->
                     <div class="inline-class" id="mondai">
                         <br>
-                        <span id="mondai-content">
-                            姉は市役所に勤める（　　）、ボランティアで日本語を教えています。
-                        </span>
+                        <span id="mondai-content"></span>
                     </div>
 
+                    <!-- 解いた学生の数 -->
                     <img id="answer_cap" src="/img/race_play/answer_cap.png" alt="">
                     <div id="answer_circle" class="inline-class">
                         <span id="answer_c" >0</span>
@@ -209,9 +196,8 @@
                     </div>
 
                 </div>
-            </center>
 
-            <!--문제 번호-->
+            <!--問題の選択肢-->
             <div class="obj" style="display:none;">
                 <!-- style="margin-left:10%;" -->
                 <div class="column" style="background-image:url('/img/race_play/answer_a.png'); ">
@@ -228,14 +214,18 @@
                 </div>
             </div>
 
+            <!--　書き問題のヒント　-->
             <div id="sub" style=" text-align:center">
                 <span style="font-size:40px; color:navy; left:0; position:absolute;">Hint:</span>
-                <span class="answer_font" id="hint" style="color:navy;">ありません。</span>
+
+                <!-- ヒントがでる「span」 -->
+                <span class="answer_font" id="hint" style="color:navy;"></span>
             </div>
 
         </div>
     </div>
 
+    <!-- 問題を解いた中間結果 -->
     <div id='mid_result' style='display:none;' >
         <div>
             @include('Race.mid_result')

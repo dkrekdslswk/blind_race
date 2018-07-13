@@ -97,8 +97,8 @@
 
             success: function (result) {
                 $('#raceName').text(result['listName']);
-                $('#quizCount').text(result['quizCount']+"문제");
-                $('#passingMark').text("합격점:"+result['passingMark']);
+                $('#quizCount').text(result['quizCount']+"問題");
+                $('#passingMark').text("合格点:"+result['passingMark']);
                 $('#groupName').text(result['groupName']);
                 $('#userName').text(result['userName']);
 
@@ -144,9 +144,9 @@
                 data:"sessionId="+sessionId,
                 success: function (result) {
                     if(result['score'] >= result['passingMark'])
-                        $('#q_table').html("재시험 통과 "+result['score']);
+                        $('#q_table').html("SUCCESS"+result['score']);
                     else if(result['score'] < result['passingMark']){
-                        $('#q_table').html("FAIL ㅜㅜ  "+result['score']);
+                        $('#q_table').html("FAIL"+result['score']);
                     }
                 },
                 error: function (data) {
@@ -166,7 +166,7 @@
 
             case "obj":
                 selected_answer = quiz_JSON[retest_quiz_num].right;
-                $('#quiz_guide').text('괄호  안에 들어갈 답을 선택해주세요');
+                $('#quiz_guide').text('()の中に入る言葉として最も良いものを１つ選んでください。');
                 $('#answer1_span').text(quiz_JSON[retest_quiz_num].right);
                 $('#answer1_radio').val(quiz_JSON[retest_quiz_num].right);
 
@@ -184,7 +184,7 @@
                 break;
 
             case "sub":
-                $('#quiz_guide').text('괄호  안에 들어갈 답을 입력 해 주세요');
+                $('#quiz_guide').text('()の中に入る言葉を入力してください。');
                 $('#sub').show();
                 $('#obj').hide();
                 break;

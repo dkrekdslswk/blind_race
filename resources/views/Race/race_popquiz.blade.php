@@ -463,9 +463,9 @@
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         var listName = '<?php echo $response['list']['listName']; ?>';
-        var quizCount = '<?php echo $response['list']['quizCount']; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "人"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
-        var groupStudentCount = '<?php echo "총원: "; echo $response['group']['groupStudentCount']; echo "명"; ?>';
+        var groupStudentCount = '<?php echo "総人員: "; echo $response['group']['groupStudentCount']; echo "人"; ?>';
 
         var start_check = false;
         var answer_count = 0;
@@ -525,7 +525,7 @@
             var socket = io(':8890');
 
             $('#race_name').html(listName);
-            $('#race_count').html(quizCount+"명");
+            $('#race_count').html(quizCount);
             $('#group_name').html(groupName);
             $('#group_student_count').html(groupStudentCount);
 
@@ -562,7 +562,7 @@
 
                                 append_info= '<tr id="'+sessionId+'" class="header">';
                                 append_info+='<td id="'+sessionId+"Name"+'" style="width:60%"><i class="fas fa-user-circle"></i>'+result['userName']+'</td>';
-                                append_info+='<td style="width:40%"><i class="fas fa-user"></i>푸는중..</td></tr>';
+                                append_info+='<td style="width:40%"><i class="fas fa-user"></i>受験中..</td></tr>';
 
                                 $('#playing_student').append(append_info);
 
@@ -672,7 +672,7 @@
 
                 var append_info= '<tr id="'+sessionId+'" class="header">';
                 append_info+='<td id="'+sessionId+"Name"+'" style="width:60%"><i class="fas fa-user-circle"></i>'+userName+'</td>';
-                append_info+='<td style="width:40%"><i class="fas fa-user"></i>풀이완료</td></tr>';
+                append_info+='<td style="width:40%"><i class="fas fa-user"></i>完了</td></tr>';
 
                 $('#finish_student').append(append_info);
 
@@ -722,8 +722,8 @@
 <div id="wait_room">
     <div class="student">
 
-        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">시험시작</button>
-        <button onclick="pop_end();" class="btn btn-lg btn-danger">시험 종료 </button>
+        <button onclick="btn_click();" id="start_btn" class="btn btn-lg btn-primary" style="">試験開始</button>
+        <button onclick="pop_end();" class="btn btn-lg btn-danger">試験終了</button>
         <div id="room_Pin" class="counting">
             <span id="room_Pin_text"></span>
 
@@ -747,8 +747,8 @@
     <div style="width:33%; height:40%;   overflow:auto; position:absolute; top:40%; left:15%;">
         <table id="playing_student">
             <tr class="header">
-                <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
-                <th id="member_count" style="width:40%"><i class="fas fa-user"></i>0명</th>
+                <th style="width:60%"><i class="fas fa-user-circle"></i>　名前</th>
+                <th id="member_count" style="width:40%"><i class="fas fa-user"></i>0人</th>
             </tr>
         </table>
 
@@ -757,8 +757,8 @@
     <div  style="position:absolute; width:33%; height:40%;   overflow:auto;  top:40%; right:15%;">
         <table id="finish_student">
             <tr class="header">
-                <th style="width:60%"><i class="fas fa-user-circle"></i>  이름</th>
-                <th id="submit_count"  style="width:40%"><i class="fas fa-user"></i>0명</th>
+                <th style="width:60%"><i class="fas fa-user-circle"></i>　名前</th>
+                <th id="submit_count"  style="width:40%"><i class="fas fa-user"></i>0人</th>
             </tr>
         </table>
     </div>
@@ -766,7 +766,7 @@
 </div>
 
 <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
-    <img src="/img/Info.png" style="width:30px; height:30px;" alt="">학생들이 다 들어오면 '시험시작' 버튼을 눌러주세요
+    <img src="/img/Info.png" style="width:30px; height:30px;" alt="">学生たちが全部来ると、「試験開始」をクリックしてください。
 </div>
 </body>
 </html>

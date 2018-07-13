@@ -126,11 +126,16 @@ io.on('connection', function (socket){
     // 타이머 시작함수
     socket.on('count',function(data,group_num,makeType){
 
+        //시간초 반복작업부분
+        //Timer라는 변수에 시간초 반복을 담아두고
+        //퀴즈가 끝날 때 이함수를 중지하게 만든다.
         Timer = setInterval(function () {
             countdown -= 1000;
             io.sockets.in(group_num).emit('timer',countdown);
         }, 1000);
         console.log('타임온',group_num);
+
+        //시간초가 다되었을 시 다음 문제로 갈 수 있도록 함
         if( data == '1'){
             io.sockets.in(group_num).emit('nextok',0,makeType);
         }
@@ -141,6 +146,7 @@ io.on('connection', function (socket){
     socket.on('count_off', function(quiz , roomPin , makeType){
         console.log('group_num',roomPin)
 
+        //시간초 변수값을 돌리고 시간초를 중지한다.
         countdown = 30000;
         clearInterval(Timer);
 

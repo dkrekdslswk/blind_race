@@ -161,11 +161,11 @@
 
 <div id="test_content">
     <div class="card"         style=" width: 80%; height: 100px; position:relative;">
-        <div id="raceName"    style="width:40%;" class="test_info">문제제목</div>
-        <div id="quizCount"   style="width:20%;" class="test_info">1/30 문제 </div>
-        <div id="passingMark" style="width:10%;" class="test_info"> 합격점 </div>
-        <div id="groupName"   style="width:10%; margin-left:5%;" class="test_info"> 그룹아이디 </div>
-        <div id="userName"    style="width:15%;" class="test_info"> 김똘d </div>
+        <div id="raceName"    style="width:40%;" class="test_info"></div>
+        <div id="quizCount"   style="width:20%;" class="test_info"></div>
+        <div id="passingMark" style="width:10%;" class="test_info"></div>
+        <div id="groupName"   style="width:10%; margin-left:5%;" class="test_info"></div>
+        <div id="userName"    style="width:15%;" class="test_info"></div>
     </div>
 
     <br><br>
@@ -175,9 +175,9 @@
 
             <tr>
                 <td colspan="3" style="width:100%; height:400px;" valign="top">
-                    <span id="quiz_number">1.</span>
-                    <span id="quiz_contents">どうぞ（　　　）お願いいたします。</span><br>
-                    <span id="quiz_guide"> 괄호  안에 들어갈 답을 선택해주세요</span>
+                    <span id="quiz_number"></span>
+                    <span id="quiz_contents"></span><br>
+                    <span id="quiz_guide"> ()の中に入る言葉を入力してください。</span>
 
                     <div id="obj" style="display:none;">
                         <br>
