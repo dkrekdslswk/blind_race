@@ -14,14 +14,14 @@ class BlindDummyTableSeeder extends Seeder
     {
         // 유저 정보
         $users = [
-            [123456789, 'sub', '최교수', 'teacher'],
-            [999999999, 'main', '서교수', 'root'],
-            [1301282, '1234', '최병찬', 'student'],
-            [1601145, '1234', '심유림', 'student'],
-            [1301143, '1234', '성형석', 'student'],
-            [1401179, '1234', '안준휘', 'student'],
-            [1401055, '1234', '김승목', 'student'],
-            [1301036, '1234', '김민수', 'student']
+            [123456789, 'sub', 'チェ先生', 'teacher'],
+            [999999999, 'main', 'ソ先生', 'root'],
+            [1301282, '1234', 'チェ・ビョンチャン', 'student'],
+            [1601145, '1234', 'シム・ユリム', 'student'],
+            [1301143, '1234', 'ソン・ヒョンソク', 'student'],
+            [1401179, '1234', 'アン・ジュンフイ', 'student'],
+            [1401055, '1234', 'キム・スンモク', 'student'],
+            [1301036, '1234', 'キム・ミンス', 'student']
         ];
         foreach ($users as $user) {
             DB::table('users')->insert([
@@ -33,11 +33,11 @@ class BlindDummyTableSeeder extends Seeder
         }
 
         $userss = [
-            [2000005,'1234','양나라','student'],
-            [2000007,'1234','권내일','student'],
-            [2000011,'1234','정명제','student'],
-            [2000014,'1234','박바다','student'],
-            [2000023,'1234','이여정','student']
+            [2000005,'1234','ヤン・ナラ','student'],
+            [2000007,'1234','クォン・ネイル','student'],
+            [2000011,'1234','チョン・ミョンジェ','student'],
+            [2000014,'1234','パク・バダ','student'],
+            [2000023,'1234','イ・ヨジョン','student']
         ];
         foreach($userss as $user){
             DB::table('users')->insert([
@@ -50,7 +50,7 @@ class BlindDummyTableSeeder extends Seeder
         
         // 그룹 정보
         $groupId = DB::table('groups')->insertGetId([
-            'name' => '3WDJ 특강 B반',
+            'name' => '3WDJ特講Bクラス',
             'teacherNumber' => $users[0][0]
         ], 'number');
 
@@ -64,7 +64,7 @@ class BlindDummyTableSeeder extends Seeder
 
         // 그룹 정보
         $groupId = DB::table('groups')->insertGetId([
-            'name' => '3WDJ 정규 A반',
+            'name' => '3WDJ正規Aクラス',
             'teacherNumber' => $users[0][0]
         ], 'number');
 
@@ -79,7 +79,7 @@ class BlindDummyTableSeeder extends Seeder
         // 기본 리스트 폴더 생성
         $folderId = DB::table('folders')->insertGetId([
             'teacherNumber' => $users[0][0],
-            'name' => "테스트용 폴더1",
+            'name' => "テスト用フォルダ1",
         ], 'number');
 
         // 이미지 등록
@@ -91,7 +91,7 @@ class BlindDummyTableSeeder extends Seeder
 
         // 교재 정보
         $bookId = DB::table('books')->insertGetId([
-            'name' => "급소공략 N1",
+            'name' => "急所攻略N1",
             'maxPage' => 12,
             'minPage' => 195
         ], 'number');
@@ -133,7 +133,7 @@ class BlindDummyTableSeeder extends Seeder
                 'question'      => '開発計画',
                 'rightAnswer'   => 'かいはつけいかく',
                 'example'       => ['がいはつけいかく', 'かいはつげいかく', 'がいはつげいかく'],
-                'hint'          => '이건 맞춰야 한다 ~~ 야들아',
+                'hint'          => '濁音に注意',
                 'level'         => '1'
             ],
             [
@@ -159,7 +159,7 @@ class BlindDummyTableSeeder extends Seeder
 
         $listId = DB::table('lists')->insertGetId([
             'folderNumber' => $folderId,
-            'name' => "테스트용 리스트1",
+            'name' => "テスト用リスト1",
             'openState' => 1
         ], 'number');
 
