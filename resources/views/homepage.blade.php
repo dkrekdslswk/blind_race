@@ -136,8 +136,8 @@
 </div>
 
 <div style="width: 100%; height: 5%; background-color: #9fcdff; color: white; font-size: 21px; line-height: 2;">
-    <div style="width: 19%; height: 100%; display: inline-block; si"><center>My class</center></div>
-    <div style="width: 20%; height: 100%; display: inline-block "><center>Race</center></div>
+    <div style="width: 19%; height: 100%; display: inline-block; "><center>My class</center></div>
+    <div style="width: 20%; height: 100%; display: inline-block "><center>Quiz_Race</center></div>
     <div style="width: 20%; height: 100%; display: inline-block "><center>Recordbox</center></div>
     <div style="width: 20%; height: 100%; display: inline-block "><center>Quiz Tree</center></div>
     <div style="width: 19%; height: 100%; display: inline-block "><center>Feedback</center></div>
