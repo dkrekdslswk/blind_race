@@ -98,6 +98,7 @@
 
     var reqGroupId = "{{$groupId}}";
     var reqWhere = "{{$where}}";
+    var reqCountry = "{{$country}}";
 
     //record_recordnav.blade.php 로드시 실행될 기능들
     $(document).ready(function () {
@@ -109,8 +110,8 @@
         //메뉴 클릭시 ULR로 페이지 이동
         $(document).on('click','.recordnav_once',function () {
 
-            // URL : /recordbox/where/groupId
-            window.location.href = "{{url('recordbox')}}/" + $(this).attr('id') + "/" + reqGroupId;
+            // URL : /recordbox/where/groupId/country
+            window.location.href = "{{url('recordbox')}}/" + $(this).attr('id') + "/" + reqGroupId + "/" + reqCountry;
         });
     });
 </script>
@@ -124,16 +125,20 @@
         <div class="navbar-body">
             <ul class="nav navbar-nav recordnav">
                 <li>
-                    <a id="chart" href="#" class="recordnav_once">통계</a>
+                <!-- Changing lanuguage / recordnav : 통계 -->
+                    <a id="chart" href="#" class="recordnav_once">{{$language['recordnav']['statistics']}}</a>
                 </li>
                 <li>
-                    <a id="history" href="#" class="recordnav_once">최근 기록</a>
+                <!-- Changing lanuguage / recordnav : 최근 기록 -->
+                    <a id="history" href="#" class="recordnav_once">{{$language['recordnav']['history']}}</a>
                 </li>
                 <li>
-                    <a id="students" href="#" class="recordnav_once">학생 관리</a>
+                <!-- Changing lanuguage / recordnav : 학생 관리 -->
+                    <a id="students" href="#" class="recordnav_once">{{$language['recordnav']['student']}}</a>
                 </li>
                 <li>
-                    <a id="feedback" href="#" class="recordnav_once">피드백</a>
+                <!-- Changing lanuguage / recordnav : 피드백 -->
+                    <a id="feedback" href="#" class="recordnav_once">{{$language['recordnav']['feedback']}}</a>
                 </li>
             </ul>
         </div>

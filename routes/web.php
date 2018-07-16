@@ -125,14 +125,126 @@ Route::get('/student', function(){
 });
 
 /* 4-3. student: student_homepage */
-Route::get('/recordbox/{where}/{groupId?}/{page?}', function($where,$groupId = null,$page = null){
+Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId = null,$country = null){
+
+    if ($country != "kr" && $country != null && $country != "jp") {
+        $where = "error";
+    }else{
+        $language = array();
+
+        switch ($country){
+        /*
+        $language['modal']['Title']['']
+        $language['modal']['Date']['']
+        $language['modal']['Grade']['']
+        $language['modal']['Feedback']['']
+        */
+            case null :
+            case "kr" :
+                $language['modal'] = ["Title" => array('allStudentGrade' => '학생 점수',
+                                                    'allStudent' => '전체 학생',
+                                                    'detail' => '상세 보기',
+                                                    'feedback' => '피드백',
+                                                    'wrongTest' => '오답 문제'),
+                                    "Subtitle" => array("number" => "번호",
+                                                    "quizName" => "퀴즈 제목",
+                                                    "date" => "날짜",
+                                                    "grade" => "성적표",
+                                                    "homework" => "과제 확인하기",
+                                                    "date" => "작성일자",
+                                                    "title" => "제목",
+                                                    "state" => "상태"),
+                                    "Date" => array('year' => "년" ,
+                                                    'month' => '월' ,
+                                                    'date' =>'일' ),
+                                    "Grade" => array('allStudent' => "전체학생",
+                                                    'allGrade' => "총점수",
+                                                    'totalVoca' => "어휘",
+                                                    'totalGrammer' => "독해",
+                                                    'totalWord' => "문법",
+                                                    'allCount' => "갯수",
+                                                    'allAverage' => "전체 평균",
+                                                    'noWrongData' => "오답 내용이 없습니다."),
+                                    "Feedback" => array('file'=>'파일 첨부',
+                                                        'alert'=>'정상 등록되었습니다.',
+                                                        'questionDate' => '질문 날짜',
+                                                        'feedbackDate' => '대답 날짜',
+                                                        'ok'=>'확인',
+                                                        'cancel'=>'취소')
+                ];
+
+                $language['chart'] = ["statistics" => "統計",
+                                        "history" => "最近 記録",
+                                        "student" => "生徒の情報",
+                                        "feedback" => "フィードバック"
+                ];
+
+                $language['recordnav'] = ["statistics" => "통계",
+                                          "history" => "최근 기록",
+                                          "student" => "학생 관리",
+                                          "feedback" => "피드백"
+                ];
+
+                break;
+
+            case "jp" :
+                $language['modal'] = ["Title" => array('allStudentGrade' => '成績表',
+                                                    'allStudent' => '学生 全員',
+                                                    'detail' => '詳録',
+                                                    'feedback' => 'Feedback',
+                                                    'wrongTest' => '間違った問題')
+                                                    ,
+                                        "Subtitle" => array("number" => "번호",
+                                                        "quizName" => "퀴즈 제목",
+                                                        "date" => "날짜",
+                                                        "grade" => "성적표",
+                                                        "homework" => "과제 확인하기",
+                                                        "date" => "작성일자",
+                                                        "title" => "제목",
+                                                        "state" => "상태")
+                                                        ,
+                                        "Date" => array('year' => "年" ,
+                                                        'month' => '月' ,
+                                                        'date' =>'日' )
+                                                        ,
+                                        "Grade" => array('allStudent' => "学生全員",
+                                                        'allGrade' => "総点",
+                                                        'totalVoca' => "語彙",
+                                                        'totalGrammer' => "文法",
+                                                        'totalWord' => "読解",
+                                                        'allCount' => "本数",
+                                                        'allAverage' => "全員の平均",
+                                                        'noWrongData' => "内容がありません")
+                                                        ,
+                                        "Feedback" => array('file'=>'添付ファイル',
+                                                        'alert'=>'登録しました',
+                                                        'questionDate' => '質問 日付',
+                                                        'feedbackDate' => '反問 日付',
+                                                        'ok'=>'OK',
+                                                        'cancel'=>'Cancel')
+                ];
+
+                $language['recordnav'] = ["statistics" => "統計",
+                                          "history" => "最近 記録",
+                                          "student" => "生徒の情報",
+                                          "feedback" => "フィードバック"
+                ];
+
+                $language['recordnav'] = ["statistics" => "統計",
+                                          "history" => "最近 記録",
+                                          "student" => "生徒の情報",
+                                          "feedback" => "フィードバック"
+                ];
+            break;
+        }
+    }
 
     switch ($where){
         case "chart":
         case "history":
         case "students":
         case "feedback":
-            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'page' => $page]);
+            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
             break;
 
         default:
