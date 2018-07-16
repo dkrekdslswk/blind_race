@@ -942,7 +942,7 @@ class RaceController extends Controller{
      */
     public function retestSet(Request $request){
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'raceId' => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저정보 받아오기
@@ -1016,8 +1016,8 @@ class RaceController extends Controller{
      */
     public function retestStart(Request $request){
         $postData = array(
-            'sessionId' => $request->input('sessionId'),
-            'raceId'    => $request->input('raceId')
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : false,
+            'raceId'    => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저 정보 받아오기
@@ -1085,7 +1085,7 @@ class RaceController extends Controller{
      */
     public function retestAnswerIn(Request $request){
         $postData     = array(
-            'sessionId' => $request->has('sessionId'),
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : false,
             'quizId'    => $request->has('quizId') ? $request->input('quizId') : false,
             'answer'    => $request->has('answer') ? $request->input('answer') : false
         );
