@@ -183,7 +183,7 @@
                         <span id="quiz_guide">※()あるいは漢字の正解を入力してください</span>
                     </div>
 
-                    <div id="obj" style="display:none;">
+                    <div id="obj" style="display:none;" class="group">
                         <br>
                         <label>
                             <input id="answer1_radio" name="answer" type="radio" checked="checked">
