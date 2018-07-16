@@ -126,19 +126,19 @@
             <ul class="nav navbar-nav recordnav">
                 <li>
                 <!-- Changing lanuguage / recordnav : 통계 -->
-                    <a id="chart" href="#" class="recordnav_once">{{$language['recordnav']['statistics']}}</a>
+                    <a id="chart" href="#" class="recordnav_once">{{$language['recordnav']['Chart']}}</a>
                 </li>
                 <li>
                 <!-- Changing lanuguage / recordnav : 최근 기록 -->
-                    <a id="history" href="#" class="recordnav_once">{{$language['recordnav']['history']}}</a>
+                    <a id="history" href="#" class="recordnav_once">{{$language['recordnav']['History']}}</a>
                 </li>
                 <li>
                 <!-- Changing lanuguage / recordnav : 학생 관리 -->
-                    <a id="students" href="#" class="recordnav_once">{{$language['recordnav']['student']}}</a>
+                    <a id="students" href="#" class="recordnav_once">{{$language['recordnav']['Student']}}</a>
                 </li>
                 <li>
                 <!-- Changing lanuguage / recordnav : 피드백 -->
-                    <a id="feedback" href="#" class="recordnav_once">{{$language['recordnav']['feedback']}}</a>
+                    <a id="feedback" href="#" class="recordnav_once">{{$language['recordnav']['Feedback']}}</a>
                 </li>
             </ul>
         </div>

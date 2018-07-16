@@ -1,6 +1,6 @@
 <?php
 
-$language['feedback'] = [  "Title" => array('allStudentGrade' => '학생 점수',
+$language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
                                         'allStudent' => '전체 학생',
                                         'detail' => '상세 보기',
                                         'feedback' => '피드백',
@@ -271,6 +271,7 @@ $language['feedback'] = [  "Title" => array('allStudentGrade' => '학생 점수'
 
 <div class="feedbackPage_main">
     <h4>
+        <!-- Change language : feedback / 피드백-->
         피드백
     </h4>
 </div>
