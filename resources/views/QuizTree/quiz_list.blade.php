@@ -13,11 +13,11 @@
     <style type="text/css">
 
         p, div, th, tr, td, button, a {
-            font-family: 'a뉴고딕M';
+            font-family: 'Meiryo UI';
         }
 
         ul {
-            font-family: 'a뉴고딕M';
+            font-family: 'Meiryo UI';
         }
 
         .table tr{
@@ -112,13 +112,13 @@
         }
 
         #theadFont {
-            font-family: 'a뉴고딕M';
+            font-family: 'Meiryo UI';
             font-size: 22px;
             text-align: center;
         }
 
         #tbodyFont {
-            font-family: 'a뉴고딕M';
+            font-family: 'Meiryo UI';
             font-size: 20px;
             text-align: center;
             vertical-align: middle;
@@ -245,7 +245,7 @@
                 "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                 "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                 "<td id='tbodyFont'>" +
-                "<button class='btn btn-default' onclick='shareFolderMsg()'>수정 + 삭제 불가능</button>" +
+                "<button class='btn btn-default' onclick='shareFolderMsg()'>修正・削除不可能</button>" +
                 "</td>" +
                 "</tr>"
             );
@@ -322,11 +322,11 @@
                     "<div class='modal-header' style='text-align: center'>" +
                     "<h5 class='modal-title' id='ModalLabel'>[" + quizlistData['lists'][i]['listName'] +"]</h5>" +
                     "</div>" +
-                    "<div class='modal-body' style='text-align: center'>퀴즈를 삭제하시겠습니까?" +
+                    "<div class='modal-body' style='text-align: center'>クイズを削除しますか？" +
                     "</div>" +
                     "<div class='modal-footer'>" +
-                    "<button type='button' class='btn btn-primary' onclick='deleteList(" + quizlistData['lists'][i]['listId'] + ")'>삭제하기</button>" +
-                    "<button type='button' class='btn btn-secondary' data-dismiss='modal'>취소</button>" +
+                    "<button type='button' class='btn btn-primary' onclick='deleteList(" + quizlistData['lists'][i]['listId'] + ")'>削除</button>" +
+                    "<button type='button' class='btn btn-secondary' data-dismiss='modal'>戻る</button>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -348,7 +348,7 @@
                     "<a href='#showModalFNU" + quizlistData['lists'][i]['listId'] + "' data-toggle='modal' onclick='showList(" + quizlistData['lists'][i]['listId'] + ")'>" + quizlistData['lists'][i]['listName'] + "</a></td>" +
                     "<td id='tbodyFont'>" + quizlistData['lists'][i]['quizCount'] + "</td>" +
                     "<td id='tbodyFont'>" +
-                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>수정 + 삭제 불가능</button>" +
+                    "<button class='btn btn-default' onclick='impossibleMessage(" + i + ")'>修正・削除不可能</button>" +
                     "</td>" +
                     "</tr>"
                 );
@@ -384,7 +384,7 @@
                         data: params,
                         success: function (data) {
                             //alert(JSON.stringify(data));
-                            swal("공개 ON");
+                            swal("ON");
                         },
                         error: function (data) {
                             swal("error");
@@ -410,7 +410,7 @@
                         data: params,
                         success: function (data) {
                             //alert(JSON.stringify(data));
-                            swal("공개 OFF");
+                            swal("OFF");
                         },
                         error: function (data) {
                             swal("error");
@@ -434,12 +434,12 @@
         var raceSaveData = new Array();
 
         for(var i = 0; i < raceInfoData.length; i++) {
-            raceSaveData= "플레이 된 리스트는 수정 + 삭제할 수 없습니다.\n"
-                + "- 총 플레이 횟수: " + raceInfoData.length +"회\n"
-                + "<최근 플레이 기록>\n"
-                + "날짜: " + raceInfoData[i]['date'] + "\n"
-                + "클래스: " + raceInfoData[i]['groupName'] + "\n"
-                + "선생님: " + raceInfoData[i]['teacherName'];
+            raceSaveData= "プレイしたクイズは修正・削除できません\n"
+                + "- トータルプレイ回数: " + raceInfoData.length +"回\n"
+                + "<最近プレイ記録>\n"
+                + "date: " + raceInfoData[i]['date'] + "\n"
+                + "class: " + raceInfoData[i]['groupName'] + "\n"
+                + "teacher: " + raceInfoData[i]['teacherName'];
         }
 
         swal(raceSaveData);
@@ -555,25 +555,25 @@
                     if(showListData['quizs'][i]['example1'] == null) showListData['quizs'][i]['example1'] = "";
                     if(showListData['quizs'][i]['example2'] == null) showListData['quizs'][i]['example2'] = "";
                     if(showListData['quizs'][i]['example3'] == null) showListData['quizs'][i]['example3'] = "";
-                    if(showListData['quizs'][i]['quizType'] == "vocabulary") showListData['quizs'][i]['quizType'] = "어휘";
-                    if(showListData['quizs'][i]['quizType'] == "word") showListData['quizs'][i]['quizType'] = "단어";
-                    if(showListData['quizs'][i]['quizType'] == "grammar") showListData['quizs'][i]['quizType'] = "문법";
+                    if(showListData['quizs'][i]['quizType'] == "vocabulary") showListData['quizs'][i]['quizType'] = "vocabulary";
+                    if(showListData['quizs'][i]['quizType'] == "word") showListData['quizs'][i]['quizType'] = "word";
+                    if(showListData['quizs'][i]['quizType'] == "grammar") showListData['quizs'][i]['quizType'] = "grammar";
 
                     if(showListData['quizs'][i]['makeType'] == "obj") {
                         str += "<table class='table table-bordered'>";
                         str += "<tr>";
                         str += "<td style='text-align: center;'>" + questionId + "</td>";
-                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>출제유형</td>";
-                        str += "<td style='width: 22.5%; text-align: center'>객관식</td>";
-                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>문제유형</td>";
+                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>出題タイプ</td>";
+                        str += "<td style='width: 22.5%; text-align: center'>選択肢</td>";
+                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>問題タイプ</td>";
                         str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
                         str += "</tr>";
                         str += "<tr>";
-                        str += "<td style='background-color: #d9edf7; text-align: center'>문제</td>";
+                        str += "<td style='background-color: #d9edf7; text-align: center'>問題</td>";
                         str += "<td colspan='5'>" + showListData['quizs'][i]['question'] + "</td>";
                         str += "</tr>";
                         str += "<tr>";
-                        str += "<td style='background-color: #d9edf7; text-align: center'>정답</td>";
+                        str += "<td style='background-color: #d9edf7; text-align: center'>正答</td>";
                         str += "<td style='background-color: #EAEAEA'>" +  showListData['quizs'][i]['right'] + "</td>";
                         str += "<td>" +  showListData['quizs'][i]['example1'] + "</td>";
                         str += "<td>" +  showListData['quizs'][i]['example2'] + "</td>";
@@ -586,19 +586,19 @@
                         str += "<table class='table table-bordered'>";
                         str += "<tr>";
                         str += "<td style='text-align: center;'>" + questionId + "</td>";
-                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>출제유형</td>";
-                        str += "<td style='width: 22.5%; text-align: center'>주관식</td>";
-                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>문제유형</td>";
+                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>出題タイプ</td>";
+                        str += "<td style='width: 22.5%; text-align: center'>書き</td>";
+                        str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>問題タイプ</td>";
                         str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
                         str += "</tr>";
                         str += "<tr>";
-                        str += "<td style='background-color: #d9edf7; text-align: center'>문제</td>";
+                        str += "<td style='background-color: #d9edf7; text-align: center'>問題</td>";
                         str += "<td colspan='5'>" + showListData['quizs'][i]['question'] + "</td>";
                         str += "</tr>";
                         str += "<tr>";
-                        str += "<td style='background-color: #d9edf7; text-align: center'>정답</td>";
+                        str += "<td style='background-color: #d9edf7; text-align: center'>正答</td>";
                         str += "<td colspan='2' style='background-color: #EAEAEA;'>" +  showListData['quizs'][i]['right'] + "</td>";
-                        str += "<td colspan='2'><힌트> " +  showListData['quizs'][i]['hint'] + "</td>";
+                        str += "<td colspan='2'><ヒント> " +  showListData['quizs'][i]['hint'] + "</td>";
                         str += "</tr>";
                         str += "</table>";
                     }
@@ -612,7 +612,7 @@
                     "<div class='modal-content'>" +
                     "<div class='modal-header' style='text-align: center'>" +
                     "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>" +
-                    "<h4 class='modal-title'>퀴즈명 : " + showListData['listName'] + "</h4>" +
+                    "<h4 class='modal-title'>クイズ名 : " + showListData['listName'] + "</h4>" +
                     "</div>" +
 
                     "<div class='modal-body'>" +
@@ -625,7 +625,7 @@
                     "<div class='modal-footer'>" +
                     // 퀴즈 수정하기
                     "<button type='submit' class='btn btn-default' onclick='sendId(" + idNum + ")'><em class='fa fa-pencil'></em></button>" +
-                    "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
+                    "<button type='button' class='btn btn-default' data-dismiss='modal'>戻る</button>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -640,7 +640,7 @@
                     "<div class='modal-content'>" +
                     "<div class='modal-header' style='text-align: center'>" +
                     "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>" +
-                    "<h4 class='modal-title'>퀴즈명 : " + showListData['listName'] + "</h4>" +
+                    "<h4 class='modal-title'>クイズ名 : " + showListData['listName'] + "</h4>" +
                     "</div>" +
 
                     "<div class='modal-body'>" +
@@ -651,7 +651,7 @@
                     "</div>" +
 
                     "<div class='modal-footer'>" +
-                    "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
+                    "<button type='button' class='btn btn-default' data-dismiss='modal'>戻る</button>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -704,7 +704,7 @@
                 <input type="hidden" name="folderId" id="folderId" value="">
                 <div id="quizButton" style="margin-left: 2%">
                     <!-- Quiz Button 공간 -->
-                    <button type="submit" id="buttonDesign" class="btn btn-lg" style="color: white"  onclick="createList()"> + 퀴즈 만들기 </button>
+                    <button type="submit" id="buttonDesign" class="btn btn-lg" style="color: white"  onclick="createList()"> + クイズ作り </button>
                 </div>
             </form>
         </div>
@@ -716,10 +716,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th id="theadFont" style="width: 10%;">공개여부</th>
-                    <th id="theadFont" class="hidden-xs" style="width: 20%">등록일</th>
-                    <th id="theadFont" style="width: 40%">퀴즈명</th>
-                    <th id="theadFont" style="width: 15%">문항수</th>
+                    <th id="theadFont" style="width: 10%;">公開可否</th>
+                    <th id="theadFont" class="hidden-xs" style="width: 20%">登録日</th>
+                    <th id="theadFont" style="width: 40%">クイズ名</th>
+                    <th id="theadFont" style="width: 15%">問題数</th>
                     <th id="theadFont" style="width: 15%"><em class="fa fa-cog"></em></th>
                 </tr>
                 </thead>
@@ -751,14 +751,14 @@
         <input type="hidden" name="folderName" id="folderName" value="">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">폴더 만들기</h5>
+                <h5 class="modal-title" id="ModalLabel">フォルダー作り</h5>
             </div>
             <div class="modal-body" style="text-align: center">
-                폴더 이름 <input type="text" id="folder" value="">
+                フォルダー名　<input type="text" id="folder" value="">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="createFolder()">만들기</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary" onclick="createFolder()">作り</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">戻る</button>
             </div>
         </div>
     </div>
