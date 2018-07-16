@@ -169,7 +169,7 @@
     }
 
     function quizGet(){
-        $('#quiz_number').text(retest_quiz_num+1);
+        $('#quiz_number').text("Q"+retest_quiz_num+1);
         $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
 
         switch(quiz_JSON[retest_quiz_num].makeType){

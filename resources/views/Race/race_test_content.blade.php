@@ -43,9 +43,11 @@
     .footer a  { color:#53B2C8; }
 
     /* form starting stylings ------------------------------- */
-    .group 			  {
-        position:relative;
-        margin-bottom:45px;
+    .group {
+        position: relative;
+        margin-bottom: 45px;
+        margin-left: 35%;
+        margin-top: 10%;
     }
     #sub_content 				{
         font-size:18px;
@@ -175,9 +177,11 @@
 
             <tr>
                 <td colspan="3" style="width:100%; height:400px;" valign="top">
-                    <span id="quiz_number"></span>
-                    <span id="quiz_contents"></span><br>
-                    <span id="quiz_guide"> ()の中に入る言葉を入力してください。</span>
+                    <div id="q_info">
+                        <span id="quiz_number"></span>
+                        <span id="quiz_contents"></span><br>
+                        <span id="quiz_guide"> ()の中に入る言葉を入力してください。</span>
+                    </div>
 
                     <div id="obj" style="display:none;">
                         <br>
