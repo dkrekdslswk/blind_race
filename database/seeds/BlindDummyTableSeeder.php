@@ -14,8 +14,8 @@ class BlindDummyTableSeeder extends Seeder
     {
         // 유저 정보
         $users = [
-            [123456789, 'sub', 'チェ先生', 'teacher'],
-            [999999999, 'main', 'ソ先生', 'root'],
+            [123456789, 'sub', 'チェ教師', 'teacher'],
+            [999999999, 'main', 'ソ教師', 'root'],
             [1301282, '1234', 'チェ・ビョンチャン', 'student'],
             [1601145, '1234', 'シム・ユリム', 'student'],
             [1301143, '1234', 'ソン・ヒョンソク', 'student'],
