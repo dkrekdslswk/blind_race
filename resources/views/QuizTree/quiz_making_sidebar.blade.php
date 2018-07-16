@@ -6,7 +6,7 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <style>
         div {
-            font-family: 'a뉴고딕M';
+            font-family: 'Meiryo UI';
         }
 
         .sidenav {
@@ -116,7 +116,7 @@
                 }
             },
             error: function (data) {
-                swal("모든 항목에 입력이 필요합니다.");
+                swal("空いている部分を埋めてください");
             }
         });
     });
@@ -162,7 +162,7 @@
 
         <div class="select">
             <select id="bookSelect" class="form-control" style="height: 40px; border-radius: 12px; font-size: 20px">
-                <option>교재 선택</option>
+                <option>本選択</option>
                 @for($i = count($response['bookList']) - 1; $i >= 0; $i--)
                     <option value="{{$response['bookList'][$i]['bookId']}}">{{$response['bookList'][$i]['bookName']}}</option>
             @endfor
@@ -173,7 +173,7 @@
 
         <div class="select">
             <select id="levelSelect" class="form-control" style="height: 40px; border-radius: 12px; font-size: 20px">
-                <option>난이도 선택</option>
+                <option>レベル選択</option>
                 <option value="1">N1</option>
                 <option value="2">N2</option>
                 <option value="3">N3</option>
@@ -183,10 +183,10 @@
         </div>
 
         <div class="form-inline" style="margin-left: 10%; padding-top: 5%">
-            <input id="pageS" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
+            <input id="pageS" class="form-control" type="text" placeholder="ページ" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
             &nbsp;~&nbsp;
-            <input id="pageE" class="form-control" type="text" placeholder="페이지" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
-            <button id="btn" type="button" class="searchButton" style="width: 20%; color: white">검색</button>
+            <input id="pageE" class="form-control" type="text" placeholder="ページ" style="width: 20%; height: 40px; border-radius: 12px; font-size: 15px">
+            <button id="btn" type="button" class="searchButton" style="width: 20%; color: white">検索</button>
         </div>
 
         <input type="hidden" name="bookId" id="bookId" value="">
@@ -203,7 +203,7 @@
             <thead id="theadStyle">
             <tr>
                 <th style="text-align: center; width: 10%;">#</th>
-                <th style="text-align: center; width: 90%;">예문</th>
+                <th style="text-align: center; width: 90%;">例文</th>
             </tr>
             </thead>
 

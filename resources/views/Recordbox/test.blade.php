@@ -1,87 +1,286 @@
-<head>
+<?php
 
-    <style>
-        .recordSidebar {
-            margin: 0;
-            padding: 0;
-            display: block;
-            position: relative;
-            width: 17%;
-            height:100%;
-            float: left;
-            border: 1px solid #e5e6e8;
-            z-index: 1;
-        }
-        .recordSidebar .innerContents {
+$language['feedback'] = ['check' => "확인",
+                         'nocheck' => "미확인",
+                         'file'=>'添付ファイル',
+                         'alert'=>'登録しました',
+                         'questionDate' => '質問 日付',
+                         'feedbackDate' => '反問 日付',
+];
 
-        }
-        .page-small {
-            display: none !important;
-        }
-        .page-small {
-            width: 100% !important;
-        }
+?>
 
-        .m-t-lg {
-            margin-top: 30px !important;
-        }
-        .main-left-menu { list-style-type: none; margin: 0px; padding: 0px; }
-        .main-left-menu > li > a.noaction { cursor: default; font-size: 12px; font-weight: normal; padding-bottom: 3px; padding-top: 30px; color: #a2a2a1; }
-        .main-left-menu > li > a.noaction:hover { background: transparent; color: #a2a2a1; cursor: default; }
-        .main-left-menu > li > a { position: relative; display: block; padding: 8px 15px; color: #5f5f5f; font-weight: normal; border-left: 3px solid transparent; font-size: 14px; }
-        .main-left-menu > li > a > .icon:before { content: "▼"; }
-        .main-left-menu > li > a:hover { /* background: rgba(0, 0, 0, 0.06); */ color: #7DA0B1; }
-        .main-left-menu > li.active > a { background: #d9edf7; margin: 0px 10px; padding: 4px 0px 4px 5px; }
-        .main-left-menu > li.active.class-toggle > a { background: transparent; color: #5f5f5f; pointer-events: auto; cursor: pointer; }
-        .main-left-menu > li.active.class-toggle > a:hover { color: #8ebd4d; }
-        .main-left-menu > li.active > a > .icon:before { content: "▲"; }
-        .main-left-menu > li.active .toggle-class > a, .main-left-menu > li:hover .toggle-class > a { color: #8ebd4d; }
+<style type="text/css">
+    .record_feedback {
+        z-index: 1;
+        position: relative;
+        display: block;
+        clear: both;
+    }
+    .feedbackPage_main{
+        width: 100%;
+        padding: 10px 0 10px 20px;
+        background-color: #f9f9f9;
+        height: 50px;
+        position: relative;
+        display: block;
+        font-size: 20px;
+        text-align: left;
+        margin-left: 30px;
+    }
+    .feedbackPage_main h4{
+        color: #203a8e;
+        font-weight: bold;
+    }
 
-        #side-menu li .nav-second-level li a, #side-menu2 li .nav-second-level li a, #side-menu2 li .nav-second-level a {
-            padding: 8px 10px 8px 20px;
-            color: #5f5f5f;
-            text-transform: none;
-            font-weight: normal;
-            position: relative;
-            display: block;
-            font-size: 14px;
-        }
-        .class_list a:hover{
-            background-color:#d9edf7;
-        }
+    .feedback_page table{
+        background-color: white;
+    }
+    .feedback_page table thead tr:first-child{
+        text-align: center;
+        background-color: #D7D7D7;
+    }
+    .feedback_page table tbody tr:nth-child(2n){
+        background-color: #e6eaed;
+    }
+    .panel-table .panel-body{
+        padding:0;
+    }
 
-        @media (max-width: 768px) {
-            .page-small .content, .page-small #wrapper-class .content, .page-small .content-main {
-                padding: 15px 5px;
-                min-width: 320px
+    .panel-table .panel-body .table-bordered{
+        border-style: none;
+        margin:0;
+        text-align: center;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+        text-align:center;
+        width: 150px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+    .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+        border-right: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+    .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+        border-left: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
+        border-bottom: 0px;
+    }
+
+    .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
+        border-top: 0px;
+    }
+
+    .panel-table .panel-footer .pagination{
+        margin:0;
+    }
+
+    /*
+    used to vertically center elements, may need modification if you're not using default sizes.
+    */
+    .panel-table .panel-footer .col{
+        line-height: 34px;
+        height: 34px;
+    }
+
+    .panel-table .panel-heading .col h3{
+        line-height: 30px;
+        height: 30px;
+    }
+
+    .panel-table .panel-body .table-bordered > tbody > tr > td{
+        line-height: 34px;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+
+        loadFeedback();
+
+
+        $(document).on('click','.feedbackList',function () {
+            loadFeedbackModal($(this).attr('id'));
+
+        });
+
+        $(document).on('click','.modal-footer .btn.btn-primary',function () {
+            changeCheck($('.request_date').attr('id'));
+            insertQuestion();
+        });
+
+
+        //과제 확인하기
+        $(document).on('click','.btnHomeworkCheck',function () {
+            checkHomework($(this).attr('id'));
+
+        });
+
+    });
+
+    function loadFeedback(){
+
+        var reqData = {"groupId" : 1};
+
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/selectQnAs')}}",
+            //processData: false,
+            //contentType: false,
+            data:reqData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) {
+
+                /*
+                Data  = { QnAs : {
+                                'QnAId' : 1,
+                                'userName' : 김똘똘,
+                                'teacherName' : 이교수,
+                                'title' : 스쿠스쿠레이스 3번문제 질문입니다.
+                                'question_at' : 제 생각에는 3번이 정답인데 왜 틀린건가요
+                                'answer_at' : 그건 이러이러저러저러 하단다.
+                                 },
+                          check : false or true
+                          }
+                */
+
+                var instanceData = { QnAs : {
+                        0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
+                            question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
+                        }
+                    }
+                };
+
+                $('#modal_feedbackList').empty();
+
+                for(var i = 0 ; i < 1;i++){
+
+                    $('#modal_feedbackList')
+                        .append($('<tr>').attr('id','qna_'+instanceData['QnAs'][i]['QnAId'])
+                            .append($('<td>').text(instanceData['QnAs'][i]['date']))
+                            .append($('<td>')
+                                .append($('<a href="#" data-toggle="modal" data-target="#Modal2">')
+                                    .attr('class','feedbackList').attr('id',instanceData['QnAs'][i]['QnAId']).text(instanceData['QnAs'][i]['title'])
+                                )
+                            )
+                        );
+                    if(instanceData['QnAs'][i]['answer_at'] == ""){
+                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
+                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
+
+                    }else{
+                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
+                            .append($('<button">').attr('class','btn btn-primary').text("확인")));
+                    }
+                }
+
+            },
+            error: function (data) {
+                alert("loadFeedback / 피드백 받아오기 에러");
             }
+
+        });
+    }
+
+    function loadFeedbackModal(qnaId){
+
+        var reqData = {"QnAId" : qnaId};
+
+        var instanceData = { QnAs : {
+                0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
+                    question: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer:"그건 이러이러저러저러 하단다",
+                    question_at: "2018-05-28",answer_at : "2018-05-29"
+                }
+            }
+        };
+
+        $('.request_date').empty();
+        $('.response_date').empty();
+        $('.request_contents').empty();
+        $('#teachersFeedback').empty();
+        $('.modal-footer.feedback').empty();
+
+        for(var i = 0 ; i < 1;i++){
+
+            $('.request_date').text("질문날짜 : "+instanceData['QnAs'][i]['question_at'] +" / 응답날짜 : "+instanceData['QnAs'][i]['answer_at'])
+                .attr('id',qnaId);
+            $('.request_contents').text(instanceData['QnAs'][i]['question']);
+            $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
+
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
+
         }
-    </style>
 
-</head>
+    }
 
-<div class="recordSidebar" id="navigation">
+    function insertQuestion(){
 
-    <div class="innerContents">
-        <!--네비바 위부분 공백-->
-        <div class="page-small" style="text-align: center; margin-top: 10px; margin-bottom:10px;">
-        </div>
+        var formData = new FormData();
+        var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
 
-        <div class="m-t-lg">
-            <ul class="main-left-menu" id="side-menu2">
+        formData.append('questionImg', imgfiles);
 
-                {{--그룹 파트--}}
-                <li class="" id="side-menu3_li" style=" margin-top: 20px;margin-left: 10px;">
-                    나의 클래스
-                </li>
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/insertQuestion')}}",
+            processData: false,
+            contentType: false,
+            data:formData,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) {
 
-                <li class="class-toggle">
-                    {{--클래스 이름 리스트 들어갈 자리--}}
-                    <div class="nav-second-level class_list" id="group_names">
+            },
+            error: function (data) {
+                alert("loadFeedback / 피드백 등록하기 에러");
+            }
 
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+        });
+    }
+
+
+</script>
+
+<div class="feedbackPage_main">
+    <h4>
+        피드백
+    </h4>
 </div>
+
+    <div class="feedback_page" style="margin: 10px;">
+        <table class="table table-bordered table-list" style="margin: 0;">
+            <thead>
+            <tr>
+                <td>
+                    작성일자
+                </td>
+                <td>
+                    제목
+                </td>
+                <td id="feedbackCheck" class="feedback_check">
+                    상태
+                </td>
+            </tr>
+            </thead>
+            <tbody id="modal_feedbackList">
+            <tr>
+                <td>18.04.17</td>
+                <td>
+                    <a href="#" data-toggle="modal" data-target="#Modal2">
+                    [스쿠스쿠레이스2 - 3번] 질문있습니다.
+                    </a>
+                </td>
+                <td  id="feedbackCheckIcon" name="feedback_check" style="text-align: center">
+                    <button type="button" id="1check" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">미확인</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
