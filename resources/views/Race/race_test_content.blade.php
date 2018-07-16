@@ -15,7 +15,7 @@
         background-color:white;
     }
     #test_content{
-        margin-top:10%;
+        margin-top:2%;
         margin-left:10%;
     }
     * { box-sizing:border-box; }
@@ -218,7 +218,7 @@
                 </td>
             </tr>
 
-            <tr> <td class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
+            <tr> <td id="now_status" class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
                 <td class="retest_footer"  style=" text-align: right;">
                     <button id="Re-Test-button" onclick="nextQuiz();"> 다음문제</button>
                 </td> </tr>

@@ -18,7 +18,7 @@
             height: 100%;
         }
         body{
-            background-image: url("/img/race_play/re_bg.png");
+            background-image: url("/img/race_play/re_bg.png") !important;
             min-height: 100%;
             background-position: center;
             background-size: cover;
@@ -42,7 +42,7 @@
     var real_A;
 
     var selected_answer;
-
+    var now_status;
     //quizId , sessionId , answer
 
     window.onload = function(){
@@ -110,6 +110,7 @@
                 $('#passingMark').text("合格点:"+result['passingMark']);
                 $('#groupName').text(result['groupName']);
                 $('#userName').text(result['userName']);
+                $('#now_status').text("1 / "+result['quizCount']);
 
                 quizCount = result['quizCount'];
                 quiz_JSON = result['quizs']['quiz'];
@@ -199,6 +200,7 @@
                 break;
         }
         retest_quiz_num++;
+        $('#now_status').text(retest_quiz_num+" / "+quizCount);
     }
 
 </script>
