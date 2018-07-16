@@ -377,7 +377,7 @@
                     <!--Dropdowns-->
                     <div class="select" style="margin: 0 auto; width: 50%">
                         <select id="groupSelect" class="form-control">
-                            <option>グループ名前</option>
+                            <option>グル-プ名前</option>
                             <!-- 그룹 목록 넣을 공간 -->
                             {{--<option value="1">특강 A반</option>--}}
                             {{--<option value="2">특강 B반</option>--}}
