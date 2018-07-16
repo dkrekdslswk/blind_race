@@ -169,8 +169,6 @@
     }
 
     function quizGet(){
-        $('#quiz_number').text("Q"+retest_quiz_num+1);
-        $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
 
         switch(quiz_JSON[retest_quiz_num].makeType){
 
@@ -200,6 +198,10 @@
                 break;
         }
         retest_quiz_num++;
+
+        $('#quiz_number').text("Q"+retest_quiz_num+". ");
+        $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
+
         $('#now_status').text(retest_quiz_num+" / "+quizCount);
     }
 

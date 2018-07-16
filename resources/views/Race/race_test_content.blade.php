@@ -177,10 +177,10 @@
 
             <tr>
                 <td colspan="3" style="width:100%; height:400px;" valign="top">
-                    <div id="q_info">
-                        <span id="quiz_number"></span>
-                        <span id="quiz_contents"></span><br>
-                        <span id="quiz_guide"> ()の中に入る言葉を入力してください。</span>
+                    <div id="q_info" style="text-align:center;">
+                        <span id="quiz_number" style="font-size: 45px; color:navy;"></span>
+                        <span id="quiz_contents" style="font-size:30px;"></span><br>
+                        <span id="quiz_guide">※()あるいは漢字の正解を入力してください</span>
                     </div>
 
                     <div id="obj" style="display:none;">
