@@ -203,16 +203,19 @@
                     $('#history_list_tr'+i).append($('<td>').attr('class','history_list_gradeCard')
                         .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
                             .attr('id',data['races'][i]['raceId'])
-                            .text("성적표")));
+                            // CL. 성적표
+                            .text("{{$language['history']['grade']}}")));
 
                     if(data['races'][i]['retestClearCount'] == data['races'][i]['retestCount'] &&
                         data['races'][i]['wrongClearCount'] == data['races'][i]['wrongCount']){
 
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("전체완료")))
+                            // CL. 전체완료
+                            .attr('class','btn btn-primary').attr('id',data['races'][i]['raceId']).text("{{$language['history']['alldone']}}")))
                     }else{
                         $('#history_list_tr'+i).append($('<td>').append($('<button onclick="checkHomework(this.id)">')
-                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("미완료")))
+                            // CL. 미완료
+                            .attr('class','btn btn-warning').attr('id',data['races'][i]['raceId']).text("{{$language['history']['allnotyet']}}")))
                     }
 
 
@@ -267,29 +270,6 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: reqData,
             success: function (data) {
-                /*
-                 data = { wrongs: {
-                                0: { number: 1,
-                                    id: 1,
-                                    question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
-                                    hint:"3",
-                                    type:"obj" or " sub",
-
-                                    rightAnswer:1,
-                                    example1:"たりとも",
-                                    example2:"とはいえ",
-                                    example3:"だけさえ",
-
-                                    userCount:5,
-                                    rightAnswerCount:0,
-                                    wrongCount:5,
-                                    example1Count:0,
-                                    example2Count:3,
-                                    example3Count:2,
-                                    }
-                                }
-                        }
-                */
 
                 var wrongsData = data['wrongs'];
                 var leftOrRight = "";
@@ -300,7 +280,8 @@
                 $('.modal_pagenation').empty();
 
                 if(wrongsData.length == 0){
-                    $('.modal_wrong').text("오답 내용이 없습니다.");
+                    //CL. 오답 내용이 없습니다.
+                    $('.modal_wrong').text("{{$language['modal']['Grade']['noWrongData']}}");
                     $('.wrong_left').addClass("noBoardLine");
                     $('.wrong_right').addClass("noBoardLine");
                 }else{
@@ -375,10 +356,11 @@
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class','wrongExamples')
                                                         .append($('<ul>')
-                                                            .append($('<li>').text(wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)"))
-                                                            .append($('<li>').text(wrongsData[i]['example1']+" ("+ wrongsData[i]['example1Count'] +"명)"))
-                                                            .append($('<li>').text(wrongsData[i]['example2']+" ("+ wrongsData[i]['example2Count'] +"명)"))
-                                                            .append($('<li>').text(wrongsData[i]['example3']+" ("+ wrongsData[i]['example3Count'] +"명)")
+                                                        //CL. 명
+                                                            .append($('<li>').text(wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"{{$language['modal']['Grade']['people']}})"))
+                                                            .append($('<li>').text(wrongsData[i]['example1']+" ("+ wrongsData[i]['example1Count'] +"{{$language['modal']['Grade']['people']}})"))
+                                                            .append($('<li>').text(wrongsData[i]['example2']+" ("+ wrongsData[i]['example2Count'] +"{{$language['modal']['Grade']['people']}})"))
+                                                            .append($('<li>').text(wrongsData[i]['example3']+" ("+ wrongsData[i]['example3Count'] +"{{$language['modal']['Grade']['people']}})")
                                                             )
                                                         )
                                                     )
@@ -421,7 +403,7 @@
                                             .append($('<tr>')
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class','wrongExamples')
-                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"명)")
+                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"{{$language['modal']['Grade']['people']}})")
                                                         )
                                                         .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
                                                         )
@@ -472,27 +454,6 @@
             data: reqData,
             success: function (data) {
 
-                // data = {
-                //     group: {id: 1, name: "3WDJ"},
-                //     students: {
-                //         0: {
-                //             userId: 1300000
-                //             userName: "김똘똘"
-                //
-                //             retestState: "not"
-                //             wrongState: "not"
-                //         }
-
-                //          1: {
-                //             userId: 1300000
-                //             userName: "김똘똘"
-                //
-                //             retestState: "not"
-                //             wrongState: "not"
-                //         }
-                //      }
-                // }
-
                 var stdHomework = data['students'];
                 $('#historyListNumber').empty();
                 $('#historyListRaceName').empty();
@@ -517,13 +478,13 @@
 
                                 break;
                             case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("{{$language['history']['notdone']}}")));
 
                                 break;
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("응시완료")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("{{$language['history']['done']}}")));
 
                                 break;
                         }
@@ -537,13 +498,13 @@
 
                                 break;
                             case "order" :
-                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
+                                $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("{{$language['history']['notsubmit']}}")));
 
                                 break;
                             case "clear" :
                                 $('#history_homework_tr' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                     .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("제출완료")));
+                                        .attr('id',raceId).attr('name',stdHomework[i]['userId']).text("{{$language['history']['submit']}}")));
 
                                 break;
                         }
@@ -601,10 +562,10 @@
         }
 
         //차트 데이터 합치기
-        AllChartData = { "total_data" : ["전체 평균 점수" , total_data_Points] ,
-            "voca_data" : ["어학 점수", vocabulary_Points] ,
-            "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-            "word_data" : ["단어 점수" , word_data_Points]
+        AllChartData = { "total_data" : ["{{$language['modal']['Grade']['allGrade']}}" , total_data_Points] ,
+                "voca_data" : ["{{$language['modal']['Grade']['totalVoca']}}", vocabulary_Points] ,
+                "grammer_data" : ["{{$language['modal']['Grade']['totalGrammer']}}" , grammer_data_Points] ,
+                "word_data" : ["{{$language['modal']['Grade']['totalWord']}}" , word_data_Points]
         };
 
         return AllChartData;
@@ -685,7 +646,7 @@
             title:{},
             axisX:{
                 labelFontSize: 15,
-                valueFormatString: "MM월 DD일 (HH:ss)",
+                valueFormatString: "MM{{$language['modal']['Date']['month']}} DD{{$language['modal']['Date']['date']}} (HH:ss)",
                 crosshair: {
                     enabled: true,
                     snapToDataPoint: true
@@ -768,11 +729,6 @@
     //재시험 점수 가져오기
     function getRetestData(userId,raceId){
 
-//        $postData = array(
-//            'userId'        => 1300000
-//            'raceId'        => 1
-//            'retestState'   => 1
-//        );
         var reqData = {"userId" : userId, "raceId" : raceId, "retestState" : 1};
 
         $.ajax({
@@ -811,28 +767,7 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: reqData,
             success: function (data) {
-                /*
-                 data = { wrongs: {
-                                0: { number: 1,
-                                    id: 1,
-                                    question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
-                                    hint:"3",
 
-                                    rightAnswer:1,
-                                    example1:"たりとも",
-                                    example2:"とはいえ",
-                                    example3:"だけさえ",
-
-                                    userCount:1,
-                                    rightAnswerCount:0,
-                                    wrongCount:1,
-                                    example1Count:0,
-                                    example2Count:0,
-                                    example3Count:1,
-                                    }
-                                }
-                        }
-                */
                 //오답리스트 로드할 위치(id값)를 변수에 담기
                 var WrongList = "modal_allWrongAnswerList";
                 var wrongsData = data['wrongs'];

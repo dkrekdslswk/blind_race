@@ -1,286 +1,395 @@
 <?php
 
-$language['feedback'] = ['check' => "확인",
-                         'nocheck' => "미확인",
-                         'file'=>'添付ファイル',
-                         'alert'=>'登録しました',
-                         'questionDate' => '質問 日付',
-                         'feedbackDate' => '反問 日付',
-];
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
+/* ↓↓↓↓↓ ROUTE VIEW ↓↓↓↓↓ */
+
+/* Homepage : Main */
+Route::get('/', function () {
+    return view('homepage');
+});
+
+/* Login */
+Route::get('/login', function () {
+    return view('Login/login');
+});
+
+/* 1. My Group */
+Route::get('/mygroup2', function(){
+    return view('Mygroup/mygroup');
+});
+
+Route::get('/myside', function(){
+    return view('Mygroup/mygroup_sidebar');
+});
+
+Route::get('/mygroup', function(){
+    return view('Mygroup/mygroup_main');
+});
+
+Route::get('/Unregistered_group', function(){
+    return view('Mygroup/Unregistered_group');
+});
+
+Route::get('/mygroup_Unregistered_group', function(){
+    return view('Mygroup/mygroup_Unregistered_group');
+});
+
+
+/* 2. Race Mode : Blind Race */
+Route::get('/race_list', function(){
+    return view('Race/race_list');
+});
+
+/* 2-1. Blind Race : Waiting Room */
+Route::get('/race_waiting', function(){
+    return view('Race/race_waiting');
+});
+
+/* 2-1. Blind Race : Waiting Room */
+Route::get('/mid_result', function(){
+    return view('Race/mid_result');
+});
+
+
+/* 2-3. Blind Race : Race Result */
+Route::get('/race_result', function(){
+    return view('Race/race_result');
+});
+
+/* 2-4 Blind Race : Race_student  -> 학생 웹 레이스 부분 */
+Route::get('/race_student', function(){
+    return view('Race/race_student');
+});
+/* 2-5 Blind Race : Race_retest  -> 학생 웹 재시험 부분 */
+Route::get('/race_retest', function(){
+    return view('Race/race_retest');
+});
+/* 2-6 Blind Race : Race_popquiz  -> 교사 쪽지시험 부분 */
+Route::get('/race_popquiz', function(){
+    return view('Race/race_popquiz');
+});
+
+/* 2-7 Blind Race : Race_popquiz  -> 학생 웹 쪽지시험 */
+Route::get('/race_student_popquiz', function(){
+    return view('Race/race_student_popquiz');
+});
+
+/* 3. Quiz Tree : Quiz List */
+Route::get('/quiz_list', function(){
+    return view('QuizTree/quiz_list');
+});
+
+/* 3-1. Quiz Tree : Quiz Making */
+Route::get('/quiz_making', function(){
+    return view('QuizTree/quiz_making');
+});
+
+/* 4. Record Box : Record List */
+Route::get('/recordbox', function(){
+    return view('Recordbox/recordbox_main');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox_main', function(){
+    return view('Recordbox/recordbox_main');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox/sidebar', function(){
+    return view('Recordbox/sidebar');
+});
+
+/* 4-1. Record Box : test */
+Route::get('/recordbox_main/sidebar', function(){
+    return view('Recordbox/sidebar');
+});
+
+/* 4-2. Record Box : Record List */
+Route::get('/recordbox_student', function(){
+    return view('Recordbox/recordbox_student_main');
+});
+
+/* 4-3. student: student_homepage */
+Route::get('/student', function(){
+    return view('homepage_studnet');
+});
+
+/* 4-3. student: student_homepage */
+Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId = null,$country = null){
+
+    if ($country != "kr" && $country != null && $country != "jp") {
+        $where = "error";
+    }else{
+        $language = array();
+
+        switch ($country){
+        /*
+        $language['modal']['Title']['']
+        $language['modal']['Date']['']
+        $language['modal']['Grade']['']
+        $language['modal']['Feedback']['']
+        */
+            case null :
+            case "kr" :
+                $language['modal'] = ["Title" => array('allStudentGrade' => '학생 점수',
+                                                    'allStudent' => '전체 학생',
+                                                    'detail' => '상세 보기',
+                                                    'feedback' => '피드백',
+                                                    'wrongTest' => '오답 문제'),
+                                    "Subtitle" => array("number" => "번호",
+                                                    "student" => "학생",
+                                                    "quizName" => "문제 이름",
+                                                    "date" => "날짜",
+                                                    "retest" => "재시험",
+                                                    "retest" => "오답노트",
+                                                    "grade" => "성적표",
+                                                    "homework" => "과제 확인하기",
+                                                    "date" => "작성일자",
+                                                    "title" => "제목",
+                                                    "state" => "상태"),
+                                    "Date" => array('year' => "년" ,
+                                                    'month' => '월' ,
+                                                    'date' =>'일' ),
+                                    "Grade" => array('allStudent' => "전체학생",
+                                                    'allGrade' => "총점수",
+                                                    'totalVoca' => "어휘",
+                                                    'totalGrammer' => "독해",
+                                                    'totalWord' => "문법",
+                                                    'allCount' => "갯수",
+                                                    'allAverage' => "전체 평균",
+                                                    'noWrongData' => "오답 내용이 없습니다."),
+                                    "Feedback" => array('file'=>'파일 첨부',
+                                                        'alert'=>'정상 등록되었습니다.',
+                                                        'questionDate' => '질문 날짜',
+                                                        'feedbackDate' => '대답 날짜',
+                                                        'ok'=>'확인',
+                                                        'cancel'=>'취소')
+                ];
+
+                $language['chart'] = ["SetTime" => "시간 정하기",
+                                        "week" => "일주일",
+                                        "month" => "한달",
+                                        "3month" => "3개월",
+                                        "6month" => "6개월",
+                                        "12month" => "12개월",
+                                        "refer" => "조회",
+                                        "result" => "결과",
+                ];
+
+                $language['history'] = ["history" => "최근 기록",
+                                        "grade" => "성적표",
+                                        "allnotyet" => "미완료",
+                                        "alldone" => "완료",
+                                        "pass" => "PASS",
+                                        "notdone" => "미완료",
+                                        "done" => "응시완료",
+                                        "notsubmit" => "미제출",
+                                        "submit" => "제출"
+                ];
+
+                $language['recordnav'] = ["Chart" => "통계",
+                                          "History" => "최근 기록",
+                                          "Student" => "학생 관리",
+                                          "Feedback" => "피드백"
+                ];
+
+                break;
+
+            case "jp" :
+                $language['modal'] = ["Title" => array('allStudentGrade' => '成績表',
+                                                    'allStudent' => '学生 全員',
+                                                    'detail' => '詳録',
+                                                    'feedback' => 'Feedback',
+                                                    'wrongTest' => '間違った問題')
+                                                    ,
+                                        "Subtitle" => array("number" => "番号",
+                                                    "student" => "生徒",
+                                                    "quizName" => "問題の",
+                                                    "date" => "日付",
+                                                    "retest" => "再試驗",
+                                                    "retest" => "誤答ノート",
+                                                    "grade" => "成績表",
+                                                    "homework" => "宿題",
+                                                    "questionDate" => "作成 日付",
+                                                    "title" => "題",
+                                                    "state" => "状態")
+                                                    ,
+                                        "Date" => array('year' => "年" ,
+                                                        'month' => '月' ,
+                                                        'date' =>'日' )
+                                                        ,
+                                        "Grade" => array('allStudent' => "学生全員",
+                                                        'allGrade' => "総点",
+                                                        'totalVoca' => "語彙",
+                                                        'totalGrammer' => "文法",
+                                                        'totalWord' => "読解",
+                                                        'allCount' => "本数",
+                                                        'allAverage' => "全員の平均",
+                                                        'noWrongData' => "内容がありません")
+                                                        ,
+                                        "Feedback" => array('file'=>'添付ファイル',
+                                                        'alert'=>'登録しました',
+                                                        'questionDate' => '質問 日付',
+                                                        'feedbackDate' => '反問 日付',
+                                                        'ok'=>'OK',
+                                                        'cancel'=>'Cancel')
+                ];
+
+                $language['chart'] = ["SetTime" => "時間選択",
+                                        "week" => "１週",
+                                        "month" => "１月",
+                                        "3month" => "3月",
+                                        "6month" => "6月",
+                                        "12month" => "１年",
+                                        "refer" => "紹介",
+                                        "result" => "結果　",
+                ];
+                
+                $language['history'] = ["history" => "최근 기록",
+                                        "grade" => "성적표",
+                                        "allnotyet" => "미완료",
+                                        "alldone" => "완료",
+                                        "pass" => "PASS",
+                                        "notdone" => "미완료",
+                                        "done" => "응시완료",
+                                        "notsubmit" => "미제출",
+                                        "submit" => "제출"
+                ];
+
+                $language['recordnav'] = ["Chart" => "統計",
+                                          "History" => "最近 記録",
+                                          "Student" => "生徒の情報",
+                                          "Feedback" => "フィードバック"
+                ];
+            break;
+        }
+    }
+
+    switch ($where){
+        case "chart":
+        case "history":
+        case "students":
+        case "feedback":
+            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+            break;
+
+        default:
+            return view('sorry');
+            break;
+    }
+});
+
+
+
+
+/* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
+
+/* CBC : test */
+Route::get('/cbcSocketTest', function(){
+    return view('cbcSocketTest');
+});
+
+Route::get('/race_content', function(){
+    return view('Race/race_content');
+});
+
+
+/* ↓↓↓↓↓ CONTROLLER ↓↓↓↓↓ */
+
+/*
+ * 로그인 컨트롤러
+ */
+// 웹용
+Route::post('/userController/loginCheck',"UserController@loginCheck");
+Route::post('/userController/webLogin',"UserController@webLogin");
+Route::post('/userController/webLogout',"UserController@webLogout");
+Route::post('/userController/userUpdate',"UserController@userUpdate");
+// 모바일용
+Route::post('/mobileLogin',"UserController@mobileLogin");
+Route::post('/mobileLogout',"UserController@mobileLogout");
+
+/*
+ * 레이스 컨트롤러
+ */
+// 웹용
+Route::post('/raceController/createRace','RaceController@createRace');
+Route::post('/raceController/studentIn','RaceController@studentIn');
+Route::post('/raceController/studentOut','RaceController@studentOut');
+Route::post('/raceController/studentSet','RaceController@studentSet');
+Route::post('/raceController/quizNext','RaceController@quizNext');
+Route::post('/raceController/answerIn','RaceController@answerIn');
+Route::post('/raceController/result','RaceController@result');
+Route::post('/raceController/raceEnd','RaceController@raceEnd');
+Route::post('/raceController/retestSet','RaceController@retestSet');
+// 모바일, 웹 겸용
+Route::post('/raceController/retestStart','RaceController@retestStart');
+Route::post('/raceController/retestAnswerIn','RaceController@retestAnswerIn');
+Route::post('/raceController/retestEnd','RaceController@retestEnd');
+// 모바일용
+Route::post('/getRetestListMobile','RaceController@getRetestListMobile');
+
+/*
+ * 문제나무 컨트롤러
+ */
+// 웹용
+Route::post('/quizTreeController/getfolderLists','QuizTreeController@getfolderLists');
+Route::post('/quizTreeController/createFolder'  ,'QuizTreeController@createFolder');
+Route::post('/quizTreeController/createList'    ,'QuizTreeController@createList');
+Route::post('/quizTreeController/getQuiz'       ,'QuizTreeController@getQuiz');
+Route::post('/quizTreeController/insertList'    ,'QuizTreeController@insertList');
+Route::post('/quizTreeController/deleteList'    ,'QuizTreeController@deleteList');
+Route::post('/quizTreeController/updateList'    ,'QuizTreeController@updateList');
+Route::post('/quizTreeController/showList'    ,'QuizTreeController@showList');
+Route::post('/quizTreeController/updateOpenState'    ,'QuizTreeController@updateOpenState');
+
+/*
+ * 레코드박스 컨트롤러
+ */
+// 웹용
+Route::post('/recordBoxController/getChart','RecordBoxController@getChart');
+Route::post('/recordBoxController/getRaces','RecordBoxController@getRaces');
+Route::post('/recordBoxController/homeworkCheck','RecordBoxController@homeworkCheck');
+Route::post('/recordBoxController/getStudents','RecordBoxController@getStudents');
+Route::post('/recordBoxController/getWrongs','RecordBoxController@getWrongs');
+Route::post('/recordBoxController/insertWrongs','RecordBoxController@insertWrongs');
+Route::post('/recordBoxController/insertQuestion','RecordBoxController@insertQuestion');
+Route::post('/recordBoxController/selectQnAs','RecordBoxController@selectQnAs');
+Route::post('/recordBoxController/selectQnA','RecordBoxController@selectQnA');
+Route::post('/recordBoxController/updateAnswer','RecordBoxController@updateAnswer');
+// 모바일용
+Route::post('/mobileGetStudents','RecordBoxController@mobileGetStudents');
+Route::post('/mobileGetWrongs','RecordBoxController@mobileGetWrongs');
+Route::post('/mobileInsertWrongs','RecordBoxController@mobileInsertWrongs');
+Route::post('/mobileInsertQuestion','RecordBoxController@mobileInsertQuestion');
+Route::post('/mobileSelectQnAs','RecordBoxController@mobileSelectQnAs');
+Route::post('/mobileSelectQnA','RecordBoxController@mobileSelectQnA');
+Route::post('/mobileUpdateAnswer','RecordBoxController@mobileUpdateAnswer');
+
+
+/*
+ * 그룹 컨트롤러
+ */
+// 웹용
+Route::post('/groupController/groupsGet','GroupController@groupsGet');
+Route::post('/groupController/groupDataGet','GroupController@groupDataGet');
+Route::post('/groupController/createGroup','GroupController@createGroup');
+Route::post('/groupController/pushInvitation','GroupController@pushInvitation');
+Route::post('/groupController/selectUser','GroupController@selectUser');
+Route::post('/groupController/studentModify','GroupController@studentModify');
+Route::post('/groupController/studentGroupExchange','GroupController@studentGroupExchange');
+Route::post('/groupController/studentGroupsGet','GroupController@studentGroupsGet');
+// 모바일용
+Route::post('/mobileStudentGroupsGet','GroupController@mobileStudentGroupsGet');
 ?>
 
-<style type="text/css">
-    .record_feedback {
-        z-index: 1;
-        position: relative;
-        display: block;
-        clear: both;
-    }
-    .feedbackPage_main{
-        width: 100%;
-        padding: 10px 0 10px 20px;
-        background-color: #f9f9f9;
-        height: 50px;
-        position: relative;
-        display: block;
-        font-size: 20px;
-        text-align: left;
-        margin-left: 30px;
-    }
-    .feedbackPage_main h4{
-        color: #203a8e;
-        font-weight: bold;
-    }
-
-    .feedback_page table{
-        background-color: white;
-    }
-    .feedback_page table thead tr:first-child{
-        text-align: center;
-        background-color: #D7D7D7;
-    }
-    .feedback_page table tbody tr:nth-child(2n){
-        background-color: #e6eaed;
-    }
-    .panel-table .panel-body{
-        padding:0;
-    }
-
-    .panel-table .panel-body .table-bordered{
-        border-style: none;
-        margin:0;
-        text-align: center;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
-        text-align:center;
-        width: 150px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
-    .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
-        border-right: 0px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
-    .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
-        border-left: 0px;
-    }
-
-    .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
-        border-bottom: 0px;
-    }
-
-    .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
-        border-top: 0px;
-    }
-
-    .panel-table .panel-footer .pagination{
-        margin:0;
-    }
-
-    /*
-    used to vertically center elements, may need modification if you're not using default sizes.
-    */
-    .panel-table .panel-footer .col{
-        line-height: 34px;
-        height: 34px;
-    }
-
-    .panel-table .panel-heading .col h3{
-        line-height: 30px;
-        height: 30px;
-    }
-
-    .panel-table .panel-body .table-bordered > tbody > tr > td{
-        line-height: 34px;
-    }
-</style>
-<script>
-
-    $(document).ready(function () {
-
-        loadFeedback();
-
-
-        $(document).on('click','.feedbackList',function () {
-            loadFeedbackModal($(this).attr('id'));
-
-        });
-
-        $(document).on('click','.modal-footer .btn.btn-primary',function () {
-            changeCheck($('.request_date').attr('id'));
-            insertQuestion();
-        });
-
-
-        //과제 확인하기
-        $(document).on('click','.btnHomeworkCheck',function () {
-            checkHomework($(this).attr('id'));
-
-        });
-
-    });
-
-    function loadFeedback(){
-
-        var reqData = {"groupId" : 1};
-
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/recordBoxController/selectQnAs')}}",
-            //processData: false,
-            //contentType: false,
-            data:reqData,
-            dataType: 'json',
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data) {
-
-                /*
-                Data  = { QnAs : {
-                                'QnAId' : 1,
-                                'userName' : 김똘똘,
-                                'teacherName' : 이교수,
-                                'title' : 스쿠스쿠레이스 3번문제 질문입니다.
-                                'question_at' : 제 생각에는 3번이 정답인데 왜 틀린건가요
-                                'answer_at' : 그건 이러이러저러저러 하단다.
-                                 },
-                          check : false or true
-                          }
-                */
-
-                var instanceData = { QnAs : {
-                        0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
-                            question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
-                        }
-                    }
-                };
-
-                $('#modal_feedbackList').empty();
-
-                for(var i = 0 ; i < 1;i++){
-
-                    $('#modal_feedbackList')
-                        .append($('<tr>').attr('id','qna_'+instanceData['QnAs'][i]['QnAId'])
-                            .append($('<td>').text(instanceData['QnAs'][i]['date']))
-                            .append($('<td>')
-                                .append($('<a href="#" data-toggle="modal" data-target="#Modal2">')
-                                    .attr('class','feedbackList').attr('id',instanceData['QnAs'][i]['QnAId']).text(instanceData['QnAs'][i]['title'])
-                                )
-                            )
-                        );
-                    if(instanceData['QnAs'][i]['answer_at'] == ""){
-                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
-
-                    }else{
-                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                            .append($('<button">').attr('class','btn btn-primary').text("확인")));
-                    }
-                }
-
-            },
-            error: function (data) {
-                alert("loadFeedback / 피드백 받아오기 에러");
-            }
-
-        });
-    }
-
-    function loadFeedbackModal(qnaId){
-
-        var reqData = {"QnAId" : qnaId};
-
-        var instanceData = { QnAs : {
-                0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
-                    question: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer:"그건 이러이러저러저러 하단다",
-                    question_at: "2018-05-28",answer_at : "2018-05-29"
-                }
-            }
-        };
-
-        $('.request_date').empty();
-        $('.response_date').empty();
-        $('.request_contents').empty();
-        $('#teachersFeedback').empty();
-        $('.modal-footer.feedback').empty();
-
-        for(var i = 0 ; i < 1;i++){
-
-            $('.request_date').text("질문날짜 : "+instanceData['QnAs'][i]['question_at'] +" / 응답날짜 : "+instanceData['QnAs'][i]['answer_at'])
-                .attr('id',qnaId);
-            $('.request_contents').text(instanceData['QnAs'][i]['question']);
-            $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
-
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
-
-        }
-
-    }
-
-    function insertQuestion(){
-
-        var formData = new FormData();
-        var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
-
-        formData.append('questionImg', imgfiles);
-
-        $.ajax({
-            type: 'POST',
-            url: "{{url('/recordBoxController/insertQuestion')}}",
-            processData: false,
-            contentType: false,
-            data:formData,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data) {
-
-            },
-            error: function (data) {
-                alert("loadFeedback / 피드백 등록하기 에러");
-            }
-
-        });
-    }
-
-
-</script>
-
-<div class="feedbackPage_main">
-    <h4>
-        피드백
-    </h4>
-</div>
-
-    <div class="feedback_page" style="margin: 10px;">
-        <table class="table table-bordered table-list" style="margin: 0;">
-            <thead>
-            <tr>
-                <td>
-                    작성일자
-                </td>
-                <td>
-                    제목
-                </td>
-                <td id="feedbackCheck" class="feedback_check">
-                    상태
-                </td>
-            </tr>
-            </thead>
-            <tbody id="modal_feedbackList">
-            <tr>
-                <td>18.04.17</td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#Modal2">
-                    [스쿠스쿠레이스2 - 3번] 질문있습니다.
-                    </a>
-                </td>
-                <td  id="feedbackCheckIcon" name="feedback_check" style="text-align: center">
-                    <button type="button" id="1check" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">미확인</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
