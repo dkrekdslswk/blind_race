@@ -335,7 +335,7 @@
     <div class="brand-wrapper">
         <div class="brand-name-wrapper" >
             <button type="button" class="makeclass" style="margin-top: -0px; width: 100%" data-toggle="modal" data-target="#createFolder">
-                <p style="margin-top: 9px; font-size: 23px">폴더</p>
+                <p style="margin-top: 9px; margin-left: 40px; font-size: 23px">フォルダー</p>
             </button>
         </div>
     </div>

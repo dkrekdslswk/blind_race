@@ -210,7 +210,10 @@
                     $('.modal-content.detail #toggle_only_students').show();          //학생별 오답체트 표시하기
                     $('#wrongPercent').show();                                        //오답률 표시
                     $('.modal #modal_total_students').empty();
-                    $('.modal-content.detail .modal-title').text('오답 문제');
+
+//Changing Langeage : modal
+//$('.modal-content.detail .modal-title').text('오답 문제');
+                    $('.modal-content.detail .modal-title').text("{{$language['modal']['Title']['wrongTest']}}");
 
                     var totalGrade = 0;
                     var totalVoca = 0;
@@ -222,10 +225,23 @@
                     StudentData = JSON.parse(allData['races'][0]);
                     StudentScore = makingStudentChartData(allData);
 
-                    $('.modal-content.studentGrade .modal-title').text("학생 점수");
-                    $('#modal_date').text(StudentData['year'] + "년 " + StudentData['month'] + "월 " + StudentData['day'] + "일");
+//Changing Langeage : modal
+//$('.modal-content.studentGrade .modal-title').text("학생 점수");
+                    $('.modal-content.studentGrade .modal-title').text("{{$language['modal']['Title']['allStudentGrade']}}");
+
+//Changing Langeage : modal
+//$('#modal_date').text(StudentData['year'] + "년 " + StudentData['month'] + "월 " + StudentData['day'] + "일");
+                    $('#modal_date').text(StudentData['year'] + "{{$language['modal']['Date']['year']}} " 
+                                        + StudentData['month'] + "{{$language['modal']['Date']['month']}} " 
+                                        + StudentData['day'] + "{{$language['modal']['Date']['date']}} " );
+
+
+
                     $('#modal_raceName_teacher').text(StudentData['listName'] + "  /  " + StudentData['teacherName']);
-                    $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
+
+//Changing Langeage : modal
+//$('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('전체 학생'));
+                    $('.modal #modal_total_students').append($('<a href="#" onclick="getRaceWrongAnswer('+raceId+')">').text('{{$language["modal"]["Title"]["allStudent"]}}'));
 
 
                     for(var i = 0 ; i < allData['races'].length ; i++){
@@ -250,12 +266,20 @@
                         totalRight += StudentData['allRightCount'];
                     }
 
+
+//Changing Langeage : modal
+// $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData['races'].length)+
+//                         " / 어휘: "+parseInt(totalVoca / allData['races'].length)+
+//                         " / 문법: "+parseInt(totalGrammer / allData['races'].length)+
+//                         " / 독해: "+parseInt(totalWord / allData['races'].length)+
+//                         " / 갯수: "+parseInt(totalRight / allData['races'].length));
+
                     //modal-footer 총 점수들 표시
-                    $('#modal_total_grades').text("전체 평균: "+parseInt(totalGrade / allData['races'].length)+
-                        " / 어휘: "+parseInt(totalVoca / allData['races'].length)+
-                        " / 문법: "+parseInt(totalGrammer / allData['races'].length)+
-                        " / 독해: "+parseInt(totalWord / allData['races'].length)+
-                        " / 갯수: "+parseInt(totalRight / allData['races'].length));
+                    $('#modal_total_grades').text("{{$language['modal']['Grade']['allAverage']}}: "+parseInt(totalGrade / allData['races'].length)+
+                        " / {{$language['modal']['Grade']['totalVoca']}}: "+parseInt(totalVoca / allData['races'].length)+
+                        " / {{$language['modal']['Grade']['totalWord']}}: "+parseInt(totalGrammer / allData['races'].length)+
+                        " / {{$language['modal']['Grade']['totalGrammer']}}: "+parseInt(totalWord / allData['races'].length)+
+                        " / {{$language['modal']['Grade']['allCount']}}: "+parseInt(totalRight / allData['races'].length));
 
 
                     //오답들
@@ -273,14 +297,24 @@
                     $('.modal-content.detail #toggle_only_students').hide();        //학생별 오답체트 빼기
                     $('#wrongPercent').hide();                                      //오답률 빼기
                     $('.modal #modal_total_students').empty();
-                    $('.modal #modal_total_students').text("전체 학생");
-                    $('.modal-content.detail .modal-title').text('오답 문제');
+
+//Changing Langeage : modal
+// $('.modal #modal_total_students').text("전체 학생");
+// $('.modal-content.detail .modal-title').text('오답 문제');
+                    $('.modal #modal_total_students').text("{{$language['modal']['Title']['allStudent']}}");
+                    $('.modal-content.detail .modal-title').text("{{$language['modal']['Title']['wrongTest']}}");
 
                     //data -> 학생개인에 관한 모든 데이터(리턴값 그대로)
                     StudentScore = makingStudentChartData(allData);
                     StudentData = JSON.parse(allData['races'][0]);
 
-                    $('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+//Changing Langeage : modal
+//$('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
+                    $('#modal_date').text(StudentData['year']+"$language['modal']['Date']['year']"
+                                         +StudentData['month']+"$language['modal']['Date']['month']"
+                                         +StudentData['day']+"$language['modal']['Date']['date']");
+
+
                     $('#modal_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
 
                     for(var i = 0 ; i < allData['races'].length ; i++){
@@ -313,7 +347,9 @@
                     $('#wrongPercent').hide();                                      //오답률 빼기
                     $('.modal_list_wrong').hide();                                      //오답내용 빼기
 
-                    $('.modal-content.detail .modal-title').text('오답 노트');
+//Changing Langeage : modal
+//$('.modal-content.detail .modal-title').text('오답 노트');
+                    $('.modal-content.detail.modal-title').text("{{$language['modal']['Title']['wrongTest']}}");
 
                     wrongsData = allData['wrongs'];
                     var leftOrRight = "";
@@ -322,7 +358,9 @@
                     $('.wrong_right').empty();
 
                     if (wrongsData.length == 0) {
-                        $('.modal_wrong').text("오답 내용이 없습니다.");
+//Changing Langeage : modal
+//                        $('.modal_wrong').text("오답 내용이 없습니다.");
+                        $('.modal_wrong').text("{{$language['modal']['Grade']['noWrongData']}}");
                         $('.wrong_left').addClass("noBoardLine");
                         $('.wrong_right').addClass("noBoardLine");
 
@@ -450,7 +488,9 @@
             <div class="modal-content studentGrade">
 
                 <div class="modal-header">
-                    <h3 class="modal-title" id="ModalLabel" >학생 점수</h3>
+                    <h3 class="modal-title" id="ModalLabel" >
+                        {{--"학생점수"--}}
+                    </h3>
 
                     {{--INSERT DATA 1. 날짜--}}
                     <div id="modal_date"> </div>
@@ -468,19 +508,28 @@
 
                             </th>
                             <th>
-                                총 점수
+                            <!--Changing Langeage : modal / 총점수-->
+                                {{$language['modal']['Grade']['allGrade']}}
                             </th>
+
                             <th>
-                                어휘
+                            <!--Changing Langeage : modal / 어휘-->
+                            {{$language['modal']['Grade']['totalVoca']}}
                             </th>
+
                             <th>
-                                문법
+                            <!--Changing Langeage : modal / 문법-->
+                            {{$language['modal']['Grade']['totalWord']}}
                             </th>
+                            
                             <th>
-                                독해
+                            <!--Changing Langeage : modal / 독해-->
+                            {{$language['modal']['Grade']['totalGrammer']}}
                             </th>
+
                             <th>
-                                갯수
+                            <!--Changing Langeage : modal / 갯수-->
+                            {{$language['modal']['Grade']['allCount']}}
                             </th>
                         </tr>
                         </thead>
@@ -541,7 +590,10 @@
             <div class="modal-content" >
 
                 <div class="modal-header">
-                    <h4 class="modal-title" id="ModalLabel">피드백</h4>
+                    <h4 class="modal-title" id="ModalLabel">
+                            <!--Changing Langeage : modal / 피드백-->
+                            {{$language['modal']['Title']['feedback']}}
+                    </h4>
                     <br>
                     <div class="request_date" style=";float: right;">
                         질문 날짜 : 2018-04-17
@@ -592,7 +644,8 @@
                     <div class="images" style="margin: 10px;">
 
                         <label for="ex_file">
-                            파일 첨부
+                        <!--Changing Langeage : modal / 피드백 -> 파일 첨부 -->
+                            {{$language['modal']['Feedback']['file']}}
                         </label>
 
                         <form id="myform" name="myform" method="post" enctype="multipart/form-data">
@@ -628,18 +681,9 @@
                     <div class="answer" style="padding: 5px 5px 5px 5px">
                         <input type="text" id="teachersFeedback" name="contents" style="width: 100%;height:120px;"></input>
                     </div>
-
-                    <div class="modal-footer feedback">
-                    </div>
-
-                    <script>
-                        function changeCheck(qnaId){
-                            alert('정상 등록하였습니다.');
-                            $('#btnQnA_'+qnaId).attr('class','btn btn-primary').text('확인');
-                        }
-                    </script>
-
                 </div>
+
+                <div class="modal-footer feedback"> </div>
             </div>
         </div>
     </div>

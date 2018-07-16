@@ -25,7 +25,7 @@
             height: 100%;
         }
         body{
-            background-image: url("/img/race_waiting/wait_bg.png");
+            background-image: url("/img/race_play/pop_bg.png");
             min-height: 100%;
             background-position: center;
             background-size: cover;

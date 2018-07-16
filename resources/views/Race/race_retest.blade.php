@@ -13,8 +13,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <link href="js/bootstrap.min.js" rel="stylesheet">
     <style>
+        html{
+            width: 100%;
+            height: 100%;
+        }
         body{
-            background: #00BCD4 !important;
+            background-image: url("/img/race_play/re_bg.png") !important;
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -33,7 +42,7 @@
     var real_A;
 
     var selected_answer;
-
+    var now_status;
     //quizId , sessionId , answer
 
     window.onload = function(){
@@ -101,6 +110,7 @@
                 $('#passingMark').text("合格点:"+result['passingMark']);
                 $('#groupName').text(result['groupName']);
                 $('#userName').text(result['userName']);
+                $('#now_status').text("1 / "+result['quizCount']);
 
                 quizCount = result['quizCount'];
                 quiz_JSON = result['quizs']['quiz'];
@@ -159,8 +169,6 @@
     }
 
     function quizGet(){
-        $('#quiz_number').text(retest_quiz_num+1);
-        $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
 
         switch(quiz_JSON[retest_quiz_num].makeType){
 
@@ -190,6 +198,11 @@
                 break;
         }
         retest_quiz_num++;
+
+        $('#quiz_number').text("Q"+retest_quiz_num+". ");
+        $('#quiz_contents').text(quiz_JSON[retest_quiz_num].question);
+
+        $('#now_status').text(retest_quiz_num+" / "+quizCount);
     }
 
 </script>
