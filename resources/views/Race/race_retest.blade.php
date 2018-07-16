@@ -13,8 +13,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <link href="js/bootstrap.min.js" rel="stylesheet">
     <style>
+        html{
+            width: 100%;
+            height: 100%;
+        }
         body{
-            background: #00BCD4 !important;
+            background-image: url("/img/race_play/re_bg.png");
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>

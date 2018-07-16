@@ -245,7 +245,7 @@
 
                 <li style="margin-top:10px;">
                     @if(session()->get('login_check'))
-                        <span>@php echo session()->get('user_name')."様"; @endphp</span>
+                        <span>@php echo session()->get('user_name'); @endphp</span>
                         <button id="Login_button" type="button" onclick="tryLogout()">Logout</button>
                     @else
                         <input class="Login_form" type="text" name=""
