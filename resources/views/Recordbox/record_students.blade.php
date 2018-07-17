@@ -180,14 +180,6 @@
 
                 $('#student_list').empty();
 
-                /*
-                data = {group : { id: 1, name: "#WDJ", studentCount : 5}
-                        student : { 0: { id: 1300000, name: "김똘똘"}
-                                    1: { id: 1300000, name: "최천재"}
-                                   }
-                        teacher : { id: 123456789, name: "이OO교수"}
-                */
-
                 var student = data['students'];
 
                 for(var i = 0 ; i < student.length; i++){
@@ -235,7 +227,7 @@
 
                 //1은 학생개인 성적표
                 makingModalPage(raceId,data,1);
-                $('.modal-content.studentGrade .modal-title').text("학생 점수");
+                $('.modal-content.studentGrade .modal-title').text("{{$language['modal']['Title']['allStudentGrade']}}");
 
             },
             error: function (data) {
@@ -259,28 +251,7 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data: reqData,
             success: function (data) {
-                /*
-                 data = { wrongs: {
-                                0: { number: 1,
-                                    id: 1,
-                                    question: "苦労してためたお金なのだから、一円（　　）無駄には使いたくない。",
-                                    hint:"3",
 
-                                    rightAnswer:1,
-                                    example1:"たりとも",
-                                    example2:"とはいえ",
-                                    example3:"だけさえ",
-
-                                    userCount:1,
-                                    rightAnswerCount:0,
-                                    wrongCount:1,
-                                    example1Count:0,
-                                    example2Count:0,
-                                    example3Count:1,
-                                    }
-                                }
-                        }
-                */
                 //오답리스트 로드할 위치(id값)를 변수에 담기
                 var WrongList = "modal_allWrongAnswerList";
                 var wrongsData = data['wrongs'];
@@ -290,7 +261,7 @@
                 $('.wrong_right').empty();
 
                 if(wrongsData.length == 0){
-                    $('.wrong_left').text("오답 내용이 없습니다.");
+                    $('.wrong_left').text("{{$language['modal']['Grade']['noWrongData']}}");
                     $('.wrong_left').addClass("noBoardLine");
                     $('.wrong_right').addClass("noBoardLine");
 
@@ -354,11 +325,11 @@
                                             .append($('<tr>')
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class', 'wrongExamples')
-                                                        .append($('<div>').text("정답 : " + wrongsData[i]['rightAnswer'])
+                                                        .append($('<div>').text("{{$language['history']['answer']}} : " + wrongsData[i]['rightAnswer'])
                                                         )
-                                                        .append($('<div>').text("힌트 : " + wrongsData[i]['hint']).css('color', 'blue')
+                                                        .append($('<div>').text("{{$language['history']['hint']}} : " + wrongsData[i]['hint']).css('color', 'blue')
                                                         )
-                                                        .append($('<div>').text("작성답 : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
+                                                        .append($('<div>').text("$language['history']['studentAnswer'] : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
                                                         )
                                                     )
                                                 )
@@ -419,7 +390,9 @@
                     $('#studentGradeList').append($('<tr>').attr('id','stdGrade_'+i));
 
                     $('#stdGrade_' + i).append($('<td>').text(i+1));
-                    $('#stdGrade_' + i).append($('<td>').text(raceData['year']+"년 "+raceData['month']+"월 "+raceData['day']+"일"));
+                    $('#stdGrade_' + i).append($('<td>').text(raceData['year']+"{{$language['modal']['Date']['year']}} "
+                                                                +raceData['month']+"{{$language['modal']['Date']['month']}} "
+                                                                +raceData['day']+"{{$language['modal']['Date']['date']}}"));
                     $('#stdGrade_' + i).append($('<td>').text(raceData['listName']));
                     $('#stdGrade_' + i).append($('<td>').text(ChartData['total_data'][1][i]['y']));
                     $('#stdGrade_' + i).append($('<td>').text(ChartData['voca_data'][1][i]['y']));
@@ -432,13 +405,13 @@
 
                             break;
                         case "order" :
-                            $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미응시")));
+                            $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("{{$language['history']['notdone']}}")));
 
                             break;
                         case "clear" :
                             $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentRetestGradeCard')
                                 .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                    .attr('id',raceData['raceId']).attr('name',userId).text("응시완료")));
+                                    .attr('id',raceData['raceId']).attr('name',userId).text("{{$language['history']['done']}}")));
 
                             break;
                     }
@@ -452,20 +425,20 @@
 
                             break;
                         case "order" :
-                            $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("미제출")));
+                            $('#stdGrade_' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("{{$language['history']['notsubmit']}}")));
 
                             break;
                         case "clear" :
                             $('#stdGrade_' + i).append($('<td>').attr('class','modal_openStudentWrongGradeCard')
                                 .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                                    .attr('id',raceData['raceId']).attr('name',userId).text("제출완료")));
+                                    .attr('id',raceData['raceId']).attr('name',userId).text("{{$language['history']['submit']}}")));
 
                             break;
                     }
 
                     $('#stdGrade_'+i).append($('<td>').attr('class','modal_openStudentGradeCard')
                         .append($('<button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal_RaceGradeCard">')
-                            .attr('id',raceData['raceId']).attr('name',userId).text("성적표")));
+                            .attr('id',raceData['raceId']).attr('name',userId).text("{{$language['history']['grade']}}")));
                 }
 
             },
@@ -526,10 +499,10 @@
         }
 
         //차트 데이터 합치기
-        AllChartData = { "total_data"   : ["전체 평균 점수" , total_data_Points] ,
-            "voca_data"    : ["어학 점수", vocabulary_Points] ,
-            "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-            "word_data"    : ["단어 점수" , word_data_Points]
+        AllChartData = { "total_data" : ["{{$language['modal']['Grade']['allGrade']}}" , total_data_Points] ,
+                "voca_data" : ["{{$language['modal']['Grade']['totalVoca']}}", vocabulary_Points] ,
+                "grammer_data" : ["{{$language['modal']['Grade']['totalGrammer']}}" , grammer_data_Points] ,
+                "word_data" : ["{{$language['modal']['Grade']['totalWord']}}" , word_data_Points]
         };
 
         return AllChartData;
@@ -655,7 +628,7 @@
                 console.log(data);
 
                 makingModalPage(raceId,data,1);
-                $('.modal-content.studentGrade .modal-title').text("재시험 점수");
+                $('.modal-content.studentGrade .modal-title').text("{{$language['history']['retestGrade']}}");
 
             },
             error: function (data) {
@@ -696,7 +669,7 @@
 
     <div class="studentsPage_main">
         <h4>
-            학생 관리
+        {{$language['student']['student']}}
         </h4>
     </div>
     <div class="studentChart">
@@ -706,10 +679,10 @@
                     <thead>
                     <tr>
                         <th>
-                            번호
+        {{$language['modal']['Subtitle']['number']}}
                         </th>
                         <th>
-                            이름
+        {{$language['modal']['Subtitle']['name']}}
                         </th>
                     </tr>
                     </thead>
@@ -739,34 +712,34 @@
                 <thead>
                 <tr>
                     <th style=" text-align: center;min-width: 50px;">
-                        번호
+        {{$language['modal']['Subtitle']['number']}}
                     </th>
                     <th style=" text-align: center;">
-                        날짜
+        {{$language['modal']['Subtitle']['date']}}
                     </th>
                     <th style="text-align: center;">
-                        문제 이름
+        {{$language['modal']['Subtitle']['quizName']}}
                     </th>
                     <th style=" text-align: center;width: 100px;">
-                        총 점수
+        {{$language['modal']['Grade']['allGrade']}}
                     </th>
                     <th style=" text-align: center;min-width: 80px;">
-                        어휘
+        {{$language['modal']['Grade']['totalVoca']}}
                     </th>
                     <th style=" text-align: center;min-width: 80px;">
-                        독해
+        {{$language['modal']['Grade']['totalGrammer']}}
                     </th>
                     <th style=" text-align: center;min-width: 80px;">
-                        단어
+        {{$language['modal']['Grade']['totalWord']}}
                     </th>
                     <th style=" text-align: center;width: 100px;">
-                        재시험
+        {{$language['modal']['Subtitle']['retest']}}
+                    </th>
+                    <th style=" text-align: center;width: 120px;">
+        {{$language['modal']['Subtitle']['omr']}}
                     </th>
                     <th style=" text-align: center;width: 100px;">
-                        오답노트
-                    </th>
-                    <th style=" text-align: center;width: 100px;">
-                        성적표
+        {{$language['modal']['Subtitle']['grade']}}
                     </th>
                 </tr>
                 </thead>

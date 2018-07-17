@@ -15,7 +15,11 @@
     <!-- Bootstrap CSS CDN -->
     <style>
         .PAGE_RECORDBOX {
-            font-family: "a뉴고딕M";
+                @if($country == "jp")
+                font-family: 'Meiryo UI';
+                @else
+                font-family: "a뉴고딕M";
+                @endif
             background-color: #f7f8fa;
             font-size: 13px;
             color: #5f5f5f;
