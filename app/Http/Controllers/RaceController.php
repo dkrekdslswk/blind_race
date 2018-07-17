@@ -10,28 +10,28 @@ use App\Http\Controllers\UserController;
 class RaceController extends Controller{
 
     /****
-     * 리스트 선택 후 레이스 혹은 테스트를 생성
+     * List選択後QuizRaceとかPopQuizの準備をする。
      *
      * @param Request $request->input()
-     *      'groupId' 출제할 그룹 아이디
-     *      'raceType' 레이스 타입
-     *      'listId' 출제할 리스트 아이디
-     *      'passingMark' 재시험을 위한 커트라인
+     *      'groupId' 出題するクラスのアイディ
+     *      'raceType' レースのタイプ
+     *      'listId' 出題するリストのアイディ
+     *      'passingMark' 再試験のためのカットライン
      *
      * @return view('homepage')->with('response', $returnValue)
      *      $returnValue => array(
      *          'list'=>array(
-     *              'listName' 리스트 이름
-     *              'quizCount' 리스트 문제 수
+     *              'listName' リストの名前
+     *              'quizCount' リストの問題数
      *          ),
      *          'group'=>array(
-     *              'groupName' 그룹 이름
-     *              'groupStudentCount' 그룹의 학생 수
+     *              'groupName' グループの名前
+     *              'groupStudentCount' グループの生徒数
      *          ),
-     *          'sessionId' 교사의 세션 아이디
-     *          'check' 레이스 생성 성공 여부
-     *          'roomPin' 방 아이디
-     *          'quizs' => $this->quizGet(리스트 아이디);
+     *          'sessionId' 教師のsessionのアイディ
+     *          'check' レースの生成に成功するかどうか
+     *          'roomPin' 部屋のアイディ
+     *          'quizs' => $this->quizGet(出題するリストのアイディ);
      *      )
      */
     public function createRace(Request $request){
@@ -158,17 +158,17 @@ class RaceController extends Controller{
     }
 
     /****
-     * 레이스 혹은 테스트에서 학생이 방에 입장할 때
+     * レースとテストで、生徒が部屋に入場する時
      *
      * @param Request $request
-     *      'roomPin' 레이스 방 아이디
-     *      'sessionId' 세션 아이디
+     *      'roomPin' 部屋のアイディ
+     *      'sessionId' 生徒のsessionのアイディ
      *
      * @return array(
-     *      'sessionId' 세션 아이디
-     *      'characters' 이미 선택된 캐릭터 아이디 목록
-     *      ['quizs'][ 쪽지시험 재접속 시 안푼 문제 목록
-     *      'check' 방에 입장 성공 여부 설정
+     *      'sessionId' 生徒のsessionのアイディ
+     *      'characters' すでに選択されたキャラクターのアイディの一覧
+     *      ['quizs'] 小テスト再接続の際、解けない問題リスト
+     *      'check' 部屋に入場成功するかどうか
      *  )
      */
     public function studentIn(Request $request){
@@ -334,16 +334,16 @@ class RaceController extends Controller{
     }
 
     /****
-     * 레이스 시작전에 학생이 나갔을 경우
+     * レースが始まる前に生徒が出た場合
      *
      * @param Request $request->input()
-     *      'roomPin' 레이스 방 번호
-     *      'sessionId' 세션 아이디
+     *      'roomPin' 部屋のアイディ
+     *      'sessionId' 生徒のsessionのアイディ
      *
      * @return array(
-     *      'sessionId' 세션 아이디
-     *      'characters' 유저가 선택했던 캐릭터 아이디
-     *      'check' 성공 여부
+     *      'sessionId' 生徒のsessionのアイディ
+     *      'characters' すでに選択されたキャラクターのアイディの一覧
+     *      'check' 部屋に入場成功するかどうか
      *  )
      */
     public function studentOut(Request $request){
@@ -416,7 +416,7 @@ class RaceController extends Controller{
     }
 
     /****
-     * 레이스 에서 학생이 닉네임과 캐릭터를 설정할 때
+     * レースで、生徒がニックネームとキャラクターを設定するとき
      *
      * @param Request $request->input()
      *      'sessionId' 세션 아이디
@@ -942,7 +942,7 @@ class RaceController extends Controller{
      */
     public function retestSet(Request $request){
         $postData = array(
-            'raceId' => $request->input('raceId')
+            'raceId' => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저정보 받아오기
@@ -1016,8 +1016,8 @@ class RaceController extends Controller{
      */
     public function retestStart(Request $request){
         $postData = array(
-            'sessionId' => $request->input('sessionId'),
-            'raceId'    => $request->input('raceId')
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : false,
+            'raceId'    => $request->has('raceId') ? $request->input('raceId') : false
         );
 
         // 유저 정보 받아오기
@@ -1085,7 +1085,7 @@ class RaceController extends Controller{
      */
     public function retestAnswerIn(Request $request){
         $postData     = array(
-            'sessionId' => $request->has('sessionId'),
+            'sessionId' => $request->has('sessionId') ? $request->input('sessionId') : false,
             'quizId'    => $request->has('quizId') ? $request->input('quizId') : false,
             'answer'    => $request->has('answer') ? $request->input('answer') : false
         );
@@ -1093,75 +1093,82 @@ class RaceController extends Controller{
         // 유저 정보 가져오기
         $userData = UserController::sessionDataGet($postData['sessionId']);
 
-        // 레이스 정보 가져오기
-        $raceData = DB::table('races as r')
-            ->select(
-                'r.number as raceId',
-                'r.listNumber as listId'
-            )
-            ->where([
-                'r.number' => $userData['raceId']
-            ])
-            ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
-            ->first();
-
-        // 레이스가 존재할 경우 값을 입력
-        if($raceData && $postData['quizId']){
-            // 정답 미입력 처리
-            if (!$postData['answer']){
-                $postData['answer'] = '';
-            }
-
-            // 현재 문제정보
-            $quizData = DB::table('quizBanks')
+        // 유저 접속 확인
+        if ($userData['check']) {
+            // 레이스 정보 가져오기
+            $raceData = DB::table('races as r')
                 ->select(
-                    'rightAnswer as right',
-                    'type'
+                    'r.number as raceId',
+                    'r.listNumber as listId'
                 )
                 ->where([
-                    'number' => $postData['quizId']
+                    'r.number' => $userData['raceId']
                 ])
+                ->join('sessionDatas as s', 's.raceNumber', '=', 'r.number')
                 ->first();
 
-            switch ($quizData->type){
-                case 'vocabulary obj':
-                case 'word obj':
-                case 'grammar obj':
-                case 'vocabulary sub':
-                case 'word sub':
-                case 'grammar sub':
-                    $rights = explode(',', $quizData->right);
-                    $answerCheck = 'X';
-                    foreach ($rights as $right){
-                        if ($postData['answer'] == $right){
-                            $answerCheck = 'O';
-                            break;
+            // 레이스가 존재할 경우 값을 입력
+            if ($raceData && $postData['quizId']) {
+                // 정답 미입력 처리
+                if (!$postData['answer']) {
+                    $postData['answer'] = '';
+                }
+
+                // 현재 문제정보
+                $quizData = DB::table('quizBanks')
+                    ->select(
+                        'rightAnswer as right',
+                        'type'
+                    )
+                    ->where([
+                        'number' => $postData['quizId']
+                    ])
+                    ->first();
+
+                switch ($quizData->type) {
+                    case 'vocabulary obj':
+                    case 'word obj':
+                    case 'grammar obj':
+                    case 'vocabulary sub':
+                    case 'word sub':
+                    case 'grammar sub':
+                        $rights = explode(',', $quizData->right);
+                        $answerCheck = 'X';
+                        foreach ($rights as $right) {
+                            if ($postData['answer'] == $right) {
+                                $answerCheck = 'O';
+                                break;
+                            }
                         }
-                    }
-                    break;
-                default:
-                    $answerCheck = 'X';
-            }
+                        break;
+                    default:
+                        $answerCheck = 'X';
+                }
 
-            // 정답을 입력
-            $quizInsert = DB::table('records')
-                ->insert([
-                    'raceNo'        => $raceData->raceId,
-                    'userNo'        => $userData['userId'],
-                    'listNo'        => $raceData->listId,
-                    'quizNo'        => $postData['quizId'],
-                    'answerCheck'   => $answerCheck,
-                    'answer'        => $postData['answer'],
-                    'retest'        => 1
-                ]);
+                // 정답을 입력
+                $quizInsert = DB::table('records')
+                    ->insert([
+                        'raceNo' => $raceData->raceId,
+                        'userNo' => $userData['userId'],
+                        'listNo' => $raceData->listId,
+                        'quizNo' => $postData['quizId'],
+                        'answerCheck' => $answerCheck,
+                        'answer' => $postData['answer'],
+                        'retest' => 1
+                    ]);
 
-            // true 값 입력 성공
-            // false 재 시간 이내에 정답 입력실패, 중복입력, 레이스가 없음, 리스트가 없음.
-            if ($quizInsert == 1){
-                $returnValue = array(
-                    'check' => true
-                );
-            } else{
+                // true 값 입력 성공
+                // false 재 시간 이내에 정답 입력실패, 중복입력, 레이스가 없음, 리스트가 없음.
+                if ($quizInsert == 1) {
+                    $returnValue = array(
+                        'check' => true
+                    );
+                } else {
+                    $returnValue = array(
+                        'check' => false
+                    );
+                }
+            } else {
                 $returnValue = array(
                     'check' => false
                 );

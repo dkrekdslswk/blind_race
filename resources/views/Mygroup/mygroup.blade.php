@@ -46,7 +46,7 @@
 
                         {{--<input id="checkBox" type="checkbox">--}}
 
-                        <input type="text" size="50px" placeholder="新しい暗証番号を入力してください" id="psw" required>
+                        <input type="text" size="50px" placeholder="新しいパスワードを入力してください" id="psw" required>
                         <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 10px " type="button" onclick="update('#')">変更</button>
                     </div>
 
@@ -123,7 +123,7 @@
             <table>
                 <tr class="header">
                     <th style="width:42%"><i class="fas fa-user-circle"></i>  名前</th>
-                    <th style="width:40%"><i class="fas fa-clipboard-list"></i> 学番</th>
+                    <th style="width:40%"><i class="fas fa-clipboard-list"></i> 学籍番号</th>
                     <th style="width:15%"><i class="fas fa-user-plus"></i> <input type="checkbox" id="allCheck"/></th>
                 </tr>
             </table>
@@ -138,11 +138,11 @@
     </div>
     <div class="col col-lg-5">
 
-        <p class="pen">現在のクラス生徒</p>
+        <p class="pen">現在のクラス学生</p>
         <table>
             <tr class="header" style="border-top: 1px solid gray;">
                 <th style="width:26%"><i class="fas fa-user-circle"></i>  名前</th>
-                <th style="width:25%"><i class="fas fa-clipboard-list"></i> 学番</th>
+                <th style="width:25%"><i class="fas fa-clipboard-list"></i> 学籍番号</th>
                 <th style="width:35%;"><i class="fas fa-info"></i> パスワード</th>
                 <th style="width:25%;"></th>
             </tr>

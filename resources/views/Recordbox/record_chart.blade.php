@@ -260,11 +260,12 @@
                     label : raceData[i]['listName']});
             }
 
+            //Changing language : chart / 총점수,어휘점수
             //차트 데이터 합치기
-            AllChartData = { "total_data" : ["총 점수" , total_data_Points] ,
-                "voca_data" : ["어휘 점수", vocabulary_Points] ,
-                "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-                "word_data" : ["단어 점수" , word_data_Points]
+            AllChartData = { "total_data" : ["{{$language['modal']['Grade']['allGrade']}}" , total_data_Points] ,
+                "voca_data" : ["{{$language['modal']['Grade']['totalVoca']}}", vocabulary_Points] ,
+                "grammer_data" : ["{{$language['modal']['Grade']['totalGrammer']}}" , grammer_data_Points] ,
+                "word_data" : ["{{$language['modal']['Grade']['totalWord']}}" , word_data_Points]
             };
 
             return AllChartData;
@@ -284,7 +285,7 @@
                 title:{},
                 axisX:{
                     labelFontSize: 15,
-                    valueFormatString: "MM월 DD일 (HH:ss)",
+                    valueFormatString: "MM{{$language['modal']['Date']['month']}} DD{{$language['modal']['Date']['date']}} (HH:ss)",
                     crosshair: {
                         enabled: true,
                         snapToDataPoint: true
@@ -372,15 +373,16 @@
         <div class="chartAttribute">
 
             <div class="attributeContainer">
-                <h4>시간 정하기</h4>
+                <!-- Changing language : chart / 시간 정하기 -->
+                <h4>{{$language['chart']['setTime']}}</h4>
 
                 <div class="recordbox-radio">
                     <div class="recordbox-radioButtons">
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">일주일</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='2' >한달</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='3' >3개월</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='4' >6개월</label>
-                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='5' >12개월</label>
+                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='1' checked="checked">{{$language['chart']['week']}}</label>
+                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='2' >{{$language['chart']['month']}}</label>
+                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='3' >{{$language['chart']['3month']}}</label>
+                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='4' >{{$language['chart']['6month']}}</label>
+                        <label><input type="radio" class="radio_changeDateToChart" name="optradio" onclick="changeDateToChart()" value='5' >{{$language['chart']['12month']}}</label>
                     </div>
                 </div>
 
@@ -390,7 +392,8 @@
                     <input type="date" name="chooseday" id="endDate"></input>
 
                     <button class="btn btn-primary" style="margin-left: 30px;" onclick="orderChart()">
-                        조회
+                        <!-- Changing language : chart / 조회 -->
+                        {{$language['chart']['refer']}}
                     </button>
                 </div>
             </div>
@@ -398,7 +401,10 @@
 
 
         <div class="chartArea">
-            <h4>결과</h4>
+            <h4>
+            <!-- Changing language : chart / 조회 -->
+            {{$language['chart']['result']}}
+            </h4>
             <div class="chartWrapper">
                 <div class="chartAreaWrapper">
                     <div class="canvaschart" id="chartContainer"></div>

@@ -1,3 +1,31 @@
+<?php
+
+$language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
+                                        'allStudent' => '전체 학생',
+                                        'detail' => '상세 보기',
+                                        'feedback' => '피드백',
+                                        'wrongTest' => '오답 문제'),
+                        "Date" => array('year' => "년" ,
+                                        'month' => '월' ,
+                                        'date' =>'일' ),
+                        "Grade" => array('allStudent' => "전체학생",
+                                        'allGrade' => "총점수",
+                                        'totalVoca' => "어휘",
+                                        'totalGrammer' => "독해",
+                                        'totalWord' => "문법",
+                                        'allCount' => "갯수",
+                                        'allAverage' => "전체 평균",
+                                        'noWrongData' => "오답 내용이 없습니다."),
+                        "Feedback" => array('file'=>'파일 첨부',
+                                            'alert'=>'정상 등록되었습니다.',
+                                            'questionDate' => '질문 날짜',
+                                            'feedbackDate' => '대답 날짜',
+                                            'ok'=>'확인',
+                                            'cancel'=>'취소')
+];
+
+?>
+
 <style type="text/css">
     .record_feedback {
         z-index: 1;
@@ -89,6 +117,9 @@
 
     $(document).ready(function () {
 
+        loadFeedback();
+
+
         $(document).on('click','.feedbackList',function () {
             loadFeedbackModal($(this).attr('id'));
 
@@ -157,11 +188,17 @@
                         );
                     if(instanceData['QnAs'][i]['answer_at'] == ""){
                         $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning').text("미확인")));
+                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning')
+                            //Change language : feedback
+                                //.text("미확인")));
+                                .text("미확인")));
 
                     }else{
                         $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                            .append($('<button">').attr('class','btn btn-primary').text("확인")));
+                            .append($('<button">').attr('class','btn btn-primary')
+                            //Change language : feedback
+                            //.text("확인")));
+                            .text("확인")));
                     }
                 }
 
@@ -172,8 +209,6 @@
 
         });
     }
-    loadFeedback();
-
 
     function loadFeedbackModal(qnaId){
 
@@ -191,7 +226,7 @@
         $('.response_date').empty();
         $('.request_contents').empty();
         $('#teachersFeedback').empty();
-        $('.modal-footer feedback').empty();
+        $('.modal-footer.feedback').empty();
 
         for(var i = 0 ; i < 1;i++){
 
@@ -200,8 +235,8 @@
             $('.request_contents').text(instanceData['QnAs'][i]['question']);
             $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
 
-            $('.modal-footer feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
-            $('.modal-footer feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
 
         }
 
@@ -236,6 +271,7 @@
 
 <div class="feedbackPage_main">
     <h4>
+        <!-- Change language : feedback / 피드백-->
         피드백
     </h4>
 </div>

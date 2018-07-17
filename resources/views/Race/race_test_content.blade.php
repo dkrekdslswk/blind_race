@@ -15,7 +15,7 @@
         background-color:white;
     }
     #test_content{
-        margin-top:10%;
+        margin-top:2%;
         margin-left:10%;
     }
     * { box-sizing:border-box; }
@@ -43,9 +43,11 @@
     .footer a  { color:#53B2C8; }
 
     /* form starting stylings ------------------------------- */
-    .group 			  {
-        position:relative;
-        margin-bottom:45px;
+    .group {
+        position: relative;
+        margin-bottom: 45px;
+        margin-left: 35%;
+        margin-top: 10%;
     }
     #sub_content 				{
         font-size:18px;
@@ -175,11 +177,13 @@
 
             <tr>
                 <td colspan="3" style="width:100%; height:400px;" valign="top">
-                    <span id="quiz_number"></span>
-                    <span id="quiz_contents"></span><br>
-                    <span id="quiz_guide"> ()の中に入る言葉を入力してください。</span>
+                    <div id="q_info" style="text-align:center;">
+                        <span id="quiz_number" style="font-size: 45px; color:navy;"></span>
+                        <span id="quiz_contents" style="font-size:30px;"></span><br>
+                        <span id="quiz_guide">※()あるいは漢字の正解を入力してください</span>
+                    </div>
 
-                    <div id="obj" style="display:none;">
+                    <div id="obj" style="display:none; margin-left:30%; font-size:20px; margin-top:10px;">
                         <br>
                         <label>
                             <input id="answer1_radio" name="answer" type="radio" checked="checked">
@@ -218,7 +222,7 @@
                 </td>
             </tr>
 
-            <tr> <td class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
+            <tr> <td id="now_status" class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
                 <td class="retest_footer"  style=" text-align: right;">
                     <button id="Re-Test-button" onclick="nextQuiz();"> 다음문제</button>
                 </td> </tr>
