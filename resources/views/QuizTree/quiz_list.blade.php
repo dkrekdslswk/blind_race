@@ -384,10 +384,10 @@
                         data: params,
                         success: function (data) {
                             //alert(JSON.stringify(data));
-                            swal("ON");
+                            swal("公開ON");
                         },
                         error: function (data) {
-                            swal("error");
+                            swal("エラー");
                         }
                     });
                 }
@@ -410,10 +410,10 @@
                         data: params,
                         success: function (data) {
                             //alert(JSON.stringify(data));
-                            swal("OFF");
+                            swal("公開OFF");
                         },
                         error: function (data) {
-                            swal("error");
+                            swal("エラー");
                         }
                     });
                 }
@@ -424,7 +424,7 @@
 
     // ALERT (수정 삭제 불가능한 이유 : 공유 폴더)
     function shareFolderMsg() {
-        swal("공유 폴더에 있는 리스트는 삭제할 수 없습니다.");
+        swal("公開フォルダーにあるクイズは修正・削除できません");
     }
 
     // ALERT (수정 삭제 불가능한 이유 : 언제 누가 사용했는지?)
@@ -587,7 +587,7 @@
                         str += "<tr>";
                         str += "<td style='text-align: center;'>" + questionId + "</td>";
                         str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>出題タイプ</td>";
-                        str += "<td style='width: 22.5%; text-align: center'>書き</td>";
+                        str += "<td style='width: 22.5%; text-align: center'>記述問題</td>";
                         str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>問題タイプ</td>";
                         str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
                         str += "</tr>";
