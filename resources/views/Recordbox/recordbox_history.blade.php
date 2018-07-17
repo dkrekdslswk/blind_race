@@ -310,9 +310,9 @@
 
 //Changing Langeage : modal
 //$('#modal_date').text(StudentData['year']+"년 "+StudentData['month']+"월 "+StudentData['day']+"일");
-                    $('#modal_date').text(StudentData['year']+"$language['modal']['Date']['year']"
-                                         +StudentData['month']+"$language['modal']['Date']['month']"
-                                         +StudentData['day']+"$language['modal']['Date']['date']");
+                    $('#modal_date').text(StudentData['year']+"{{$language['modal']['Date']['year']}} "
+                                         +StudentData['month']+"{{$language['modal']['Date']['month']}} "
+                                         +StudentData['day']+"{{$language['modal']['Date']['date']}}");
 
 
                     $('#modal_raceName_teacher').text(StudentData['listName'] +"  /  " +StudentData['teacherName'] );
