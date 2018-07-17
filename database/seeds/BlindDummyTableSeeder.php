@@ -114,7 +114,7 @@ class BlindDummyTableSeeder extends Seeder
                 'question'      => '各ビール会社がシェアを（競って）いる。',
                 'rightAnswer'   => 'きそって',
                 'example'       => ['たたかって', 'あせって', 'ちかって'],
-                'hint'          => '앞다투어',
+                'hint'          => 'OOoO',
                 'level'         => '1'
             ],
             [
