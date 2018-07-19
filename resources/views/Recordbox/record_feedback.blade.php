@@ -91,7 +91,6 @@
 
         loadFeedback();
 
-
         $(document).on('click','.feedbackList',function () {
             loadFeedbackModal($(this).attr('id'));
 

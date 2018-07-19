@@ -119,13 +119,8 @@ Route::get('/recordbox_student', function(){
     return view('Recordbox/recordbox_student_main');
 });
 
-/* 4-3. student: student_homepage */
-Route::get('/student', function(){
-    return view('homepage_studnet');
-});
-
-/* 4-3. student: student_homepage */
-Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId = null,$country = null){
+/* 4-2. Record Box : Record List */
+Route::get('{who}/recordbox/{where}/{groupId?}/{country?}', function($who = null,$where,$groupId = null,$country = null){
 
     if ($country != "kr" && $country != null && $country != "jp") {
         $where = "error";
@@ -316,7 +311,18 @@ Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId 
         case "history":
         case "students":
         case "feedback":
-            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+
+            switch($who){
+                case null :
+                    return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+                break;
+                case "student" : 
+                    return view('Recordbox/recordbox_student_main' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+                break;
+                default :
+                    return view('sorry');
+                break;
+            }
             break;
 
         default:
@@ -324,6 +330,13 @@ Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId 
             break;
     }
 });
+
+
+/* 4-3. student: student_homepage */
+Route::get('/student', function(){
+    return view('homepage_studnet');
+});
+
 
 /* ↓↓↓↓↓ FOR TEST ↓↓↓↓↓ */
 
