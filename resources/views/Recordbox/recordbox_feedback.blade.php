@@ -2078,7 +2078,7 @@
                         </label>
 
                         <form id="myform" name="myform" method="post" enctype="multipart/form-data">
-                            <input type="file" name="feedbackImg" onchange="loadFile()" id="ex_file">
+                            <input type="file" name="feedbackImg" onchange="loadFile(event)" id="ex_file">
                         </form>
 
                         <img id="output" style="max-width: 300px;max-height: 300px;"/>
@@ -2086,7 +2086,7 @@
                         {{--사진 불러오는 스크립트--}}
                         <script type="text/javascript">
 
-                            function loadFile(){
+                            function loadFile(event){
                                 var reader = new FileReader();
 
                                 var ex_file = document.getElementById('ex_file');
