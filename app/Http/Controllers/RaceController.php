@@ -252,12 +252,14 @@ class RaceController extends Controller{
             } else if ($raceData->type == 'race'){
                 $returnValue = array(
                     'sessionId' => $postData['sessionId'],
-                    'check' => false
+                    'check' => false,
+                    'mark' => 3
                 );
             } else {
                 $returnValue = array(
                     'sessionId' => $postData['sessionId'],
-                    'check' => false
+                    'check' => false,
+                    'mark' => 4
                 );
             }
         } else if($userData['check']){
@@ -286,7 +288,7 @@ class RaceController extends Controller{
                         'PIN' => $postData['roomPin'],
                         'raceNumber' => $raceData->raceId,
                         'characterNumber' => null,
-                        'nick' => $raceData->raceType == 'race' ? null : $userData['userName'],
+                        'nick' => ($raceData->raceType == 'race' ? null : $userData['userName']),
                     ]);
                 $sessionCheck = ($sessionUpdate == 1);
 
@@ -320,13 +322,15 @@ class RaceController extends Controller{
             } else {
                 $returnValue = array(
                     'sessionId' => $postData['sessionId'],
-                    'check' => false
+                    'check' => false,
+                    'mark' => 2
                 );
             }
         } else {
             $returnValue = array(
                 'sessionId' => $postData['sessionId'],
-                'check' => false
+                'check' => false,
+                'mark' => 1
             );
         }
 
