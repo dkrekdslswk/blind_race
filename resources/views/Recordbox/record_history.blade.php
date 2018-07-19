@@ -403,9 +403,11 @@
                                             .append($('<tr>')
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class','wrongExamples')
-                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"{{$language['modal']['Grade']['people']}})")
+                                                    //CL. history : 정답
+                                                    //CL. history : 힌트
+                                                        .append($('<div>').text("{{$language['history']['answer']}} : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'] +"{{$language['modal']['Grade']['people']}})")
                                                         )
-                                                        .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
+                                                        .append($('<div>').text("{{$language['history']['hint']}} : "+wrongsData[i]['hint']).css('color','blue')
                                                         )
                                                     )
                                                 )
@@ -474,10 +476,12 @@
 
                         switch (stdHomework[i]['retestState']){
                             case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+                            //CL. history : PASS
+                                $('#history_homework_tr' + i).append($('<td>').text("{{$language['history']['pass']}}"));
 
                                 break;
                             case "order" :
+                            //CL. history : 미응시
                                 $('#history_homework_tr' + i).append($('<td>').append($('<button>').attr('class', 'btn btn-warning').text("{{$language['history']['notdone']}}")));
 
                                 break;
@@ -494,7 +498,7 @@
 
                         switch (stdHomework[i]['wrongState']){
                             case "not" :
-                                $('#history_homework_tr' + i).append($('<td>').text("PASS"));
+                                $('#history_homework_tr' + i).append($('<td>').text("{{$language['history']['pass']}}"));
 
                                 break;
                             case "order" :
@@ -623,10 +627,10 @@
         }
 
         //차트 데이터 합치기
-        AllChartData = { "total_data"   : ["전체 평균 점수" , total_data_Points] ,
-            "voca_data"    : ["어학 점수", vocabulary_Points] ,
-            "grammer_data" : ["독해 점수" , grammer_data_Points] ,
-            "word_data"    : ["단어 점수" , word_data_Points]
+        AllChartData = { "total_data" : ["{{$language['modal']['Grade']['allGrade']}}" , total_data_Points] ,
+                "voca_data" : ["{{$language['modal']['Grade']['totalVoca']}}", vocabulary_Points] ,
+                "grammer_data" : ["{{$language['modal']['Grade']['totalGrammer']}}" , grammer_data_Points] ,
+                "word_data" : ["{{$language['modal']['Grade']['totalWord']}}" , word_data_Points]
         };
 
         return AllChartData;
@@ -744,7 +748,7 @@
                 console.log(data);
 
                 makingModalPage(raceId,data,1);
-                $('.modal-content.studentGrade .modal-title').text("재시험 점수");
+                $('.modal-content.studentGrade .modal-title').text("{{$language['history']['retestGrade']}}");
 
             },
             error: function (data) {
@@ -777,7 +781,7 @@
                 $('.wrong_right').empty();
 
                 if(wrongsData.length == 0){
-                    $('.wrong_left').text("오답 내용이 없습니다.");
+                    $('.wrong_left').text("{{$language['modal']['Grade']['noWrongData']}}");
                     $('.wrong_left').addClass("noBoardLine");
                     $('.wrong_right').addClass("noBoardLine");
 
@@ -840,11 +844,11 @@
                                             .append($('<tr>')
                                                 .append($('<td colspan="2">')
                                                     .append($('<div>').attr('class','wrongExamples')
-                                                        .append($('<div>').text("정답 : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'])
+                                                        .append($('<div>').text("{{$language['history']['answer']}} : "+wrongsData[i]['rightAnswer']+" ("+ wrongsData[i]['rightAnswerCount'])
                                                         )
-                                                        .append($('<div>').text("힌트 : "+wrongsData[i]['hint']).css('color','blue')
+                                                        .append($('<div>').text("{{$language['history']['hint']}} : "+wrongsData[i]['hint']).css('color','blue')
                                                         )
-                                                        .append($('<div>').text("작성답 : "+wrongsData[i]['wrongs'][0]['answer']).css('color','black')
+                                                        .append($('<div>').text("{{$language['history']['studentAnswer']}} : "+wrongsData[i]['wrongs'][0]['answer']).css('color','black')
                                                         )
                                                     )
                                                 )
@@ -903,22 +907,22 @@
             <div class="historyList_container">
                 <div class="historyList-name">
                     <h4>
-                    최근 기록
+                    {{$language['history']['history']}}
                     </h4>
                 </div>
                 <div class="historyList-sorting">
                     <ul class="nav navbar-nav history">
                         <li>
-                            최근날짜▼
+                        {{$language['history']['lastDate']}}▼
                         </li>
                         <li>
-                            높은 점수▼
+                        {{$language['history']['highGrade']}}▼
                         </li>
                         <li>
-                            낮은 점수▼
+                        {{$language['history']['rowGrade']}}▼
                         </li>
                         <li>
-                            과제상태▼
+                        {{$language['history']['homeworkRefer']}}▼
                         </li>
                     </ul>
                 </div>
@@ -931,11 +935,11 @@
                     <table class="table table-hover historyList-table">
                         <thead>
                         <tr>
-                            <th>번호</th>
-                            <th>퀴즈 제목</th>
-                            <th>날짜</th>
-                            <th>성적표</th>
-                            <th>과제 확인하기</th>
+                            <th>{{$language['modal']['Subtitle']['number']}}</th>
+                            <th>{{$language['modal']['Subtitle']['quizName']}}</th>
+                            <th>{{$language['modal']['Subtitle']['date']}}</th>
+                            <th>{{$language['modal']['Subtitle']['grade']}}</th>
+                            <th>{{$language['modal']['Subtitle']['homework']}}</th>
                         </tr>
                         </thead>
                         <tbody id="history_list">
@@ -956,21 +960,21 @@
                     <thead>
                     <tr>
                         <th id="historyListNumber">
-                            번호
+                        {{$language['modal']['Subtitle']['number']}}
                         </th>
                         <th id="historyListRaceName" colspan="2">
-                            퀴즈제목
+                        {{$language['modal']['Subtitle']['quizName']}}
                         </th>
                     </tr>
                     <tr>
                         <th>
-                            학생
+                        {{$language['modal']['Subtitle']['student']}}
                         </th>
                         <th>
-                            재시험
+                        {{$language['modal']['Subtitle']['retest']}}
                         </th>
                         <th>
-                            오답노트
+                        {{$language['modal']['Subtitle']['omr']}}
                         </th>
                     </tr>
                     </thead>
