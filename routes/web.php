@@ -120,7 +120,7 @@ Route::get('/recordbox_student', function(){
 });
 
 /* 4-2. Record Box : Record List */
-Route::get('{who}/recordbox/{where}/{groupId?}/{country?}', function($who = null,$where,$groupId = null,$country = null){
+Route::get('/recordbox/{where}/{groupId?}/{country?}', function($where,$groupId = null,$country = null){
 
     if ($country != "kr" && $country != null && $country != "jp") {
         $where = "error";
@@ -312,18 +312,24 @@ Route::get('{who}/recordbox/{where}/{groupId?}/{country?}', function($who = null
         case "students":
         case "feedback":
 
-            switch($who){
-                case null :
-                    return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
-                break;
-                case "student" : 
-                    return view('Recordbox/recordbox_student_main' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
-                break;
-                default :
-                    return view('sorry');
-                break;
-            }
-            break;
+            // switch($who){
+            //     //교수일 때
+            //     case "teacher" :
+            //         return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+            //     break;
+                
+            //     //학생일 때                
+            //     case "student" : 
+            //         return view('Recordbox/recordbox_student_main' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
+            //     break;
+
+            //     //아무것도 아닐 때
+            //     default :
+            //         return view('sorry');
+            //     break;
+            // }
+            // break;
+            return view('Recordbox/recordbox_history' , ['where' => $where ,'groupId'=>$groupId , 'country' => $country,'language' => $language]);
 
         default:
             return view('sorry');
