@@ -28,7 +28,12 @@
                 switch (reqPage){
                     case "recordbox":
 
-                        window.location.href = "{{url('recordbox/chart')}}/" + groupId;
+                        window.location.href = "{{url('recordbox/chart')}}/" + groupId + "/jp";
+                        break;
+
+                    case "feedback":
+
+                        window.location.href = "{{url('recordbox/feedback')}}/" + groupId + "/jp";
                         break;
                 }
             },
@@ -236,7 +241,7 @@
                     <a href="{{ url('race_list') }}">Quiz_Race</a>
                 </li>
                 <li>
-                    <a href="{{url('/recordbox/chart/2') }}" id="recordbox" onclick="" class="main_navbar_li">RecordBox</a>
+                    <a href="#" id="recordbox" onclick="moveToAnotherPage('recordbox')" class="main_navbar_li">RecordBox</a>
                 </li>
                 <li>
 
