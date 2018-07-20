@@ -1207,12 +1207,20 @@ class RecordBoxController extends Controller{
                     'QnAs.title as title',
                     'QnAs.question as question',
                     'QnAs.answer as answer',
+                    'qf.name as questionFileName',
+                    'qf.url as questionFileUrl',
+                    'qf.type as questionFileType',
+                    'af.name as answerFileName',
+                    'af.url as answerFileUrl',
+                    'af.type as answerFileType',
                     'QnAs.question_at as question_at',
                     'QnAs.answer_at as answer_at'
                 )
                 ->where($where)
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
+                ->leftJoin('files as qf', 'f.number', '=', 'QnAs.questionFileNumber')
+                ->leftJoin('files as af', 'f.number', '=', 'QnAs.answerFileNumber')
                 ->where([
                     'QnAs.number' => $postData['QnAId']
                 ])
