@@ -58,7 +58,7 @@
                 <label for="createCl">
                     <b>クラス作り</b>
                 </label>
-                <!--  데모용 나중에 수정필요  -->
+
                 <input id="groupNameValue" type="text"
                        placeholder="クラスの名前"
                        name="groupName"

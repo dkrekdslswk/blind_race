@@ -46,7 +46,7 @@
 
                         {{--<input id="checkBox" type="checkbox">--}}
 
-                        <input type="text" size="50px" placeholder="新しいパスワードを入力してください" id="psw" required>
+                        <input type="text" size="40px" placeholder="新しいパスワードを入力してください" id="psw" required>
                         <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 7px " type="button" onclick="update('#')">変更</button>
                     </div>
 
@@ -79,7 +79,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div >
-                        <textarea id="cmemo" cols="60" rows="10"></textarea>
+                        <textarea id="cmemo" cols="55" rows="10"></textarea>
                         <label for="firstChk"><input type="hidden" id="firstChk" value="1" onclick="enterTabTable('cmemo','cview')"></label>
                         {{--<button type="button" onclick="expBasicData('cmemo','cview')">예시 보기</button>--}}
                         {{--<button style="border: 1px solid white; margin-top: 10px;" class="btn btn-primary-outline btn-round-lg btn-sm " type="button" onclick="enterTabTable('cmemo','cview')">確認</button>--}}
