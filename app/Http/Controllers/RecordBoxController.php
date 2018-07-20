@@ -3,6 +3,7 @@ namespace app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\UserController;
@@ -1005,7 +1006,8 @@ class RecordBoxController extends Controller{
                                     'userNumber' => $userData['userId'],
                                     'name' => $fileName,
                                     'url' => $url,
-                                    'type' => $file->getMimeType()
+                                    'type' => 'jpg'
+//                                    'type' => $file->getMimeType()
                                 ], 'number');
                         }
 
@@ -1015,7 +1017,7 @@ class RecordBoxController extends Controller{
                                 'teacherNumber' => $postData['teacherId'],
                                 'groupNumber' => $postData['groupId'],
                                 'title' => $postData['title'],
-                                'question' => $postData['question'],
+                                'question' => substr($postData['question'], 7),
                                 'questionFileNumber' => $fileNumber
                             ]);
 
@@ -1025,7 +1027,8 @@ class RecordBoxController extends Controller{
                         );
                     } else {
                         $returnValue = array(
-                            'check' => false
+                            'check' => false,
+                            'mark' => 1
                         );
                     }
                     break;
@@ -1033,13 +1036,15 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리
                     $returnValue = array(
-                        'check' => false
+                        'check' => false,
+                        'mark' => 2
                     );
                     break;
             }
         } else {
             $returnValue = array(
-                'check' => false
+                'check' => false,
+                'mark' => 3
             );
         }
 
@@ -1311,7 +1316,8 @@ class RecordBoxController extends Controller{
                         'userNumber' => $userData['userId'],
                         'name' => $fileName,
                         'url' => $url,
-                        'type' => $file->getMimeType()
+                        'type' => 'jpg'
+//                        'type' => $file->getMimeType()
                     ], 'number');
             }
 
@@ -1322,7 +1328,7 @@ class RecordBoxController extends Controller{
                     'number' => $postData['QnAId']
                 ])
                 ->update([
-                    'answer' => $postData['answer'],
+                    'answer' => substr($postData['answer'], 7),
                     'answer_at' => DB::raw('now()'),
                     'answerFileNumber' => $fileNumber
                 ]);

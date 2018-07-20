@@ -97,8 +97,7 @@ f
         });
 
         $(document).on('click','.modal-footer .btn.btn-primary',function () {
-            $('.request_date').attr('id');
-            insertQuestion();
+            updateAnswer($('.request_date').attr('id'));
         });
 
 
@@ -175,8 +174,6 @@ f
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
 
-                console.log(data);
-
                 $('.request_date').empty();
                 $('.response_date').empty();
                 $('.request_contents').empty();
@@ -207,24 +204,26 @@ f
 
     }
 
-    function insertQuestion(){
+    function updateAnswer(QnAId){
 
         var formData = new FormData();
         var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
         var answerText = "text = "+$('#teachersFeedback').val();
 
+        formData.append('QnAId', QnAId);
         formData.append('answer', answerText);
         formData.append('answerImg', imgfiles);
 
         $.ajax({
             type: 'POST',
-            url: "{{url('/recordBoxController/insertQuestion')}}",
+            url: "{{url('/recordBoxController/updateAnswer')}}",
             processData: false,
             contentType: false,
             data:formData,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
 
+                swal("{{$language['modal']['Feedback']['alert']}}");
             },
             error: function (data) {
                 alert("loadFeedback / 피드백 등록하기 에러");
