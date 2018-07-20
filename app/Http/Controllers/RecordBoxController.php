@@ -1000,6 +1000,7 @@ class RecordBoxController extends Controller{
                             $fileName=date("Y_m_d_His").$file->getClientOriginalName();
                             $url=Storage::url('imgFile/'.$fileName);
                             $file->storeAs('imgFile',$fileName);
+                            $url = str_replace('/storage/', '/storage/app/', $url);
 
                             $fileNumber = DB::table('files')
                                 ->insertGetId([
@@ -1310,6 +1311,7 @@ class RecordBoxController extends Controller{
                 $fileName=date("Y_m_d_His").$file->getClientOriginalName();
                 $url=Storage::url('imgFile/'.$fileName);
                 $file->storeAs('imgFile',$fileName);
+                $url = str_replace('/storage/', '/storage/app/', $url);
 
                 $fileNumber = DB::table('files')
                     ->insertGetId([
