@@ -23,7 +23,10 @@
 
 
             socket.emit('join',roomPin);
-            socket.emit('race_ending',roomPin);
+
+            if(pop_check != 1)
+                socket.emit('race_ending',roomPin);
+
             $.ajax({
                 type: 'POST',
                 url: "{{url('/raceController/raceEnd')}}",
@@ -46,20 +49,20 @@
                             fail_rank++;
                             append_info += fail_rank;
                         }
-                            append_info += '</div></td>';
+                        append_info += '</div></td>';
 
-                                    if(pop_check == 0)
-                                        append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
-                                    else if(pop_check == 1)
-                                        append_info += ' <td><img src="/img/character/student.jpg" >';
+                        if(pop_check == 0)
+                            append_info += ' <td><img src="/img/character/char'+r_result[i].characterId+'.png" >';
+                        else if(pop_check == 1)
+                            append_info += ' <td><img src="/img/character/student.jpg" >';
 
-                            append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
-                            append_info += '<span class="user-subhead subtitle">';
-                                    if(pop_check == 0)
-                                        append_info += r_result[i].rightCount*100+"point（"+ Math.floor(r_result[i].score) +")";
-                                    else if(pop_check == 1)
-                                        append_info += Math.floor(r_result[i].score)+"点";
-                            append_info +='</span></td>';
+                        append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
+                        append_info += '<span class="user-subhead subtitle">';
+                        if(pop_check == 0)
+                            append_info += r_result[i].rightCount*100+"point";
+                        else if(pop_check == 1)
+                            append_info += r_result[i].score+"点";
+                        append_info +='</span></td>';
 
 
 

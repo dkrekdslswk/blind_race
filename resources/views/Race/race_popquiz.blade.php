@@ -65,7 +65,7 @@
             text-align:center;
             font-size:30px;
             position:absolute;
-            left:5%;
+            left:25%;
         }
 
         .counting{
