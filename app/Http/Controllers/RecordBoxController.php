@@ -1463,7 +1463,8 @@ class RecordBoxController extends Controller{
     // 제약조건
     public function store(Request $request){
         $this->validate($request,[
-            'questionImg' => 'image,max:4096'
+            'questionImg' => 'image,max:4096',
+            'answerImg' => 'image,max:4096'
         ]);
 
 //        // 예외처리
