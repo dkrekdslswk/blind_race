@@ -329,7 +329,7 @@
                                                         )
                                                         .append($('<div>').text("{{$language['history']['hint']}} : " + wrongsData[i]['hint']).css('color', 'blue')
                                                         )
-                                                        .append($('<div>').text("$language['history']['studentAnswer'] : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
+                                                        .append($('<div>').text("{{$language['history']['studentAnswer']}} : " + wrongsData[i]['wrongs'][0]['answer']).css('color', 'black')
                                                         )
                                                     )
                                                 )
