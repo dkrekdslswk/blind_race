@@ -1315,7 +1315,8 @@ class RecordBoxController extends Controller{
                         'userNumber' => $userData['userId'],
                         'name' => $fileName,
                         'url' => $url,
-                        'type' => $file->getMimeType()
+                        'type' => 'jpg'
+//                        'type' => $file->getMimeType()
                     ], 'number');
             }
 
