@@ -310,5 +310,15 @@ class BlindDummyTableSeeder extends Seeder
                 }
             }
         }
+
+        DB::table('QnAs')
+            ->insert([
+                'userNumber' => 1301282,
+                'teacherNumber' => 123456789,
+                'groupNumber' => 1,
+                'title' => 'すくすくレースに質問があります。',
+                'question' => '私の考えには3番が正解なのにどうして間違えたんですか',
+                'questionFileNumber' => null
+            ]);
     }
 }
