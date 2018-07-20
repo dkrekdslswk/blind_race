@@ -1312,7 +1312,7 @@ class RecordBoxController extends Controller{
             );
         } else {
             $returnValue = array(
-                'check' => true
+                'check' => false
             );
         }
 
