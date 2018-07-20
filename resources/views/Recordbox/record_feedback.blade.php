@@ -97,7 +97,7 @@
         });
 
         $(document).on('click','.modal-footer .btn.btn-primary',function () {
-            changeCheck($('.request_date').attr('id'));
+            $('.request_date').attr('id');
             insertQuestion();
         });
 
@@ -236,7 +236,7 @@
 </div>
 
     <div class="feedback_page" style="margin: 10px;">
-        <table class="table table-bordered table-list" style="margin: 0;">
+        <table class="table table-bordered table-list" style="margin: 0; text-align: center;" >
             <thead>
             <tr>
                 <td>
