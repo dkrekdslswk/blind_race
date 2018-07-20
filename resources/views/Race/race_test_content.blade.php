@@ -215,7 +215,7 @@
                             <input id="sub_content" type="text" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
-                            <label id="sub_guide">주관식답안</label>
+                            <label id="sub_guide">入力する</label>
                         </div>
                     </div>
 
@@ -224,7 +224,7 @@
 
             <tr> <td id="now_status" class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
                 <td class="retest_footer"  style=" text-align: right;">
-                    <button id="Re-Test-button" onclick="nextQuiz();"> 다음문제</button>
+                    <button id="Re-Test-button" onclick="nextQuiz();"> 次の問題</button>
                 </td> </tr>
         </table>
     </div>

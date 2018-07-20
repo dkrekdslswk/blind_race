@@ -280,7 +280,7 @@
                     </div>
                 </div>
                 <div id="sub_opinion" style="">
-                    <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">입력된 정답들</h2>
+                    <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">学生の答え</h2>
                     <div id="opinion_box" style="margin-left: 10%;
     width: 100%;
     height: 30%;

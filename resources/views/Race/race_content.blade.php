@@ -166,7 +166,7 @@
     }
 </style>
 
-<div id="client">
+<div id="playing_contents" style="display: none;">
 
     <!-- 白い背景 -->
     <div id="play_frame"></div>
@@ -215,7 +215,7 @@
             </div>
 
             <!--　書き問題のヒント　-->
-            <div id="sub" style=" text-align:center">
+            <div id="sub" style=" text-align:center; display:none;">
                 <span style="font-size:40px; color:navy; left:0; position:absolute;">Hint:</span>
 
                 <!-- ヒントがでる「span」 -->

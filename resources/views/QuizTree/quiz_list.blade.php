@@ -113,13 +113,13 @@
 
         #theadFont {
             font-family: 'Meiryo UI';
-            font-size: 22px;
+            font-size: 20px;
             text-align: center;
         }
 
         #tbodyFont {
             font-family: 'Meiryo UI';
-            font-size: 20px;
+            font-size: 18px;
             text-align: center;
             vertical-align: middle;
         }

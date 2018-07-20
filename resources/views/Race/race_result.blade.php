@@ -56,9 +56,9 @@
                             append_info += '<a class="user-link title">'+r_result[i].nick+'</a>';
                             append_info += '<span class="user-subhead subtitle">';
                                     if(pop_check == 0)
-                                        append_info += r_result[i].rightCount*100+"point";
+                                        append_info += r_result[i].rightCount*100+"point（"+ Math.floor(r_result[i].score) +")";
                                     else if(pop_check == 1)
-                                        append_info += r_result[i].score+"点";
+                                        append_info += Math.floor(r_result[i].score)+"点";
                             append_info +='</span></td>';
 
 
