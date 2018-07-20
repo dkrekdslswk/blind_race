@@ -1025,7 +1025,8 @@ class RecordBoxController extends Controller{
                         );
                     } else {
                         $returnValue = array(
-                            'check' => false
+                            'check' => false,
+                            'mark' => 1
                         );
                     }
                     break;
@@ -1033,13 +1034,15 @@ class RecordBoxController extends Controller{
 
                     // 반납값 정리
                     $returnValue = array(
-                        'check' => false
+                        'check' => false,
+                        'mark' => 2
                     );
                     break;
             }
         } else {
             $returnValue = array(
-                'check' => false
+                'check' => false,
+                'mark' => 3
             );
         }
 
