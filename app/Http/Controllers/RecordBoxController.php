@@ -1237,6 +1237,12 @@ class RecordBoxController extends Controller{
                         'title' => $QnAData->title,
                         'question' => $QnAData->question,
                         'answer' => $QnAData->answer,
+                        'questionFileName' => $QnAData->questionFileName,
+                        'questionFileUrl' => $QnAData->questionFileUrl,
+                        'questionFileType' => $QnAData->questionFileType,
+                        'answerFileName' => $QnAData->answerFileName,
+                        'answerFileUrl' => $QnAData->answerFileUrl,
+                        'answerFileType' => $QnAData->answerFileType,
                         'question_at' => $QnAData->question_at,
                         'answer_at' => $QnAData->answer_at
                     ),
