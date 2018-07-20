@@ -1216,31 +1216,37 @@ class RecordBoxController extends Controller{
                     'QnAs.question_at as question_at',
                     'QnAs.answer_at as answer_at'
                 )
-                ->where($where)
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
-                ->leftJoin('files as qf', 'f.number', '=', 'QnAs.questionFileNumber')
-                ->leftJoin('files as af', 'f.number', '=', 'QnAs.answerFileNumber')
+                ->leftJoin('files as qf', 'qf.number', '=', 'QnAs.questionFileNumber')
+                ->leftJoin('files as af', 'af.number', '=', 'QnAs.answerFileNumber')
+                ->where($where)
                 ->where([
                     'QnAs.number' => $postData['QnAId']
                 ])
-                ->orderBy('number', 'DESC')
-                ->get();
+                ->orderBy('QnAs.number', 'DESC')
+                ->first();
 
             // 반납값 정리
-            $returnValue = array(
-                'QnA' => array(
-                    'QnAId' => $QnAData->QnAId,
-                    'userName' => $QnAData->userName,
-                    'teacherName' => $QnAData->teacherName,
-                    'title' => $QnAData->title,
-                    'question' => $QnAData->question,
-                    'answer' => $QnAData->answer,
-                    'question_at' => $QnAData->question_at,
-                    'answer_at' => $QnAData->answer_at
-                ),
-                'check' => true
-            );
+            if ($QnAData) {
+                $returnValue = array(
+                    'QnA' => array(
+                        'QnAId' => $QnAData->QnAId,
+                        'userName' => $QnAData->userName,
+                        'teacherName' => $QnAData->teacherName,
+                        'title' => $QnAData->title,
+                        'question' => $QnAData->question,
+                        'answer' => $QnAData->answer,
+                        'question_at' => $QnAData->question_at,
+                        'answer_at' => $QnAData->answer_at
+                    ),
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check' => false

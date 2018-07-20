@@ -348,7 +348,7 @@
                 <thead>
                 <tr>
                     <th id="theadFont" class="hidden-xs">#</th>
-                    <th id="theadFont">クイズ名前</th>
+                    <th id="theadFont">クイズ名</th>
                     <th id="theadFont">問題数</th>
                     <th></th>
                 </tr>

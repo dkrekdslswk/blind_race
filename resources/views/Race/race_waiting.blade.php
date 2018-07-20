@@ -179,7 +179,7 @@
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         var listName = '<?php echo $response['list']['listName']; ?>';
-        var quizCount = '<?php echo $response['list']['quizCount']; echo "問題"; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "問"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo $response['group']['groupStudentCount']; echo "人"; ?>';
         var socket = io(':8890');
@@ -198,6 +198,7 @@
 
 
             $('#room_Pin').html(roomPin);
+            $("#student_guide").text("学生たちが全員参加したら「 Start 」ボタンを押してください。");
             socket.emit('join', roomPin);
 
             socket.on('android_join',function(roomPin,sessionId){
@@ -678,17 +679,12 @@
     <div id="waiting_area" class="shadow">
 
     </div>
-
-    <div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
-        <img src="/img/Info.png" style="width:30px; height:30px;" alt="">
-        学生たちが全部参加すると、「Start」ボタンを押してください。
-    </div>
 </div>
 
 
-
-<div id="playing_contents" style="display:none;">
     @include('Race.race_content')
-</div>
+
+    @include('Race.race_footer')
+
 </body>
 </html>
