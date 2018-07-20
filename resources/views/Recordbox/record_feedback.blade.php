@@ -1,31 +1,3 @@
-<?php
-
-$language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
-                                        'allStudent' => '전체 학생',
-                                        'detail' => '상세 보기',
-                                        'feedback' => '피드백',
-                                        'wrongTest' => '오답 문제'),
-                        "Date" => array('year' => "년" ,
-                                        'month' => '월' ,
-                                        'date' =>'일' ),
-                        "Grade" => array('allStudent' => "전체학생",
-                                        'allGrade' => "총점수",
-                                        'totalVoca' => "어휘",
-                                        'totalGrammer' => "독해",
-                                        'totalWord' => "문법",
-                                        'allCount' => "갯수",
-                                        'allAverage' => "전체 평균",
-                                        'noWrongData' => "오답 내용이 없습니다."),
-                        "Feedback" => array('file'=>'파일 첨부',
-                                            'alert'=>'정상 등록되었습니다.',
-                                            'questionDate' => '질문 날짜',
-                                            'feedbackDate' => '대답 날짜',
-                                            'ok'=>'확인',
-                                            'cancel'=>'취소')
-];
-
-?>
-
 <style type="text/css">
     .record_feedback {
         z-index: 1;
@@ -119,14 +91,13 @@ $language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
 
         loadFeedback();
 
-
         $(document).on('click','.feedbackList',function () {
             loadFeedbackModal($(this).attr('id'));
 
         });
 
         $(document).on('click','.modal-footer .btn.btn-primary',function () {
-            changeCheck($('.request_date').attr('id'));
+            $('.request_date').attr('id');
             insertQuestion();
         });
 
@@ -153,19 +124,6 @@ $language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
 
-                /*
-                Data  = { QnAs : {
-                                'QnAId' : 1,
-                                'userName' : 김똘똘,
-                                'teacherName' : 이교수,
-                                'title' : 스쿠스쿠레이스 3번문제 질문입니다.
-                                'question_at' : 제 생각에는 3번이 정답인데 왜 틀린건가요
-                                'answer_at' : 그건 이러이러저러저러 하단다.
-                                 },
-                          check : false or true
-                          }
-                */
-
                 var instanceData = { QnAs : {
                         0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
                             question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
@@ -191,14 +149,14 @@ $language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
                             .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning')
                             //Change language : feedback
                                 //.text("미확인")));
-                                .text("미확인")));
+                                .text("{{ $language['feedback']['notcheck']}}")));
 
                     }else{
                         $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
                             .append($('<button">').attr('class','btn btn-primary')
                             //Change language : feedback
                             //.text("확인")));
-                            .text("확인")));
+                            .text("{{ $language['feedback']['check']}}")));
                     }
                 }
 
@@ -230,13 +188,14 @@ $language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
 
         for(var i = 0 ; i < 1;i++){
 
-            $('.request_date').text("질문날짜 : "+instanceData['QnAs'][i]['question_at'] +" / 응답날짜 : "+instanceData['QnAs'][i]['answer_at'])
+            $('.request_date').text("{{$language['modal']['Feedback']['questionDate']}} : "+instanceData['QnAs'][i]['question_at']
+                                 +" / {{$language['modal']['Feedback']['feedbackDate']}} : "+instanceData['QnAs'][i]['answer_at'])
                 .attr('id',qnaId);
             $('.request_contents').text(instanceData['QnAs'][i]['question']);
             $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
 
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text('확인'));
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text('취소'));
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text("{{$language['modal']['Feedback']['ok']}}"));
+            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text("{{$language['modal']['Feedback']['cancel']}}"));
 
         }
 
@@ -272,22 +231,22 @@ $language['feedback'] = ["Title" => array('allStudentGrade' => '학생 점수',
 <div class="feedbackPage_main">
     <h4>
         <!-- Change language : feedback / 피드백-->
-        피드백
+        {{$language['feedback']['Feedback']}}
     </h4>
 </div>
 
     <div class="feedback_page" style="margin: 10px;">
-        <table class="table table-bordered table-list" style="margin: 0;">
+        <table class="table table-bordered table-list" style="margin: 0; text-align: center;" >
             <thead>
             <tr>
                 <td>
-                    작성일자
+        {{$language['modal']['Subtitle']['date']}}
                 </td>
                 <td>
-                    제목
+        {{$language['modal']['Subtitle']['title']}}
                 </td>
                 <td id="feedbackCheck" class="feedback_check">
-                    상태
+        {{$language['modal']['Subtitle']['state']}}
                 </td>
             </tr>
             </thead>

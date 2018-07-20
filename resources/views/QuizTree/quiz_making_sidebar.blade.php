@@ -162,7 +162,7 @@
 
         <div class="select">
             <select id="bookSelect" class="form-control" style="height: 40px; border-radius: 12px; font-size: 20px">
-                <option>本選択</option>
+                <option>教材選択</option>
                 @for($i = count($response['bookList']) - 1; $i >= 0; $i--)
                     <option value="{{$response['bookList'][$i]['bookId']}}">{{$response['bookList'][$i]['bookName']}}</option>
             @endfor

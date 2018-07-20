@@ -21,7 +21,13 @@ class BlindDummyTableSeeder extends Seeder
             [1301143, '1234', 'ソン・ヒョンソク', 'student'],
             [1401179, '1234', 'アン・ジュンフイ', 'student'],
             [1401055, '1234', 'キム・スンモク', 'student'],
-            [1301036, '1234', 'キム・ミンス', 'student']
+            [1301036, '1234', 'キム・ミンス', 'student'],
+            [1, '1', 'チ', 'student'],
+            [2, '2', 'シ', 'student'],
+            [3, '3', 'ソ', 'student'],
+            [4, '4', 'ア', 'student'],
+            [5, '5', 'ム', 'student'],
+            [6, '6', 'キ', 'student']
         ];
         foreach ($users as $user) {
             DB::table('users')->insert([
@@ -114,7 +120,7 @@ class BlindDummyTableSeeder extends Seeder
                 'question'      => '各ビール会社がシェアを（競って）いる。',
                 'rightAnswer'   => 'きそって',
                 'example'       => ['たたかって', 'あせって', 'ちかって'],
-                'hint'          => '앞다투어',
+                'hint'          => 'OOoO',
                 'level'         => '1'
             ],
             [
@@ -304,5 +310,15 @@ class BlindDummyTableSeeder extends Seeder
                 }
             }
         }
+
+        DB::table('QnAs')
+            ->insert([
+                'userNumber' => 1301282,
+                'teacherNumber' => 123456789,
+                'groupNumber' => 1,
+                'title' => 'すくすくレースに質問があります。',
+                'question' => '私の考えには3番が正解なのにどうして間違えたんですか',
+                'questionFileNumber' => null
+            ]);
     }
 }

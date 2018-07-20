@@ -1016,7 +1016,7 @@ class RecordBoxController extends Controller{
                                 'groupNumber' => $postData['groupId'],
                                 'title' => $postData['title'],
                                 'question' => $postData['question'],
-                                'fileNumber' => $fileNumber
+                                'questionFileNumber' => $fileNumber
                             ]);
 
                         // 반납값 정리
@@ -1207,32 +1207,46 @@ class RecordBoxController extends Controller{
                     'QnAs.title as title',
                     'QnAs.question as question',
                     'QnAs.answer as answer',
+                    'qf.name as questionFileName',
+                    'qf.url as questionFileUrl',
+                    'qf.type as questionFileType',
+                    'af.name as answerFileName',
+                    'af.url as answerFileUrl',
+                    'af.type as answerFileType',
                     'QnAs.question_at as question_at',
                     'QnAs.answer_at as answer_at'
                 )
-                ->where($where)
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
+                ->leftJoin('files as qf', 'qf.number', '=', 'QnAs.questionFileNumber')
+                ->leftJoin('files as af', 'af.number', '=', 'QnAs.answerFileNumber')
+                ->where($where)
                 ->where([
                     'QnAs.number' => $postData['QnAId']
                 ])
-                ->orderBy('number', 'DESC')
-                ->get();
+                ->orderBy('QnAs.number', 'DESC')
+                ->first();
 
             // 반납값 정리
-            $returnValue = array(
-                'QnA' => array(
-                    'QnAId' => $QnAData->QnAId,
-                    'userName' => $QnAData->userName,
-                    'teacherName' => $QnAData->teacherName,
-                    'title' => $QnAData->title,
-                    'question' => $QnAData->question,
-                    'answer' => $QnAData->answer,
-                    'question_at' => $QnAData->question_at,
-                    'answer_at' => $QnAData->answer_at
-                ),
-                'check' => true
-            );
+            if ($QnAData) {
+                $returnValue = array(
+                    'QnA' => array(
+                        'QnAId' => $QnAData->QnAId,
+                        'userName' => $QnAData->userName,
+                        'teacherName' => $QnAData->teacherName,
+                        'title' => $QnAData->title,
+                        'question' => $QnAData->question,
+                        'answer' => $QnAData->answer,
+                        'question_at' => $QnAData->question_at,
+                        'answer_at' => $QnAData->answer_at
+                    ),
+                    'check' => true
+                );
+            } else {
+                $returnValue = array(
+                    'check' => false
+                );
+            }
         } else {
             $returnValue = array(
                 'check' => false
@@ -1279,6 +1293,22 @@ class RecordBoxController extends Controller{
                     break;
             }
 
+            $fileNumber = null;
+            if ($request->hasFile('answerImg')) {
+                $file = $request->file('answerImg');
+                $fileName=date("Y_m_d_His").$file->getClientOriginalName();
+                $url=Storage::url('imgFile/'.$fileName);
+                $file->storeAs('imgFile',$fileName);
+
+                $fileNumber = DB::table('files')
+                    ->insertGetId([
+                        'userNumber' => $userData['userId'],
+                        'name' => $fileName,
+                        'url' => $url,
+                        'type' => $file->getMimeType()
+                    ], 'number');
+            }
+
             // 업데이트
             DB::table('QnAs')
                 ->where($where)
@@ -1287,7 +1317,8 @@ class RecordBoxController extends Controller{
                 ])
                 ->update([
                     'answer' => $postData['answer'],
-                    'answer_at' => DB::raw('now()')
+                    'answer_at' => DB::raw('now()'),
+                    'answerFileNumber' => $fileNumber
                 ]);
 
             $returnValue = array(
@@ -1295,7 +1326,7 @@ class RecordBoxController extends Controller{
             );
         } else {
             $returnValue = array(
-                'check' => true
+                'check' => false
             );
         }
 
@@ -1446,7 +1477,8 @@ class RecordBoxController extends Controller{
     // 제약조건
     public function store(Request $request){
         $this->validate($request,[
-            'questionImg' => 'image,max:4096'
+            'questionImg' => 'image,max:4096',
+            'answerImg' => 'image,max:4096'
         ]);
 
 //        // 예외처리

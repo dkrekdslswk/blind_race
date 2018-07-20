@@ -261,7 +261,7 @@
             "<tr>" +
             "<td rowspan='2' style='background-color: #BEE4F4; color: #31639D; vertical-align: middle''>正答</td>" +
             "<td colspan='3' style='background-color: #FFECB8'>" +
-            "<input id='right" + idNum + "' type='text' placeholder='ここに生徒を書いてください' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
+            "<input id='right" + idNum + "' type='text' placeholder='ここに正答を書いてください' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
             addArr.right+ "'></td>" +
             "<td colspan='3'>" +
             "<input id='example1" + idNum + "' type='text' placeholder='例1' style='width: 100%; border: 0' value='" +
@@ -288,7 +288,7 @@
             "<tr>" +
             "<td rowspan='2' style='background-color: #BEE4F4; color: #31639D; vertical-align: middle'>正答</td>" +
             "<td colspan='3' style='background-color: #FFECB8'>" +
-            "<input id='right" + idNum + "' type='text' placeholder='複数正答の場合、、(コンマ)で表紙してください' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
+            "<input id='right" + idNum + "' type='text' placeholder='複数正答の場合、、(コンマ)で表示してください' style='width: 100%; background-color: #FFECB8; border: 0' value='" +
             addArr.right+ "'></td>" +
             "<td colspan='3'>" +
             "<input id='hint" + idNum + "' type='text' placeholder='ここにヒントを書いてください' style='width: 100%; border: 0' value='" +
@@ -436,7 +436,7 @@
                             str += "<tr>";
                             str += "<td style='text-align: center;'>" + questionId + "</td>";
                             str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>出題タイプ</td>";
-                            str += "<td style='width: 22.5%; text-align: center'>書き</td>";
+                            str += "<td style='width: 22.5%; text-align: center'>記述問題</td>";
                             str += "<td style='background-color: #d9edf7; width: 22.5%; text-align: center'>問題タイプ</td>";
                             str += "<td style='width: 22.5%; text-align: center'>" + showListData['quizs'][i]['quizType'] + "</td>";
                             str += "</tr>";
@@ -569,7 +569,7 @@
             data: params,
             success: function (data) {
                 if(data.check == true) {
-                    swal("貯蔵完了");
+                    swal("保存完了");
                     window.location.href = "{{url('quiz_list')}}";
                 }
                 else {
@@ -650,8 +650,8 @@
     </div>
 
     <div class="threebuttonDesignT">
-        <button type="button" class="threebuttonDesign" data-toggle="modal" data-target="#backToList" style="color: #31639D">&nbsp;修了&nbsp;</button>
-        <button type="button" class="threebuttonDesign" id="save" style="color: #31639D">&nbsp;貯蔵&nbsp;</button>
+        <button type="button" class="threebuttonDesign" data-toggle="modal" data-target="#backToList" style="color: #31639D">&nbsp;戻る&nbsp;</button>
+        <button type="button" class="threebuttonDesign" id="save" style="color: #31639D">&nbsp;保存&nbsp;</button>
         <button type="button" class="threebuttonDesign" id="add" style="color: #31639D">&nbsp;追加&nbsp;</button>
     </div>
 
@@ -662,7 +662,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="text-align: center">
-                <h5 class="modal-title" id="ModalLabel" style="font-size: 20px">クイズ呼び出す</h5>
+                <h5 class="modal-title" id="ModalLabel" style="font-size: 20px">過去のクイズ</h5>
             </div>
             <div class="modal-body">
                 {{--Dropdowns--}}
@@ -687,7 +687,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="callQuiz()" data-dismiss="modal">呼び出す</button>
+                <button type="button" class="btn btn-primary" onclick="callQuiz()" data-dismiss="modal">確認</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">戻る</button>
             </div>
         </div>
@@ -703,11 +703,11 @@
 
             </div>
             <div class="modal-body" style="text-align: center">
-                クイズが貯蔵していません. 修了しますか？
+                クイズが保存していません. リストに戻りますか？
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="backToList()">修了</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">戻る</button>
+                <button type="submit" class="btn btn-primary" onclick="backToList()">確認</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
             </div>
         </div>
     </div>

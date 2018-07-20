@@ -116,7 +116,7 @@
                 }
             });
         }
-
+    }
 
     </script>
 
@@ -148,7 +148,7 @@
     <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('race_list') }}"><img class="menu_img" src="https://i.imgur.com/mbuwQ0O.png"></div>
     <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="#" onclick="moveToAnotherPage('recordbox')"><img class="menu_img" src="https://i.imgur.com/ExqGuJx.png"></div>
     <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('quiz_list') }}"><img class="menu_img" src="https://i.imgur.com/PPBQX37.png"></div>
-    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="{{ url('recordbox') }}"><img class="menu_img" src="https://i.imgur.com/TU94pvS.png"></div>
+    <div style="width: 20%; height: 100%;!important; display: inline-block "><a href="#" onclick="moveToAnotherPage('feedback')"><img class="menu_img" src="https://i.imgur.com/TU94pvS.png"></div>
 </div>
 
 <div  style="width: 100% ; height: 10%; background-color: white">
