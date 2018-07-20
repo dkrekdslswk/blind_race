@@ -47,7 +47,7 @@
                         {{--<input id="checkBox" type="checkbox">--}}
 
                         <input type="text" size="50px" placeholder="新しいパスワードを入力してください" id="psw" required>
-                        <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 10px " type="button" onclick="update('#')">変更</button>
+                        <button class="btn btn-primary-outline btn-round-lg " style="border: 1px solid white ; margin-left: 7px " type="button" onclick="update('#')">変更</button>
                     </div>
 
                 </div>
@@ -123,8 +123,8 @@
             <table>
                 <tr class="header">
                     <th style="width:42%"><i class="fas fa-user-circle"></i>  名前</th>
-                    <th style="width:40%"><i class="fas fa-clipboard-list"></i> 学籍番号</th>
-                    <th style="width:15%"><i class="fas fa-user-plus"></i> <input type="checkbox" id="allCheck"/></th>
+                    <th style="width:23%"><i class="fas fa-clipboard-list"></i> 学籍番号</th>
+                    <th style="width:8%"><i class="fas fa-user-plus"></i> <input type="checkbox" id="allCheck"/></th>
                 </tr>
             </table>
             <table id="myTable">
@@ -141,7 +141,7 @@
         <p class="pen">現在のクラス学生</p>
         <table>
             <tr class="header" style="border-top: 1px solid gray;">
-                <th style="width:26%"><i class="fas fa-user-circle"></i>  名前</th>
+                <th style="width:34%"><i class="fas fa-user-circle"></i>  名前</th>
                 <th style="width:25%"><i class="fas fa-clipboard-list"></i> 学籍番号</th>
                 <th style="width:35%;"><i class="fas fa-info"></i> パスワード</th>
                 <th style="width:25%;"></th>
@@ -150,19 +150,19 @@
 
         <table id="student">
             {{--<tr>--}}
-                {{--<th>--}}
-                    {{--<input type="checkbox"/>クラス</th>--}}
-                {{--<th>名前</th>--}}
-                {{--<th>学番</th>--}}
-                {{--<th>레코드 박스</th>--}}
+            {{--<th>--}}
+            {{--<input type="checkbox"/>クラス</th>--}}
+            {{--<th>名前</th>--}}
+            {{--<th>学番</th>--}}
+            {{--<th>레코드 박스</th>--}}
             {{--</tr>--}}
             {{--<tr>--}}
-                {{--<td><input type="checkbox"/>B반--}}
-                    {{--<button>X</button>--}}
-                {{--</td>--}}
-                {{--<td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>--}}
-                {{--<td>1401036</td>--}}
-                {{--<td>확인</td>--}}
+            {{--<td><input type="checkbox"/>B반--}}
+            {{--<button>X</button>--}}
+            {{--</td>--}}
+            {{--<td  data-toggle="modal" data-target="#studnetsetting">안준휘</td>--}}
+            {{--<td>1401036</td>--}}
+            {{--<td>확인</td>--}}
             {{--</tr>--}}
 
         </table>
@@ -395,6 +395,13 @@
     }
     .inline {
         display: inline-block;
+    }
+    p, div, th, tr, td, button, a {
+        font-family: 'Meiryo UI' ; !important;
+    }
+
+    ul {
+        font-family: 'Meiryo UI'; !important;
     }
 </style>
 

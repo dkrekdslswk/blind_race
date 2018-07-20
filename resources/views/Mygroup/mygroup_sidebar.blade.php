@@ -167,7 +167,13 @@
             background-size: cover;
             border-spacing: 0px 0px !important;
         }
+        p, div, th, tr, td, button, a {
+            font-family: 'Meiryo UI' ; !important;
+        }
 
+        ul {
+            font-family: 'Meiryo UI'; !important;
+        }
 
 
 

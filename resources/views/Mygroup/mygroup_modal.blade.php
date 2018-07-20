@@ -33,6 +33,13 @@
             width: 80%;
 
         }
+        p, div, th, tr, td, button, a {
+            font-family: 'Meiryo UI' ; !important;
+        }
+
+        ul {
+            font-family: 'Meiryo UI'; !important;
+        }
 
     </style>
     <!-- careate Modal -->
