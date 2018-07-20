@@ -20,7 +20,7 @@
         color: #203a8e;
         font-weight: bold;
     }
-
+f
     .feedback_page table{
         background-color: white;
     }
@@ -124,35 +124,28 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
 
-                var instanceData = { QnAs : {
-                        0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
-                            question_at: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer_at: "그건 이러이러저러저러 하단다.",date : "2018-05-28"
-                        }
-                    }
-                };
-
                 $('#modal_feedbackList').empty();
 
                 for(var i = 0 ; i < 1;i++){
 
                     $('#modal_feedbackList')
-                        .append($('<tr>').attr('id','qna_'+instanceData['QnAs'][i]['QnAId'])
-                            .append($('<td>').text(instanceData['QnAs'][i]['date']))
+                        .append($('<tr>').attr('id','qna_'+data['QnAs'][i]['QnAId'])
+                            .append($('<td>').text(data['QnAs'][i]['question_at']))
                             .append($('<td>')
                                 .append($('<a href="#" data-toggle="modal" data-target="#Modal2">')
-                                    .attr('class','feedbackList').attr('id',instanceData['QnAs'][i]['QnAId']).text(instanceData['QnAs'][i]['title'])
+                                    .attr('class','feedbackList').attr('id',data['QnAs'][i]['QnAId']).text(data['QnAs'][i]['title'])
                                 )
                             )
                         );
-                    if(instanceData['QnAs'][i]['answer_at'] == ""){
-                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
-                            .append($('<button>').attr('id','btnQnA_'+instanceData['QnAs'][i]['QnAId']).attr('class','btn btn-warning')
+                    if(data['QnAs'][i]['answer_at'] == null){
+                        $('#qna_'+data['QnAs'][i]['QnAId']).append($('<td>')
+                            .append($('<button>').attr('id','btnQnA_'+data['QnAs'][i]['QnAId']).attr('class','btn btn-warning')
                             //Change language : feedback
                                 //.text("미확인")));
                                 .text("{{ $language['feedback']['notcheck']}}")));
 
                     }else{
-                        $('#qna_'+instanceData['QnAs'][i]['QnAId']).append($('<td>')
+                        $('#qna_'+data['QnAs'][i]['QnAId']).append($('<td>')
                             .append($('<button">').attr('class','btn btn-primary')
                             //Change language : feedback
                             //.text("확인")));
@@ -172,32 +165,45 @@
 
         var reqData = {"QnAId" : qnaId};
 
-        var instanceData = { QnAs : {
-                0: { QnAId: 1, userName: "김똘똘", techerName: "이교수", title: "스쿠스쿠레이스 3번문제 질문입니다.",
-                    question: "제 생각에는 3번이 정답인데 왜 틀린건가요", answer:"그건 이러이러저러저러 하단다",
-                    question_at: "2018-05-28",answer_at : "2018-05-29"
+        $.ajax({
+            type: 'POST',
+            url: "{{url('/recordBoxController/selectQnA')}}",
+            //processData: false,
+            //contentType: false,
+            data:reqData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) {
+
+                console.log(data);
+
+                $('.request_date').empty();
+                $('.response_date').empty();
+                $('.request_contents').empty();
+                $('#teachersFeedback').empty();
+                $('.modal-footer.feedback').empty();
+
+                $('.modal-footer.feedback').append($('<button data-dismiss="modal">').attr('class','btn btn-primary').text("{{$language['modal']['Feedback']['ok']}}"));
+                $('.modal-footer.feedback').append($('<button data-dismiss="modal">').attr('class','btn btn-secondary').text("{{$language['modal']['Feedback']['cancel']}}"));
+
+                if(data['QnA']['answer_at'] != null){
+                    $('.request_date').text("{{$language['modal']['Feedback']['questionDate']}} : "+data['QnA']['question_at']
+                                    +" / {{$language['modal']['Feedback']['feedbackDate']}} : "+data['QnA']['answer_at'])
+                    .attr('id',qnaId);
+                }else{
+                    $('.request_date').text("{{$language['modal']['Feedback']['questionDate']}} : "+data['QnA']['question_at'])
+                    .attr('id',qnaId);
                 }
+
+                $('.request_contents').text(data['QnA']['question']);
+                $('#teachersFeedback').val(data['QnA']['answer']);
+                
+            },
+            error: function (data) {
+                alert("loadFeedback / 피드백 받아오기 에러");
             }
-        };
 
-        $('.request_date').empty();
-        $('.response_date').empty();
-        $('.request_contents').empty();
-        $('#teachersFeedback').empty();
-        $('.modal-footer.feedback').empty();
-
-        for(var i = 0 ; i < 1;i++){
-
-            $('.request_date').text("{{$language['modal']['Feedback']['questionDate']}} : "+instanceData['QnAs'][i]['question_at']
-                                 +" / {{$language['modal']['Feedback']['feedbackDate']}} : "+instanceData['QnAs'][i]['answer_at'])
-                .attr('id',qnaId);
-            $('.request_contents').text(instanceData['QnAs'][i]['question']);
-            $('#teachersFeedback').val(instanceData['QnAs'][i]['answer']);
-
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" onclick="insertQuestion()">').attr('class','btn btn-primary').text("{{$language['modal']['Feedback']['ok']}}"));
-            $('.modal-footer.feedback').append($('<button data-dismiss="modal" >').attr('class','btn btn-secondary').text("{{$language['modal']['Feedback']['cancel']}}"));
-
-        }
+        });
 
     }
 
@@ -205,8 +211,10 @@
 
         var formData = new FormData();
         var imgfiles = document.getElementsByName("feedbackImg")[0].files[0];
+        var answerText = "text = "+$('#teachersFeedback').val();
 
-        formData.append('questionImg', imgfiles);
+        formData.append('answer', answerText);
+        formData.append('answerImg', imgfiles);
 
         $.ajax({
             type: 'POST',
@@ -221,7 +229,6 @@
             error: function (data) {
                 alert("loadFeedback / 피드백 등록하기 에러");
             }
-
         });
     }
 
@@ -251,17 +258,6 @@
             </tr>
             </thead>
             <tbody id="modal_feedbackList">
-            <tr>
-                <td>18.04.17</td>
-                <td>
-                    <a href="#" data-toggle="modal" data-target="#Modal2">
-                    [스쿠스쿠레이스2 - 3번] 질문있습니다.
-                    </a>
-                </td>
-                <td  id="feedbackCheckIcon" name="feedback_check" style="text-align: center">
-                    <button type="button" id="1check" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">미확인</button>
-                </td>
-            </tr>
             </tbody>
         </table>
     </div>
