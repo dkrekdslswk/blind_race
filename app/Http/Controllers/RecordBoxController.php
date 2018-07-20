@@ -1219,8 +1219,8 @@ class RecordBoxController extends Controller{
                 ->where($where)
                 ->join('users as u', 'u.number', '=', 'QnAs.userNumber')
                 ->join('users as tu', 'tu.number', '=', 'QnAs.teacherNumber')
-                ->leftJoin('files as qf', 'f.number', '=', 'QnAs.questionFileNumber')
-                ->leftJoin('files as af', 'f.number', '=', 'QnAs.answerFileNumber')
+                ->leftJoin('files as qf', 'qf.number', '=', 'QnAs.questionFileNumber')
+                ->leftJoin('files as af', 'af.number', '=', 'QnAs.answerFileNumber')
                 ->where([
                     'QnAs.number' => $postData['QnAId']
                 ])
