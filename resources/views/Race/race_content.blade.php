@@ -166,7 +166,7 @@
     }
 </style>
 
-<div id="playing_contents">
+<div id="playing_contents" style="display:none;">
 
     <!-- 白い背景 -->
     <div id="play_frame"></div>
