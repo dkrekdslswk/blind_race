@@ -366,7 +366,7 @@
 
                 $("body").css('background-image', 'url("/img/race_play/play_bg.png")', 'important');
                 $('#all_member').text("/"+quiz_member);
-
+                $('#guide_footer').remove();
                 var Mid_result_Timer;
 
                 var socket = io(':8890'); //14
