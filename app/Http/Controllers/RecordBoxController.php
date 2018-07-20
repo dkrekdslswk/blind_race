@@ -1016,7 +1016,7 @@ class RecordBoxController extends Controller{
                                 'groupNumber' => $postData['groupId'],
                                 'title' => $postData['title'],
                                 'question' => $postData['question'],
-                                'fileNumber' => $fileNumber
+                                'questionFileNumber' => $fileNumber
                             ]);
 
                         // 반납값 정리
@@ -1279,6 +1279,22 @@ class RecordBoxController extends Controller{
                     break;
             }
 
+            $fileNumber = null;
+            if ($request->hasFile('answerImg')) {
+                $file = $request->file('answerImg');
+                $fileName=date("Y_m_d_His").$file->getClientOriginalName();
+                $url=Storage::url('imgFile/'.$fileName);
+                $file->storeAs('imgFile',$fileName);
+
+                $fileNumber = DB::table('files')
+                    ->insertGetId([
+                        'userNumber' => $userData['userId'],
+                        'name' => $fileName,
+                        'url' => $url,
+                        'type' => $file->getMimeType()
+                    ], 'number');
+            }
+
             // 업데이트
             DB::table('QnAs')
                 ->where($where)
@@ -1287,7 +1303,8 @@ class RecordBoxController extends Controller{
                 ])
                 ->update([
                     'answer' => $postData['answer'],
-                    'answer_at' => DB::raw('now()')
+                    'answer_at' => DB::raw('now()'),
+                    'answerFileNumber' => $fileNumber
                 ]);
 
             $returnValue = array(
