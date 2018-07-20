@@ -166,12 +166,12 @@
     }
 </style>
 
-<div id="client">
+<div id="playing_contents">
 
     <!-- 白い背景 -->
     <div id="play_frame"></div>
 
-    <div class="main" style="">
+    <div class="main" style="display:none;">
         <div id='content'>
 
             <!-- 問題の限定時間 -->
