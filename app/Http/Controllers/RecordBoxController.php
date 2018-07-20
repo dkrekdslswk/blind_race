@@ -1224,7 +1224,7 @@ class RecordBoxController extends Controller{
                 ->where([
                     'QnAs.number' => $postData['QnAId']
                 ])
-                ->orderBy('number', 'DESC')
+                ->orderBy('QnAs.number', 'DESC')
                 ->get();
 
             // 반납값 정리
