@@ -65,7 +65,7 @@
             text-align:center;
             font-size:30px;
             position:absolute;
-            left:5%;
+            left:25%;
         }
 
         .counting{
@@ -462,7 +462,7 @@
         var quiz_JSON = JSON.parse('<?php echo json_encode($response['quizs']['quiz']); ?>');
 
         var listName = '<?php echo $response['list']['listName']; ?>';
-        var quizCount = '<?php echo $response['list']['quizCount']; echo "人"; ?>';
+        var quizCount = '<?php echo $response['list']['quizCount']; echo "問"; ?>';
         var groupName = '<?php echo $response['group']['groupName']; ?>';
         var groupStudentCount = '<?php echo "総人員: "; echo $response['group']['groupStudentCount']; echo "人"; ?>';
 
@@ -472,7 +472,7 @@
         window.onload = function() {
 
             $('#nav_img').attr('src','/img/race_student/exam.png');
-
+            $("#student_guide").text("学生たちが全員参加したら「 Start 」ボタンを押してください。");
 
             //정답뒤섞기
             function shuffle(a) {
@@ -764,8 +764,6 @@
 
 </div>
 
-<div id="guide_footer" style="position:fixed; bottom:0; background-color:#f27281; width:100%; height:6%; color:white; font-size:25px; ">
-    <img src="/img/Info.png" style="width:30px; height:30px;" alt="">学生たちが全部来ると、「試験開始」をクリックしてください。
-</div>
+@include('Race.race_footer')
 </body>
 </html>

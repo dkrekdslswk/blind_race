@@ -10,6 +10,9 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
+
+
+
     <script>
         var raceId;
 
@@ -31,7 +34,8 @@
         var web_correct_answer;
 
         var web_quiz_count;
-    
+
+
             socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
                 if(enter_check == true){
 
@@ -45,7 +49,7 @@
                     $('#group_name').html(groupName);
                     $('#group_student_count').html(groupStudentCount);
 
-                    $('#student_guide').text('게임 시작 로딩중');
+                    $('#student_guide').text('Loading...');
 
                     $('body').css("background-color","mediumslateblue");
 
@@ -67,7 +71,7 @@
                 web_makeType = makeType;
                 $('#entrance_page').hide();
                 $('.loading_page').hide();
-                $('#student_guide').text('로딩중');
+                $('#student_guide').text('Loading...');
 
                 $('body').css("background-color","whitesmoke");
 
@@ -216,7 +220,7 @@
                                 $('#entranceInfo_character_page').show();
                                 $('#entranceInfo_nickname_page').show();
 
-                                $('#student_guide').text('자신의 캐릭터와 닉네임을 입력하세요');
+                                $('#student_guide').text('キャラクターとニックネームを選んでください');
                             }
                             else{
                                 alert("존재하지 않는 방입니다. 다시입력해주세요");
@@ -256,7 +260,7 @@
                                 $(".loading_page").show();
 
 
-                                $('#student_guide').text('시험이 시작될 때까지 기다려 주세요 !');
+                                $('#student_guide').text('お待ちください !');
                             }
                             else{
                                 alert("존재하지 않는 시험입니다. 다시입력해주세요");
@@ -302,10 +306,10 @@
             $('#web_race_midresult').hide();
             $('#race_result').show();
         });
-
     </script>
     <script>
         $(document).ready(function(){
+            $('#student_guide').text('モードを選んでください。');
             //모드에서 재시험 클릭
             $('#Re-Test').click(function(){
 
@@ -315,7 +319,7 @@
                 //눌렸을떄의 색상
                 $('#Re-Test').css("background","#9A0A35");
 
-                $('#student_guide').text("재시험을 칠 레이스를 선택해주세요");
+                $('#student_guide').text("再試験をするクイズーを選んでください。");
                 $('#Re-Test_list').show();
                 $('#roomPin_page').hide();
             });
@@ -331,7 +335,7 @@
                 //눌렸을떄의 색상
                 $('#Race').css("background","#00008B");
 
-                $('#student_guide').text("들어갈 방의 PIN번호 6자리를 입력해주세요");
+                $('#student_guide').text("参加するルームの「PIN番号」を入力してください。");
                 $('#roomPin_page').show();
                 $('#Re-Test_list').hide();
             });
@@ -346,7 +350,7 @@
                 //눌렸을떄의 색상
                 $('#Exam').css("background","#800080");
 
-                $('#student_guide').text("쪽지시험을 칠 방의 PIN번호 6자리를 입력해주세요");
+                $('#student_guide').text("参加するルームの「PIN番号」を入力してください。");
                 $('#roomPin_page').show();
                 $('#Re-Test_list').hide();
             });
@@ -469,6 +473,10 @@
     </style>
 </head>
 <script>
+
+
+
+
     function getValue() {
 
         // list 정보 불러오기
@@ -509,7 +517,7 @@
     }
 
 </script>
-<body>
+<body >
 
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
@@ -542,7 +550,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col col-xs-6">
-                            <h3 class="panel-title">クイズーリスト</h3>
+                            <h3 class="panel-title">クイズリスト</h3>
                         </div>
                     </div>
                 </div>
@@ -551,10 +559,10 @@
                         <thead>
                         <tr>
                             <th class="hidden-xs">#</th>
-                            <th style="text-align: center">クイズー名前</th>
+                            <th style="text-align: center">クイズー名</th>
                             <th style="text-align: center">問題数</th>
                             <th style="text-align: center">合格点</th>
-                            <th style="text-align: center">以前点数</th>
+                            <th style="text-align: center">以前の点数</th>
                             <th style="text-align: center"></th>
                         </tr>
                         </thead>
@@ -612,11 +620,6 @@
         <input class="entrance_input" id="nickname" type="text"><br>
         <button onclick="user_in();" class="btn-primary" style="width:150px; height:50px; margin-left:10%;">Enter Room</button>
     </div>
-
-    <footer style="position:fixed; bottom:0; background-color:lightgreen; width:100%; height:10%; color:white; font-size:40px; line-height:100px;">
-        <img src="/img/Info.png" style="width:60px; height:60px; position:absolute; bottom:20px;" alt="">
-        <span id="student_guide" style="position:absolute; bottom:0; left:5%; font-size:50px;">モードを選んでください。</span>
-    </footer>
 </div>
 
 
@@ -630,5 +633,8 @@
 <div class="contents" style="display:none;">@include('Race.race_student_content')</div>
 
 <div id="popQuiz_content" style="display:none;">@include('Race.race_student_popquiz')</div>
+
+@include('Race.race_footer')
+
 </body>
 </html>

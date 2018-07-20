@@ -130,29 +130,30 @@
     // 그룹 데이터 저장용 배열
     var groupData = new Array();
 
-    $.ajax({
-        type: 'POST',
-        url: "{{url('groupController/groupsGet')}}",
-        //processData: false,
-        //contentType: false,
-        dataType: 'json',
-        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-        //data: {_token: CSRF_TOKEN, 'post':params},
-        data: "",
-        success: function (data) {
-            groupData = data;
+    function groupGet(){
+        $.ajax({
+            type: 'POST',
+            url: "{{url('groupController/groupsGet')}}",
+            //processData: false,
+            //contentType: false,
+            dataType: 'json',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            //data: {_token: CSRF_TOKEN, 'post':params},
+            data: "",
+            success: function (data) {
+                groupData = data;
 
-            for(var i =  groupData['groups'].length-1; i >= 0; i--) {
-                $("#groupSelect").append(
-                    "<option value='" + groupData['groups'][i]['groupId'] + "'>" + groupData['groups'][i]['groupName'] + "</option>"
-                );
+                for(var i =  groupData['groups'].length-1; i >= 0; i--) {
+                    $("#groupSelect").append(
+                        "<option value='" + groupData['groups'][i]['groupId'] + "'>" + groupData['groups'][i]['groupName'] + "</option>"
+                    );
+                }
+            },
+            error: function (data) {
+                alert("error");
             }
-        },
-        error: function (data) {
-            alert("error");
-        }
-    });
-
+        });
+    }
     // 모달로 넘기는 그룹 선택 파트
     $(document).ready(function () {
 
@@ -315,7 +316,7 @@
 
 </script>
 
-<body onload="getFolderValue()">
+<body onload="getFolderValue(); groupGet();">
 
 <nav>
     @include('Navigation.main_nav')

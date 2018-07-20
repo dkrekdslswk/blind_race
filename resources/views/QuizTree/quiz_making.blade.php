@@ -124,7 +124,7 @@
                     "<td style='width: 25%; vertical-align: middle''>" +
                         "<form>" +
                         "<label class='radio-inline'><input type='radio' id='obj" + idNum + "' name='makeType" + idNum + "' value='obj'>選択肢</label>" +
-                        "<label class='radio-inline'><input type='radio' id='sub" + idNum + "' name='makeType" + idNum + "' value='sub'>書き</label>" +
+                        "<label class='radio-inline'><input type='radio' id='sub" + idNum + "' name='makeType" + idNum + "' value='sub'>記述問題</label>" +
                         "</form>" +
                     "</td>" +
                     "<td style='background-color: #BEE4F4; width: 10%; color: #31639D; vertical-align: middle''>問題タイプ</td>" +

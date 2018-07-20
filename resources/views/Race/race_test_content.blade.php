@@ -187,25 +187,25 @@
                         <br>
                         <label>
                             <input id="answer1_radio" name="answer" type="radio" checked="checked">
-                            <span id="answer1_span" >요로시꾸</span>
+                            <span id="answer1_span" ></span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer2_radio"  name="answer" type="radio">
-                            <span id="answer2_span">요로시꾸</span>
+                            <span id="answer2_span"></span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer3_radio"  name="answer" type="radio">
-                            <span id="answer3_span">요로시d</span>
+                            <span id="answer3_span"></span>
                         </label>
                         <br>
 
                         <label>
                             <input id="answer4_radio"  name="answer" type="radio">
-                            <span id="answer4_span">요로시꾸</span>
+                            <span id="answer4_span"></span>
                         </label>
                         <br>
                     </div>
@@ -215,7 +215,7 @@
                             <input id="sub_content" type="text" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
-                            <label id="sub_guide">주관식답안</label>
+                            <label id="sub_guide">入力する</label>
                         </div>
                     </div>
 
@@ -224,7 +224,7 @@
 
             <tr> <td id="now_status" class="retest_footer" style=" text-align: right; color:white; font-size:20px; border-top:1px solid black;">1/30</td>
                 <td class="retest_footer"  style=" text-align: right;">
-                    <button id="Re-Test-button" onclick="nextQuiz();"> 다음문제</button>
+                    <button id="Re-Test-button" onclick="nextQuiz();"> 次の問題</button>
                 </td> </tr>
         </table>
     </div>

@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Document</title>
+    <title>MY CLASS</title>
 
     <!-- Bootstrap CSS CDN -->
     <link
@@ -16,9 +16,7 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <style>
-        p ,div ,th ,tr  {
-            font-family: 'Nanum Gothic', sans-serif;
-        }
+
 
         .button1:hover {
             opacity: 0.6 !important;
@@ -89,6 +87,13 @@
         }
         .btn-round-lg{
             border-radius: 20.5px;
+        }
+        p, div, th, tr, td, button, a , i {
+            font-family: 'Meiryo UI' ; !important;
+        }
+
+        ul {
+            font-family: 'Meiryo UI'; !important;
         }
     </style>
 

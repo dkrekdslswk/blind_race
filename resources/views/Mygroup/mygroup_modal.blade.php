@@ -33,6 +33,13 @@
             width: 80%;
 
         }
+        p, div, th, tr, td, button, a {
+            font-family: 'Meiryo UI' ; !important;
+        }
+
+        ul {
+            font-family: 'Meiryo UI'; !important;
+        }
 
     </style>
     <!-- careate Modal -->
@@ -51,12 +58,12 @@
                 <label for="createCl">
                     <b>クラス作り</b>
                 </label>
-                <!--  데모용 나중에 수정필요  -->
+
                 <input id="groupNameValue" type="text"
                        placeholder="クラスの名前"
                        name="groupName"
                        required="required"
-                       style="margin-left: 50px"
+                       style="margin-left: 30px"
 
                 >
                 <button class="btn btn-primary-outline btn-round-lg" onclick="createGroup()" style ="color : black; margin-left: 85px">クラス作り</button>

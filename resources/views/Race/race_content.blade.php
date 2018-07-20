@@ -174,28 +174,28 @@
     <div class="main" style="">
         <div id='content'>
 
-                <!-- 問題の限定時間 -->
-                    <span class="progress_timer" id="counter" style="z-index:8; color:#ff923a;"></span>
-                    <img class="progress_timer" src="/img/race_play/timer.png" alt="">
-                <progress style="width:85%;  height:30px; margin-top:20px;"  value="0" max="30" id="progressBar"></progress>
+            <!-- 問題の限定時間 -->
+            <span class="progress_timer" id="counter" style="z-index:8; color:#ff923a; margin-left:15px;"></span>
+            <img class="progress_timer" src="/img/race_play/timer.png" alt="">
+            <progress style="width:85%;  height:30px; margin-top:20px;"  value="0" max="30" id="progressBar"></progress>
 
             <div id="questions" style="height:250px;">
 
 
-                    <!-- 問題内容 -->
-                    <div class="inline-class" id="mondai">
-                        <br>
-                        <span id="mondai-content"></span>
-                    </div>
-
-                    <!-- 解いた学生の数 -->
-                    <img id="answer_cap" src="/img/race_play/answer_cap.png" alt="">
-                    <div id="answer_circle" class="inline-class">
-                        <span id="answer_c" >0</span>
-                        <span id="all_member">/0</span>
-                    </div>
-
+                <!-- 問題内容 -->
+                <div class="inline-class" id="mondai">
+                    <br>
+                    <span id="mondai-content"></span>
                 </div>
+
+                <!-- 解いた学生の数 -->
+                <img id="answer_cap" src="/img/race_play/answer_cap.png" alt="">
+                <div id="answer_circle" class="inline-class">
+                    <span id="answer_c" >0</span>
+                    <span id="all_member">/0</span>
+                </div>
+
+            </div>
 
             <!--問題の選択肢-->
             <div class="obj" style="display:none;">

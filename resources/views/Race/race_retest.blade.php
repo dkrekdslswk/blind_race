@@ -106,7 +106,7 @@
 
             success: function (result) {
                 $('#raceName').text(result['listName']);
-                $('#quizCount').text(result['quizCount']+"問題");
+                $('#quizCount').text(result['quizCount']+"問");
                 $('#passingMark').text("合格点:"+result['passingMark']);
                 $('#groupName').text(result['groupName']);
                 $('#userName').text(result['userName']);
@@ -216,9 +216,8 @@
 </script>
 <body>
 
-<div>@include('Navigation.main_nav')</div>
+    @include('Navigation.main_nav')
 
-@include('Race.race_test_content')
-
+    @include('Race.race_test_content')
 </body>
 </html>
