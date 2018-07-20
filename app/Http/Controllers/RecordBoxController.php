@@ -1327,7 +1327,7 @@ class RecordBoxController extends Controller{
                     'number' => $postData['QnAId']
                 ])
                 ->update([
-                    'answer' => $postData['answer'],
+                    'answer' => substr($postData['answer'], 7),
                     'answer_at' => DB::raw('now()'),
                     'answerFileNumber' => $fileNumber
                 ]);
