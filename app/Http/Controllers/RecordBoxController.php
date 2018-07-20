@@ -1006,7 +1006,8 @@ class RecordBoxController extends Controller{
                                     'userNumber' => $userData['userId'],
                                     'name' => $fileName,
                                     'url' => $url,
-                                    'type' => $file->getMimeType()
+                                    'type' => 'jpg'
+//                                    'type' => $file->getMimeType()
                                 ], 'number');
                         }
 
@@ -1016,7 +1017,7 @@ class RecordBoxController extends Controller{
                                 'teacherNumber' => $postData['teacherId'],
                                 'groupNumber' => $postData['groupId'],
                                 'title' => $postData['title'],
-                                'question' => $postData['question'],
+                                'question' => substr($postData['question'], 7),
                                 'questionFileNumber' => $fileNumber
                             ]);
 
