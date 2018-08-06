@@ -27,7 +27,13 @@ class BlindDummyTableSeeder extends Seeder
             [3, '3', 'ソ', 'student'],
             [4, '4', 'ア', 'student'],
             [5, '5', 'ム', 'student'],
-            [6, '6', 'キ', 'student']
+            [6, '6', 'キ', 'student'],
+            [7, '7', 'チ2', 'student'],
+            [8, '2', 'シ2', 'student'],
+            [9, '3', 'ソ2', 'student'],
+            [10, '4', 'ア2', 'student'],
+            [11, '5', 'ム2', 'student'],
+            [12, '6', 'キ2', 'student']
         ];
         foreach ($users as $user) {
             DB::table('users')->insert([
