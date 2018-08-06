@@ -250,10 +250,10 @@
 <img id="fail_title" class="part_title" src="/img/race_ending/fail_title.png" alt="">
 <div id="race_result" >
 
-    <table class="table user-list" id="pass_table">
+    <table class="table user-list" id="pass_table" style="overflow: auto;">
     </table>
 
-    <table class="table user-list" id="fail_table">
+    <table class="table user-list" id="fail_table" style="overflow: auto;">
     </table>
 
     <div id="content_bg"></div>

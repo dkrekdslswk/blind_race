@@ -174,7 +174,7 @@
     background: white;
     border-radius: 50px;">
 
-        <div style="display: inline-block; width:45%; height:90%; position:absolute; right:2%;
+        <div style="overflow:auto; display: inline-block; width:45%; height:90%; position:absolute; right:2%;
         margin-top:3%;
         background-image:url('/img/race_play/rank_bg.png');
          background-position: center;
@@ -282,12 +282,13 @@
                 <div id="sub_opinion" style="">
                     <h2 class='titular'><img src="/img/race_play/speech_bubble.png" style="width:30px; height:30px;" alt="">学生の答え</h2>
                     <div id="opinion_box" style="margin-left: 10%;
-    width: 100%;
-    height: 30%;
-    min-height: 200px;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
+                    overflow: auto;
+                    width: 100%;
+                    height: 30%;
+                    min-height: 200px;
+                    border-radius: 10px;
+                    background: white;
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);">
                     </div>
                 </div>
             </div>
