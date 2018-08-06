@@ -20,7 +20,7 @@
 
         var characterId;
         var roomPin;
-        var sessionId = 0;
+        var sessionId = '@php echo session()->get('sessionId'); @endphp';
         var socket = io(':8890');
 
         var nick;
@@ -36,134 +36,136 @@
         var web_quiz_count;
 
 
-            socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionId,enter_check){
-                if(enter_check == true){
+        socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionIds,enter_check){
+            if(enter_check == true && sessionIds==sessionId){
 
-                    web_quiz_count = quizCount;
+                web_quiz_count = quizCount;
 
-                    $('#entranceInfo_character_page').hide();
-                    $('#entranceInfo_nickname_page').hide();
+                $('#entranceInfo_character_page').hide();
+                $('#entranceInfo_nickname_page').hide();
 
-                    $('#race_name').html(listName);
-                    $('#race_count').html(quizCount);
-                    $('#group_name').html(groupName);
-                    $('#group_student_count').html(groupStudentCount);
+                $('#race_name').html(listName);
+                $('#race_count').html(quizCount);
+                $('#group_name').html(groupName);
+                $('#group_student_count').html(groupStudentCount);
 
-                    $('#student_guide').text('Loading...');
-
-                    $('body').css("background-color","mediumslateblue");
-
-                    $(".loading_page").show();
-
-                }else{
-                    alert('입장에실패했습니다. 입력정보를 확인해보십시오');
-                }
-            });
-
-            socket.on('pop_quiz_start',function(quizData,listName){
-                $('.loading_page').hide();
-
-                $('#popQuiz_content').show();
-            });
-
-            socket.on('android_game_start',function(quizId , makeType){
-                web_quizId = quizId;
-                web_makeType = makeType;
-                $('#entrance_page').hide();
-                $('.loading_page').hide();
                 $('#student_guide').text('Loading...');
 
-                $('body').css("background-color","whitesmoke");
+                $('body').css("background-color","mediumslateblue");
 
-                $('#character_info').attr("src","/img/character/char"+ characterId +".png");
+                $(".loading_page").show();
 
-                $('#nickname_info').html(nick);
-                $('#ranking_info').html('0등');
-                $('#point_info').html('0point');
-                switch(makeType){
-                    case "obj":
-                        $("#sub").hide();
-                        $(".obj").show();
-                        break;
+            }else if(enter_check != true && sessionIds==sessionId){
+                alert('입장에실패했습니다. 입력정보를 확인해보십시오');
+            }
+        });
 
-                    case "sub" :
-                        $(".obj").hide();
-                        $("#sub").show();
-                        break;
+        socket.on('pop_quiz_start',function(quizData,listName){
+            $('.loading_page').hide();
+
+            $('#popQuiz_content').show();
+        });
+
+        socket.on('android_game_start',function(quizId , makeType){
+            web_quizId = quizId;
+            web_makeType = makeType;
+            $('#entrance_page').hide();
+            $('.loading_page').hide();
+            $('#student_guide').text('Loading...');
+
+            $('body').css("background-color","whitesmoke");
+
+            $('#character_info').attr("src","/img/character/char"+ characterId +".png");
+
+            $('#nickname_info').html(nick);
+            $('#ranking_info').html('0등');
+            $('#point_info').html('0point');
+            switch(makeType){
+                case "obj":
+                    $("#sub").hide();
+                    $(".obj").show();
+                    break;
+
+                case "sub" :
+                    $(".obj").hide();
+                    $("#sub").show();
+                    break;
+            }
+            $('.contents').show();
+        });
+
+        socket.on('android_next_quiz',function(roomPin){
+
+            switch(web_makeType){
+                case "obj":
+                    $("#sub").hide();
+                    $(".obj").show();
+                    break;
+
+                case "sub" :
+                    $(".obj").hide();
+                    $("#sub").show();
+                    break;
+            }
+            $('#makeTypes').show();
+
+            $('#web_race_midresult').hide();
+
+        });
+
+        socket.on('race_mid_correct',function(correct){
+            web_correct_answer = correct;
+        });
+
+        socket.on('android_mid_result',function(quizId, makeType, ranking){
+
+            $('body').css("background-color","whitesmoke");
+            $(".loading_page").hide();
+
+            web_quizId = quizId;
+            web_makeType = makeType;
+
+            var ranking_json = JSON.parse(ranking);
+
+            for(var i=0; i < ranking_json.length; i++){
+                //고쳐야되는 구문임
+                if(ranking_json[i].nick == nick) {
+                    web_ranking = i + 1;
+                    web_point = ranking_json[i].rightCount;
+                    web_alright = ranking_json[i].answer;
+                    web_answer_check = ranking_json[i].answerCheck;
                 }
-                $('.contents').show();
-            });
-
-            socket.on('android_next_quiz',function(roomPin){
-
-                switch(web_makeType){
-                    case "obj":
-                        $("#sub").hide();
-                        $(".obj").show();
-                        break;
-
-                    case "sub" :
-                        $(".obj").hide();
-                        $("#sub").show();
-                        break;
-                }
-                $('#makeTypes').show();
-
-                $('#web_race_midresult').hide();
-
-            });
-
-            socket.on('race_mid_correct',function(correct){
-                web_correct_answer = correct;
-            });
-
-            socket.on('android_mid_result',function(quizId, makeType, ranking){
-
-                $('body').css("background-color","whitesmoke");
-                $(".loading_page").hide();
-
-                web_quizId = quizId;
-                web_makeType = makeType;
-
-                var ranking_json = JSON.parse(ranking);
-
-                for(var i=0; i < ranking_json.length; i++){
-                    //고쳐야되는 구문임
-                    if(ranking_json[i].nick == nick) {
-                        web_ranking = i + 1;
-                        web_point = ranking_json[i].rightCount;
-                        web_alright = ranking_json[i].answer;
-                        web_answer_check = ranking_json[i].answerCheck;
-                    }
-                }
+            }
 
 
 
 
 
-                $('#ranking_info').html(web_ranking+"등");
-                $('#point_info').html(web_point*100+"point");
-                $('#answer_content').html(web_correct_answer);
+            $('#ranking_info').html(web_ranking+"등");
+            $('#point_info').html(web_point*100+"point");
+            $('#answer_content').html(web_correct_answer);
 
-                if(web_answer_check == "X")
-                    web_alright = "X";
+            if(web_answer_check == "X")
+                web_alright = "X";
 
-                switch(web_alright){
-                    case "O": $('#answer_check_img').attr("src","/img/right_circle.png");
-                        $('#answer_check').html("정답");
-                        break;
-                    case "X": $('#answer_check_img').attr("src","/img/wrong.png");
-                        $('#answer_check').html("오답");
-                        break;
-                }
+            switch(web_alright){
+                case "O": $('#answer_check_img').attr("src","/img/right_circle.png");
+                    $('#answer_check').html("정답");
+                    break;
+                case "X": $('#answer_check_img').attr("src","/img/wrong.png");
+                    $('#answer_check').html("오답");
+                    break;
+                default : $('#answer_check_img').attr("src","/img/wrong.png");
+                    $('#answer_check').html("오답");
+            }
 
-                $('#race_room_nav').show();
-                $('#mondai').show();
+            $('#race_room_nav').show();
+            $('#mondai').show();
 
-                $('#makeTypes').hide();
-                $('#web_race_midresult').show();
+            $('#makeTypes').hide();
+            $('#web_race_midresult').show();
 
-            });
+        });
         function web_answer(answer_num){
 
             switch(web_makeType){
@@ -197,19 +199,25 @@
                         dataType: 'json',
                         async:false,
                         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                        data:"roomPin="+roomPin+"&sessionId=0",
+                        data:"roomPin="+roomPin+"&sessionId="+sessionId,
                         success: function (result) {
                             if(result['check'] == true) {
 
                                 sessionId = result['sessionId'];
+                                var characters2 = result['characters']+'';
+                                var used_characters = new Array();
 
                                 socket.emit('join', roomPin);
                                 characters +='<form href="#">';
-                                for(var char_num =1; char_num <=28; char_num++){
-                                    characters += '<label>';
-                                    characters += '<input style="display:none;" name="character" id="'+char_num+'" type="radio" value="'+char_num+'" />';
-                                    characters += '<img class="character_select" id="char_img'+char_num+'"  src="/img/character/char'+char_num+'.png" >'
-                                    characters += '</label>';
+                                for(var char_num =1; char_num <=45; char_num++){
+                                    //選択されたキャラクターじゃない場合
+                                    console.log(characters2.indexOf(char_num));
+                                    if(characters2.indexOf(char_num)== -1){
+                                        characters += '<label>';
+                                        characters += '<input style="display:none;" name="character" id="'+char_num+'" type="radio" value="'+char_num+'" />';
+                                        characters += '<img class="character_select" id="char_img'+char_num+'"  src="/img/character/char'+char_num+'.png" >'
+                                        characters += '</label>';
+                                    }
 
                                 }
                                 characters +='</form>';
@@ -243,18 +251,18 @@
                         dataType: 'json',
                         async:false,
                         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                        data:"roomPin="+roomPin+"&sessionId=0",
+                        data:"roomPin="+roomPin+"&sessionId"+sessionId,
                         success: function (result) {
                             if(result['check'] == true) {
                                 socket.emit('join', roomPin);
-                                
+
                                 sessionId = result['sessionId'];
-                                
+
                                 socket.emit('web_test_enter',roomPin);
                                 $('#race_menu').hide();
                                 $('#roomPin_page').hide();
-                                
-                                
+
+
                                 //로딩부분
                                 $('body').css("background-color","mediumslateblue");
                                 $(".loading_page").show();
@@ -385,7 +393,7 @@
 
         #race_menu{
             margin-top:10%;
-            margin-left:14%;
+            margin-left:15%;
         }
 
         .race_menu_button{
@@ -513,7 +521,7 @@
     }
     function send_retest(data){
         $('#raceId').val(data);
-       document.getElementById('create_retest').submit();
+        document.getElementById('create_retest').submit();
     }
 
 </script>
@@ -522,7 +530,7 @@
 <div id="entrance_page">
     <!-- 학생 레이스 입장화면 네비게이션  -->
     <div>
-        @include('Navigation.student_main_nav')
+        @include('Navigation.main_nav')
     </div>
 
     <div id="race_menu">
@@ -604,7 +612,7 @@
 
 
     <!-- 방의 핀번호 입력부분 -->
-    <div id="roomPin_page" style="position:absolute; top:60%; left:40%;  display:none;">
+    <div id="roomPin_page" style="position:absolute; top:70%; left:40%;  display:none;">
         <br>
         <span >PIN</span>
         <input name="roomPin" id="roomPin" type="text"><button class="btn-primary" onclick="web_student_join();">確認</button>

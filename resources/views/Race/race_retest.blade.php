@@ -20,10 +20,8 @@
         body{
             background-image: url("/img/race_play/re_bg.png") !important;
             min-height: 100%;
-            background-position: center;
-            background-size: cover;
-            width: 100%;
-            height: 100%;
+            background-position: center !important;
+            background-size: cover !important;
         }
     </style>
 </head>
