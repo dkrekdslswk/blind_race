@@ -156,23 +156,23 @@
             <div class="obj" style="display:none;">
 
                 <!-- 1번 -->
-                <button class="column btn-success" onclick="web_answer(1);">
+                <button class="column btn-success" onclick="web_answer(1);" style="background-image:url('/img/race_play/answer_a.png');">
                     <!-- style="background-color:#1bbc9b;" -->
                     <p class="answer_font" id="answer1">A</p>
                 </button>
 
                 <!-- 2번 -->
-                <button class="column btn-primary" onclick="web_answer(2);">
+                <button class="column btn-primary" onclick="web_answer(2);" style="background-image:url('/img/race_play/answer_b.png');">
                     <p class="answer_font" id="answer2">B</p>
                 </button>
 
                 <!-- 3번 -->
-                <button class="column btn-warning" onclick="web_answer(3);">
+                <button class="column btn-warning" onclick="web_answer(3);" style="background-image:url('/img/race_play/answer_c.png');">
                     <p class="answer_font" id="answer3">C</p>
                 </button>
 
                 <!-- 4번 -->
-                <button class="column btn-danger" onclick="web_answer(4);">
+                <button class="column btn-danger" onclick="web_answer(4);" style="background-image:url('/img/race_play/answer_d.png');">
                     <p class="answer_font" id="answer4">D</p>
                 </button>
             </div>

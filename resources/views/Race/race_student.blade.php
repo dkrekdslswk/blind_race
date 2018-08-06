@@ -35,6 +35,11 @@
 
         var web_quiz_count;
 
+        socket.on('android_enter_room',function(roomPin , check , session_id){
+            $('#'+check).remove();
+            $('#char_img'+check).remove();
+            console.log(check);
+        });
 
         socket.on('web_enter_room',function(listName,quizCount,groupName,groupStudentCount, sessionIds,enter_check){
             if(enter_check == true && sessionIds==sessionId){
@@ -157,6 +162,7 @@
                     break;
                 default : $('#answer_check_img').attr("src","/img/wrong.png");
                     $('#answer_check').html("오답");
+                    break;
             }
 
             $('#race_room_nav').show();
@@ -191,7 +197,7 @@
             roomPin = document.getElementById('roomPin').value;
             switch( active_mode ){
                 case "Race":
-                    var characters='<span style="font-size:40px; margin: 5% 0px 0px 40%;"> 캐릭터 선택</span><br>';
+                    var characters='<span style="font-size:40px; margin: 5% 0px 0px 40%;">Character Select</span><br>';
 
                     $.ajax({
                         type: 'POST',
@@ -209,7 +215,7 @@
 
                                 socket.emit('join', roomPin);
                                 characters +='<form href="#">';
-                                for(var char_num =1; char_num <=45; char_num++){
+                                for(var char_num =1; char_num <=36; char_num++){
                                     //選択されたキャラクターじゃない場合
                                     console.log(characters2.indexOf(char_num));
                                     if(characters2.indexOf(char_num)== -1){
@@ -374,8 +380,10 @@
     <style>
         .character_select{
             border-radius: 15px 50px 30px;
-            background-color:white;
+            background-color: white;
             border: 1px solid black;
+            width: 110px;
+            height: 110px;
         }
         #entranceInfo_nickname_page {
             position:absolute;
