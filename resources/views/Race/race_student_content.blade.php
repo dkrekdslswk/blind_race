@@ -156,23 +156,23 @@
             <div class="obj" style="display:none;">
 
                 <!-- 1번 -->
-                <button class="column btn-success" onclick="web_answer(1);" style="background-color:#8461bd;">
+                <button class="column" onclick="web_answer(1);" style="background-color:#8461bd; color:white;">
                     <!-- style="background-color:#1bbc9b;" -->
                     <p class="answer_font" id="answer1">A</p>
                 </button>
 
                 <!-- 2번 -->
-                <button class="column btn-primary" onclick="web_answer(2);" style="background-color:#e74d66;">
+                <button class="column " onclick="web_answer(2);" style="background-color:#e74d66; color:white;">
                     <p class="answer_font" id="answer2">B</p>
                 </button>
 
                 <!-- 3번 -->
-                <button class="column btn-warning" onclick="web_answer(3);" style="background-color:#44d193;">
+                <button class="column " onclick="web_answer(3);" style="background-color:#44d193; color:white;">
                     <p class="answer_font" id="answer3">C</p>
                 </button>
 
                 <!-- 4번 -->
-                <button class="column btn-danger" onclick="web_answer(4);" style="background-color:#ffb22c;" >
+                <button class="column" onclick="web_answer(4);" style="background-color:#ffb22c; color:white;" >
                     <p class="answer_font" id="answer4">D</p>
                 </button>
             </div>
