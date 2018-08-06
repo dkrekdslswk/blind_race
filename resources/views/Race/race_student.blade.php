@@ -152,6 +152,10 @@
 
             if(web_answer_check == "X")
                 web_alright = "X";
+            else if(web_answer_check=="O")
+                web_alright = "O";
+            else
+                web_alright = "X";
 
             switch(web_alright){
                 case "O": $('#answer_check_img').attr("src","/img/right_circle.png");

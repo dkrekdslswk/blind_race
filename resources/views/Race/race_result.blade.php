@@ -68,10 +68,10 @@
 
                         if(r_result[i].retestState == false){
                             append_info +='<td class="stu_img_frame" ><span><img class="stu_img" src="/img/race_ending/success.png"></span></td></tr>';
-                            $('#pass_table').append(append_info);
+                            $('#pass_table_content').append(append_info);
                         }else{
                             append_info +='<td class="stu_img_frame_fail"><span><img class="stu_img" src="/img/race_ending/fail.png"></span></td></tr>';
-                            $('#fail_table').append(append_info);
+                            $('#fail_table_content').append(append_info);
                         }
                     }
                 },
@@ -193,6 +193,8 @@
             z-index: 1;
             background: none;
             border-spacing:0px 5px;
+            overflow: auto;
+            height:400px;
         }
         #pass_table td, #fail_table td{
             background: #FFFFFF;
@@ -207,6 +209,8 @@
             z-index: 1;
             background: none;
             border-spacing:0px 5px;
+            overflow: auto;
+            height:400px;
         }
         #fail_title{
             top: 32%;
@@ -250,11 +254,17 @@
 <img id="fail_title" class="part_title" src="/img/race_ending/fail_title.png" alt="">
 <div id="race_result" >
 
-    <table class="table user-list" id="pass_table" style="overflow: auto;">
-    </table>
+    <div id="pass_table">
+        <table id="pass_table_content" class="table user-list"  style="overflow: auto; height:400px;  background: none;
+            border-spacing:0px 5px;">
+        </table>
+    </div>
 
-    <table class="table user-list" id="fail_table" style="overflow: auto;">
-    </table>
+    <div id="fail_table">
+        <table id="fail_table_content" class="table user-list"  style="overflow: auto; height:400px;  background: none;
+            border-spacing:0px 5px;">
+        </table>
+    </div>
 
     <div id="content_bg"></div>
 

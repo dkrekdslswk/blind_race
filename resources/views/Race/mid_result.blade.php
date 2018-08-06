@@ -174,7 +174,7 @@
     background: white;
     border-radius: 50px;">
 
-        <div style="overflow:auto; display: inline-block; width:45%; height:90%; position:absolute; right:2%;
+        <div style="overflow:auto; display: inline-block; width:45%; height:469px; position:absolute; right:2%;
         margin-top:3%;
         background-image:url('/img/race_play/rank_bg.png');
          background-position: center;
@@ -284,7 +284,7 @@
                     <div id="opinion_box" style="margin-left: 10%;
                     overflow: auto;
                     width: 100%;
-                    height: 30%;
+                    height: 200px;
                     min-height: 200px;
                     border-radius: 10px;
                     background: white;
